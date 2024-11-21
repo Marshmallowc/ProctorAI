@@ -19,7 +19,7 @@ public class FaceRecognitionServiceImpl implements FaceRecognitionService {
         try {
             ProcessBuilder pb = new ProcessBuilder(
                     "cmd.exe", "/c",
-                    "conda activate detector && cd D:\\python-learn\\detect && python test.py"
+                    "conda activate detector && python test.py"
             );
             Process p = pb.start();
 

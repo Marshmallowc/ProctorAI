@@ -284,6 +284,8 @@ const constantRoutes = [
     component: () => import('@/views/error-page/404'),
     meta: { title: '404', noCache: true }
   }
+  // { path: '/eedit', name: 'ExamPaperEEdit', component: () => import('@/views/exam/paper_c/eedit'), meta: { title: '试卷批改' } },
+  // { path: '/rread', name: 'ExamPaperRRead', component: () => import('@/views/exam/paper_c/rread'), meta: { title: '试卷查看' } }
 ]
 
 const router = new Router({

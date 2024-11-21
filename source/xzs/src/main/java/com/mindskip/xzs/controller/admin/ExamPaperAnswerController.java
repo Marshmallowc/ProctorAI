@@ -303,7 +303,7 @@ public class ExamPaperAnswerController extends BaseApiController {
         }
 
         // 3. 查询该班级中参加指定试卷的学生的最近一次作答成绩
-        String sql = "SELECT e.user_score, u.stuNo " +
+        String sql = "SELECT e.system_score, u.stuNo " +
                 "FROM t_exam_paper_answer e " +
                 "JOIN t_user u ON e.create_user = u.id " +
                 "JOIN (SELECT create_user, MAX(create_time) AS latest_time " +
@@ -321,7 +321,7 @@ public class ExamPaperAnswerController extends BaseApiController {
 
         // 4. 处理结果，按照分段统计人数
         while (rs.next()) {
-            int score = rs.getInt("user_score");
+            int score = rs.getInt("system_score");
 
             if (score < totalScore * 0.6) {
                 scoreDistribution.put("不及格", scoreDistribution.get("不及格") + 1);
@@ -381,7 +381,7 @@ public class ExamPaperAnswerController extends BaseApiController {
         conn = DriverManager.getConnection(URL, USER, PASSWORD);
 
         // 查询学生及其考试信息的SQL
-        String sql = "SELECT e.exam_paper_id, e.paper_name, e.paper_score, e.user_score, e.question_count, e.question_correct, e.create_time, " +
+        String sql = "SELECT e.exam_paper_id, e.paper_name, e.paper_score, e.system_score, e.question_count, e.question_correct, e.create_time, " +
                 "u.school, u.class_name, u.real_name, u.user_name, u.stuNo " +
                 "FROM t_exam_paper_answer e " +
                 "JOIN t_user u ON e.create_user = u.id " +
@@ -421,7 +421,7 @@ public class ExamPaperAnswerController extends BaseApiController {
             row.createCell(0).setCellValue(rs.getInt("exam_paper_id"));
             row.createCell(1).setCellValue(rs.getString("paper_name"));
             row.createCell(2).setCellValue(rs.getInt("paper_score"));
-            row.createCell(3).setCellValue(rs.getInt("user_score"));
+            row.createCell(3).setCellValue(rs.getInt("system_score"));
             row.createCell(4).setCellValue(rs.getInt("question_count"));
             row.createCell(5).setCellValue(rs.getInt("question_correct"));
             row.createCell(6).setCellValue(rs.getTimestamp("create_time").toString());
@@ -530,7 +530,7 @@ public class ExamPaperAnswerController extends BaseApiController {
             ResultSet rsUser = pstmtUser.executeQuery();
 
             // 4. 查询 t_exam_paper_answer 表获取指定试卷的考试信息
-            String examQuery = "SELECT user_score, paper_score FROM t_exam_paper_answer WHERE create_user = ? AND paper_name = ?";
+            String examQuery = "SELECT system_score, paper_score FROM t_exam_paper_answer WHERE create_user = ? AND paper_name = ?";
             PreparedStatement pstmtExam = conn.prepareStatement(examQuery);
 
 
@@ -542,7 +542,7 @@ public class ExamPaperAnswerController extends BaseApiController {
                 ResultSet rsExam = pstmtExam.executeQuery();
 
                 while (rsExam.next()) {
-                    int userScore = rsExam.getInt("user_score");
+                    int userScore = rsExam.getInt("system_score");
                     int paperScore = rsExam.getInt("paper_score");
                     examData.put("用户 " + userId, userScore);
                 }

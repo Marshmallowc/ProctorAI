@@ -35,7 +35,7 @@
       <el-table-column prop="stuNo" label="学号"/>
       <el-table-column  label="得分" width="100px" >
         <template slot-scope="{row}">
-          {{row.userScore}} / {{row.paperScore}}
+          {{row.systemScore}} / {{row.paperScore}}
         </template>
       </el-table-column>
       <el-table-column  label="题目对错" width="80px" >
@@ -45,6 +45,16 @@
       </el-table-column>
       <el-table-column prop="doTime" label="耗时" width="100px"/>
       <el-table-column prop="createTime" label="提交时间" width="160px"/>
+      <el-table-column  align="right" width="70">
+             <template slot-scope="{row}">
+               <router-link target="_blank" :to="{path:'/edit/paper_c/eedit',query:{id:row.id}}" v-if="row.status === 1 ">
+                 <el-button  type="text" size="small">批改</el-button>
+               </router-link>
+               <router-link target="_blank" :to="{path:'/edit/paper_c/rread',query:{id:row.id}}" v-if="row.status === 2 ">
+                 <el-button  type="text" size="small">查看试卷</el-button>
+               </router-link>
+             </template>
+           </el-table-column>
     </el-table>
     <!--
     <pagination v-show="total>0" :total="total" :page.sync="queryParam.pageIndex" :limit.sync="queryParam.pageSize"

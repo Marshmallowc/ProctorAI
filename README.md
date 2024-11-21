@@ -1,21 +1,3 @@
-<p></p>
-<p></p>
-
-<p align="center">
-<a href="https://www.mindskip.net" target="_blank">
- <img src="https://www.mindskip.net/style/git/images/logo/1.png" height="80"/>
-<a/>
-</p>
-
-<div align="center">
-
-[![Gitee star](https://gitee.com/mindskip/xzs-mysql/badge/star.svg?theme=gitee)](https://gitee.com/mindskip/xzs-mysql)
-[![Gitee fork](https://gitee.com/mindskip/xzs-mysql/badge/fork.svg?theme=gitee)](https://gitee.com/mindskip/xzs-mysql)
-[![Github stars](https://img.shields.io/github/stars/mindskip/xzs-mysql?logo=github)](https://github.com/mindskip/xzs-mysql)
-[![Github forks](https://img.shields.io/github/forks/mindskip/xzs-mysql?logo=github)](https://github.com/mindskip/xzs-mysql)
-[![Github license](https://img.shields.io/badge/license-AGPL-yellow)](https://gitee.com/mindskip/xzs-mysql/blob/master/LICENSE)
-
-</div>
 
 # 学之思开源考试系统 - Mysql版
 

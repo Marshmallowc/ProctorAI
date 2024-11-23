@@ -94,7 +94,7 @@ export default {
           _this.$alert('试卷得分：' + re.response + '分', '考试结果', {
             confirmButtonText: '返回考试记录',
             callback: action => {
-              _this.$router.push('/record/index')
+              _this.$router.push('/answer/list')
             }
           })
         } else {

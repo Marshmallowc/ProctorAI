@@ -3,8 +3,7 @@ const state = {
   user: {
     sexEnum: [{ key: 1, value: '男' }, { key: 2, value: '女' }],
     statusEnum: [{ key: 1, value: '启用' }, { key: 2, value: '禁用' }],
-    levelEnum: [{ key: 1, value: '大一' }, { key: 2, value: '大二' }, { key: 3, value: '大三' }, { key: 4, value: '大四' }, { key: 5, value: '研一' }, { key: 6, value: '研二' },
-      { key: 7, value: '研三' }],
+    levelEnum: [{ key: 1, value: '大学' }],
     roleEnum: [{ key: 1, value: '学生' }, { key: 2, value: '教师' }, { key: 3, value: '管理员' }],
     statusTag: [{ key: 1, value: 'success' }, { key: 2, value: 'danger' }],
     statusBtn: [{ key: 1, value: '禁用' }, { key: 2, value: '启用' }]
@@ -15,6 +14,11 @@ const state = {
     },
     question: {
       typeEnum: [{ key: 1, value: '单选题' }, { key: 2, value: '多选题' }, { key: 3, value: '判断题' }, { key: 4, value: '填空题' }, { key: 5, value: '简答题' }],
+      answer: {
+        doRightTag: [{ key: true, value: 'success' }, { key: false, value: 'danger' }, { key: null, value: 'warning' }],
+        doRightEnum: [{ key: true, value: '正确' }, { key: false, value: '错误' }, { key: null, value: '待批改' }],
+        doCompletedTag: [{ key: false, value: 'info' }, { key: true, value: 'success' }]
+      },
       editUrlEnum: [{ key: 1, value: '/exam/question/edit/singleChoice', name: '单选题' },
         { key: 2, value: '/exam/question/edit/multipleChoice', name: '多选题' },
         { key: 3, value: '/exam/question/edit/trueFalse', name: '判断题' },

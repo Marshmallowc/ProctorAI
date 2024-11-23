@@ -181,6 +181,8 @@ const constantRoutes = [
       }
     ]
   },
+  { path: '/editPaper', name: 'ExamPaperEdit', component: () => import('@/views/paper/edit'), meta: { title: '试卷批改' } },
+  { path: '/readPaper', name: 'ExamPaperRead', component: () => import('@/views/paper/read'), meta: { title: '试卷查看' } },
   {
     path: '/education',
     component: Layout,

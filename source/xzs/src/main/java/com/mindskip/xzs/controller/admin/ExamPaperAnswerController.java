@@ -5,17 +5,26 @@ import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.ExamPaperAnswer;
 import com.mindskip.xzs.domain.Subject;
 import com.mindskip.xzs.domain.User;
+import com.mindskip.xzs.domain.UserEventLog;
+import com.mindskip.xzs.domain.enums.ExamPaperAnswerStatusEnum;
+import com.mindskip.xzs.event.UserEvent;
 import com.mindskip.xzs.service.*;
 import com.mindskip.xzs.utility.DateTimeUtil;
 import com.mindskip.xzs.utility.ExamUtil;
 import com.mindskip.xzs.utility.PageInfoHelper;
+import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.user.UserResponseVM;
+import com.mindskip.xzs.viewmodel.student.exam.ExamPaperReadVM;
+import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitVM;
 import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageResponseVM;
 import com.mindskip.xzs.viewmodel.admin.paper.ExamPaperAnswerPageRequestVM;
 import com.github.pagehelper.PageInfo;
+import com.mindskip.xzs.service.ExamPaperService;
+import com.mindskip.xzs.service.ExamPaperAnswerService;
 
 import java.awt.*;
 
+import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jfree.chart.ChartFactory;
@@ -28,12 +37,14 @@ import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
@@ -43,6 +54,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,20 +65,78 @@ public class ExamPaperAnswerController extends BaseApiController {
     private final ExamPaperAnswerService examPaperAnswerService;
     private final SubjectService subjectService;
     private final UserService userService;
+    private final ExamPaperService examPaperService;
+    private final ApplicationEventPublisher eventPublisher;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private static final String URL = "jdbc:mysql://127.0.0.1:3306/xzs?useSSL=false&allowPublicKeyRetrieval=true";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3307/xzs?useSSL=false&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
     private static final String PASSWORD = "123456";
 
     @Autowired
-    public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, SubjectService subjectService, UserService userService) {
+    public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, SubjectService subjectService, UserService userService, ApplicationEventPublisher eventPublisher, ExamPaperService examPaperService) {
         this.examPaperAnswerService = examPaperAnswerService;
         this.subjectService = subjectService;
         this.userService = userService;
+        this.examPaperService = examPaperService;
+        this.eventPublisher = eventPublisher;
     }
 
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public RestResponse edit(@RequestBody @Valid ExamPaperSubmitVM examPaperSubmitVM) {
+        boolean notJudge = examPaperSubmitVM.getAnswerItems().stream().anyMatch(i -> i.getDoRight() == null && i.getScore() == null);
+        if (notJudge) {
+            return RestResponse.fail(2, "有未批改题目");
+        }
+
+        ExamPaperAnswer examPaperAnswer = examPaperAnswerService.selectById(examPaperSubmitVM.getId());
+        ExamPaperAnswerStatusEnum examPaperAnswerStatusEnum = ExamPaperAnswerStatusEnum.fromCode(examPaperAnswer.getStatus());
+        if (examPaperAnswerStatusEnum == ExamPaperAnswerStatusEnum.Complete) {
+            return RestResponse.fail(3, "试卷已完成");
+        }
+        String score = examPaperAnswerService.judge(examPaperSubmitVM);
+        User user = getCurrentUser();
+        UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUserName(), user.getRealName(), new Date());
+        String content = user.getUserName() + " 批改试卷：" + examPaperAnswer.getPaperName() + " 得分：" + score;
+        userEventLog.setContent(content);
+        eventPublisher.publishEvent(new UserEvent(userEventLog));
+
+        // 添加批改完试卷之后的逻辑：将systemScore = userScore
+
+
+        return RestResponse.ok(score);
+    }
+
+    @RequestMapping(value = "/read/{id}", method = RequestMethod.POST)
+    public RestResponse<ExamPaperReadVM> read(@PathVariable Integer id) {
+        ExamPaperAnswer examPaperAnswer = examPaperAnswerService.selectById(id);
+        ExamPaperReadVM vm = new ExamPaperReadVM();
+        ExamPaperEditRequestVM paper = examPaperService.examPaperToVM(examPaperAnswer.getExamPaperId());
+        ExamPaperSubmitVM answer = examPaperAnswerService.examPaperAnswerToVM(examPaperAnswer.getId());
+        vm.setPaper(paper);
+        vm.setAnswer(answer);
+        return RestResponse.ok(vm);
+    }
+
+    @RequestMapping(value = "/pageList", method = RequestMethod.POST)
+    public RestResponse<PageInfo<ExamPaperAnswerPageResponseVM>> pageList(@RequestBody @Valid ExamPaperAnswerPageVM model) {
+        model.setCreateUser(getCurrentUser().getId());
+        PageInfo<ExamPaperAnswer> pageInfo = examPaperAnswerService.studentPage(model);
+        PageInfo<ExamPaperAnswerPageResponseVM> page = PageInfoHelper.copyMap(pageInfo, e -> {
+            ExamPaperAnswerPageResponseVM vm = modelMapper.map(e, ExamPaperAnswerPageResponseVM.class);
+            Subject subject = subjectService.selectById(vm.getSubjectId());
+            vm.setDoTime(ExamUtil.secondToVM(e.getDoTime()));
+            vm.setSystemScore(ExamUtil.scoreToVM(e.getSystemScore()));
+            vm.setUserScore(ExamUtil.scoreToVM(e.getUserScore()));
+            vm.setPaperScore(ExamUtil.scoreToVM(e.getPaperScore()));
+            vm.setSubjectName(subject.getName());
+            vm.setCreateTime(DateTimeUtil.dateFormat(e.getCreateTime()));
+            return vm;
+        });
+        return RestResponse.ok(page);
+    }
 
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public RestResponse<PageInfo<ExamPaperAnswerPageResponseVM>> pageJudgeList(@RequestBody ExamPaperAnswerPageRequestVM model) {
@@ -521,7 +591,7 @@ public class ExamPaperAnswerController extends BaseApiController {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             // 2. 获得数据库的连接
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/xzs", "root", "123456");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/xzs", "root", "123456");
 
             // 3. 查询 t_user 表获取该班级学生的 id
             String userQuery = "SELECT id FROM t_user WHERE class_name = ?";

@@ -104,9 +104,49 @@ public class ExamPaperAnswerController extends BaseApiController {
         eventPublisher.publishEvent(new UserEvent(userEventLog));
 
         // 添加批改完试卷之后的逻辑：将systemScore = userScore
+        updateScores(examPaperAnswer.getId(), Integer.parseInt(score)); // 开始更新t_exam_paper_answer中的数据
+        System.out.println("更新成功");
 
 
         return RestResponse.ok(score);
+    }
+
+    public static void updateScores(int id, int scoreToAdd) {
+        String selectSql = "SELECT user_score FROM t_exam_paper_answer WHERE id = ?";
+        String updateSql = "UPDATE t_exam_paper_answer SET user_score = ?, system_score = ? WHERE id = ?";
+
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement selectStmt = connection.prepareStatement(selectSql);
+             PreparedStatement updateStmt = connection.prepareStatement(updateSql)) {
+
+            // 查询当前的 user_score
+            selectStmt.setInt(1, id);
+            ResultSet resultSet = selectStmt.executeQuery();
+
+            if (resultSet.next()) {
+                int userScore = resultSet.getInt("user_score");
+
+                // 加上分数并更新
+                int updatedUserScore = userScore;
+
+                // 更新 user_score 和 system_score
+                updateStmt.setInt(1, updatedUserScore);
+                updateStmt.setInt(2, updatedUserScore); // system_score = user_score
+                updateStmt.setInt(3, id);
+                int rowsAffected = updateStmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("成功更新数据：id=" + id + ", 新的user_score=" + updatedUserScore);
+                } else {
+                    System.out.println("更新失败，未找到id为 " + id + " 的记录。");
+                }
+            } else {
+                System.out.println("未找到id为 " + id + " 的记录。");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @RequestMapping(value = "/read/{id}", method = RequestMethod.POST)

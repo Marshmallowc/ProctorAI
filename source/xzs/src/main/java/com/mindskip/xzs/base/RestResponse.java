@@ -1,20 +1,10 @@
 package com.mindskip.xzs.base;
-/**
- * @version 3.3.0
- * @description: The type Rest response.
- * Copyright (C), 2020-2024, 武汉思维跳跃科技有限公司
- * @date 2021/5/25 10:45
- */
+
 public class RestResponse<T> {
     private int code;
     private String message;
     private T response;
-    /**
-     * Instantiates a new Rest response.
-     *
-     * @param code    the code
-     * @param message the message
-     */
+
     public RestResponse(int code, String message) {
         this.code = code;
         this.message = message;

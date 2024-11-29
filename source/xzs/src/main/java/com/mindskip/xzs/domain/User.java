@@ -5,14 +5,10 @@ public class User implements Serializable {
     private static final long serialVersionUID = -7797183521247423117L;
     private Integer id;
     private String userUuid;
-    /**
-     * 用户名
-     */
+
     private String userName;
     private String password;
-    /**
-     * 真实姓名
-     */
+
     private String realName;
     private Integer age;
     /**

@@ -5,21 +5,13 @@ public class ExamPaperAnswer implements Serializable {
     private static final long serialVersionUID = -2143539181805283910L;
     private Integer id;
     private Integer examPaperId;
-    /**
-     * 试卷名称
-     */
+
     private String paperName;
-    /**
-     * 试卷类型( 1固定试卷 4.时段试卷 6.任务试卷)
-     */
+
     private Integer paperType;
-    /**
-     * 学科
-     */
+
     private Integer subjectId;
-    /**
-     * 系统判定得分
-     */
+
     private Integer systemScore;
     /**
      * 最终得分(千分制)

@@ -10,9 +10,7 @@ public class TextContent implements Serializable {
         this.createTime = createTime;
     }
     private Integer id;
-    /**
-     * 内容(Json)
-     */
+
     private String content;
     /**
      * 创建时间

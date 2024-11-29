@@ -4,9 +4,7 @@ import java.util.Date;
 public class TaskExamCustomerAnswer implements Serializable {
     private static final long serialVersionUID = -556842372977600137L;
     private Integer id;
-    /**
-     * 任务Id
-     */
+
     private Integer taskExamId;
     /**
      * 创建者

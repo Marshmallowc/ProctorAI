@@ -77900,14 +77900,12 @@ proto$6._dispatchZoomAction = function (snapshot) {
     each$28(snapshot, function (batchItem, dataZoomId) {
         batch.push(clone(batchItem));
     });
-
     batch.length && this.api.dispatchAction({
         type: 'dataZoom',
         from: this.uid,
         batch: batch
     });
 };
-
 function retrieveAxisSetting(option) {
     var setting = {};
     // Compatible with previous setting: null => all axis, false => no axis.
@@ -77918,26 +77916,20 @@ function retrieveAxisSetting(option) {
     });
     return setting;
 }
-
 function updateBackBtnStatus(featureModel, ecModel) {
     featureModel.setIconStatus(
         'back',
         count(ecModel) > 1 ? 'emphasis' : 'normal'
     );
 }
-
 function updateZoomBtnStatus(featureModel, ecModel, view, payload, api) {
     var zoomActive = view._isZoomActive;
-
     if (payload && payload.type === 'takeGlobalCursor') {
         zoomActive = payload.key === 'dataZoomSelect'
             ? payload.dataZoomSelectActive : false;
     }
-
     view._isZoomActive = zoomActive;
-
     featureModel.setIconStatus('zoom', zoomActive ? 'emphasis' : 'normal');
-
     var brushTargetManager = new BrushTargetManager(
         retrieveAxisSetting(featureModel.option), ecModel, {include: ['grid']}
     );

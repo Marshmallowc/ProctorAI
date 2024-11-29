@@ -1,5 +1,4 @@
 package com.mindskip.xzs.service.impl;
-
 import com.mindskip.xzs.domain.other.KeyValue;
 import com.mindskip.xzs.domain.Question;
 import com.mindskip.xzs.domain.TextContent;
@@ -24,19 +23,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class QuestionServiceImpl extends BaseServiceImpl<Question> implements QuestionService {
-
     protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
     private final QuestionMapper questionMapper;
     private final TextContentService textContentService;
     private final SubjectService subjectService;
-
     @Autowired
     public QuestionServiceImpl(QuestionMapper questionMapper, TextContentService textContentService, SubjectService subjectService) {
         super(questionMapper);
@@ -44,27 +39,22 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         this.questionMapper = questionMapper;
         this.subjectService = subjectService;
     }
-
     @Override
     public PageInfo<Question> page(QuestionPageRequestVM requestVM) {
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 questionMapper.page(requestVM)
         );
     }
-
-
     @Override
     @Transactional
     public Question insertFullQuestion(QuestionEditRequestVM model, Integer userId) {
         Date now = new Date();
         Integer gradeLevel = subjectService.levelBySubjectId(model.getSubjectId());
-
         //题干、解析、选项等 插入
         TextContent infoTextContent = new TextContent();
         infoTextContent.setCreateTime(now);
         setQuestionInfoFromVM(infoTextContent, model);
         textContentService.insertByFilter(infoTextContent);
-
         Question question = new Question();
         question.setSubjectId(model.getSubjectId());
         question.setGradeLevel(gradeLevel);
@@ -80,7 +70,6 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         questionMapper.insertSelective(question);
         return question;
     }
-
     @Override
     @Transactional
     public Question updateFullQuestion(QuestionEditRequestVM model) {
@@ -92,22 +81,18 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         question.setDifficult(model.getDifficult());
         question.setCorrectFromVM(model.getCorrect(), model.getCorrectArray());
         questionMapper.updateByPrimaryKeySelective(question);
-
         //题干、解析、选项等 更新
         TextContent infoTextContent = textContentService.selectById(question.getInfoTextContentId());
         setQuestionInfoFromVM(infoTextContent, model);
         textContentService.updateByIdFilter(infoTextContent);
-
         return question;
     }
-
     @Override
     public QuestionEditRequestVM getQuestionEditRequestVM(Integer questionId) {
         //题目映射
         Question question = questionMapper.selectByPrimaryKey(questionId);
         return getQuestionEditRequestVM(question);
     }
-
     @Override
     public QuestionEditRequestVM getQuestionEditRequestVM(Question question) {
         //题目映射
@@ -115,7 +100,6 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         QuestionObject questionObject = JsonUtil.toJsonObject(questionInfoTextContent.getContent(), QuestionObject.class);
         QuestionEditRequestVM questionEditRequestVM = modelMapper.map(question, QuestionEditRequestVM.class);
         questionEditRequestVM.setTitle(questionObject.getTitleContent());
-
         //答案
         QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.fromCode(question.getQuestionType());
         switch (questionTypeEnum) {
@@ -138,8 +122,6 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         }
         questionEditRequestVM.setScore(ExamUtil.scoreToVM(question.getScore()));
         questionEditRequestVM.setAnalyze(questionObject.getAnalyze());
-
-
         //题目项映射
         List<QuestionEditItemVM> editItems = questionObject.getQuestionItemObjects().stream().map(o -> {
             QuestionEditItemVM questionEditItemVM = modelMapper.map(o, QuestionEditItemVM.class);
@@ -151,7 +133,6 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         questionEditRequestVM.setItems(editItems);
         return questionEditRequestVM;
     }
-
     public void setQuestionInfoFromVM(TextContent infoTextContent, QuestionEditRequestVM model) {
         List<QuestionItemObject> itemObjects = model.getItems().stream().map(i ->
                 {
@@ -170,12 +151,10 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         questionObject.setCorrect(model.getCorrect());
         infoTextContent.setContent(JsonUtil.toJsonStr(questionObject));
     }
-
     @Override
     public Integer selectAllCount() {
         return questionMapper.selectAllCount();
     }
-
     @Override
     public List<Integer> selectMothCount() {
         Date startTime = DateTimeUtil.getMonthStartDay();
@@ -187,6 +166,4 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
             return null == keyValue ? 0 : keyValue.getValue();
         }).collect(Collectors.toList());
     }
-
-
 }

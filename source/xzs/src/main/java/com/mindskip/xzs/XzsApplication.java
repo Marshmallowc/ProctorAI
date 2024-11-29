@@ -1,11 +1,9 @@
 package com.mindskip.xzs;
-
 import com.mindskip.xzs.configuration.property.SystemConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 /**
  * @version 3.5.0
  * @description: The type Xzs application.
@@ -16,7 +14,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableConfigurationProperties(value = { SystemConfig.class})
 public class XzsApplication {
-
     /**
      * The entry point of application.
      *

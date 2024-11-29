@@ -114,11 +114,6 @@
       user_name = #{userName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-
-
-
   <select id="getToken" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -127,6 +122,4 @@
     order by id desc
     limit 1
   </select>
-
-
 </mapper>

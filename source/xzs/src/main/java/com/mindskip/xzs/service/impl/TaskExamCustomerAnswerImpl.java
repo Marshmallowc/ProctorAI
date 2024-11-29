@@ -1,5 +1,4 @@
 package com.mindskip.xzs.service.impl;
-
 import com.mindskip.xzs.domain.ExamPaper;
 import com.mindskip.xzs.domain.ExamPaperAnswer;
 import com.mindskip.xzs.domain.TaskExamCustomerAnswer;
@@ -11,24 +10,19 @@ import com.mindskip.xzs.service.TextContentService;
 import com.mindskip.xzs.utility.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 @Service
 public class TaskExamCustomerAnswerImpl extends BaseServiceImpl<TaskExamCustomerAnswer> implements TaskExamCustomerAnswerService {
-
     private final TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper;
     private final TextContentService textContentService;
-
     @Autowired
     public TaskExamCustomerAnswerImpl(TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper, TextContentService textContentService) {
         super(taskExamCustomerAnswerMapper);
         this.taskExamCustomerAnswerMapper = taskExamCustomerAnswerMapper;
         this.textContentService = textContentService;
     }
-
     @Override
     public void insertOrUpdate(ExamPaper examPaper, ExamPaperAnswer examPaperAnswer, Date now) {
         Integer taskId = examPaper.getTaskExamId();
@@ -52,12 +46,10 @@ public class TaskExamCustomerAnswerImpl extends BaseServiceImpl<TaskExamCustomer
             textContentService.updateByIdFilter(textContent);
         }
     }
-
     @Override
     public TaskExamCustomerAnswer selectByTUid(Integer tid, Integer uid) {
         return taskExamCustomerAnswerMapper.getByTUid(tid, uid);
     }
-
     @Override
     public List<TaskExamCustomerAnswer> selectByTUid(List<Integer> taskIds, Integer uid) {
         return taskExamCustomerAnswerMapper.selectByTUid(taskIds, uid);

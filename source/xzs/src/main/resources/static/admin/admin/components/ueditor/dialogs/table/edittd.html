@@ -45,7 +45,6 @@
     dialog.onok=function(){
         editor.execCommand("edittd",tone.value);
     };
-
     var start = editor.selection.getStart(),
         cell = start && domUtils.findParentByTagName(start, ["td", "th"], true);
     if(cell){
@@ -53,9 +52,7 @@
         if(/^#/.test(color)){
             tone.value = color
         }
-
     }
-
 </script>
 </body>
 </html>

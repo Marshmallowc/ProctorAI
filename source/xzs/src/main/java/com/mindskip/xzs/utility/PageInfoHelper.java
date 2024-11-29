@@ -1,10 +1,7 @@
 package com.mindskip.xzs.utility;
-
 import com.github.pagehelper.PageInfo;
-
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 /**
  * @version 3.5.0
  * @description: The type Page info helper.
@@ -12,7 +9,6 @@ import java.util.stream.Collectors;
  * @date 2021/12/25 9:45
  */
 public class PageInfoHelper {
-
     /**
      * Copy map page info.
      *

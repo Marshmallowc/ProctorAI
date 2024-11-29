@@ -1,15 +1,11 @@
 package com.mindskip.xzs.configuration.spring.security;
-
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.base.SystemCode;
 import com.mindskip.xzs.utility.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-
 /**
  * @version 3.5.0
  * @description: The type Rest util.
@@ -18,8 +14,6 @@ import java.io.IOException;
  */
 public class RestUtil {
     private static final Logger logger = LoggerFactory.getLogger(RestUtil.class);
-
-
     /**
      * Response.
      *
@@ -29,7 +23,6 @@ public class RestUtil {
     public static void response(HttpServletResponse response, SystemCode systemCode) {
         response(response, systemCode.getCode(), systemCode.getMessage());
     }
-
     /**
      * Response.
      *
@@ -40,8 +33,6 @@ public class RestUtil {
     public static void response(HttpServletResponse response, int systemCode, String msg) {
         response(response, systemCode, msg, null);
     }
-
-
     /**
      * Response.
      *

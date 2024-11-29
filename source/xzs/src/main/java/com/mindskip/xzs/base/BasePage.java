@@ -1,5 +1,4 @@
 package com.mindskip.xzs.base;
-
 /**
  * @version 3.3.0
  * @description: The type Base page.
@@ -7,11 +6,8 @@ package com.mindskip.xzs.base;
  * @date 2021/5/25 10:45
  */
 public class BasePage {
-
     private Integer pageIndex;
-
     private Integer pageSize;
-
     /**
      * Gets page index.
      *
@@ -20,7 +16,6 @@ public class BasePage {
     public Integer getPageIndex() {
         return pageIndex;
     }
-
     /**
      * Sets page index.
      *
@@ -29,7 +24,6 @@ public class BasePage {
     public void setPageIndex(Integer pageIndex) {
         this.pageIndex = pageIndex;
     }
-
     /**
      * Gets page size.
      *
@@ -38,7 +32,6 @@ public class BasePage {
     public Integer getPageSize() {
         return pageSize;
     }
-
     /**
      * Sets page size.
      *

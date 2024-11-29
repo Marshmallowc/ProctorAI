@@ -1,5 +1,4 @@
 package com.mindskip.xzs.controller.student;
-
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.ExamPaperQuestionCustomerAnswer;
@@ -22,16 +21,13 @@ import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRes
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 @RestController("StudentQuestionAnswerController")
 @RequestMapping(value = "/api/student/question/answer")
 public class QuestionAnswerController extends BaseApiController {
-
     private final ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
     private final QuestionService questionService;
     private final TextContentService textContentService;
     private final SubjectService subjectService;
-
     @Autowired
     public QuestionAnswerController(ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, QuestionService questionService, TextContentService textContentService, SubjectService subjectService) {
         this.examPaperQuestionCustomerAnswerService = examPaperQuestionCustomerAnswerService;
@@ -39,7 +35,6 @@ public class QuestionAnswerController extends BaseApiController {
         this.textContentService = textContentService;
         this.subjectService = subjectService;
     }
-
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public RestResponse<PageInfo<QuestionPageStudentResponseVM>> pageList(@RequestBody QuestionPageStudentRequestVM model) {
         model.setCreateUser(getCurrentUser().getId());
@@ -57,8 +52,6 @@ public class QuestionAnswerController extends BaseApiController {
         });
         return RestResponse.ok(page);
     }
-
-
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)
     public RestResponse<QuestionAnswerVM> select(@PathVariable Integer id) {
         QuestionAnswerVM vm = new QuestionAnswerVM();
@@ -69,5 +62,4 @@ public class QuestionAnswerController extends BaseApiController {
         vm.setQuestionAnswerVM(questionAnswerVM);
         return RestResponse.ok(vm);
     }
-
 }

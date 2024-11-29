@@ -1,5 +1,4 @@
 package com.mindskip.xzs.controller.student;
-
 import com.mindskip.xzs.service.StudentFileUploadService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.IOException;
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 @RestController
 @RequestMapping("/api/students")
 public class StudentFileUploadController {
@@ -35,16 +32,12 @@ public class StudentFileUploadController {
     private EntityManager entityManager; // 使用 EntityManager 直接操作数据库
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-
-
     @PostMapping("/import")
     public ResponseEntity<String> importStudents(@RequestParam("file") MultipartFile file) {
         System.out.println("I'm in /import");
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("文件为空");
         }
-
         System.out.println("next to try // 解析文件内容并提取必要数据");
         try {
             // 解析文件内容并提取必要数据
@@ -52,7 +45,6 @@ public class StudentFileUploadController {
             List<Student> students = parseFile(file);
             System.out.println("解析文件内容并提取必要数据");
             System.out.println(students);
-
             // 遍历学生列表并输出信息
             for (Student student : students) {
                 System.out.println("用户名: " + student.getUserName());
@@ -63,67 +55,50 @@ public class StudentFileUploadController {
                 System.out.println("班级: " + student.getClassNo());
                 System.out.println("------------------------");
             }
-
             System.out.println("学生数量");
             System.out.println(students.size());
-
             System.out.println(students.get(0).getRealName());
-
-
-
             // 批量插入到数据库
             saveAll(students);
-
             // 批量将学号处理为班级2205214
             dealWithStuNo();
-
             return ResponseEntity.ok("学生信息导入成功");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("导入失败: " + e.getMessage());
         }
     }
-
     // 遍历xzs数据库中的t_user数据表，将t_user中的stuNo的最后两位数去掉，剩下的内容填入class_name中
     public void dealWithStuNo() {
         // SQL 查询语句，获取 t_user 表中的 stuNo 和 id
         String selectQuery = "SELECT id, stuNo FROM t_user";
         // SQL 更新语句，更新 class_name 字段
         String updateQuery = "UPDATE t_user SET class_name = ? WHERE id = ?";
-
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
              PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
              ResultSet rs = selectStmt.executeQuery()) {
-
             // 遍历查询结果
             while (rs.next()) {
                 int id = rs.getInt("id"); // 获取用户ID
                 String stuNo = rs.getString("stuNo"); // 获取学号
-
                 // 去掉 stuNo 的最后两位数字
                 if (stuNo != null && stuNo.length() > 2) {
                     String updatedClassName = stuNo.substring(0, stuNo.length() - 2);
-
                     // 设置更新语句的参数
                     updateStmt.setString(1, updatedClassName); // class_name
                     updateStmt.setInt(2, id); // id
-
                     // 执行更新操作
                     updateStmt.executeUpdate();
                     System.out.println("Updated ID: " + id + " with class_name: " + updatedClassName);
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
     private void saveAll(List<Student> students) throws SQLException {
-
         String sql = "INSERT INTO t_user (user_name, password, real_name, school, stuNo, user_level, deleted, status, role, user_uuid, last_active_time, create_time, modify_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
         for (Student student : students) {
             String stuNo = student.getStuNo();
             String classRoom = "";
@@ -133,49 +108,39 @@ public class StudentFileUploadController {
             } else {
                 System.out.println("学号无效: " + stuNo);
             }
-
             // 连接数据库
             try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
                  Statement stmt = conn.createStatement()) {
-
                 // 检测class表是否存在，若不存在则创建一个
                 checkAndCreateClassTable();
-
                 // 检查班级是否存在
                 ResultSet rs = stmt.executeQuery("SELECT class_name FROM class WHERE class_name = '" + classRoom + "'");
                 boolean classExists = rs.next(); // 获取班级存在性
                 System.out.println("检查班级是否存在");
                 rs.close(); // 关闭班级的 ResultSet
-
                 // 检查学校是否存在
                 ResultSet sc = stmt.executeQuery("SELECT school FROM t_user WHERE school = '" + student.getSchool() + "'");
                 boolean schoolExists = sc.next(); // 获取学校存在性
                 System.out.println("检查学校是否存在");
                 sc.close(); // 关闭学校的 ResultSet
-
                 // 检查学号是否存在
                 ResultSet sno = stmt.executeQuery("SELECT stuNo FROM t_user WHERE stuNo = '" + student.getStuNo() + "'");
                 boolean studentExists = sno.next(); // 获取学号存在性
                 System.out.println("检查学号是否存在");
                 sno.close(); // 关闭学号的 ResultSet
-
                 if (schoolExists && studentExists) {
                     // 该学生已存在
                     System.out.println("学生已经存在");
                     continue; // 跳过此学生的处理
                 }
-
                 if (!classExists) {
                     Connection connection = null;
-
                     // 如果班级不存在，则添加
                     String insertSQL = "INSERT INTO class (class_name, class_no, college_no, major_no, grade_no) VALUES (?, ?, ?, ?, ?)";
                     PreparedStatement pstmt = null;
-
                     try {
                         // 获取数据库连接
                         connection = DriverManager.getConnection(URL, USER, PASSWORD);
-
                         pstmt = connection.prepareStatement(insertSQL);
                         pstmt.setString(1, classRoom); // class_name
                         pstmt.setString(2, classRoom.substring(4)); // class_no
@@ -197,9 +162,6 @@ public class StudentFileUploadController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
-
             jdbcTemplate.update(sql,
                     student.getUserName(),
                     student.getPassword(),
@@ -215,14 +177,10 @@ public class StudentFileUploadController {
                     new Date(),
                     new Date());
         }
-
-
     }
-
     public void checkAndCreateClassTable() {
         // SQL 语句：检查 class 表是否存在
         String checkTableExistsQuery = "SHOW TABLES LIKE 'class'";
-
         // SQL 语句：创建 class 表
         String createTableQuery = "CREATE TABLE class (" +
                 "id BIGINT NOT NULL AUTO_INCREMENT, " +
@@ -233,11 +191,9 @@ public class StudentFileUploadController {
                 "major_no VARCHAR(255), " +
                 "grade_no VARCHAR(255), " +
                 "PRIMARY KEY (id))";
-
         // 检查表是否存在
         try {
             String tableName = jdbcTemplate.queryForObject(checkTableExistsQuery, String.class);
-
             if (tableName == null) {
                 // 表不存在，创建表
                 jdbcTemplate.execute(createTableQuery);
@@ -251,8 +207,6 @@ public class StudentFileUploadController {
             System.out.println("class 表不存在，已创建。");
         }
     }
-
-
     private Workbook getWorkbook(MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
         if (fileName.endsWith(".xlsx")) {
@@ -263,8 +217,6 @@ public class StudentFileUploadController {
             throw new IllegalArgumentException("Invalid file format. Please upload .xls or .xlsx file.");
         }
     }
-
-
     private List<Student> parseFile(MultipartFile file) throws IOException {
         List<Student> students = new ArrayList<>();
         try (Workbook workbook = getWorkbook(file)) {
@@ -292,7 +244,6 @@ public class StudentFileUploadController {
         }
         return students;
     }
-
     private String getCellValue(Cell cell) {
         if (cell == null) {
             return "";
@@ -314,94 +265,69 @@ public class StudentFileUploadController {
                 return "";
         }
     }
-
-
-
     private class Student {
         public String getUserName() {
             return userName;
         }
-
         public void setUserName(String userName) {
             this.userName = userName;
         }
-
         public String getPassword() {
             return password;
         }
-
         public void setPassword(String password) {
             this.password = password;
         }
-
         public String getRealName() {
             return realName;
         }
-
         public void setRealName(String realName) {
             this.realName = realName;
         }
-
         public String getSchool() {
             return school;
         }
-
         public void setSchool(String school) {
             this.school = school;
         }
-
         public String getStuNo() {
             return stuNo;
         }
-
         public void setStuNo(String stuNo) {
             this.stuNo = stuNo;
         }
-
         public String getClassNo() {
             return classNo;
         }
-
         public void setClassNo(String classNo) {
             this.classNo = classNo;
         }
-
         private String userName;
         private String password;
         private String realName;
         private String school;
         private String stuNo;
         private String classNo;
-
         public String getUser_uuid() {
             return user_uuid;
         }
-
         public void setUser_uuid(String user_uuid) {
             this.user_uuid = user_uuid;
         }
-
         public Date getCreateTime() {
             return createTime;
         }
-
         public void setCreateTime(Date createTime) {
             this.createTime = createTime;
         }
-
         public Date getLastActiveTime() {
             return lastActiveTime;
         }
-
         public void setLastActiveTime(Date lastActiveTime) {
             this.lastActiveTime = lastActiveTime;
         }
-
         private String user_uuid;
         private Date createTime;
         private Date lastActiveTime;
-
     }
 }
-
-

@@ -16,7 +16,6 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 module.exports = {
     timeline: {
         left: '2%',

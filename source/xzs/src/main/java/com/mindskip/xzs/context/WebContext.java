@@ -1,5 +1,4 @@
 package com.mindskip.xzs.context;
-
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-
 /**
  * @version 3.3.0
  * @description: The enum System code.
@@ -18,7 +16,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 public class WebContext {
     private static final String USER_ATTRIBUTES = "USER_ATTRIBUTES";
     private final UserService userService;
-
     /**
      * Instantiates a new Web context.
      *
@@ -28,8 +25,6 @@ public class WebContext {
     public WebContext(UserService userService) {
         this.userService = userService;
     }
-
-
     /**
      * Sets current user.
      *
@@ -38,7 +33,6 @@ public class WebContext {
     public void setCurrentUser(User user) {
         RequestContextHolder.currentRequestAttributes().setAttribute(USER_ATTRIBUTES, user, RequestAttributes.SCOPE_REQUEST);
     }
-
     /**
      * Gets current user.
      *

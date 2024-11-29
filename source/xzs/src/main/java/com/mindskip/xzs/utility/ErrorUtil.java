@@ -1,6 +1,4 @@
 package com.mindskip.xzs.utility;
-
-
 /**
  * @version 3.5.0
  * @description: The type Error util.

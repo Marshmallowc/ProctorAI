@@ -1,5 +1,4 @@
 package com.mindskip.xzs.base;
-
 /**
  * @version 3.3.0
  * @description: The type Rest response.
@@ -10,7 +9,6 @@ public class RestResponse<T> {
     private int code;
     private String message;
     private T response;
-
     /**
      * Instantiates a new Rest response.
      *
@@ -21,7 +19,6 @@ public class RestResponse<T> {
         this.code = code;
         this.message = message;
     }
-
     /**
      * Instantiates a new Rest response.
      *
@@ -34,7 +31,6 @@ public class RestResponse<T> {
         this.message = message;
         this.response = response;
     }
-
     /**
      * Fail rest response.
      *
@@ -45,7 +41,6 @@ public class RestResponse<T> {
     public static RestResponse fail(Integer code, String msg) {
         return new RestResponse<>(code, msg);
     }
-
     /**
      * Ok rest response.
      *
@@ -55,7 +50,6 @@ public class RestResponse<T> {
         SystemCode systemCode = SystemCode.OK;
         return new RestResponse<>(systemCode.getCode(), systemCode.getMessage());
     }
-
     /**
      * Ok rest response.
      *
@@ -67,7 +61,6 @@ public class RestResponse<T> {
         SystemCode systemCode = SystemCode.OK;
         return new RestResponse<>(systemCode.getCode(), systemCode.getMessage(), response);
     }
-
     /**
      * Gets code.
      *
@@ -76,7 +69,6 @@ public class RestResponse<T> {
     public int getCode() {
         return code;
     }
-
     /**
      * Sets code.
      *
@@ -85,7 +77,6 @@ public class RestResponse<T> {
     public void setCode(int code) {
         this.code = code;
     }
-
     /**
      * Gets message.
      *
@@ -94,7 +85,6 @@ public class RestResponse<T> {
     public String getMessage() {
         return message;
     }
-
     /**
      * Sets message.
      *
@@ -103,7 +93,6 @@ public class RestResponse<T> {
     public void setMessage(String message) {
         this.message = message;
     }
-
     /**
      * Gets response.
      *
@@ -112,7 +101,6 @@ public class RestResponse<T> {
     public T getResponse() {
         return response;
     }
-
     /**
      * Sets response.
      *

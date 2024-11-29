@@ -210,15 +210,6 @@
       item_order = #{itemOrder,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-
-
-
-
-
-
-
   <select id="selectListByPaperAnswerId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -226,8 +217,6 @@
     where exam_paper_answer_id = #{id,jdbcType=INTEGER}
     order by item_order
   </select>
-
-
   <select id="studentPage" resultMap="BaseResultMap" parameterType="com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM">
     SELECT
     <include refid="Base_Column_List"/>
@@ -237,8 +226,6 @@
       and create_user=#{createUser}
     </where>
   </select>
-
-
   <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id" >
     insert into t_exam_paper_question_customer_answer ( question_id, question_score,
     subject_id, create_time, create_user,
@@ -255,13 +242,9 @@
       #{item.doRight,jdbcType=BIT},#{item.questionTextContentId,jdbcType=INTEGER},#{item.itemOrder,jdbcType=INTEGER})
     </foreach>
   </insert>
-
-
   <select id="selectAllCount"  resultType="java.lang.Integer">
 		SELECT count(*) from t_exam_paper_question_customer_answer
   </select>
-
-
   <select id="selectCountByDate"  resultType="com.mindskip.xzs.domain.other.KeyValue">
 		SELECT create_time as name,COUNT(create_time) as value from
 		        (
@@ -270,7 +253,6 @@
 				) a
 		GROUP BY create_time
   </select>
-
   <update id="updateScore" parameterType="java.util.List">
     <foreach collection="list" item="item" >
         update t_exam_paper_question_customer_answer
@@ -278,5 +260,4 @@
         where id=#{item.id} ;
     </foreach>
   </update>
-
 </mapper>

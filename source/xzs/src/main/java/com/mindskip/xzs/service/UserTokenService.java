@@ -1,10 +1,7 @@
 package com.mindskip.xzs.service;
-
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.domain.UserToken;
-
 public interface UserTokenService extends BaseService<UserToken> {
-
     /**
      * 微信token绑定
      *
@@ -12,7 +9,6 @@ public interface UserTokenService extends BaseService<UserToken> {
      * @return UserToken
      */
     UserToken bind(User user);
-
     /**
      * 检查微信openId是否绑定过
      *
@@ -20,7 +16,6 @@ public interface UserTokenService extends BaseService<UserToken> {
      * @return UserToken
      */
     UserToken checkBind(String openId);
-
     /**
      * 根据token获取UserToken，带缓存的
      *
@@ -28,7 +23,6 @@ public interface UserTokenService extends BaseService<UserToken> {
      * @return UserToken
      */
     UserToken getToken(String token);
-
     /**
      * 插入用户Token
      *
@@ -36,7 +30,6 @@ public interface UserTokenService extends BaseService<UserToken> {
      * @return UserToken
      */
     UserToken insertUserToken(User user);
-
     /**
      * 微信小程序退出，清除缓存
      *

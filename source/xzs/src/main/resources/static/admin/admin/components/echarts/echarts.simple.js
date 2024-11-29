@@ -3,7 +3,6 @@
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
 	(factory((global.echarts = {})));
 }(this, (function (exports) { 'use strict';
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -22,15 +21,12 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // (1) The code `if (__DEV__) ...` can be removed by build tool.
 // (2) If intend to use `__DEV__`, this module should be imported. Use a global
 // variable `__DEV__` may cause that miss the declaration (see #6535), or the
 // declaration is behind of the using position (for example in `Model.extent`,
 // And tools like rollup can not analysis the dependency if not import).
-
 var dev;
-
 // In browser
 if (typeof window !== 'undefined') {
     dev = window.__DEV__;
@@ -39,25 +35,19 @@ if (typeof window !== 'undefined') {
 else if (typeof global !== 'undefined') {
     dev = global.__DEV__;
 }
-
 if (typeof dev === 'undefined') {
     dev = true;
 }
-
 var __DEV__ = dev;
-
 /**
  * zrender: 生成唯一id
  *
  * @author errorrik (errorrik@gmail.com)
  */
-
 var idStart = 0x0907;
-
 var guid = function () {
     return idStart++;
 };
-
 /**
  * echarts设备环境识别
  *
@@ -65,9 +55,7 @@ var guid = function () {
  * @author firede[firede@firede.us]
  * @desc thanks zepto.
  */
-
 var env = {};
-
 if (typeof wx === 'object' && typeof wx.getSystemInfoSync === 'function') {
     // In Weixin Application
     env = {
@@ -108,13 +96,10 @@ else if (typeof navigator === 'undefined') {
 else {
     env = detect(navigator.userAgent);
 }
-
 var env$1 = env;
-
 // Zepto.js
 // (c) 2010-2013 Thomas Fuchs
 // Zepto.js may be freely distributed under the MIT license.
-
 function detect(ua) {
     var os = {};
     var browser = {};
@@ -139,17 +124,13 @@ function detect(ua) {
         // IE 11 Trident/7.0; rv:11.0
         || ua.match(/Trident\/.+?rv:(([\d.]+))/);
     var edge = ua.match(/Edge\/([\d.]+)/); // IE 12 and 12+
-
     var weChat = (/micromessenger/i).test(ua);
-
     // Todo: clean this up with a better OS/browser seperation:
     // - discern (more) between multiple browsers on android
     // - decide if kindle fire in silk mode is android or not
     // - Firefox on Android doesn't specify the Android version
     // - possibly devide in os, device and browser hashes
-
     // if (browser.webkit = !!webkit) browser.version = webkit[1];
-
     // if (android) os.android = true, os.version = android[2];
     // if (iphone && !ipod) os.ios = os.iphone = true, os.version = iphone[2].replace(/_/g, '.');
     // if (ipad) os.ios = os.ipad = true, os.version = ipad[2].replace(/_/g, '.');
@@ -170,29 +151,24 @@ function detect(ua) {
     }
     // if (safari && (ua.match(/Safari/) || !!os.ios)) browser.safari = true;
     // if (webview) browser.webview = true;
-
     if (ie) {
         browser.ie = true;
         browser.version = ie[1];
     }
-
     if (edge) {
         browser.edge = true;
         browser.version = edge[1];
     }
-
     // It is difficult to detect WeChat in Win Phone precisely, because ua can
     // not be set on win phone. So we do not consider Win Phone.
     if (weChat) {
         browser.weChat = true;
     }
-
     // os.tablet = !!(ipad || playbook || (android && !ua.match(/Mobile/)) ||
     //     (firefox && ua.match(/Tablet/)) || (ie && !ua.match(/Phone/) && ua.match(/Touch/)));
     // os.phone  = !!(!os.tablet && !os.ipod && (android || iphone || webos ||
     //     (chrome && ua.match(/Android/)) || (chrome && ua.match(/CriOS\/([\d.]+)/)) ||
     //     (firefox && ua.match(/Mobile/)) || (ie && ua.match(/Touch/))));
-
     return {
         browser: browser,
         os: os,
@@ -216,7 +192,6 @@ function detect(ua) {
         domSupported: typeof document !== 'undefined'
     };
 }
-
 // See https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
 // function detectPassiveSupport() {
 //     // Test via a getter in the options object to see if the passive property is accessed
@@ -232,11 +207,9 @@ function detect(ua) {
 //     }
 //     return supportsPassive;
 // }
-
 /**
  * @module zrender/core/util
  */
-
 // 用于处理merge时无法遍历Date等对象的问题
 var BUILTIN_OBJECT = {
     '[object Function]': 1,
@@ -249,7 +222,6 @@ var BUILTIN_OBJECT = {
     '[object Image]': 1,
     '[object Canvas]': 1
 };
-
 var TYPED_ARRAY = {
     '[object Int8Array]': 1,
     '[object Uint8Array]': 1,
@@ -261,28 +233,22 @@ var TYPED_ARRAY = {
     '[object Float32Array]': 1,
     '[object Float64Array]': 1
 };
-
 var objToString = Object.prototype.toString;
-
 var arrayProto = Array.prototype;
 var nativeForEach = arrayProto.forEach;
 var nativeFilter = arrayProto.filter;
 var nativeSlice = arrayProto.slice;
 var nativeMap = arrayProto.map;
 var nativeReduce = arrayProto.reduce;
-
 // Avoid assign to an exported variable, for transforming to cjs.
 var methods = {};
-
 function $override(name, fn) {
     // Clear ctx instance for different environment
     if (name === 'createCanvas') {
         _ctx = null;
     }
-
     methods[name] = fn;
 }
-
 /**
  * Those data types can be cloned:
  *     Plain object, Array, TypedArray, number, string, null, undefined.
@@ -303,10 +269,8 @@ function clone(source) {
     if (source == null || typeof source !== 'object') {
         return source;
     }
-
     var result = source;
     var typeStr = objToString.call(source);
-
     if (typeStr === '[object Array]') {
         if (!isPrimitive(source)) {
             result = [];
@@ -337,10 +301,8 @@ function clone(source) {
             }
         }
     }
-
     return result;
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} target
@@ -353,12 +315,10 @@ function merge(target, source, overwrite) {
     if (!isObject$1(source) || !isObject$1(target)) {
         return overwrite ? clone(source) : target;
     }
-
     for (var key in source) {
         if (source.hasOwnProperty(key)) {
             var targetProp = target[key];
             var sourceProp = source[key];
-
             if (isObject$1(sourceProp)
                 && isObject$1(targetProp)
                 && !isArray(sourceProp)
@@ -380,10 +340,8 @@ function merge(target, source, overwrite) {
             }
         }
     }
-
     return target;
 }
-
 /**
  * @param {Array} targetAndSources The first item is target, and the rests are source.
  * @param {boolean} [overwrite=false]
@@ -396,7 +354,6 @@ function mergeAll(targetAndSources, overwrite) {
     }
     return result;
 }
-
 /**
  * @param {*} target
  * @param {*} source
@@ -410,7 +367,6 @@ function extend(target, source) {
     }
     return target;
 }
-
 /**
  * @param {*} target
  * @param {*} source
@@ -427,18 +383,14 @@ function defaults(target, source, overlay) {
     }
     return target;
 }
-
 var createCanvas = function () {
     return methods.createCanvas();
 };
-
 methods.createCanvas = function () {
     return document.createElement('canvas');
 };
-
 // FIXME
 var _ctx;
-
 function getContext() {
     if (!_ctx) {
         // Use util.createCanvas instead of createCanvas
@@ -447,7 +399,6 @@ function getContext() {
     }
     return _ctx;
 }
-
 /**
  * 查询数组中元素的index
  * @memberOf module:zrender/core/util
@@ -465,7 +416,6 @@ function indexOf(array, value) {
     }
     return -1;
 }
-
 /**
  * 构造类继承关系
  *
@@ -478,14 +428,12 @@ function inherits(clazz, baseClazz) {
     function F() {}
     F.prototype = baseClazz.prototype;
     clazz.prototype = new F();
-
     for (var prop in clazzPrototype) {
         clazz.prototype[prop] = clazzPrototype[prop];
     }
     clazz.prototype.constructor = clazz;
     clazz.superClass = baseClazz;
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {Object|Function} target
@@ -495,10 +443,8 @@ function inherits(clazz, baseClazz) {
 function mixin(target, source, overlay) {
     target = 'prototype' in target ? target.prototype : target;
     source = 'prototype' in source ? source.prototype : source;
-
     defaults(target, source, overlay);
 }
-
 /**
  * Consider typed array.
  * @param {Array|TypedArray} data
@@ -512,7 +458,6 @@ function isArrayLike(data) {
     }
     return typeof data.length === 'number';
 }
-
 /**
  * 数组或对象遍历
  * @memberOf module:zrender/core/util
@@ -540,7 +485,6 @@ function each$1(obj, cb, context) {
         }
     }
 }
-
 /**
  * 数组映射
  * @memberOf module:zrender/core/util
@@ -564,7 +508,6 @@ function map(obj, cb, context) {
         return result;
     }
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {Array} obj
@@ -587,7 +530,6 @@ function reduce(obj, cb, memo, context) {
         return memo;
     }
 }
-
 /**
  * 数组过滤
  * @memberOf module:zrender/core/util
@@ -613,7 +555,6 @@ function filter(obj, cb, context) {
         return result;
     }
 }
-
 /**
  * 数组项查找
  * @memberOf module:zrender/core/util
@@ -622,8 +563,6 @@ function filter(obj, cb, context) {
  * @param {*} [context]
  * @return {*}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {Function} func
@@ -636,7 +575,6 @@ function bind(func, context) {
         return func.apply(context, args.concat(nativeSlice.call(arguments)));
     };
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {Function} func
@@ -648,7 +586,6 @@ function curry(func) {
         return func.apply(this, args.concat(nativeSlice.call(arguments)));
     };
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
@@ -657,7 +594,6 @@ function curry(func) {
 function isArray(value) {
     return objToString.call(value) === '[object Array]';
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
@@ -666,7 +602,6 @@ function isArray(value) {
 function isFunction$1(value) {
     return typeof value === 'function';
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
@@ -675,7 +610,6 @@ function isFunction$1(value) {
 function isString(value) {
     return objToString.call(value) === '[object String]';
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
@@ -687,7 +621,6 @@ function isObject$1(value) {
     var type = typeof value;
     return type === 'function' || (!!value && type === 'object');
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
@@ -696,7 +629,6 @@ function isObject$1(value) {
 function isBuiltInObject(value) {
     return !!BUILTIN_OBJECT[objToString.call(value)];
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
@@ -705,7 +637,6 @@ function isBuiltInObject(value) {
 function isTypedArray(value) {
     return !!TYPED_ARRAY[objToString.call(value)];
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
@@ -716,7 +647,6 @@ function isDom(value) {
         && typeof value.nodeType === 'number'
         && typeof value.ownerDocument === 'object';
 }
-
 /**
  * Whether is exactly NaN. Notice isNaN('a') returns true.
  * @param {*} value
@@ -725,7 +655,6 @@ function isDom(value) {
 function eqNaN(value) {
     return value !== value;
 }
-
 /**
  * If value1 is not null, then return value1, otherwise judget rest of values.
  * Low performance.
@@ -739,13 +668,11 @@ function retrieve(values) {
         }
     }
 }
-
 function retrieve2(value0, value1) {
     return value0 != null
         ? value0
         : value1;
 }
-
 function retrieve3(value0, value1, value2) {
     return value0 != null
         ? value0
@@ -753,7 +680,6 @@ function retrieve3(value0, value1, value2) {
         ? value1
         : value2;
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {Array} arr
@@ -764,7 +690,6 @@ function retrieve3(value0, value1, value2) {
 function slice() {
     return Function.call.apply(nativeSlice, arguments);
 }
-
 /**
  * Normalize css liked array configuration
  * e.g.
@@ -789,7 +714,6 @@ function normalizeCssArray(val) {
     }
     return val;
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {boolean} condition
@@ -800,7 +724,6 @@ function assert$1(condition, message) {
         throw new Error(message);
     }
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {string} str string to be trimed
@@ -817,7 +740,6 @@ function trim(str) {
         return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
     }
 }
-
 var primitiveKey = '__ec_primitive__';
 /**
  * Set an object as primitive to be ignored traversing children in clone or merge
@@ -825,11 +747,9 @@ var primitiveKey = '__ec_primitive__';
 function setAsPrimitive(obj) {
     obj[primitiveKey] = true;
 }
-
 function isPrimitive(obj) {
     return obj[primitiveKey];
 }
-
 /**
  * @constructor
  * @param {Object} obj Only apply `ownProperty`.
@@ -840,16 +760,13 @@ function HashMap(obj) {
     // methods get/set/... may be overrided.
     this.data = {};
     var thisMap = this;
-
     (obj instanceof HashMap)
         ? obj.each(visit)
         : (obj && each$1(obj, visit));
-
     function visit(value, key) {
         isArr ? thisMap.set(value, key) : thisMap.set(key, value);
     }
 }
-
 HashMap.prototype = {
     constructor: HashMap,
     // Do not provide `has` method to avoid defining what is `has`.
@@ -876,20 +793,13 @@ HashMap.prototype = {
         delete this.data[key];
     }
 };
-
 function createHashMap(obj) {
     return new HashMap(obj);
 }
-
-
-
-
 function noop() {}
-
 var ArrayCtor = typeof Float32Array === 'undefined'
     ? Array
     : Float32Array;
-
 /**
  * 创建一个向量
  * @param {number} [x=0]
@@ -908,7 +818,6 @@ function create(x, y) {
     out[1] = y;
     return out;
 }
-
 /**
  * 复制向量数据
  * @param {Vector2} out
@@ -920,7 +829,6 @@ function copy(out, v) {
     out[1] = v[1];
     return out;
 }
-
 /**
  * 克隆一个向量
  * @param {Vector2} v
@@ -932,7 +840,6 @@ function clone$1(v) {
     out[1] = v[1];
     return out;
 }
-
 /**
  * 设置向量的两个项
  * @param {Vector2} out
@@ -940,8 +847,6 @@ function clone$1(v) {
  * @param {number} b
  * @return {Vector2} 结果
  */
-
-
 /**
  * 向量相加
  * @param {Vector2} out
@@ -953,7 +858,6 @@ function add(out, v1, v2) {
     out[1] = v1[1] + v2[1];
     return out;
 }
-
 /**
  * 向量缩放后相加
  * @param {Vector2} out
@@ -966,7 +870,6 @@ function scaleAndAdd(out, v1, v2, a) {
     out[1] = v1[1] + v2[1] * a;
     return out;
 }
-
 /**
  * 向量相减
  * @param {Vector2} out
@@ -978,7 +881,6 @@ function sub(out, v1, v2) {
     out[1] = v1[1] - v2[1];
     return out;
 }
-
 /**
  * 向量长度
  * @param {Vector2} v
@@ -988,7 +890,6 @@ function len(v) {
     return Math.sqrt(lenSquare(v));
 }
  // jshint ignore:line
-
 /**
  * 向量长度平方
  * @param {Vector2} v
@@ -997,32 +898,24 @@ function len(v) {
 function lenSquare(v) {
     return v[0] * v[0] + v[1] * v[1];
 }
-
-
 /**
  * 向量乘法
  * @param {Vector2} out
  * @param {Vector2} v1
  * @param {Vector2} v2
  */
-
-
 /**
  * 向量除法
  * @param {Vector2} out
  * @param {Vector2} v1
  * @param {Vector2} v2
  */
-
-
 /**
  * 向量点乘
  * @param {Vector2} v1
  * @param {Vector2} v2
  * @return {number}
  */
-
-
 /**
  * 向量缩放
  * @param {Vector2} out
@@ -1034,7 +927,6 @@ function scale(out, v, s) {
     out[1] = v[1] * s;
     return out;
 }
-
 /**
  * 向量归一化
  * @param {Vector2} out
@@ -1052,7 +944,6 @@ function normalize(out, v) {
     }
     return out;
 }
-
 /**
  * 计算向量间距离
  * @param {Vector2} v1
@@ -1066,7 +957,6 @@ function distance(v1, v2) {
     );
 }
 var dist = distance;
-
 /**
  * 向量距离平方
  * @param {Vector2} v1
@@ -1078,14 +968,11 @@ function distanceSquare(v1, v2) {
         + (v1[1] - v2[1]) * (v1[1] - v2[1]);
 }
 var distSquare = distanceSquare;
-
 /**
  * 求负向量
  * @param {Vector2} out
  * @param {Vector2} v
  */
-
-
 /**
  * 插值两个点
  * @param {Vector2} out
@@ -1093,8 +980,6 @@ var distSquare = distanceSquare;
  * @param {Vector2} v2
  * @param {number} t
  */
-
-
 /**
  * 矩阵左乘向量
  * @param {Vector2} out
@@ -1108,7 +993,6 @@ function applyTransform(out, v, m) {
     out[1] = m[1] * x + m[3] * y + m[5];
     return out;
 }
-
 /**
  * 求两个向量最小值
  * @param  {Vector2} out
@@ -1120,7 +1004,6 @@ function min(out, v1, v2) {
     out[1] = Math.min(v1[1], v2[1]);
     return out;
 }
-
 /**
  * 求两个向量最大值
  * @param  {Vector2} out
@@ -1132,26 +1015,20 @@ function max(out, v1, v2) {
     out[1] = Math.max(v1[1], v2[1]);
     return out;
 }
-
 // TODO Draggable for group
 // FIXME Draggable on element which has parent rotation or scale
 function Draggable() {
-
     this.on('mousedown', this._dragStart, this);
     this.on('mousemove', this._drag, this);
     this.on('mouseup', this._dragEnd, this);
     this.on('globalout', this._dragEnd, this);
     // this._dropTarget = null;
     // this._draggingTarget = null;
-
     // this._x = 0;
     // this._y = 0;
 }
-
 Draggable.prototype = {
-
     constructor: Draggable,
-
     _dragStart: function (e) {
         var draggingTarget = e.target;
         if (draggingTarget && draggingTarget.draggable) {
@@ -1159,30 +1036,23 @@ Draggable.prototype = {
             draggingTarget.dragging = true;
             this._x = e.offsetX;
             this._y = e.offsetY;
-
             this.dispatchToElement(param(draggingTarget, e), 'dragstart', e.event);
         }
     },
-
     _drag: function (e) {
         var draggingTarget = this._draggingTarget;
         if (draggingTarget) {
-
             var x = e.offsetX;
             var y = e.offsetY;
-
             var dx = x - this._x;
             var dy = y - this._y;
             this._x = x;
             this._y = y;
-
             draggingTarget.drift(dx, dy, e);
             this.dispatchToElement(param(draggingTarget, e), 'drag', e.event);
-
             var dropTarget = this.findHover(x, y, draggingTarget).target;
             var lastDropTarget = this._dropTarget;
             this._dropTarget = dropTarget;
-
             if (draggingTarget !== dropTarget) {
                 if (lastDropTarget && dropTarget !== lastDropTarget) {
                     this.dispatchToElement(param(lastDropTarget, e), 'dragleave', e.event);
@@ -1193,39 +1063,29 @@ Draggable.prototype = {
             }
         }
     },
-
     _dragEnd: function (e) {
         var draggingTarget = this._draggingTarget;
-
         if (draggingTarget) {
             draggingTarget.dragging = false;
         }
-
         this.dispatchToElement(param(draggingTarget, e), 'dragend', e.event);
-
         if (this._dropTarget) {
             this.dispatchToElement(param(this._dropTarget, e), 'drop', e.event);
         }
-
         this._draggingTarget = null;
         this._dropTarget = null;
     }
-
 };
-
 function param(target, e) {
     return {target: target, topTarget: e && e.topTarget};
 }
-
 /**
  * Event Mixin
  * @module zrender/mixin/Eventful
  * @author Kener (@Kener-林峰, kener.linfeng@gmail.com)
  *         pissang (https://www.github.com/pissang)
  */
-
 var arrySlice = Array.prototype.slice;
-
 /**
  * Event dispatcher.
  *
@@ -1248,11 +1108,8 @@ var Eventful = function (eventProcessor) {
     this._$handlers = {};
     this._$eventProcessor = eventProcessor;
 };
-
 Eventful.prototype = {
-
     constructor: Eventful,
-
     /**
      * The handler can only be triggered once, then removed.
      *
@@ -1264,7 +1121,6 @@ Eventful.prototype = {
     one: function (event, query, handler, context) {
         return on(this, event, query, handler, context, true);
     },
-
     /**
      * Bind a handler.
      *
@@ -1276,7 +1132,6 @@ Eventful.prototype = {
     on: function (event, query, handler, context) {
         return on(this, event, query, handler, context, false);
     },
-
     /**
      * Whether any handler has bound.
      *
@@ -1287,7 +1142,6 @@ Eventful.prototype = {
         var _h = this._$handlers;
         return !_h[event] || !_h[event].length;
     },
-
     /**
      * Unbind a event.
      *
@@ -1296,12 +1150,10 @@ Eventful.prototype = {
      */
     off: function (event, handler) {
         var _h = this._$handlers;
-
         if (!event) {
             this._$handlers = {};
             return this;
         }
-
         if (handler) {
             if (_h[event]) {
                 var newList = [];
@@ -1312,7 +1164,6 @@ Eventful.prototype = {
                 }
                 _h[event] = newList;
             }
-
             if (_h[event] && _h[event].length === 0) {
                 delete _h[event];
             }
@@ -1320,10 +1171,8 @@ Eventful.prototype = {
         else {
             delete _h[event];
         }
-
         return this;
     },
-
     /**
      * Dispatch a event.
      *
@@ -1332,15 +1181,12 @@ Eventful.prototype = {
     trigger: function (type) {
         var _h = this._$handlers[type];
         var eventProcessor = this._$eventProcessor;
-
         if (_h) {
             var args = arguments;
             var argLen = args.length;
-
             if (argLen > 3) {
                 args = arrySlice.call(args, 1);
             }
-
             var len = _h.length;
             for (var i = 0; i < len;) {
                 var hItem = _h[i];
@@ -1352,7 +1198,6 @@ Eventful.prototype = {
                     i++;
                     continue;
                 }
-
                 // Optimize advise from backbone
                 switch (argLen) {
                     case 1:
@@ -1369,7 +1214,6 @@ Eventful.prototype = {
                         hItem.h.apply(hItem.ctx, args);
                         break;
                 }
-
                 if (hItem.one) {
                     _h.splice(i, 1);
                     len--;
@@ -1379,13 +1223,10 @@ Eventful.prototype = {
                 }
             }
         }
-
         eventProcessor && eventProcessor.afterTrigger
             && eventProcessor.afterTrigger(type);
-
         return this;
     },
-
     /**
      * Dispatch a event with context, which is specified at the last parameter.
      *
@@ -1394,16 +1235,13 @@ Eventful.prototype = {
     triggerWithContext: function (type) {
         var _h = this._$handlers[type];
         var eventProcessor = this._$eventProcessor;
-
         if (_h) {
             var args = arguments;
             var argLen = args.length;
-
             if (argLen > 4) {
                 args = arrySlice.call(args, 1, args.length - 1);
             }
             var ctx = args[args.length - 1];
-
             var len = _h.length;
             for (var i = 0; i < len;) {
                 var hItem = _h[i];
@@ -1415,7 +1253,6 @@ Eventful.prototype = {
                     i++;
                     continue;
                 }
-
                 // Optimize advise from backbone
                 switch (argLen) {
                     case 1:
@@ -1432,7 +1269,6 @@ Eventful.prototype = {
                         hItem.h.apply(ctx, args);
                         break;
                 }
-
                 if (hItem.one) {
                     _h.splice(i, 1);
                     len--;
@@ -1442,14 +1278,11 @@ Eventful.prototype = {
                 }
             }
         }
-
         eventProcessor && eventProcessor.afterTrigger
             && eventProcessor.afterTrigger(type);
-
         return this;
     }
 };
-
 function normalizeQuery(host, query) {
     var eventProcessor = host._$eventProcessor;
     if (query != null && eventProcessor && eventProcessor.normalizeQuery) {
@@ -1457,32 +1290,25 @@ function normalizeQuery(host, query) {
     }
     return query;
 }
-
 function on(eventful, event, query, handler, context, isOnce) {
     var _h = eventful._$handlers;
-
     if (typeof query === 'function') {
         context = handler;
         handler = query;
         query = null;
     }
-
     if (!handler || !event) {
         return eventful;
     }
-
     query = normalizeQuery(eventful, query);
-
     if (!_h[event]) {
         _h[event] = [];
     }
-
     for (var i = 0; i < _h[event].length; i++) {
         if (_h[event][i].h === handler) {
             return eventful;
         }
     }
-
     var wrap = {
         h: handler,
         one: isOnce,
@@ -1492,42 +1318,33 @@ function on(eventful, event, query, handler, context, isOnce) {
         // Do not publish this feature util it is proved that it makes sense.
         callAtLast: handler.zrEventfulCallAtLast
     };
-
     var lastIndex = _h[event].length - 1;
     var lastWrap = _h[event][lastIndex];
     (lastWrap && lastWrap.callAtLast)
         ? _h[event].splice(lastIndex, 0, wrap)
         : _h[event].push(wrap);
-
     return eventful;
 }
-
 /**
  * 事件辅助类
  * @module zrender/core/event
  * @author Kener (@Kener-林峰, kener.linfeng@gmail.com)
  */
-
 var isDomLevel2 = (typeof window !== 'undefined') && !!window.addEventListener;
-
 var MOUSE_EVENT_REG = /^(?:mouse|pointer|contextmenu|drag|drop)|click/;
-
 function getBoundingClientRect(el) {
     // BlackBerry 5, iOS 3 (original iPhone) don't have getBoundingRect
     return el.getBoundingClientRect ? el.getBoundingClientRect() : {left: 0, top: 0};
 }
-
 // `calculate` is optional, default false
 function clientToLocal(el, e, out, calculate) {
     out = out || {};
-
     // According to the W3C Working Draft, offsetX and offsetY should be relative
     // to the padding edge of the target element. The only browser using this convention
     // is IE. Webkit uses the border edge, Opera uses the content edge, and FireFox does
     // not support the properties.
     // (see http://www.jacklmoore.com/notes/mouse-position/)
     // In zr painter.dom, padding edge equals to border edge.
-
     // FIXME
     // When mousemove event triggered on ec tooltip, target is not zr painter.dom, and
     // offsetX/Y is relative to e.target, where the calculation of zrX/Y via offsetX/Y
@@ -1555,32 +1372,25 @@ function clientToLocal(el, e, out, calculate) {
     else {
         defaultGetZrXY(el, e, out);
     }
-
     return out;
 }
-
 function defaultGetZrXY(el, e, out) {
     // This well-known method below does not support css transform.
     var box = getBoundingClientRect(el);
     out.zrX = e.clientX - box.left;
     out.zrY = e.clientY - box.top;
 }
-
 /**
  * 如果存在第三方嵌入的一些dom触发的事件，或touch事件，需要转换一下事件坐标.
  * `calculate` is optional, default false.
  */
 function normalizeEvent(el, e, calculate) {
-
     e = e || window.event;
-
     if (e.zrX != null) {
         return e;
     }
-
     var eventType = e.type;
     var isTouch = eventType && eventType.indexOf('touch') >= 0;
-
     if (!isTouch) {
         clientToLocal(el, e, e, calculate);
         e.zrDelta = (e.wheelDelta) ? e.wheelDelta / 120 : -(e.detail || 0) / 3;
@@ -1591,7 +1401,6 @@ function normalizeEvent(el, e, calculate) {
             : e.changedTouches[0];
         touch && clientToLocal(el, touch, e, calculate);
     }
-
     // Add which for click: 1 === left; 2 === middle; 3 === right; otherwise: 0;
     // See jQuery: https://github.com/jquery/jquery/blob/master/src/event.js
     // If e.which has been defined, if may be readonly,
@@ -1604,10 +1413,8 @@ function normalizeEvent(el, e, calculate) {
     // when press left button and `mousemove (pointermove)` in Edge, the `e.which`
     // is 65536 and the `e.button` is -1. But the `mouseup (pointerup)` and
     // `mousedown (pointerdown)` is the same as Chrome does.
-
     return e;
 }
-
 /**
  * @param {HTMLElement} el
  * @param {string} name
@@ -1630,7 +1437,6 @@ function addEventListener(el, name, handler) {
         // (2) How to tread that some zrender event listener is passive, and some is not. If
         // we use other way but not preventDefault of mousewheel and touchmove, browser
         // compatibility should be handled.
-
         // var opts = (env.passiveSupported && name === 'mousewheel')
         //     ? {passive: true}
         //     // By default, the third param of el.addEventListener is `capture: false`.
@@ -1642,7 +1448,6 @@ function addEventListener(el, name, handler) {
         el.attachEvent('on' + name, handler);
     }
 }
-
 function removeEventListener(el, name, handler) {
     if (isDomLevel2) {
         el.removeEventListener(name, handler);
@@ -1651,7 +1456,6 @@ function removeEventListener(el, name, handler) {
         el.detachEvent('on' + name, handler);
     }
 }
-
 /**
  * preventDefault and stopPropagation.
  * Notice: do not do that in zrender. Upper application
@@ -1671,7 +1475,6 @@ var stop = isDomLevel2
         e.returnValue = false;
         e.cancelBubble = true;
     };
-
 /**
  * This method only works for mouseup and mousedown. The functionality is restricted
  * for fault tolerance, See the `e.which` compatibility above.
@@ -1679,64 +1482,49 @@ var stop = isDomLevel2
  * @param {MouseEvent} e
  * @return {boolean}
  */
-
-
 /**
  * To be removed.
  * @deprecated
  */
-
 /**
  * Only implements needed gestures for mobile.
  */
-
 var GestureMgr = function () {
-
     /**
      * @private
      * @type {Array.<Object>}
      */
     this._track = [];
 };
-
 GestureMgr.prototype = {
-
     constructor: GestureMgr,
-
     recognize: function (event, target, root) {
         this._doTrack(event, target, root);
         return this._recognize(event);
     },
-
     clear: function () {
         this._track.length = 0;
         return this;
     },
-
     _doTrack: function (event, target, root) {
         var touches = event.touches;
-
         if (!touches) {
             return;
         }
-
         var trackItem = {
             points: [],
             touches: [],
             target: target,
             event: event
         };
-
         for (var i = 0, len = touches.length; i < len; i++) {
             var touch = touches[i];
             var pos = clientToLocal(root, touch, {});
             trackItem.points.push([pos.zrX, pos.zrY]);
             trackItem.touches.push(touch);
         }
-
         this._track.push(trackItem);
     },
-
     _recognize: function (event) {
         for (var eventName in recognizers) {
             if (recognizers.hasOwnProperty(eventName)) {
@@ -1748,33 +1536,25 @@ GestureMgr.prototype = {
         }
     }
 };
-
 function dist$1(pointPair) {
     var dx = pointPair[1][0] - pointPair[0][0];
     var dy = pointPair[1][1] - pointPair[0][1];
-
     return Math.sqrt(dx * dx + dy * dy);
 }
-
 function center(pointPair) {
     return [
         (pointPair[0][0] + pointPair[1][0]) / 2,
         (pointPair[0][1] + pointPair[1][1]) / 2
     ];
 }
-
 var recognizers = {
-
     pinch: function (track, event) {
         var trackLen = track.length;
-
         if (!trackLen) {
             return;
         }
-
         var pinchEnd = (track[trackLen - 1] || {}).points;
         var pinchPre = (track[trackLen - 2] || {}).points || pinchEnd;
-
         if (pinchPre
             && pinchPre.length > 1
             && pinchEnd
@@ -1782,13 +1562,10 @@ var recognizers = {
         ) {
             var pinchScale = dist$1(pinchEnd) / dist$1(pinchPre);
             !isFinite(pinchScale) && (pinchScale = 1);
-
             event.pinchScale = pinchScale;
-
             var pinchCenter = center(pinchEnd);
             event.pinchX = pinchCenter[0];
             event.pinchY = pinchCenter[1];
-
             return {
                 type: 'pinch',
                 target: track[0].target,
@@ -1796,12 +1573,9 @@ var recognizers = {
             };
         }
     }
-
     // Only pinch currently.
 };
-
 var SILENT = 'silent';
-
 function makeEventPacket(eveType, targetInfo, event) {
     return {
         type: eveType,
@@ -1823,14 +1597,11 @@ function makeEventPacket(eveType, targetInfo, event) {
         stop: stopEvent
     };
 }
-
 function stopEvent(event) {
     stop(this.event);
 }
-
 function EmptyProxy() {}
 EmptyProxy.prototype.dispose = function () {};
-
 var handlerNames = [
     'click', 'dblclick', 'mousewheel', 'mouseout',
     'mouseup', 'mousedown', 'mousemove', 'contextmenu'
@@ -1846,66 +1617,49 @@ var handlerNames = [
  */
 var Handler = function (storage, painter, proxy, painterRoot) {
     Eventful.call(this);
-
     this.storage = storage;
-
     this.painter = painter;
-
     this.painterRoot = painterRoot;
-
     proxy = proxy || new EmptyProxy();
-
     /**
      * Proxy of event. can be Dom, WebGLSurface, etc.
      */
     this.proxy = null;
-
     /**
      * {target, topTarget, x, y}
      * @private
      * @type {Object}
      */
     this._hovered = {};
-
     /**
      * @private
      * @type {Date}
      */
     this._lastTouchMoment;
-
     /**
      * @private
      * @type {number}
      */
     this._lastX;
-
     /**
      * @private
      * @type {number}
      */
     this._lastY;
-
     /**
      * @private
      * @type {module:zrender/core/GestureMgr}
      */
     this._gestureMgr;
-
-
     Draggable.call(this);
-
     this.setHandlerProxy(proxy);
 };
-
 Handler.prototype = {
-
     constructor: Handler,
-
     setHandlerProxy: function (proxy) {
         if (this.proxy) {
             this.proxy.dispose();
         }
-
         if (proxy) {
             each$1(handlerNames, function (name) {
                 proxy.on && proxy.on(name, this[name], this);
@@ -1915,14 +1669,11 @@ Handler.prototype = {
         }
         this.proxy = proxy;
     },
-
     mousemove: function (event) {
         var x = event.zrX;
         var y = event.zrY;
-
         var lastHovered = this._hovered;
         var lastHoveredTarget = lastHovered.target;
-
         // If lastHoveredTarget is removed from zr (detected by '__zr') by some API call
         // (like 'setOption' or 'dispatchAction') in event handlers, we should find
         // lastHovered again here. Otherwise 'mouseout' can not be triggered normally.
@@ -1931,30 +1682,23 @@ Handler.prototype = {
             lastHovered = this.findHover(lastHovered.x, lastHovered.y);
             lastHoveredTarget = lastHovered.target;
         }
-
         var hovered = this._hovered = this.findHover(x, y);
         var hoveredTarget = hovered.target;
-
         var proxy = this.proxy;
         proxy.setCursor && proxy.setCursor(hoveredTarget ? hoveredTarget.cursor : 'default');
-
         // Mouse out on previous hovered element
         if (lastHoveredTarget && hoveredTarget !== lastHoveredTarget) {
             this.dispatchToElement(lastHovered, 'mouseout', event);
         }
-
         // Mouse moving on one element
         this.dispatchToElement(hovered, 'mousemove', event);
-
         // Mouse over on a new element
         if (hoveredTarget && hoveredTarget !== lastHoveredTarget) {
             this.dispatchToElement(hovered, 'mouseover', event);
         }
     },
-
     mouseout: function (event) {
         this.dispatchToElement(this._hovered, 'mouseout', event);
-
         // There might be some doms created by upper layer application
         // at the same level of painter.getViewportRoot() (e.g., tooltip
         // dom created by echarts), where 'globalout' event should not
@@ -1968,17 +1712,14 @@ Handler.prototype = {
         while (element && element.nodeType !== 9 && !(
             innerDom = element === this.painterRoot
         ));
-
         !innerDom && this.trigger('globalout', {event: event});
     },
-
     /**
      * Resize
      */
     resize: function (event) {
         this._hovered = {};
     },
-
     /**
      * Dispatch event
      * @param {string} eventName
@@ -1988,19 +1729,15 @@ Handler.prototype = {
         var handler = this[eventName];
         handler && handler.call(this, eventArgs);
     },
-
     /**
      * Dispose
      */
     dispose: function () {
-
         this.proxy.dispose();
-
         this.storage =
         this.proxy =
         this.painter = null;
     },
-
     /**
      * 设置默认的cursor style
      * @param {string} [cursorStyle='default'] 例如 crosshair
@@ -2009,7 +1746,6 @@ Handler.prototype = {
         var proxy = this.proxy;
         proxy.setCursor && proxy.setCursor(cursorStyle);
     },
-
     /**
      * 事件分发代理
      *
@@ -2026,20 +1762,15 @@ Handler.prototype = {
         }
         var eventHandler = 'on' + eventName;
         var eventPacket = makeEventPacket(eventName, targetInfo, event);
-
         while (el) {
             el[eventHandler]
                 && (eventPacket.cancelBubble = el[eventHandler].call(el, eventPacket));
-
             el.trigger(eventName, eventPacket);
-
             el = el.parent;
-
             if (eventPacket.cancelBubble) {
                 break;
             }
         }
-
         if (!eventPacket.cancelBubble) {
             // 冒泡到顶级 zrender 对象
             this.trigger(eventName, eventPacket);
@@ -2055,7 +1786,6 @@ Handler.prototype = {
             });
         }
     },
-
     /**
      * @private
      * @param {number} x
@@ -2067,7 +1797,6 @@ Handler.prototype = {
     findHover: function (x, y, exclude) {
         var list = this.storage.getDisplayList();
         var out = {x: x, y: y};
-
         for (var i = list.length - 1; i >= 0; i--) {
             var hoverCheckResult;
             if (list[i] !== exclude
@@ -2082,43 +1811,34 @@ Handler.prototype = {
                 }
             }
         }
-
         return out;
     },
-
     processGesture: function (event, stage) {
         if (!this._gestureMgr) {
             this._gestureMgr = new GestureMgr();
         }
         var gestureMgr = this._gestureMgr;
-
         stage === 'start' && gestureMgr.clear();
-
         var gestureInfo = gestureMgr.recognize(
             event,
             this.findHover(event.zrX, event.zrY, null).target,
             this.proxy.dom
         );
-
         stage === 'end' && gestureMgr.clear();
-
         // Do not do any preventDefault here. Upper application do that if necessary.
         if (gestureInfo) {
             var type = gestureInfo.type;
             event.gestureEvent = type;
-
             this.dispatchToElement({target: gestureInfo.target}, type, gestureInfo.event);
         }
     }
 };
-
 // Common handlers
 each$1(['click', 'mousedown', 'mouseup', 'mousewheel', 'dblclick', 'contextmenu'], function (name) {
     Handler.prototype[name] = function (event) {
         // Find hover again to avoid click event is dispatched manually. Or click is triggered without mouseover
         var hovered = this.findHover(event.zrX, event.zrY);
         var hoveredTarget = hovered.target;
-
         if (name === 'mousedown') {
             this._downEl = hoveredTarget;
             this._downPoint = [event.zrX, event.zrY];
@@ -2142,11 +1862,9 @@ each$1(['click', 'mousedown', 'mouseup', 'mousewheel', 'dblclick', 'contextmenu'
             }
             this._downPoint = null;
         }
-
         this.dispatchToElement(hovered, name, event);
     };
 });
-
 function isHover(displayable, x, y) {
     if (displayable[displayable.rectHover ? 'rectContain' : 'contain'](x, y)) {
         var el = displayable;
@@ -2165,22 +1883,17 @@ function isHover(displayable, x, y) {
         }
         return isSilent ? SILENT : true;
     }
-
     return false;
 }
-
 mixin(Handler, Eventful);
 mixin(Handler, Draggable);
-
 /**
  * 3x2矩阵操作类
  * @exports zrender/tool/matrix
  */
-
 var ArrayCtor$1 = typeof Float32Array === 'undefined'
     ? Array
     : Float32Array;
-
 /**
  * Create a identity matrix.
  * @return {Float32Array|Array.<number>}
@@ -2188,10 +1901,8 @@ var ArrayCtor$1 = typeof Float32Array === 'undefined'
 function create$1() {
     var out = new ArrayCtor$1(6);
     identity(out);
-
     return out;
 }
-
 /**
  * 设置矩阵为单位矩阵
  * @param {Float32Array|Array.<number>} out
@@ -2205,7 +1916,6 @@ function identity(out) {
     out[5] = 0;
     return out;
 }
-
 /**
  * 复制矩阵
  * @param {Float32Array|Array.<number>} out
@@ -2220,7 +1930,6 @@ function copy$1(out, m) {
     out[5] = m[5];
     return out;
 }
-
 /**
  * 矩阵相乘
  * @param {Float32Array|Array.<number>} out
@@ -2245,7 +1954,6 @@ function mul$1(out, m1, m2) {
     out[5] = out5;
     return out;
 }
-
 /**
  * 平移变换
  * @param {Float32Array|Array.<number>} out
@@ -2261,7 +1969,6 @@ function translate(out, a, v) {
     out[5] = a[5] + v[1];
     return out;
 }
-
 /**
  * 旋转变换
  * @param {Float32Array|Array.<number>} out
@@ -2277,7 +1984,6 @@ function rotate(out, a, rad) {
     var aty = a[5];
     var st = Math.sin(rad);
     var ct = Math.cos(rad);
-
     out[0] = aa * ct + ab * st;
     out[1] = -aa * st + ab * ct;
     out[2] = ac * ct + ad * st;
@@ -2286,7 +1992,6 @@ function rotate(out, a, rad) {
     out[5] = ct * aty - st * atx;
     return out;
 }
-
 /**
  * 缩放变换
  * @param {Float32Array|Array.<number>} out
@@ -2304,27 +2009,23 @@ function scale$1(out, a, v) {
     out[5] = a[5] * vy;
     return out;
 }
-
 /**
  * 求逆矩阵
  * @param {Float32Array|Array.<number>} out
  * @param {Float32Array|Array.<number>} a
  */
 function invert(out, a) {
-
     var aa = a[0];
     var ac = a[2];
     var atx = a[4];
     var ab = a[1];
     var ad = a[3];
     var aty = a[5];
-
     var det = aa * ad - ab * ac;
     if (!det) {
         return null;
     }
     det = 1.0 / det;
-
     out[0] = ad * det;
     out[1] = -ab * det;
     out[2] = -ac * det;
@@ -2333,26 +2034,20 @@ function invert(out, a) {
     out[5] = (ab * atx - aa * aty) * det;
     return out;
 }
-
 /**
  * Clone a new matrix.
  * @param {Float32Array|Array.<number>} a
  */
-
 /**
  * 提供变换扩展
  * @module zrender/mixin/Transformable
  * @author pissang (https://www.github.com/pissang)
  */
-
 var mIdentity = identity;
-
 var EPSILON = 5e-5;
-
 function isNotAroundZero(val) {
     return val > EPSILON || val < -EPSILON;
 }
-
 /**
  * @alias module:zrender/mixin/Transformable
  * @constructor
@@ -2391,10 +2086,8 @@ var Transformable = function (opts) {
      */
     this.origin = this.origin || null;
 };
-
 var transformableProto = Transformable.prototype;
 transformableProto.transform = null;
-
 /**
  * 判断是否需要有坐标变换
  * 如果有坐标变换, 则从position, rotation, scale以及父节点的transform计算出自身的transform矩阵
@@ -2406,28 +2099,23 @@ transformableProto.needLocalTransform = function () {
         || isNotAroundZero(this.scale[0] - 1)
         || isNotAroundZero(this.scale[1] - 1);
 };
-
 var scaleTmp = [];
 transformableProto.updateTransform = function () {
     var parent = this.parent;
     var parentHasTransform = parent && parent.transform;
     var needLocalTransform = this.needLocalTransform();
-
     var m = this.transform;
     if (!(needLocalTransform || parentHasTransform)) {
         m && mIdentity(m);
         return;
     }
-
     m = m || create$1();
-
     if (needLocalTransform) {
         this.getLocalTransform(m);
     }
     else {
         mIdentity(m);
     }
-
     // 应用父节点变换
     if (parentHasTransform) {
         if (needLocalTransform) {
@@ -2439,7 +2127,6 @@ transformableProto.updateTransform = function () {
     }
     // 保存这个变换矩阵
     this.transform = m;
-
     var globalScaleRatio = this.globalScaleRatio;
     if (globalScaleRatio != null && globalScaleRatio !== 1) {
         this.getGlobalScale(scaleTmp);
@@ -2447,21 +2134,17 @@ transformableProto.updateTransform = function () {
         var relY = scaleTmp[1] < 0 ? -1 : 1;
         var sx = ((scaleTmp[0] - relX) * globalScaleRatio + relX) / scaleTmp[0] || 0;
         var sy = ((scaleTmp[1] - relY) * globalScaleRatio + relY) / scaleTmp[1] || 0;
-
         m[0] *= sx;
         m[1] *= sx;
         m[2] *= sy;
         m[3] *= sy;
     }
-
     this.invTransform = this.invTransform || create$1();
     invert(this.invTransform, m);
 };
-
 transformableProto.getLocalTransform = function (m) {
     return Transformable.getLocalTransform(this, m);
 };
-
 /**
  * 将自己的transform应用到context上
  * @param {CanvasRenderingContext2D} ctx
@@ -2476,15 +2159,12 @@ transformableProto.setTransform = function (ctx) {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 };
-
 transformableProto.restoreTransform = function (ctx) {
     var dpr = ctx.dpr || 1;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 };
-
 var tmpTransform = [];
 var originTransform = create$1();
-
 transformableProto.setLocalTransform = function (m) {
     if (!m) {
         // TODO return or set identity?
@@ -2506,7 +2186,6 @@ transformableProto.setLocalTransform = function (m) {
     if (m[3] < 0) {
         sy = -sy;
     }
-
     position[0] = m[4];
     position[1] = m[5];
     scale$$1[0] = sx;
@@ -2536,10 +2215,8 @@ transformableProto.decomposeTransform = function () {
         tmpTransform[5] -= origin[1];
         m = tmpTransform;
     }
-
     this.setLocalTransform(m);
 };
-
 /**
  * Get global scale
  * @return {Array.<number>}
@@ -2577,7 +2254,6 @@ transformableProto.transformCoordToLocal = function (x, y) {
     }
     return v2;
 };
-
 /**
  * 变换局部坐标位置到全局坐标空间
  * @method
@@ -2593,7 +2269,6 @@ transformableProto.transformCoordToGlobal = function (x, y) {
     }
     return v2;
 };
-
 /**
  * @static
  * @param {Object} target
@@ -2605,12 +2280,10 @@ transformableProto.transformCoordToGlobal = function (x, y) {
 Transformable.getLocalTransform = function (target, m) {
     m = m || [];
     mIdentity(m);
-
     var origin = target.origin;
     var scale$$1 = target.scale || [1, 1];
     var rotation = target.rotation || 0;
     var position = target.position || [0, 0];
-
     if (origin) {
         // Translate to origin
         m[4] -= origin[0];
@@ -2625,13 +2298,10 @@ Transformable.getLocalTransform = function (target, m) {
         m[4] += origin[0];
         m[5] += origin[1];
     }
-
     m[4] += position[0];
     m[5] += position[1];
-
     return m;
 };
-
 /**
  * 缓动代码来自 https://github.com/sole/tween.js/blob/master/src/Tween.js
  * @see http://sole.github.io/tween.js/examples/03_graphs.html
@@ -2645,7 +2315,6 @@ var easing = {
     linear: function (k) {
         return k;
     },
-
     /**
     * @param {number} k
     * @return {number}
@@ -2670,7 +2339,6 @@ var easing = {
         }
         return -0.5 * (--k * (k - 2) - 1);
     },
-
     // 三次方的缓动（t^3）
     /**
     * @param {number} k
@@ -2696,7 +2364,6 @@ var easing = {
         }
         return 0.5 * ((k -= 2) * k * k + 2);
     },
-
     // 四次方的缓动（t^4）
     /**
     * @param {number} k
@@ -2722,7 +2389,6 @@ var easing = {
         }
         return -0.5 * ((k -= 2) * k * k * k - 2);
     },
-
     // 五次方的缓动（t^5）
     /**
     * @param {number} k
@@ -2748,7 +2414,6 @@ var easing = {
         }
         return 0.5 * ((k -= 2) * k * k * k * k + 2);
     },
-
     // 正弦曲线的缓动（sin(t)）
     /**
     * @param {number} k
@@ -2771,7 +2436,6 @@ var easing = {
     sinusoidalInOut: function (k) {
         return 0.5 * (1 - Math.cos(Math.PI * k));
     },
-
     // 指数曲线的缓动（2^t）
     /**
     * @param {number} k
@@ -2803,7 +2467,6 @@ var easing = {
         }
         return 0.5 * (-Math.pow(2, -10 * (k - 1)) + 2);
     },
-
     // 圆形曲线的缓动（sqrt(1-t^2)）
     /**
     * @param {number} k
@@ -2829,7 +2492,6 @@ var easing = {
         }
         return 0.5 * (Math.sqrt(1 - (k -= 2) * k) + 1);
     },
-
     // 创建类似于弹簧在停止前来回振荡的动画
     /**
     * @param {number} k
@@ -2906,9 +2568,7 @@ var easing = {
         }
         return a * Math.pow(2, -10 * (k -= 1))
                 * Math.sin((k - s) * (2 * Math.PI) / p) * 0.5 + 1;
-
     },
-
     // 在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动
     /**
     * @param {number} k
@@ -2937,7 +2597,6 @@ var easing = {
         }
         return 0.5 * ((k -= 2) * k * ((s + 1) * k + s) + 2);
     },
-
     // 创建弹跳效果
     /**
     * @param {number} k
@@ -2975,7 +2634,6 @@ var easing = {
         return easing.bounceOut(k * 2 - 1) * 0.5 + 0.5;
     }
 };
-
 /**
  * 动画主控制器
  * @config target 动画对象，可以是数组，如果是数组的话会批量分发onframe等事件
@@ -2990,11 +2648,8 @@ var easing = {
  *
  * TODO pause
  */
-
 function Clip(options) {
-
     this._target = options.target;
-
     // 生命周期
     this._life = options.life || 1000;
     // 延时
@@ -3002,26 +2657,18 @@ function Clip(options) {
     // 开始时间
     // this._startTime = new Date().getTime() + this._delay;// 单位毫秒
     this._initialized = false;
-
     // 是否循环
     this.loop = options.loop == null ? false : options.loop;
-
     this.gap = options.gap || 0;
-
     this.easing = options.easing || 'Linear';
-
     this.onframe = options.onframe;
     this.ondestroy = options.ondestroy;
     this.onrestart = options.onrestart;
-
     this._pausedTime = 0;
     this._paused = false;
 }
-
 Clip.prototype = {
-
     constructor: Clip,
-
     step: function (globalTime, deltaTime) {
         // Set startTime on first step, or _startTime may has milleseconds different between clips
         // PENDING
@@ -3029,29 +2676,22 @@ Clip.prototype = {
             this._startTime = globalTime + this._delay;
             this._initialized = true;
         }
-
         if (this._paused) {
             this._pausedTime += deltaTime;
             return;
         }
-
         var percent = (globalTime - this._startTime - this._pausedTime) / this._life;
-
         // 还没开始
         if (percent < 0) {
             return;
         }
-
         percent = Math.min(percent, 1);
-
         var easing$$1 = this.easing;
         var easingFunc = typeof easing$$1 === 'string' ? easing[easing$$1] : easing$$1;
         var schedule = typeof easingFunc === 'function'
             ? easingFunc(percent)
             : percent;
-
         this.fire('frame', schedule);
-
         // 结束
         if (percent === 1) {
             if (this.loop) {
@@ -3060,62 +2700,49 @@ Clip.prototype = {
                 // 抛出而不是直接调用事件直到 stage.update 后再统一调用这些事件
                 return 'restart';
             }
-
             // 动画完成将这个控制器标识为待删除
             // 在Animation.update中进行批量删除
             this._needsRemove = true;
             return 'destroy';
         }
-
         return null;
     },
-
     restart: function (globalTime) {
         var remainder = (globalTime - this._startTime - this._pausedTime) % this._life;
         this._startTime = globalTime - remainder + this.gap;
         this._pausedTime = 0;
-
         this._needsRemove = false;
     },
-
     fire: function (eventType, arg) {
         eventType = 'on' + eventType;
         if (this[eventType]) {
             this[eventType](this._target, arg);
         }
     },
-
     pause: function () {
         this._paused = true;
     },
-
     resume: function () {
         this._paused = false;
     }
 };
-
 // Simple LRU cache use doubly linked list
 // @module zrender/core/LRU
-
 /**
  * Simple double linked list. Compared with array, it has O(1) remove operation.
  * @constructor
  */
 var LinkedList = function () {
-
     /**
      * @type {module:zrender/core/LRU~Entry}
      */
     this.head = null;
-
     /**
      * @type {module:zrender/core/LRU~Entry}
      */
     this.tail = null;
-
     this._len = 0;
 };
-
 var linkedListProto = LinkedList.prototype;
 /**
  * Insert a new value at the tail
@@ -3127,7 +2754,6 @@ linkedListProto.insert = function (val) {
     this.insertEntry(entry);
     return entry;
 };
-
 /**
  * Insert an entry at the tail
  * @param  {module:zrender/core/LRU~Entry} entry
@@ -3144,7 +2770,6 @@ linkedListProto.insertEntry = function (entry) {
     }
     this._len++;
 };
-
 /**
  * Remove entry.
  * @param  {module:zrender/core/LRU~Entry} entry
@@ -3169,14 +2794,12 @@ linkedListProto.remove = function (entry) {
     entry.next = entry.prev = null;
     this._len--;
 };
-
 /**
  * @return {number}
  */
 linkedListProto.len = function () {
     return this._len;
 };
-
 /**
  * Clear list
  */
@@ -3184,7 +2807,6 @@ linkedListProto.clear = function () {
     this.head = this.tail = null;
     this._len = 0;
 };
-
 /**
  * @constructor
  * @param {} val
@@ -3194,36 +2816,27 @@ var Entry = function (val) {
      * @type {}
      */
     this.value = val;
-
     /**
      * @type {module:zrender/core/LRU~Entry}
      */
     this.next;
-
     /**
      * @type {module:zrender/core/LRU~Entry}
      */
     this.prev;
 };
-
 /**
  * LRU Cache
  * @constructor
  * @alias module:zrender/core/LRU
  */
 var LRU = function (maxSize) {
-
     this._list = new LinkedList();
-
     this._map = {};
-
     this._maxSize = maxSize || 10;
-
     this._lastRemovedEntry = null;
 };
-
 var LRUProto = LRU.prototype;
-
 /**
  * @param  {string} key
  * @param  {} value
@@ -3237,17 +2850,14 @@ LRUProto.put = function (key, value) {
         var len = list.len();
         // Reuse last removed entry
         var entry = this._lastRemovedEntry;
-
         if (len >= this._maxSize && len > 0) {
             // Remove the least recently used
             var leastUsedEntry = list.head;
             list.remove(leastUsedEntry);
             delete map[leastUsedEntry.key];
-
             removed = leastUsedEntry.value;
             this._lastRemovedEntry = leastUsedEntry;
         }
-
         if (entry) {
             entry.value = value;
         }
@@ -3258,10 +2868,8 @@ LRUProto.put = function (key, value) {
         list.insertEntry(entry);
         map[key] = entry;
     }
-
     return removed;
 };
-
 /**
  * @param  {string} key
  * @return {}
@@ -3275,11 +2883,9 @@ LRUProto.get = function (key) {
             list.remove(entry);
             list.insertEntry(entry);
         }
-
         return entry.value;
     }
 };
-
 /**
  * Clear the cache
  */
@@ -3287,7 +2893,6 @@ LRUProto.clear = function () {
     this._list.clear();
     this._map = {};
 };
-
 var kCSSColorTable = {
     'transparent': [0, 0, 0, 0], 'aliceblue': [240, 248, 255, 1],
     'antiquewhite': [250, 235, 215, 1], 'aqua': [0, 255, 255, 1],
@@ -3364,30 +2969,25 @@ var kCSSColorTable = {
     'white': [255, 255, 255, 1], 'whitesmoke': [245, 245, 245, 1],
     'yellow': [255, 255, 0, 1], 'yellowgreen': [154, 205, 50, 1]
 };
-
 function clampCssByte(i) {  // Clamp to integer 0 .. 255.
     i = Math.round(i);  // Seems to be what Chrome does (vs truncation).
     return i < 0 ? 0 : i > 255 ? 255 : i;
 }
-
 function clampCssFloat(f) {  // Clamp to float 0.0 .. 1.0.
     return f < 0 ? 0 : f > 1 ? 1 : f;
 }
-
 function parseCssInt(str) {  // int or percentage.
     if (str.length && str.charAt(str.length - 1) === '%') {
         return clampCssByte(parseFloat(str) / 100 * 255);
     }
     return clampCssByte(parseInt(str, 10));
 }
-
 function parseCssFloat(str) {  // float or percentage.
     if (str.length && str.charAt(str.length - 1) === '%') {
         return clampCssFloat(parseFloat(str) / 100);
     }
     return clampCssFloat(parseFloat(str));
 }
-
 function cssHueToRgb(m1, m2, h) {
     if (h < 0) {
         h += 1;
@@ -3395,7 +2995,6 @@ function cssHueToRgb(m1, m2, h) {
     else if (h > 1) {
         h -= 1;
     }
-
     if (h * 6 < 1) {
         return m1 + (m2 - m1) * h * 6;
     }
@@ -3407,7 +3006,6 @@ function cssHueToRgb(m1, m2, h) {
     }
     return m1;
 }
-
 function setRgba(out, r, g, b, a) {
     out[0] = r; out[1] = g; out[2] = b; out[3] = a;
     return out;
@@ -3416,10 +3014,8 @@ function copyRgba(out, a) {
     out[0] = a[0]; out[1] = a[1]; out[2] = a[2]; out[3] = a[3];
     return out;
 }
-
 var colorCache = new LRU(20);
 var lastRemovedArr = null;
-
 function putToCache(colorStr, rgbaArr) {
     // Reuse removed array
     if (lastRemovedArr) {
@@ -3427,7 +3023,6 @@ function putToCache(colorStr, rgbaArr) {
     }
     lastRemovedArr = colorCache.put(colorStr, lastRemovedArr || (rgbaArr.slice()));
 }
-
 /**
  * @param {string} colorStr
  * @param {Array.<number>} out
@@ -3439,24 +3034,20 @@ function parse(colorStr, rgbaArr) {
         return;
     }
     rgbaArr = rgbaArr || [];
-
     var cached = colorCache.get(colorStr);
     if (cached) {
         return copyRgba(rgbaArr, cached);
     }
-
     // colorStr may be not string
     colorStr = colorStr + '';
     // Remove all whitespace, not compliant, but should just be more accepting.
     var str = colorStr.replace(/ /g, '').toLowerCase();
-
     // Color keywords (and transparent) lookup.
     if (str in kCSSColorTable) {
         copyRgba(rgbaArr, kCSSColorTable[str]);
         putToCache(colorStr, rgbaArr);
         return rgbaArr;
     }
-
     // #abc and #abc123 syntax.
     if (str.charAt(0) === '#') {
         if (str.length === 4) {
@@ -3489,7 +3080,6 @@ function parse(colorStr, rgbaArr) {
             putToCache(colorStr, rgbaArr);
             return rgbaArr;
         }
-
         return;
     }
     var op = str.indexOf('(');
@@ -3540,11 +3130,9 @@ function parse(colorStr, rgbaArr) {
                 return;
         }
     }
-
     setRgba(rgbaArr, 0, 0, 0, 1);
     return;
 }
-
 /**
  * @param {Array.<number>} hsla
  * @param {Array.<number>} rgba
@@ -3558,7 +3146,6 @@ function hsla2rgba(hsla, rgba) {
     var l = parseCssFloat(hsla[2]);
     var m2 = l <= 0.5 ? l * (s + 1) : l + s - l * s;
     var m1 = l * 2 - m2;
-
     rgba = rgba || [];
     setRgba(rgba,
         clampCssByte(cssHueToRgb(m1, m2, h + 1 / 3) * 255),
@@ -3566,14 +3153,11 @@ function hsla2rgba(hsla, rgba) {
         clampCssByte(cssHueToRgb(m1, m2, h - 1 / 3) * 255),
         1
     );
-
     if (hsla.length === 4) {
         rgba[3] = hsla[3];
     }
-
     return rgba;
 }
-
 /**
  * @param {string} color
  * @param {number} level
@@ -3600,14 +3184,11 @@ function lift(color, level) {
         return stringify(colorArr, colorArr.length === 4 ? 'rgba' : 'rgb');
     }
 }
-
 /**
  * @param {string} color
  * @return {string}
  * @memberOf module:zrender/util/color
  */
-
-
 /**
  * Map value to color. Faster than lerp methods because color is represented by rgba array.
  * @param {number} normalizedValue A float between 0 and 1.
@@ -3615,13 +3196,9 @@ function lift(color, level) {
  * @param {Array.<number>} [out] Mapped gba color array
  * @return {Array.<number>} will be null/undefined if input illegal.
  */
-
-
 /**
  * @deprecated
  */
-
-
 /**
  * @param {number} normalizedValue A float between 0 and 1.
  * @param {Array.<string>} colors Color list.
@@ -3630,13 +3207,9 @@ function lift(color, level) {
  *                           return {color: ..., leftIndex: ..., rightIndex: ..., value: ...},
  * @memberOf module:zrender/util/color
  */
-
-
 /**
  * @deprecated
  */
-
-
 /**
  * @param {string} color
  * @param {number=} h 0 ~ 360, ignore when null.
@@ -3645,16 +3218,12 @@ function lift(color, level) {
  * @return {string} Color string in rgba format.
  * @memberOf module:zrender/util/color
  */
-
-
 /**
  * @param {string} color
  * @param {number=} alpha 0 ~ 1
  * @return {string} Color string in rgba format.
  * @memberOf module:zrender/util/color
  */
-
-
 /**
  * @param {Array.<number>} arrColor like [12,33,44,0.4]
  * @param {string} type 'rgba', 'hsva', ...
@@ -3670,21 +3239,16 @@ function stringify(arrColor, type) {
     }
     return type + '(' + colorStr + ')';
 }
-
 /**
  * @module echarts/animation/Animator
  */
-
 var arraySlice = Array.prototype.slice;
-
 function defaultGetter(target, key) {
     return target[key];
 }
-
 function defaultSetter(target, key, value) {
     target[key] = value;
 }
-
 /**
  * @param  {number} p0
  * @param  {number} p1
@@ -3694,7 +3258,6 @@ function defaultSetter(target, key, value) {
 function interpolateNumber(p0, p1, percent) {
     return (p1 - p0) * percent + p0;
 }
-
 /**
  * @param  {string} p0
  * @param  {string} p1
@@ -3704,7 +3267,6 @@ function interpolateNumber(p0, p1, percent) {
 function interpolateString(p0, p1, percent) {
     return percent > 0.5 ? p1 : p0;
 }
-
 /**
  * @param  {Array} p0
  * @param  {Array} p1
@@ -3730,7 +3292,6 @@ function interpolateArray(p0, p1, percent, out, arrDim) {
         }
     }
 }
-
 // arr0 is source array, arr1 is target array.
 // Do some preprocess to avoid error happened when interpolating from arr0 to arr1
 function fillArr(arr0, arr1, arrDim) {
@@ -3769,7 +3330,6 @@ function fillArr(arr0, arr1, arrDim) {
         }
     }
 }
-
 /**
  * @param  {Array} arr0
  * @param  {Array} arr1
@@ -3803,7 +3363,6 @@ function isArraySame(arr0, arr1, arrDim) {
     }
     return true;
 }
-
 /**
  * Catmull Rom interpolate array
  * @param  {Array} p0
@@ -3839,7 +3398,6 @@ function catmullRomInterpolateArray(
         }
     }
 }
-
 /**
  * Catmull Rom interpolate number
  * @param  {number} p0
@@ -3858,7 +3416,6 @@ function catmullRomInterpolate(p0, p1, p2, p3, t, t2, t3) {
             + (-3 * (p1 - p2) - 2 * v0 - v1) * t2
             + v0 * t + p1;
 }
-
 function cloneValue(value) {
     if (isArrayLike(value)) {
         var len = value.length;
@@ -3869,31 +3426,24 @@ function cloneValue(value) {
             }
             return ret;
         }
-
         return arraySlice.call(value);
     }
-
     return value;
 }
-
 function rgba2String(rgba) {
     rgba[0] = Math.floor(rgba[0]);
     rgba[1] = Math.floor(rgba[1]);
     rgba[2] = Math.floor(rgba[2]);
-
     return 'rgba(' + rgba.join(',') + ')';
 }
-
 function getArrayDim(keyframes) {
     var lastValue = keyframes[keyframes.length - 1].value;
     return isArrayLike(lastValue && lastValue[0]) ? 2 : 1;
 }
-
 function createTrackClip(animator, easing, oneTrackDone, keyframes, propName, forceAnimate) {
     var getter = animator._getter;
     var setter = animator._setter;
     var useSpline = easing === 'spline';
-
     var trackLen = keyframes.length;
     if (!trackLen) {
         return;
@@ -3903,16 +3453,13 @@ function createTrackClip(animator, easing, oneTrackDone, keyframes, propName, fo
     var isValueArray = isArrayLike(firstVal);
     var isValueColor = false;
     var isValueString = false;
-
     // For vertices morphing
     var arrDim = isValueArray ? getArrayDim(keyframes) : 0;
-
     var trackMaxTime;
     // Sort keyframe as ascending
     keyframes.sort(function (a, b) {
         return a.time - b.time;
     });
-
     trackMaxTime = keyframes[trackLen - 1].time;
     // Percents of each keyframe
     var kfPercents = [];
@@ -3924,14 +3471,12 @@ function createTrackClip(animator, easing, oneTrackDone, keyframes, propName, fo
         kfPercents.push(keyframes[i].time / trackMaxTime);
         // Assume value is a color when it is a string
         var value = keyframes[i].value;
-
         // Check if value is equal, deep check if value is array
         if (!((isValueArray && isArraySame(value, prevValue, arrDim))
             || (!isValueArray && value === prevValue))) {
             isAllValueEqual = false;
         }
         prevValue = value;
-
         // Try converting a string to a color array
         if (typeof value === 'string') {
             var colorArray = parse(value);
@@ -3948,7 +3493,6 @@ function createTrackClip(animator, easing, oneTrackDone, keyframes, propName, fo
     if (!forceAnimate && isAllValueEqual) {
         return;
     }
-
     var lastValue = kfValues[trackLen - 1];
     // Polyfill array and NaN value
     for (var i = 0; i < trackLen - 1; i++) {
@@ -3962,7 +3506,6 @@ function createTrackClip(animator, easing, oneTrackDone, keyframes, propName, fo
         }
     }
     isValueArray && fillArr(getter(animator._target, propName), lastValue, arrDim);
-
     // Cache the key of last frame to speed up when
     // animation playback is sequency
     var lastFrame = 0;
@@ -3973,11 +3516,9 @@ function createTrackClip(animator, easing, oneTrackDone, keyframes, propName, fo
     var p1;
     var p2;
     var p3;
-
     if (isValueColor) {
         var rgba = [0, 0, 0, 0];
     }
-
     var onframe = function (target, percent) {
         // Find the range keyframes
         // kf1-----kf2---------current--------kf3
@@ -4009,7 +3550,6 @@ function createTrackClip(animator, easing, oneTrackDone, keyframes, propName, fo
         }
         lastFrame = frame;
         lastFramePercent = percent;
-
         var range = (kfPercents[frame + 1] - kfPercents[frame]);
         if (range === 0) {
             return;
@@ -4086,7 +3626,6 @@ function createTrackClip(animator, easing, oneTrackDone, keyframes, propName, fo
             }
         }
     };
-
     var clip = new Clip({
         target: animator._target,
         life: trackMaxTime,
@@ -4095,14 +3634,11 @@ function createTrackClip(animator, easing, oneTrackDone, keyframes, propName, fo
         onframe: onframe,
         ondestroy: oneTrackDone
     });
-
     if (easing && easing !== 'spline') {
         clip.easing = easing;
     }
-
     return clip;
 }
-
 /**
  * @alias module:zrender/animation/Animator
  * @constructor
@@ -4114,23 +3650,15 @@ function createTrackClip(animator, easing, oneTrackDone, keyframes, propName, fo
 var Animator = function (target, loop, getter, setter) {
     this._tracks = {};
     this._target = target;
-
     this._loop = loop || false;
-
     this._getter = getter || defaultGetter;
     this._setter = setter || defaultSetter;
-
     this._clipCount = 0;
-
     this._delay = 0;
-
     this._doneList = [];
-
     this._onframeList = [];
-
     this._clipList = [];
 };
-
 Animator.prototype = {
     /**
      * 设置动画关键帧
@@ -4144,7 +3672,6 @@ Animator.prototype = {
             if (!props.hasOwnProperty(propName)) {
                 continue;
             }
-
             if (!tracks[propName]) {
                 tracks[propName] = [];
                 // Invalid value
@@ -4180,31 +3707,26 @@ Animator.prototype = {
         this._onframeList.push(callback);
         return this;
     },
-
     pause: function () {
         for (var i = 0; i < this._clipList.length; i++) {
             this._clipList[i].pause();
         }
         this._paused = true;
     },
-
     resume: function () {
         for (var i = 0; i < this._clipList.length; i++) {
             this._clipList[i].resume();
         }
         this._paused = false;
     },
-
     isPaused: function () {
         return !!this._paused;
     },
-
     _doneCallback: function () {
         // Clear all tracks
         this._tracks = {};
         // Clear all clips
         this._clipList.length = 0;
-
         var doneList = this._doneList;
         var len = doneList.length;
         for (var i = 0; i < len; i++) {
@@ -4219,17 +3741,14 @@ Animator.prototype = {
      * @return {module:zrender/animation/Animator}
      */
     start: function (easing, forceAnimate) {
-
         var self = this;
         var clipCount = 0;
-
         var oneTrackDone = function () {
             clipCount--;
             if (!clipCount) {
                 self._doneCallback();
             }
         };
-
         var lastClip;
         for (var propName in this._tracks) {
             if (!this._tracks.hasOwnProperty(propName)) {
@@ -4242,28 +3761,23 @@ Animator.prototype = {
             if (clip) {
                 this._clipList.push(clip);
                 clipCount++;
-
                 // If start after added to animation
                 if (this.animation) {
                     this.animation.addClip(clip);
                 }
-
                 lastClip = clip;
             }
         }
-
         // Add during callback on the last clip
         if (lastClip) {
             var oldOnFrame = lastClip.onframe;
             lastClip.onframe = function (target, percent) {
                 oldOnFrame(target, percent);
-
                 for (var i = 0; i < self._onframeList.length; i++) {
                     self._onframeList[i](target, percent);
                 }
             };
         }
-
         // This optimization will help the case that in the upper application
         // the view may be refreshed frequently, where animation will be
         // called repeatly but nothing changed.
@@ -4309,7 +3823,6 @@ Animator.prototype = {
         }
         return this;
     },
-
     /**
      * @return {Array.<module:zrender/animation/Clip>}
      */
@@ -4317,20 +3830,16 @@ Animator.prototype = {
         return this._clipList;
     }
 };
-
 var dpr = 1;
-
 // If in browser environment
 if (typeof window !== 'undefined') {
     dpr = Math.max(window.devicePixelRatio || 1, 1);
 }
-
 /**
  * config默认配置项
  * @exports zrender/config
  * @author Kener (@Kener-林峰, kener.linfeng@gmail.com)
  */
-
 /**
  * debug日志选项：catchBrushException为true下有效
  * 0 : 不生成debug数据，发布用
@@ -4338,13 +3847,10 @@ if (typeof window !== 'undefined') {
  * 2 : 控制台输出，调试用
  */
 var debugMode = 0;
-
 // retina 屏幕优化
 var devicePixelRatio = dpr;
-
 var log = function () {
 };
-
 if (debugMode === 1) {
     log = function () {
         for (var k in arguments) {
@@ -4359,26 +3865,20 @@ else if (debugMode > 1) {
         }
     };
 }
-
 var log$1 = log;
-
 /**
  * @alias modue:zrender/mixin/Animatable
  * @constructor
  */
 var Animatable = function () {
-
     /**
      * @type {Array.<module:zrender/animation/Animator>}
      * @readOnly
      */
     this.animators = [];
 };
-
 Animatable.prototype = {
-
     constructor: Animatable,
-
     /**
      * 动画
      *
@@ -4414,7 +3914,6 @@ Animatable.prototype = {
         else {
             target = el;
         }
-
         if (!target) {
             log$1(
                 'Property "'
@@ -4424,11 +3923,8 @@ Animatable.prototype = {
             );
             return;
         }
-
         var animators = el.animators;
-
         var animator = new Animator(target, loop);
-
         animator.during(function (target) {
             el.dirty(animatingShape);
         })
@@ -4436,17 +3932,13 @@ Animatable.prototype = {
             // FIXME Animator will not be removed if use `Animator#stop` to stop animation
             animators.splice(indexOf(animators, animator), 1);
         });
-
         animators.push(animator);
-
         // If animate after added to the zrender
         if (zr) {
             zr.animation.addAnimator(animator);
         }
-
         return animator;
     },
-
     /**
      * 停止动画
      * @param {boolean} forwardToLast If move to last frame before stop
@@ -4458,10 +3950,8 @@ Animatable.prototype = {
             animators[i].stop(forwardToLast);
         }
         animators.length = 0;
-
         return this;
     },
-
     /**
      * Caution: this method will stop previous animation.
      * So do not use this method to one element twice before
@@ -4495,7 +3985,6 @@ Animatable.prototype = {
     animateTo: function (target, time, delay, easing, callback, forceAnimate) {
         animateTo(this, target, time, delay, easing, callback, forceAnimate);
     },
-
     /**
      * Animate from the target state to current state.
      * The params and the return value are the same as `this.animateTo`.
@@ -4504,7 +3993,6 @@ Animatable.prototype = {
         animateTo(this, target, time, delay, easing, callback, forceAnimate, true);
     }
 };
-
 function animateTo(animatable, target, time, delay, easing, callback, forceAnimate, reverse) {
     // animateTo(target, time, easing, callback);
     if (isString(delay)) {
@@ -4535,7 +4023,6 @@ function animateTo(animatable, target, time, delay, easing, callback, forceAnima
     // Stop all previous animations
     animatable.stopAnimation();
     animateToShallow(animatable, '', animatable, target, time, delay, reverse);
-
     // Animators may be removed immediately after start
     // if there is nothing to animate
     var animators = animatable.animators.slice();
@@ -4546,7 +4033,6 @@ function animateTo(animatable, target, time, delay, easing, callback, forceAnima
             callback && callback();
         }
     }
-
     // No animators. This should be checked before animators[i].start(),
     // because 'done' may be executed immediately if no need to animate.
     if (!count) {
@@ -4560,7 +4046,6 @@ function animateTo(animatable, target, time, delay, easing, callback, forceAnima
             .start(easing, forceAnimate);
     }
 }
-
 /**
  * @param {string} path=''
  * @param {Object} source=animatable
@@ -4594,7 +4079,6 @@ function animateToShallow(animatable, path, source, target, time, delay, reverse
         if (!target.hasOwnProperty(name)) {
             continue;
         }
-
         if (source[name] != null) {
             if (isObject$1(target[name]) && !isArrayLike(target[name])) {
                 animateToShallow(
@@ -4622,14 +4106,12 @@ function animateToShallow(animatable, path, source, target, time, delay, reverse
             setAttrByPath(animatable, path, name, target[name]);
         }
     }
-
     if (propertyCount > 0) {
         animatable.animate(path, false)
             .when(time == null ? 500 : time, objShallow)
             .delay(delay || 0);
     }
 }
-
 function setAttrByPath(el, path, name, value) {
     // Attr directly if not has property
     // FIXME, if some property not needed for element ?
@@ -4644,7 +4126,6 @@ function setAttrByPath(el, path, name, value) {
         el.attr(props);
     }
 }
-
 /**
  * @alias module:zrender/Element
  * @constructor
@@ -4653,34 +4134,28 @@ function setAttrByPath(el, path, name, value) {
  * @extends {module:zrender/mixin/Eventful}
  */
 var Element = function (opts) { // jshint ignore:line
-
     Transformable.call(this, opts);
     Eventful.call(this, opts);
     Animatable.call(this, opts);
-
     /**
      * 画布元素ID
      * @type {string}
      */
     this.id = opts.id || guid();
 };
-
 Element.prototype = {
-
     /**
      * 元素类型
      * Element type
      * @type {string}
      */
     type: 'element',
-
     /**
      * 元素名字
      * Element name
      * @type {string}
      */
     name: '',
-
     /**
      * ZRender 实例对象，会在 element 添加到 zrender 实例中后自动赋值
      * ZRender instance will be assigned when element is associated with zrender
@@ -4688,7 +4163,6 @@ Element.prototype = {
      * @type {module:zrender/ZRender}
      */
     __zr: null,
-
     /**
      * 图形是否忽略，为true时忽略图形的绘制以及事件触发
      * If ignore drawing and events of the element object
@@ -4697,7 +4171,6 @@ Element.prototype = {
      * @default false
      */
     ignore: false,
-
     /**
      * 用于裁剪的路径(shape)，所有 Group 内的路径在绘制时都会被这个路径裁剪
      * 该路径会继承被裁减对象的变换
@@ -4706,13 +4179,11 @@ Element.prototype = {
      * @readOnly
      */
     clipPath: null,
-
     /**
      * 是否是 Group
      * @type {boolean}
      */
     isGroup: false,
-
     /**
      * Drift element
      * @param  {number} dx dx on the global space
@@ -4727,18 +4198,15 @@ Element.prototype = {
                 dx = 0;
                 break;
         }
-
         var m = this.transform;
         if (!m) {
             m = this.transform = [1, 0, 0, 1, 0, 0];
         }
         m[4] += dx;
         m[5] += dy;
-
         this.decomposeTransform();
         this.dirty(false);
     },
-
     /**
      * Hook before update
      */
@@ -4753,13 +4221,11 @@ Element.prototype = {
     update: function () {
         this.updateTransform();
     },
-
     /**
      * @param  {Function} cb
      * @param  {}   context
      */
     traverse: function (cb, context) {},
-
     /**
      * @protected
      */
@@ -4779,7 +4245,6 @@ Element.prototype = {
             this[key] = value;
         }
     },
-
     /**
      * Hide the element
      */
@@ -4787,7 +4252,6 @@ Element.prototype = {
         this.ignore = true;
         this.__zr && this.__zr.refresh();
     },
-
     /**
      * Show the element
      */
@@ -4795,7 +4259,6 @@ Element.prototype = {
         this.ignore = false;
         this.__zr && this.__zr.refresh();
     },
-
     /**
      * @param {string|Object} key
      * @param {*} value
@@ -4811,12 +4274,9 @@ Element.prototype = {
                 }
             }
         }
-
         this.dirty(false);
-
         return this;
     },
-
     /**
      * @param {module:zrender/graphic/Path} clipPath
      */
@@ -4825,19 +4285,15 @@ Element.prototype = {
         if (zr) {
             clipPath.addSelfToZr(zr);
         }
-
         // Remove previous clip path
         if (this.clipPath && this.clipPath !== clipPath) {
             this.removeClipPath();
         }
-
         this.clipPath = clipPath;
         clipPath.__zr = zr;
         clipPath.__clipTarget = this;
-
         this.dirty(false);
     },
-
     /**
      */
     removeClipPath: function () {
@@ -4846,15 +4302,12 @@ Element.prototype = {
             if (clipPath.__zr) {
                 clipPath.removeSelfFromZr(clipPath.__zr);
             }
-
             clipPath.__zr = null;
             clipPath.__clipTarget = null;
             this.clipPath = null;
-
             this.dirty(false);
         }
     },
-
     /**
      * Add self from zrender instance.
      * Not recursively because it will be invoked when element added to storage.
@@ -4869,12 +4322,10 @@ Element.prototype = {
                 zr.animation.addAnimator(animators[i]);
             }
         }
-
         if (this.clipPath) {
             this.clipPath.addSelfToZr(zr);
         }
     },
-
     /**
      * Remove self from zrender instance.
      * Not recursively because it will be invoked when element added to storage.
@@ -4889,30 +4340,24 @@ Element.prototype = {
                 zr.animation.removeAnimator(animators[i]);
             }
         }
-
         if (this.clipPath) {
             this.clipPath.removeSelfFromZr(zr);
         }
     }
 };
-
 mixin(Element, Animatable);
 mixin(Element, Transformable);
 mixin(Element, Eventful);
-
 /**
  * @module echarts/core/BoundingRect
  */
-
 var v2ApplyTransform = applyTransform;
 var mathMin = Math.min;
 var mathMax = Math.max;
-
 /**
  * @alias module:echarts/core/BoundingRect
  */
 function BoundingRect(x, y, width, height) {
-
     if (width < 0) {
         x = x + width;
         width = -width;
@@ -4921,7 +4366,6 @@ function BoundingRect(x, y, width, height) {
         y = y + height;
         height = -height;
     }
-
     /**
      * @type {number}
      */
@@ -4939,18 +4383,14 @@ function BoundingRect(x, y, width, height) {
      */
     this.height = height;
 }
-
 BoundingRect.prototype = {
-
     constructor: BoundingRect,
-
     /**
      * @param {module:echarts/core/BoundingRect} other
      */
     union: function (other) {
         var x = mathMin(other.x, this.x);
         var y = mathMin(other.y, this.y);
-
         this.width = mathMax(
                 other.x + other.width,
                 this.x + this.width
@@ -4962,7 +4402,6 @@ BoundingRect.prototype = {
         this.x = x;
         this.y = y;
     },
-
     /**
      * @param {Array.<number>} m
      * @methods
@@ -4983,12 +4422,10 @@ BoundingRect.prototype = {
             lt[1] = rt[1] = this.y;
             rb[0] = rt[0] = this.x + this.width;
             rb[1] = lb[1] = this.y + this.height;
-
             v2ApplyTransform(lt, lt, m);
             v2ApplyTransform(rb, rb, m);
             v2ApplyTransform(lb, lb, m);
             v2ApplyTransform(rt, rt, m);
-
             this.x = mathMin(lt[0], rb[0], lb[0], rt[0]);
             this.y = mathMin(lt[1], rb[1], lb[1], rt[1]);
             var maxX = mathMax(lt[0], rb[0], lb[0], rt[0]);
@@ -4997,7 +4434,6 @@ BoundingRect.prototype = {
             this.height = maxY - this.y;
         };
     })(),
-
     /**
      * Calculate matrix of transforming from self to target rect
      * @param  {module:zrender/core/BoundingRect} b
@@ -5007,17 +4443,13 @@ BoundingRect.prototype = {
         var a = this;
         var sx = b.width / a.width;
         var sy = b.height / a.height;
-
         var m = create$1();
-
         // 矩阵右乘
         translate(m, m, [-a.x, -a.y]);
         scale$1(m, m, [sx, sy]);
         translate(m, m, [b.x, b.y]);
-
         return m;
     },
-
     /**
      * @param {(module:echarts/core/BoundingRect|Object)} b
      * @return {boolean}
@@ -5026,26 +4458,21 @@ BoundingRect.prototype = {
         if (!b) {
             return false;
         }
-
         if (!(b instanceof BoundingRect)) {
             // Normalize negative width/height.
             b = BoundingRect.create(b);
         }
-
         var a = this;
         var ax0 = a.x;
         var ax1 = a.x + a.width;
         var ay0 = a.y;
         var ay1 = a.y + a.height;
-
         var bx0 = b.x;
         var bx1 = b.x + b.width;
         var by0 = b.y;
         var by1 = b.y + b.height;
-
         return !(ax1 < bx0 || bx1 < ax0 || ay1 < by0 || by1 < ay0);
     },
-
     contain: function (x, y) {
         var rect = this;
         return x >= rect.x
@@ -5053,14 +4480,12 @@ BoundingRect.prototype = {
             && y >= rect.y
             && y <= (rect.y + rect.height);
     },
-
     /**
      * @return {module:echarts/core/BoundingRect}
      */
     clone: function () {
         return new BoundingRect(this.x, this.y, this.width, this.height);
     },
-
     /**
      * Copy from another rect
      */
@@ -5070,7 +4495,6 @@ BoundingRect.prototype = {
         this.width = other.width;
         this.height = other.height;
     },
-
     plain: function () {
         return {
             x: this.x,
@@ -5080,7 +4504,6 @@ BoundingRect.prototype = {
         };
     }
 };
-
 /**
  * @param {Object|module:zrender/core/BoundingRect} rect
  * @param {number} rect.x
@@ -5092,7 +4515,6 @@ BoundingRect.prototype = {
 BoundingRect.create = function (rect) {
     return new BoundingRect(rect.x, rect.y, rect.width, rect.height);
 };
-
 /**
  * Group是一个容器，可以插入子节点，Group的变换也会被应用到子节点上
  * @module zrender/graphic/Group
@@ -5111,7 +4533,6 @@ BoundingRect.create = function (rect) {
  *     }));
  *     zr.add(g);
  */
-
 /**
  * @alias module:zrender/graphic/Group
  * @constructor
@@ -5119,35 +4540,24 @@ BoundingRect.create = function (rect) {
  * @extends module:zrender/mixin/Eventful
  */
 var Group = function (opts) {
-
     opts = opts || {};
-
     Element.call(this, opts);
-
     for (var key in opts) {
         if (opts.hasOwnProperty(key)) {
             this[key] = opts[key];
         }
     }
-
     this._children = [];
-
     this.__storage = null;
-
     this.__dirty = true;
 };
-
 Group.prototype = {
-
     constructor: Group,
-
     isGroup: true,
-
     /**
      * @type {string}
      */
     type: 'group',
-
     /**
      * 所有子孙元素是否响应鼠标事件
      * @name module:/zrender/container/Group#silent
@@ -5155,14 +4565,12 @@ Group.prototype = {
      * @default false
      */
     silent: false,
-
     /**
      * @return {Array.<module:zrender/Element>}
      */
     children: function () {
         return this._children.slice();
     },
-
     /**
      * 获取指定 index 的儿子节点
      * @param  {number} idx
@@ -5171,7 +4579,6 @@ Group.prototype = {
     childAt: function (idx) {
         return this._children[idx];
     },
-
     /**
      * 获取指定名字的儿子节点
      * @param  {string} name
@@ -5185,29 +4592,23 @@ Group.prototype = {
             }
             }
     },
-
     /**
      * @return {number}
      */
     childCount: function () {
         return this._children.length;
     },
-
     /**
      * 添加子节点到最后
      * @param {module:zrender/Element} child
      */
     add: function (child) {
         if (child && child !== this && child.parent !== this) {
-
             this._children.push(child);
-
             this._doAdd(child);
         }
-
         return this;
     },
-
     /**
      * 添加子节点在 nextSibling 之前
      * @param {module:zrender/Element} child
@@ -5216,40 +4617,30 @@ Group.prototype = {
     addBefore: function (child, nextSibling) {
         if (child && child !== this && child.parent !== this
             && nextSibling && nextSibling.parent === this) {
-
             var children = this._children;
             var idx = children.indexOf(nextSibling);
-
             if (idx >= 0) {
                 children.splice(idx, 0, child);
                 this._doAdd(child);
             }
         }
-
         return this;
     },
-
     _doAdd: function (child) {
         if (child.parent) {
             child.parent.remove(child);
         }
-
         child.parent = this;
-
         var storage = this.__storage;
         var zr = this.__zr;
         if (storage && storage !== child.__storage) {
-
             storage.addToStorage(child);
-
             if (child instanceof Group) {
                 child.addChildrenToStorage(storage);
             }
         }
-
         zr && zr.refresh();
     },
-
     /**
      * 移除子节点
      * @param {module:zrender/Element} child
@@ -5258,29 +4649,21 @@ Group.prototype = {
         var zr = this.__zr;
         var storage = this.__storage;
         var children = this._children;
-
         var idx = indexOf(children, child);
         if (idx < 0) {
             return this;
         }
         children.splice(idx, 1);
-
         child.parent = null;
-
         if (storage) {
-
             storage.delFromStorage(child);
-
             if (child instanceof Group) {
                 child.delChildrenFromStorage(storage);
             }
         }
-
         zr && zr.refresh();
-
         return this;
     },
-
     /**
      * 移除所有子节点
      */
@@ -5300,10 +4683,8 @@ Group.prototype = {
             child.parent = null;
         }
         children.length = 0;
-
         return this;
     },
-
     /**
      * 遍历所有子节点
      * @param  {Function} cb
@@ -5317,7 +4698,6 @@ Group.prototype = {
         }
         return this;
     },
-
     /**
      * 深度优先遍历所有子孙节点
      * @param  {Function} cb
@@ -5327,14 +4707,12 @@ Group.prototype = {
         for (var i = 0; i < this._children.length; i++) {
             var child = this._children[i];
             cb.call(context, child);
-
             if (child.type === 'group') {
                 child.traverse(cb, context);
             }
         }
         return this;
     },
-
     addChildrenToStorage: function (storage) {
         for (var i = 0; i < this._children.length; i++) {
             var child = this._children[i];
@@ -5344,7 +4722,6 @@ Group.prototype = {
             }
         }
     },
-
     delChildrenFromStorage: function (storage) {
         for (var i = 0; i < this._children.length; i++) {
             var child = this._children[i];
@@ -5354,13 +4731,11 @@ Group.prototype = {
             }
         }
     },
-
     dirty: function () {
         this.__dirty = true;
         this.__zr && this.__zr.refresh();
         return this;
     },
-
     /**
      * @return {module:zrender/core/BoundingRect}
      */
@@ -5370,13 +4745,11 @@ Group.prototype = {
         var tmpRect = new BoundingRect(0, 0, 0, 0);
         var children = includeChildren || this._children;
         var tmpMat = [];
-
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
             if (child.ignore || child.invisible) {
                 continue;
             }
-
             var childRect = child.getBoundingRect();
             var transform = child.getLocalTransform(tmpMat);
             // TODO
@@ -5400,37 +4773,27 @@ Group.prototype = {
         return rect || tmpRect;
     }
 };
-
 inherits(Group, Element);
-
 // https://github.com/mziccard/node-timsort
 var DEFAULT_MIN_MERGE = 32;
-
 var DEFAULT_MIN_GALLOPING = 7;
-
 function minRunLength(n) {
     var r = 0;
-
     while (n >= DEFAULT_MIN_MERGE) {
         r |= n & 1;
         n >>= 1;
     }
-
     return n + r;
 }
-
 function makeAscendingRun(array, lo, hi, compare) {
     var runHi = lo + 1;
-
     if (runHi === hi) {
         return 1;
     }
-
     if (compare(array[runHi++], array[lo]) < 0) {
         while (runHi < hi && compare(array[runHi], array[runHi - 1]) < 0) {
             runHi++;
         }
-
         reverseRun(array, lo, runHi);
     }
     else {
@@ -5438,35 +4801,27 @@ function makeAscendingRun(array, lo, hi, compare) {
             runHi++;
         }
     }
-
     return runHi - lo;
 }
-
 function reverseRun(array, lo, hi) {
     hi--;
-
     while (lo < hi) {
         var t = array[lo];
         array[lo++] = array[hi];
         array[hi--] = t;
     }
 }
-
 function binaryInsertionSort(array, lo, hi, start, compare) {
     if (start === lo) {
         start++;
     }
-
     for (; start < hi; start++) {
         var pivot = array[start];
-
         var left = lo;
         var right = start;
         var mid;
-
         while (left < right) {
             mid = left + right >>> 1;
-
             if (compare(pivot, array[mid]) < 0) {
                 right = mid;
             }
@@ -5474,16 +4829,12 @@ function binaryInsertionSort(array, lo, hi, start, compare) {
                 left = mid + 1;
             }
         }
-
         var n = start - left;
-
         switch (n) {
             case 3:
                 array[left + 3] = array[left + 2];
-
             case 2:
                 array[left + 2] = array[left + 1];
-
             case 1:
                 array[left + 1] = array[left];
                 break;
@@ -5493,32 +4844,25 @@ function binaryInsertionSort(array, lo, hi, start, compare) {
                     n--;
                 }
         }
-
         array[left] = pivot;
     }
 }
-
 function gallopLeft(value, array, start, length, hint, compare) {
     var lastOffset = 0;
     var maxOffset = 0;
     var offset = 1;
-
     if (compare(value, array[start + hint]) > 0) {
         maxOffset = length - hint;
-
         while (offset < maxOffset && compare(value, array[start + hint + offset]) > 0) {
             lastOffset = offset;
             offset = (offset << 1) + 1;
-
             if (offset <= 0) {
                 offset = maxOffset;
             }
         }
-
         if (offset > maxOffset) {
             offset = maxOffset;
         }
-
         lastOffset += hint;
         offset += hint;
     }
@@ -5527,7 +4871,6 @@ function gallopLeft(value, array, start, length, hint, compare) {
         while (offset < maxOffset && compare(value, array[start + hint - offset]) <= 0) {
             lastOffset = offset;
             offset = (offset << 1) + 1;
-
             if (offset <= 0) {
                 offset = maxOffset;
             }
@@ -5535,16 +4878,13 @@ function gallopLeft(value, array, start, length, hint, compare) {
         if (offset > maxOffset) {
             offset = maxOffset;
         }
-
         var tmp = lastOffset;
         lastOffset = hint - offset;
         offset = hint - tmp;
     }
-
     lastOffset++;
     while (lastOffset < offset) {
         var m = lastOffset + (offset - lastOffset >>> 1);
-
         if (compare(value, array[start + m]) > 0) {
             lastOffset = m + 1;
         }
@@ -5554,57 +4894,44 @@ function gallopLeft(value, array, start, length, hint, compare) {
     }
     return offset;
 }
-
 function gallopRight(value, array, start, length, hint, compare) {
     var lastOffset = 0;
     var maxOffset = 0;
     var offset = 1;
-
     if (compare(value, array[start + hint]) < 0) {
         maxOffset = hint + 1;
-
         while (offset < maxOffset && compare(value, array[start + hint - offset]) < 0) {
             lastOffset = offset;
             offset = (offset << 1) + 1;
-
             if (offset <= 0) {
                 offset = maxOffset;
             }
         }
-
         if (offset > maxOffset) {
             offset = maxOffset;
         }
-
         var tmp = lastOffset;
         lastOffset = hint - offset;
         offset = hint - tmp;
     }
     else {
         maxOffset = length - hint;
-
         while (offset < maxOffset && compare(value, array[start + hint + offset]) >= 0) {
             lastOffset = offset;
             offset = (offset << 1) + 1;
-
             if (offset <= 0) {
                 offset = maxOffset;
             }
         }
-
         if (offset > maxOffset) {
             offset = maxOffset;
         }
-
         lastOffset += hint;
         offset += hint;
     }
-
     lastOffset++;
-
     while (lastOffset < offset) {
         var m = lastOffset + (offset - lastOffset >>> 1);
-
         if (compare(value, array[start + m]) < 0) {
             offset = m;
         }
@@ -5612,31 +4939,24 @@ function gallopRight(value, array, start, length, hint, compare) {
             lastOffset = m + 1;
         }
     }
-
     return offset;
 }
-
 function TimSort(array, compare) {
     var minGallop = DEFAULT_MIN_GALLOPING;
     var runStart;
     var runLength;
     var stackSize = 0;
-
     var tmp = [];
-
     runStart = [];
     runLength = [];
-
     function pushRun(_runStart, _runLength) {
         runStart[stackSize] = _runStart;
         runLength[stackSize] = _runLength;
         stackSize += 1;
     }
-
     function mergeRuns() {
         while (stackSize > 1) {
             var n = stackSize - 2;
-
             if (n >= 1 && runLength[n - 1] <= runLength[n] + runLength[n + 1] || n >= 2 && runLength[n - 2] <= runLength[n] + runLength[n - 1]) {
                 if (runLength[n - 1] < runLength[n + 1]) {
                     n--;
@@ -5648,48 +4968,36 @@ function TimSort(array, compare) {
             mergeAt(n);
         }
     }
-
     function forceMergeRuns() {
         while (stackSize > 1) {
             var n = stackSize - 2;
-
             if (n > 0 && runLength[n - 1] < runLength[n + 1]) {
                 n--;
             }
-
             mergeAt(n);
         }
     }
-
     function mergeAt(i) {
         var start1 = runStart[i];
         var length1 = runLength[i];
         var start2 = runStart[i + 1];
         var length2 = runLength[i + 1];
-
         runLength[i] = length1 + length2;
-
         if (i === stackSize - 3) {
             runStart[i + 1] = runStart[i + 2];
             runLength[i + 1] = runLength[i + 2];
         }
-
         stackSize--;
-
         var k = gallopRight(array[start2], array, start1, length1, 0, compare);
         start1 += k;
         length1 -= k;
-
         if (length1 === 0) {
             return;
         }
-
         length2 = gallopLeft(array[start1 + length1 - 1], array, start2, length2, length2 - 1, compare);
-
         if (length2 === 0) {
             return;
         }
-
         if (length1 <= length2) {
             mergeLow(start1, length1, start2, length2);
         }
@@ -5697,27 +5005,21 @@ function TimSort(array, compare) {
             mergeHigh(start1, length1, start2, length2);
         }
     }
-
     function mergeLow(start1, length1, start2, length2) {
         var i = 0;
-
         for (i = 0; i < length1; i++) {
             tmp[i] = array[start1 + i];
         }
-
         var cursor1 = 0;
         var cursor2 = start2;
         var dest = start1;
-
         array[dest++] = array[cursor2++];
-
         if (--length2 === 0) {
             for (i = 0; i < length1; i++) {
                 array[dest + i] = tmp[cursor1 + i];
             }
             return;
         }
-
         if (length1 === 1) {
             for (i = 0; i < length2; i++) {
                 array[dest + i] = array[cursor2 + i];
@@ -5725,21 +5027,17 @@ function TimSort(array, compare) {
             array[dest + length2] = tmp[cursor1];
             return;
         }
-
         var _minGallop = minGallop;
         var count1, count2, exit;
-
         while (1) {
             count1 = 0;
             count2 = 0;
             exit = false;
-
             do {
                 if (compare(array[cursor2], tmp[cursor1]) < 0) {
                     array[dest++] = array[cursor2++];
                     count2++;
                     count1 = 0;
-
                     if (--length2 === 0) {
                         exit = true;
                         break;
@@ -5755,19 +5053,15 @@ function TimSort(array, compare) {
                     }
                 }
             } while ((count1 | count2) < _minGallop);
-
             if (exit) {
                 break;
             }
-
             do {
                 count1 = gallopRight(array[cursor2], tmp, cursor1, length1, 0, compare);
-
                 if (count1 !== 0) {
                     for (i = 0; i < count1; i++) {
                         array[dest + i] = tmp[cursor1 + i];
                     }
-
                     dest += count1;
                     cursor1 += count1;
                     length1 -= count1;
@@ -5776,55 +5070,41 @@ function TimSort(array, compare) {
                         break;
                     }
                 }
-
                 array[dest++] = array[cursor2++];
-
                 if (--length2 === 0) {
                     exit = true;
                     break;
                 }
-
                 count2 = gallopLeft(tmp[cursor1], array, cursor2, length2, 0, compare);
-
                 if (count2 !== 0) {
                     for (i = 0; i < count2; i++) {
                         array[dest + i] = array[cursor2 + i];
                     }
-
                     dest += count2;
                     cursor2 += count2;
                     length2 -= count2;
-
                     if (length2 === 0) {
                         exit = true;
                         break;
                     }
                 }
                 array[dest++] = tmp[cursor1++];
-
                 if (--length1 === 1) {
                     exit = true;
                     break;
                 }
-
                 _minGallop--;
             } while (count1 >= DEFAULT_MIN_GALLOPING || count2 >= DEFAULT_MIN_GALLOPING);
-
             if (exit) {
                 break;
             }
-
             if (_minGallop < 0) {
                 _minGallop = 0;
             }
-
             _minGallop += 2;
         }
-
         minGallop = _minGallop;
-
         minGallop < 1 && (minGallop = 1);
-
         if (length1 === 1) {
             for (i = 0; i < length2; i++) {
                 array[dest + i] = array[cursor2 + i];
@@ -5841,53 +5121,40 @@ function TimSort(array, compare) {
             }
         }
     }
-
     function mergeHigh(start1, length1, start2, length2) {
         var i = 0;
-
         for (i = 0; i < length2; i++) {
             tmp[i] = array[start2 + i];
         }
-
         var cursor1 = start1 + length1 - 1;
         var cursor2 = length2 - 1;
         var dest = start2 + length2 - 1;
         var customCursor = 0;
         var customDest = 0;
-
         array[dest--] = array[cursor1--];
-
         if (--length1 === 0) {
             customCursor = dest - (length2 - 1);
-
             for (i = 0; i < length2; i++) {
                 array[customCursor + i] = tmp[i];
             }
-
             return;
         }
-
         if (length2 === 1) {
             dest -= length1;
             cursor1 -= length1;
             customDest = dest + 1;
             customCursor = cursor1 + 1;
-
             for (i = length1 - 1; i >= 0; i--) {
                 array[customDest + i] = array[customCursor + i];
             }
-
             array[dest] = tmp[cursor2];
             return;
         }
-
         var _minGallop = minGallop;
-
         while (true) {
             var count1 = 0;
             var count2 = 0;
             var exit = false;
-
             do {
                 if (compare(tmp[cursor2], array[cursor1]) < 0) {
                     array[dest--] = array[cursor1--];
@@ -5908,94 +5175,72 @@ function TimSort(array, compare) {
                     }
                 }
             } while ((count1 | count2) < _minGallop);
-
             if (exit) {
                 break;
             }
-
             do {
                 count1 = length1 - gallopRight(tmp[cursor2], array, start1, length1, length1 - 1, compare);
-
                 if (count1 !== 0) {
                     dest -= count1;
                     cursor1 -= count1;
                     length1 -= count1;
                     customDest = dest + 1;
                     customCursor = cursor1 + 1;
-
                     for (i = count1 - 1; i >= 0; i--) {
                         array[customDest + i] = array[customCursor + i];
                     }
-
                     if (length1 === 0) {
                         exit = true;
                         break;
                     }
                 }
-
                 array[dest--] = tmp[cursor2--];
-
                 if (--length2 === 1) {
                     exit = true;
                     break;
                 }
-
                 count2 = length2 - gallopLeft(array[cursor1], tmp, 0, length2, length2 - 1, compare);
-
                 if (count2 !== 0) {
                     dest -= count2;
                     cursor2 -= count2;
                     length2 -= count2;
                     customDest = dest + 1;
                     customCursor = cursor2 + 1;
-
                     for (i = 0; i < count2; i++) {
                         array[customDest + i] = tmp[customCursor + i];
                     }
-
                     if (length2 <= 1) {
                         exit = true;
                         break;
                     }
                 }
-
                 array[dest--] = array[cursor1--];
-
                 if (--length1 === 0) {
                     exit = true;
                     break;
                 }
-
                 _minGallop--;
             } while (count1 >= DEFAULT_MIN_GALLOPING || count2 >= DEFAULT_MIN_GALLOPING);
-
             if (exit) {
                 break;
             }
-
             if (_minGallop < 0) {
                 _minGallop = 0;
             }
-
             _minGallop += 2;
         }
-
         minGallop = _minGallop;
-
         if (minGallop < 1) {
             minGallop = 1;
         }
-
         if (length2 === 1) {
             dest -= length1;
             cursor1 -= length1;
             customDest = dest + 1;
             customCursor = cursor1 + 1;
-
             for (i = length1 - 1; i >= 0; i--) {
                 array[customDest + i] = array[customCursor + i];
             }
-
             array[dest] = tmp[cursor2];
         }
         else if (length2 === 0) {
@@ -6009,12 +5254,10 @@ function TimSort(array, compare) {
             }
         }
     }
-
     this.mergeRuns = mergeRuns;
     this.forceMergeRuns = forceMergeRuns;
     this.pushRun = pushRun;
 }
-
 function sort(array, compare, lo, hi) {
     if (!lo) {
         lo = 0;
@@ -6022,25 +5265,18 @@ function sort(array, compare, lo, hi) {
     if (!hi) {
         hi = array.length;
     }
-
     var remaining = hi - lo;
-
     if (remaining < 2) {
         return;
     }
-
     var runLength = 0;
-
     if (remaining < DEFAULT_MIN_MERGE) {
         runLength = makeAscendingRun(array, lo, hi, compare);
         binaryInsertionSort(array, lo, hi, lo + runLength, compare);
         return;
     }
-
     var ts = new TimSort(array, compare);
-
     var minRun = minRunLength(remaining);
-
     do {
         runLength = makeAscendingRun(array, lo, hi, compare);
         if (runLength < minRun) {
@@ -6048,21 +5284,16 @@ function sort(array, compare, lo, hi) {
             if (force > minRun) {
                 force = minRun;
             }
-
             binaryInsertionSort(array, lo, lo + force, lo + runLength, compare);
             runLength = force;
         }
-
         ts.pushRun(lo, runLength);
         ts.mergeRuns();
-
         remaining -= runLength;
         lo += runLength;
     } while (remaining !== 0);
-
     ts.forceMergeRuns();
 }
-
 // Use timsort because in most case elements are partially sorted
 // https://jsfiddle.net/pissang/jr4x7mdm/8/
 function shapeCompareFunc(a, b) {
@@ -6087,16 +5318,11 @@ function shapeCompareFunc(a, b) {
  */
 var Storage = function () { // jshint ignore:line
     this._roots = [];
-
     this._displayList = [];
-
     this._displayListLen = 0;
 };
-
 Storage.prototype = {
-
     constructor: Storage,
-
     /**
      * @param  {Function} cb
      *
@@ -6106,7 +5332,6 @@ Storage.prototype = {
             this._roots[i].traverse(cb, context);
         }
     },
-
     /**
      * 返回所有图形的绘制队列
      * @param {boolean} [update=false] 是否在返回前更新该数组
@@ -6122,7 +5347,6 @@ Storage.prototype = {
         }
         return this._displayList;
     },
-
     /**
      * 更新图形的绘制队列。
      * 每次绘制前都会调用，该方法会先深度优先遍历整个树，更新所有Group和Shape的变换并且把所有可见的Shape保存到数组中，
@@ -6131,37 +5355,25 @@ Storage.prototype = {
      */
     updateDisplayList: function (includeIgnore) {
         this._displayListLen = 0;
-
         var roots = this._roots;
         var displayList = this._displayList;
         for (var i = 0, len = roots.length; i < len; i++) {
             this._updateAndAddDisplayable(roots[i], null, includeIgnore);
         }
-
         displayList.length = this._displayListLen;
-
         env$1.canvasSupported && sort(displayList, shapeCompareFunc);
     },
-
     _updateAndAddDisplayable: function (el, clipPaths, includeIgnore) {
-
         if (el.ignore && !includeIgnore) {
             return;
         }
-
         el.beforeUpdate();
-
         if (el.__dirty) {
-
             el.update();
-
         }
-
         el.afterUpdate();
-
         var userSetClipPath = el.clipPath;
         if (userSetClipPath) {
-
             // FIXME 效率影响
             if (clipPaths) {
                 clipPaths = clipPaths.slice();
@@ -6169,7 +5381,6 @@ Storage.prototype = {
             else {
                 clipPaths = [];
             }
-
             var currentClipPath = userSetClipPath;
             var parentClipPath = el;
             // Recursively add clip path
@@ -6177,40 +5388,30 @@ Storage.prototype = {
                 // clipPath 的变换是基于使用这个 clipPath 的元素
                 currentClipPath.parent = parentClipPath;
                 currentClipPath.updateTransform();
-
                 clipPaths.push(currentClipPath);
-
                 parentClipPath = currentClipPath;
                 currentClipPath = currentClipPath.clipPath;
             }
         }
-
         if (el.isGroup) {
             var children = el._children;
-
             for (var i = 0; i < children.length; i++) {
                 var child = children[i];
-
                 // Force to mark as dirty if group is dirty
                 // FIXME __dirtyPath ?
                 if (el.__dirty) {
                     child.__dirty = true;
                 }
-
                 this._updateAndAddDisplayable(child, clipPaths, includeIgnore);
             }
-
             // Mark group clean here
             el.__dirty = false;
-
         }
         else {
             el.__clipPaths = clipPaths;
-
             this._displayList[this._displayListLen++] = el;
         }
     },
-
     /**
      * 添加图形(Shape)或者组(Group)到根节点
      * @param {module:zrender/Element} el
@@ -6219,15 +5420,12 @@ Storage.prototype = {
         if (el.__storage === this) {
             return;
         }
-
         if (el instanceof Group) {
             el.addChildrenToStorage(this);
         }
-
         this.addToStorage(el);
         this._roots.push(el);
     },
-
     /**
      * 删除指定的图形(Shape)或者组(Group)
      * @param {string|Array.<string>} [el] 如果为空清空整个Storage
@@ -6241,22 +5439,17 @@ Storage.prototype = {
                     root.delChildrenFromStorage(this);
                 }
             }
-
             this._roots = [];
             this._displayList = [];
             this._displayListLen = 0;
-
             return;
         }
-
         if (el instanceof Array) {
             for (var i = 0, l = el.length; i < l; i++) {
                 this.delRoot(el[i]);
             }
             return;
         }
-
-
         var idx = indexOf(this._roots, el);
         if (idx >= 0) {
             this.delFromStorage(el);
@@ -6266,7 +5459,6 @@ Storage.prototype = {
             }
         }
     },
-
     addToStorage: function (el) {
         if (el) {
             el.__storage = this;
@@ -6274,15 +5466,12 @@ Storage.prototype = {
         }
         return this;
     },
-
     delFromStorage: function (el) {
         if (el) {
             el.__storage = null;
         }
-
         return this;
     },
-
     /**
      * 清空并且释放Storage
      */
@@ -6290,10 +5479,8 @@ Storage.prototype = {
         this._renderList =
         this._roots = null;
     },
-
     displayableSortFunc: shapeCompareFunc
 };
-
 var SHADOW_PROPS = {
     'shadowBlur': 1,
     'shadowOffsetX': 1,
@@ -6305,64 +5492,51 @@ var SHADOW_PROPS = {
     'textBoxShadowOffsetX': 1,
     'textBoxShadowOffsetY': 1
 };
-
 var fixShadow = function (ctx, propName, value) {
     if (SHADOW_PROPS.hasOwnProperty(propName)) {
         return value *= ctx.dpr;
     }
     return value;
 };
-
 var ContextCachedBy = {
     NONE: 0,
     STYLE_BIND: 1,
     PLAIN_TEXT: 2
 };
-
 // Avoid confused with 0/false.
 var WILL_BE_RESTORED = 9;
-
 var STYLE_COMMON_PROPS = [
     ['shadowBlur', 0], ['shadowOffsetX', 0], ['shadowOffsetY', 0], ['shadowColor', '#000'],
     ['lineCap', 'butt'], ['lineJoin', 'miter'], ['miterLimit', 10]
 ];
-
 // var SHADOW_PROPS = STYLE_COMMON_PROPS.slice(0, 4);
 // var LINE_PROPS = STYLE_COMMON_PROPS.slice(4);
-
 var Style = function (opts) {
     this.extendFrom(opts, false);
 };
-
 function createLinearGradient(ctx, obj, rect) {
     var x = obj.x == null ? 0 : obj.x;
     var x2 = obj.x2 == null ? 1 : obj.x2;
     var y = obj.y == null ? 0 : obj.y;
     var y2 = obj.y2 == null ? 0 : obj.y2;
-
     if (!obj.global) {
         x = x * rect.width + rect.x;
         x2 = x2 * rect.width + rect.x;
         y = y * rect.height + rect.y;
         y2 = y2 * rect.height + rect.y;
     }
-
     // Fix NaN when rect is Infinity
     x = isNaN(x) ? 0 : x;
     x2 = isNaN(x2) ? 1 : x2;
     y = isNaN(y) ? 0 : y;
     y2 = isNaN(y2) ? 0 : y2;
-
     var canvasGradient = ctx.createLinearGradient(x, y, x2, y2);
-
     return canvasGradient;
 }
-
 function createRadialGradient(ctx, obj, rect) {
     var width = rect.width;
     var height = rect.height;
     var min = Math.min(width, height);
-
     var x = obj.x == null ? 0.5 : obj.x;
     var y = obj.y == null ? 0.5 : obj.y;
     var r = obj.r == null ? 0.5 : obj.r;
@@ -6371,85 +5545,66 @@ function createRadialGradient(ctx, obj, rect) {
         y = y * height + rect.y;
         r = r * min;
     }
-
     var canvasGradient = ctx.createRadialGradient(x, y, 0, x, y, r);
-
     return canvasGradient;
 }
-
-
 Style.prototype = {
-
     constructor: Style,
-
     /**
      * @type {string}
      */
     fill: '#000',
-
     /**
      * @type {string}
      */
     stroke: null,
-
     /**
      * @type {number}
      */
     opacity: 1,
-
     /**
      * @type {number}
      */
     fillOpacity: null,
-
     /**
      * @type {number}
      */
     strokeOpacity: null,
-
     /**
      * @type {Array.<number>}
      */
     lineDash: null,
-
     /**
      * @type {number}
      */
     lineDashOffset: 0,
-
     /**
      * @type {number}
      */
     shadowBlur: 0,
-
     /**
      * @type {number}
      */
     shadowOffsetX: 0,
-
     /**
      * @type {number}
      */
     shadowOffsetY: 0,
-
     /**
      * @type {number}
      */
     lineWidth: 1,
-
     /**
      * If stroke ignore scale
      * @type {Boolean}
      */
     strokeNoScale: false,
-
     // Bounding rect text configuration
     // Not affected by element transform
     /**
      * @type {string}
      */
     text: null,
-
     /**
      * If `fontSize` or `fontFamily` exists, `font` will be reset by
      * `fontSize`, `fontStyle`, `fontWeight`, `fontFamily`.
@@ -6458,66 +5613,55 @@ Style.prototype = {
      * @type {string}
      */
     font: null,
-
     /**
      * The same as font. Use font please.
      * @deprecated
      * @type {string}
      */
     textFont: null,
-
     /**
      * It helps merging respectively, rather than parsing an entire font string.
      * @type {string}
      */
     fontStyle: null,
-
     /**
      * It helps merging respectively, rather than parsing an entire font string.
      * @type {string}
      */
     fontWeight: null,
-
     /**
      * It helps merging respectively, rather than parsing an entire font string.
      * Should be 12 but not '12px'.
      * @type {number}
      */
     fontSize: null,
-
     /**
      * It helps merging respectively, rather than parsing an entire font string.
      * @type {string}
      */
     fontFamily: null,
-
     /**
      * Reserved for special functinality, like 'hr'.
      * @type {string}
      */
     textTag: null,
-
     /**
      * @type {string}
      */
     textFill: '#000',
-
     /**
      * @type {string}
      */
     textStroke: null,
-
     /**
      * @type {number}
      */
     textWidth: null,
-
     /**
      * Only for textBackground.
      * @type {number}
      */
     textHeight: null,
-
     /**
      * textStroke may be set as some color as a default
      * value in upper applicaion, where the default value
@@ -6526,12 +5670,10 @@ Style.prototype = {
      * @type {number}
      */
     textStrokeWidth: 0,
-
     /**
      * @type {number}
      */
     textLineHeight: null,
-
     /**
      * 'inside', 'left', 'right', 'top', 'bottom'
      * [x, y]
@@ -6540,87 +5682,71 @@ Style.prototype = {
      * @default 'inside'
      */
     textPosition: 'inside',
-
     /**
      * If not specified, use the boundingRect of a `displayable`.
      * @type {Object}
      */
     textRect: null,
-
     /**
      * [x, y]
      * @type {Array.<number>}
      */
     textOffset: null,
-
     /**
      * @type {string}
      */
     textAlign: null,
-
     /**
      * @type {string}
      */
     textVerticalAlign: null,
-
     /**
      * @type {number}
      */
     textDistance: 5,
-
     /**
      * @type {string}
      */
     textShadowColor: 'transparent',
-
     /**
      * @type {number}
      */
     textShadowBlur: 0,
-
     /**
      * @type {number}
      */
     textShadowOffsetX: 0,
-
     /**
      * @type {number}
      */
     textShadowOffsetY: 0,
-
     /**
      * @type {string}
      */
     textBoxShadowColor: 'transparent',
-
     /**
      * @type {number}
      */
     textBoxShadowBlur: 0,
-
     /**
      * @type {number}
      */
     textBoxShadowOffsetX: 0,
-
     /**
      * @type {number}
      */
     textBoxShadowOffsetY: 0,
-
     /**
      * Whether transform text.
      * Only useful in Path and Image element
      * @type {boolean}
      */
     transformText: false,
-
     /**
      * Text rotate around position of Path or Image
      * Only useful in Path and Image element and transformText is false.
      */
     textRotation: 0,
-
     /**
      * Text origin of text rotation, like [10, 40].
      * Based on x, y of rect.
@@ -6630,51 +5756,42 @@ Style.prototype = {
      * @type {string|Array.<number>}
      */
     textOrigin: null,
-
     /**
      * @type {string}
      */
     textBackgroundColor: null,
-
     /**
      * @type {string}
      */
     textBorderColor: null,
-
     /**
      * @type {number}
      */
     textBorderWidth: 0,
-
     /**
      * @type {number}
      */
     textBorderRadius: 0,
-
     /**
      * Can be `2` or `[2, 4]` or `[2, 3, 4, 5]`
      * @type {number|Array.<number>}
      */
     textPadding: null,
-
     /**
      * Text styles for rich text.
      * @type {Object}
      */
     rich: null,
-
     /**
      * {outerWidth, outerHeight, ellipsis, placeholder}
      * @type {Object}
      */
     truncate: null,
-
     /**
      * https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
      * @type {string}
      */
     blend: null,
-
     /**
      * @param {CanvasRenderingContext2D} ctx
      */
@@ -6684,20 +5801,16 @@ Style.prototype = {
         // If no prevStyle, it means first draw.
         // Only apply cache if the last time cachced by this function.
         var notCheckCache = !prevStyle || ctx.__attrCachedBy !== ContextCachedBy.STYLE_BIND;
-
         ctx.__attrCachedBy = ContextCachedBy.STYLE_BIND;
-
         for (var i = 0; i < STYLE_COMMON_PROPS.length; i++) {
             var prop = STYLE_COMMON_PROPS[i];
             var styleName = prop[0];
-
             if (notCheckCache || style[styleName] !== prevStyle[styleName]) {
                 // FIXME Invalid property value will cause style leak from previous element.
                 ctx[styleName] =
                     fixShadow(ctx, styleName, style[styleName] || prop[1]);
             }
         }
-
         if ((notCheckCache || style.fill !== prevStyle.fill)) {
             ctx.fillStyle = style.fill;
         }
@@ -6707,7 +5820,6 @@ Style.prototype = {
         if ((notCheckCache || style.opacity !== prevStyle.opacity)) {
             ctx.globalAlpha = style.opacity == null ? 1 : style.opacity;
         }
-
         if ((notCheckCache || style.blend !== prevStyle.blend)) {
             ctx.globalCompositeOperation = style.blend || 'source-over';
         }
@@ -6718,17 +5830,14 @@ Style.prototype = {
             );
         }
     },
-
     hasFill: function () {
         var fill = this.fill;
         return fill != null && fill !== 'none';
     },
-
     hasStroke: function () {
         var stroke = this.stroke;
         return stroke != null && stroke !== 'none' && this.lineWidth > 0;
     },
-
     /**
      * Extend from other style
      * @param {zrender/graphic/Style} otherStyle
@@ -6753,7 +5862,6 @@ Style.prototype = {
             }
         }
     },
-
     /**
      * Batch setting style with a given object
      * @param {Object|string} obj
@@ -6767,7 +5875,6 @@ Style.prototype = {
             this.extendFrom(obj, true);
         }
     },
-
     /**
      * Clone
      * @return {zrender/graphic/Style} [description]
@@ -6777,7 +5884,6 @@ Style.prototype = {
         newStyle.extendFrom(this, true);
         return newStyle;
     },
-
     getGradient: function (ctx, obj, rect) {
         var method = obj.type === 'radial' ? createRadialGradient : createLinearGradient;
         var canvasGradient = method(ctx, obj, rect);
@@ -6789,9 +5895,7 @@ Style.prototype = {
         }
         return canvasGradient;
     }
-
 };
-
 var styleProto = Style.prototype;
 for (var i = 0; i < STYLE_COMMON_PROPS.length; i++) {
     var prop = STYLE_COMMON_PROPS[i];
@@ -6799,34 +5903,26 @@ for (var i = 0; i < STYLE_COMMON_PROPS.length; i++) {
         styleProto[prop[0]] = prop[1];
     }
 }
-
 // Provide for others
 Style.getGradient = styleProto.getGradient;
-
 var Pattern = function (image, repeat) {
     // Should do nothing more in this constructor. Because gradient can be
     // declard by `color: {image: ...}`, where this constructor will not be called.
-
     this.image = image;
     this.repeat = repeat;
-
     // Can be cloned
     this.type = 'pattern';
 };
-
 Pattern.prototype.getCanvasPattern = function (ctx) {
     return ctx.createPattern(this.image, this.repeat || 'repeat');
 };
-
 /**
  * @module zrender/Layer
  * @author pissang(https://www.github.com/pissang)
  */
-
 function returnFalse() {
     return false;
 }
-
 /**
  * 创建dom
  *
@@ -6839,7 +5935,6 @@ function createDom(id, painter, dpr) {
     var newDom = createCanvas();
     var width = painter.getWidth();
     var height = painter.getHeight();
-
     var newDomStyle = newDom.style;
     if (newDomStyle) {  // In node or some other non-browser environment
         newDomStyle.position = 'absolute';
@@ -6847,16 +5942,12 @@ function createDom(id, painter, dpr) {
         newDomStyle.top = 0;
         newDomStyle.width = width + 'px';
         newDomStyle.height = height + 'px';
-
         newDom.setAttribute('data-zr-dom-id', id);
     }
-
     newDom.width = width * dpr;
     newDom.height = height * dpr;
-
     return newDom;
 }
-
 /**
  * @alias module:zrender/Layer
  * @constructor
@@ -6878,7 +5969,6 @@ var Layer = function (id, painter, dpr) {
     }
     this.id = id;
     this.dom = dom;
-
     var domStyle = dom.style;
     if (domStyle) { // Not in node
         dom.onselectstart = returnFalse; // 避免页面选中的尴尬
@@ -6890,14 +5980,10 @@ var Layer = function (id, painter, dpr) {
         domStyle['margin'] = 0;
         domStyle['border-width'] = 0;
     }
-
     this.domBack = null;
     this.ctxBack = null;
-
     this.painter = painter;
-
     this.config = null;
-
     // Configs
     /**
      * 每次清空画布的颜色
@@ -6917,77 +6003,58 @@ var Layer = function (id, painter, dpr) {
      * @default 0.7
      */
     this.lastFrameAlpha = 0.7;
-
     /**
      * Layer dpr
      * @type {number}
      */
     this.dpr = dpr;
 };
-
 Layer.prototype = {
-
     constructor: Layer,
-
     __dirty: true,
-
     __used: false,
-
     __drawIndex: 0,
     __startIndex: 0,
     __endIndex: 0,
-
     incremental: false,
-
     getElementCount: function () {
         return this.__endIndex - this.__startIndex;
     },
-
     initContext: function () {
         this.ctx = this.dom.getContext('2d');
         this.ctx.dpr = this.dpr;
     },
-
     createBackBuffer: function () {
         var dpr = this.dpr;
-
         this.domBack = createDom('back-' + this.id, this.painter, dpr);
         this.ctxBack = this.domBack.getContext('2d');
-
         if (dpr !== 1) {
             this.ctxBack.scale(dpr, dpr);
         }
     },
-
     /**
      * @param  {number} width
      * @param  {number} height
      */
     resize: function (width, height) {
         var dpr = this.dpr;
-
         var dom = this.dom;
         var domStyle = dom.style;
         var domBack = this.domBack;
-
         if (domStyle) {
             domStyle.width = width + 'px';
             domStyle.height = height + 'px';
         }
-
         dom.width = width * dpr;
         dom.height = height * dpr;
-
         if (domBack) {
             domBack.width = width * dpr;
             domBack.height = height * dpr;
-
             if (dpr !== 1) {
                 this.ctxBack.scale(dpr, dpr);
             }
         }
     },
-
     /**
      * 清空该层画布
      * @param {boolean} [clearAll]=false Clear all with out motion blur
@@ -6998,18 +6065,14 @@ Layer.prototype = {
         var ctx = this.ctx;
         var width = dom.width;
         var height = dom.height;
-
         var clearColor = clearColor || this.clearColor;
         var haveMotionBLur = this.motionBlur && !clearAll;
         var lastFrameAlpha = this.lastFrameAlpha;
-
         var dpr = this.dpr;
-
         if (haveMotionBLur) {
             if (!this.domBack) {
                 this.createBackBuffer();
             }
-
             this.ctxBack.globalCompositeOperation = 'copy';
             this.ctxBack.drawImage(
                 dom, 0, 0,
@@ -7017,7 +6080,6 @@ Layer.prototype = {
                 height / dpr
             );
         }
-
         ctx.clearRect(0, 0, width, height);
         if (clearColor && clearColor !== 'transparent') {
             var clearColorGradientOrPattern;
@@ -7030,7 +6092,6 @@ Layer.prototype = {
                     width: width,
                     height: height
                 });
-
                 clearColor.__canvasGradient = clearColorGradientOrPattern;
             }
             // Pattern
@@ -7042,7 +6103,6 @@ Layer.prototype = {
             ctx.fillRect(0, 0, width, height);
             ctx.restore();
         }
-
         if (haveMotionBLur) {
             var domBack = this.domBack;
             ctx.save();
@@ -7052,7 +6112,6 @@ Layer.prototype = {
         }
     }
 };
-
 var requestAnimationFrame = (
     typeof window !== 'undefined'
     && (
@@ -7065,9 +6124,7 @@ var requestAnimationFrame = (
 ) || function (func) {
     setTimeout(func, 16);
 };
-
 var globalImageCache = new LRU(50);
-
 /**
  * @param {string|HTMLImageElement|HTMLCanvasElement|Canvas} newImageOrSrc
  * @return {HTMLImageElement|HTMLCanvasElement|Canvas} image
@@ -7081,7 +6138,6 @@ function findExistImage(newImageOrSrc) {
         return newImageOrSrc;
     }
 }
-
 /**
  * Caution: User should cache loaded images, but not just count on LRU.
  * Consider if required images more than LRU size, will dead loop occur?
@@ -7098,18 +6154,14 @@ function createOrUpdateImage(newImageOrSrc, image, hostEl, cb, cbPayload) {
         return image;
     }
     else if (typeof newImageOrSrc === 'string') {
-
         // Image should not be loaded repeatly.
         if ((image && image.__zrImageSrc === newImageOrSrc) || !hostEl) {
             return image;
         }
-
         // Only when there is no existent image or existent image src
         // is different, this method is responsible for load.
         var cachedImgObj = globalImageCache.get(newImageOrSrc);
-
         var pendingWrap = {hostEl: hostEl, cb: cb, cbPayload: cbPayload};
-
         if (cachedImgObj) {
             image = cachedImgObj.image;
             !isImageReady(image) && cachedImgObj.pending.push(pendingWrap);
@@ -7117,7 +6169,6 @@ function createOrUpdateImage(newImageOrSrc, image, hostEl, cb, cbPayload) {
         else {
             image = new Image();
             image.onload = image.onerror = imageOnLoad;
-
             globalImageCache.put(
                 newImageOrSrc,
                 image.__cachedImgObj = {
@@ -7125,10 +6176,8 @@ function createOrUpdateImage(newImageOrSrc, image, hostEl, cb, cbPayload) {
                     pending: [pendingWrap]
                 }
             );
-
             image.src = image.__zrImageSrc = newImageOrSrc;
         }
-
         return image;
     }
     // newImageOrSrc is an HTMLImageElement or HTMLCanvasElement or Canvas
@@ -7136,11 +6185,9 @@ function createOrUpdateImage(newImageOrSrc, image, hostEl, cb, cbPayload) {
         return newImageOrSrc;
     }
 }
-
 function imageOnLoad() {
     var cachedImgObj = this.__cachedImgObj;
     this.onload = this.onerror = this.__cachedImgObj = null;
-
     for (var i = 0; i < cachedImgObj.pending.length; i++) {
         var pendingWrap = cachedImgObj.pending[i];
         var cb = pendingWrap.cb;
@@ -7149,24 +6196,16 @@ function imageOnLoad() {
     }
     cachedImgObj.pending.length = 0;
 }
-
 function isImageReady(image) {
     return image && image.width && image.height;
 }
-
 var textWidthCache = {};
 var textWidthCacheCounter = 0;
-
 var TEXT_CACHE_MAX = 5000;
 var STYLE_REG = /\{([a-zA-Z0-9_]+)\|([^}]*)\}/g;
-
 var DEFAULT_FONT$1 = '12px sans-serif';
-
 // Avoid assign to an exported variable, for transforming to cjs.
 var methods$1 = {};
-
-
-
 /**
  * @public
  * @param {string} text
@@ -7179,25 +6218,20 @@ function getWidth(text, font) {
     if (textWidthCache[key]) {
         return textWidthCache[key];
     }
-
     var textLines = (text + '').split('\n');
     var width = 0;
-
     for (var i = 0, l = textLines.length; i < l; i++) {
         // textContain.measureText may be overrided in SVG or VML
         width = Math.max(measureText(textLines[i], font).width, width);
     }
-
     if (textWidthCacheCounter > TEXT_CACHE_MAX) {
         textWidthCacheCounter = 0;
         textWidthCache = {};
     }
     textWidthCacheCounter++;
     textWidthCache[key] = width;
-
     return width;
 }
-
 /**
  * @public
  * @param {string} text
@@ -7214,7 +6248,6 @@ function getBoundingRect(text, font, textAlign, textVerticalAlign, textPadding, 
         ? getRichTextRect(text, font, textAlign, textVerticalAlign, textPadding, textLineHeight, rich, truncate)
         : getPlainTextRect(text, font, textAlign, textVerticalAlign, textPadding, textLineHeight, truncate);
 }
-
 function getPlainTextRect(text, font, textAlign, textVerticalAlign, textPadding, textLineHeight, truncate) {
     var contentBlock = parsePlainText(text, font, textPadding, textLineHeight, truncate);
     var outerWidth = getWidth(text, font);
@@ -7222,16 +6255,12 @@ function getPlainTextRect(text, font, textAlign, textVerticalAlign, textPadding,
         outerWidth += textPadding[1] + textPadding[3];
     }
     var outerHeight = contentBlock.outerHeight;
-
     var x = adjustTextX(0, outerWidth, textAlign);
     var y = adjustTextY(0, outerHeight, textVerticalAlign);
-
     var rect = new BoundingRect(x, y, outerWidth, outerHeight);
     rect.lineHeight = contentBlock.lineHeight;
-
     return rect;
 }
-
 function getRichTextRect(text, font, textAlign, textVerticalAlign, textPadding, textLineHeight, rich, truncate) {
     var contentBlock = parseRichText(text, {
         rich: rich,
@@ -7243,13 +6272,10 @@ function getRichTextRect(text, font, textAlign, textVerticalAlign, textPadding, 
     });
     var outerWidth = contentBlock.outerWidth;
     var outerHeight = contentBlock.outerHeight;
-
     var x = adjustTextX(0, outerWidth, textAlign);
     var y = adjustTextY(0, outerHeight, textVerticalAlign);
-
     return new BoundingRect(x, y, outerWidth, outerHeight);
 }
-
 /**
  * @public
  * @param {number} x
@@ -7267,7 +6293,6 @@ function adjustTextX(x, width, textAlign) {
     }
     return x;
 }
-
 /**
  * @public
  * @param {number} y
@@ -7284,7 +6309,6 @@ function adjustTextY(y, height, textVerticalAlign) {
     }
     return y;
 }
-
 /**
  * @public
  * @param {stirng} textPosition
@@ -7293,17 +6317,13 @@ function adjustTextY(y, height, textVerticalAlign) {
  * @return {Object} {x, y, textAlign, textVerticalAlign}
  */
 function adjustTextPositionOnRect(textPosition, rect, distance) {
-
     var x = rect.x;
     var y = rect.y;
-
     var height = rect.height;
     var width = rect.width;
     var halfHeight = height / 2;
-
     var textAlign = 'left';
     var textVerticalAlign = 'top';
-
     switch (textPosition) {
         case 'left':
             x -= distance;
@@ -7376,7 +6396,6 @@ function adjustTextPositionOnRect(textPosition, rect, distance) {
             textVerticalAlign = 'bottom';
             break;
     }
-
     return {
         x: x,
         y: y,
@@ -7384,7 +6403,6 @@ function adjustTextPositionOnRect(textPosition, rect, distance) {
         textVerticalAlign: textVerticalAlign
     };
 }
-
 /**
  * Show ellipsis if overflow.
  *
@@ -7405,22 +6423,17 @@ function truncateText(text, containerWidth, font, ellipsis, options) {
     if (!containerWidth) {
         return '';
     }
-
     var textLines = (text + '').split('\n');
     options = prepareTruncateOptions(containerWidth, font, ellipsis, options);
-
     // FIXME
     // It is not appropriate that every line has '...' when truncate multiple lines.
     for (var i = 0, len = textLines.length; i < len; i++) {
         textLines[i] = truncateSingleLine(textLines[i], options);
     }
-
     return textLines.join('\n');
 }
-
 function prepareTruncateOptions(containerWidth, font, ellipsis, options) {
     options = extend({}, options);
-
     options.font = font;
     var ellipsis = retrieve2(ellipsis, '...');
     options.maxIterations = retrieve2(options.maxIterations, 2);
@@ -7432,68 +6445,53 @@ function prepareTruncateOptions(containerWidth, font, ellipsis, options) {
     // Consider proportional font?
     var ascCharWidth = options.ascCharWidth = getWidth('a', font);
     options.placeholder = retrieve2(options.placeholder, '');
-
     // Example 1: minChar: 3, text: 'asdfzxcv', truncate result: 'asdf', but not: 'a...'.
     // Example 2: minChar: 3, text: '维度', truncate result: '维', but not: '...'.
     var contentWidth = containerWidth = Math.max(0, containerWidth - 1); // Reserve some gap.
     for (var i = 0; i < minChar && contentWidth >= ascCharWidth; i++) {
         contentWidth -= ascCharWidth;
     }
-
     var ellipsisWidth = getWidth(ellipsis, font);
     if (ellipsisWidth > contentWidth) {
         ellipsis = '';
         ellipsisWidth = 0;
     }
-
     contentWidth = containerWidth - ellipsisWidth;
-
     options.ellipsis = ellipsis;
     options.ellipsisWidth = ellipsisWidth;
     options.contentWidth = contentWidth;
     options.containerWidth = containerWidth;
-
     return options;
 }
-
 function truncateSingleLine(textLine, options) {
     var containerWidth = options.containerWidth;
     var font = options.font;
     var contentWidth = options.contentWidth;
-
     if (!containerWidth) {
         return '';
     }
-
     var lineWidth = getWidth(textLine, font);
-
     if (lineWidth <= containerWidth) {
         return textLine;
     }
-
     for (var j = 0; ; j++) {
         if (lineWidth <= contentWidth || j >= options.maxIterations) {
             textLine += options.ellipsis;
             break;
         }
-
         var subLength = j === 0
             ? estimateLength(textLine, contentWidth, options.ascCharWidth, options.cnCharWidth)
             : lineWidth > 0
             ? Math.floor(textLine.length * contentWidth / lineWidth)
             : 0;
-
         textLine = textLine.substr(0, subLength);
         lineWidth = getWidth(textLine, font);
     }
-
     if (textLine === '') {
         textLine = options.placeholder;
     }
-
     return textLine;
 }
-
 function estimateLength(text, contentWidth, ascCharWidth, cnCharWidth) {
     var width = 0;
     var i = 0;
@@ -7503,7 +6501,6 @@ function estimateLength(text, contentWidth, ascCharWidth, cnCharWidth) {
     }
     return i;
 }
-
 /**
  * @public
  * @param {string} font
@@ -7513,7 +6510,6 @@ function getLineHeight(font) {
     // FIXME A rough approach.
     return getWidth('国', font);
 }
-
 /**
  * @public
  * @param {string} text
@@ -7523,14 +6519,12 @@ function getLineHeight(font) {
 function measureText(text, font) {
     return methods$1.measureText(text, font);
 }
-
 // Avoid assign to an exported variable, for transforming to cjs.
 methods$1.measureText = function (text, font) {
     var ctx = getContext();
     ctx.font = font || DEFAULT_FONT$1;
     return ctx.measureText(text);
 };
-
 /**
  * @public
  * @param {string} text
@@ -7541,16 +6535,13 @@ methods$1.measureText = function (text, font) {
  */
 function parsePlainText(text, font, padding, textLineHeight, truncate) {
     text != null && (text += '');
-
     var lineHeight = retrieve2(textLineHeight, getLineHeight(font));
     var lines = text ? text.split('\n') : [];
     var height = lines.length * lineHeight;
     var outerHeight = height;
-
     if (padding) {
         outerHeight += padding[0] + padding[2];
     }
-
     if (text && truncate) {
         var truncOuterHeight = truncate.outerHeight;
         var truncOuterWidth = truncate.outerWidth;
@@ -7565,7 +6556,6 @@ function parsePlainText(text, font, padding, textLineHeight, truncate) {
                 truncate.ellipsis,
                 {minChar: truncate.minChar, placeholder: truncate.placeholder}
             );
-
             // FIXME
             // It is not appropriate that every line has '...' when truncate multiple lines.
             for (var i = 0, len = lines.length; i < len; i++) {
@@ -7573,7 +6563,6 @@ function parsePlainText(text, font, padding, textLineHeight, truncate) {
             }
         }
     }
-
     return {
         lines: lines,
         height: height,
@@ -7581,7 +6570,6 @@ function parsePlainText(text, font, padding, textLineHeight, truncate) {
         lineHeight: lineHeight
     };
 }
-
 /**
  * For example: 'some text {a|some text}other text{b|some text}xxx{c|}xxx'
  * Also consider 'bbbb{a|xxx\nzzz}xxxx\naaaa'.
@@ -7614,12 +6602,10 @@ function parsePlainText(text, font, padding, textLineHeight, truncate) {
  */
 function parseRichText(text, style) {
     var contentBlock = {lines: [], width: 0, height: 0};
-
     text != null && (text += '');
     if (!text) {
         return contentBlock;
     }
-
     var lastIndex = STYLE_REG.lastIndex = 0;
     var result;
     while ((result = STYLE_REG.exec(text)) != null) {
@@ -7630,19 +6616,15 @@ function parseRichText(text, style) {
         pushTokens(contentBlock, result[2], result[1]);
         lastIndex = STYLE_REG.lastIndex;
     }
-
     if (lastIndex < text.length) {
         pushTokens(contentBlock, text.substring(lastIndex, text.length));
     }
-
     var lines = contentBlock.lines;
     var contentHeight = 0;
     var contentWidth = 0;
     // For `textWidth: 100%`
     var pendingList = [];
-
     var stlPadding = style.textPadding;
-
     var truncate = style.truncate;
     var truncateWidth = truncate && truncate.outerWidth;
     var truncateHeight = truncate && truncate.outerHeight;
@@ -7650,22 +6632,18 @@ function parseRichText(text, style) {
         truncateWidth != null && (truncateWidth -= stlPadding[1] + stlPadding[3]);
         truncateHeight != null && (truncateHeight -= stlPadding[0] + stlPadding[2]);
     }
-
     // Calculate layout info of tokens.
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i];
         var lineHeight = 0;
         var lineWidth = 0;
-
         for (var j = 0; j < line.tokens.length; j++) {
             var token = line.tokens[j];
             var tokenStyle = token.styleName && style.rich[token.styleName] || {};
             // textPadding should not inherit from style.
             var textPadding = token.textPadding = tokenStyle.textPadding;
-
             // textFont has been asigned to font by `normalizeStyle`.
             var font = token.font = tokenStyle.font || style.font;
-
             // textHeight can be used when textVerticalAlign is specified in token.
             var tokenHeight = token.textHeight = retrieve2(
                 // textHeight should not be inherited, consider it can be specified
@@ -7677,18 +6655,14 @@ function parseRichText(text, style) {
             token.lineHeight = retrieve3(
                 tokenStyle.textLineHeight, style.textLineHeight, tokenHeight
             );
-
             token.textAlign = tokenStyle && tokenStyle.textAlign || style.textAlign;
             token.textVerticalAlign = tokenStyle && tokenStyle.textVerticalAlign || 'middle';
-
             if (truncateHeight != null && contentHeight + token.lineHeight > truncateHeight) {
                 return {lines: [], width: 0, height: 0};
             }
-
             token.textWidth = getWidth(token.text, font);
             var tokenWidth = tokenStyle.textWidth;
             var tokenWidthNotSpecified = tokenWidth == null || tokenWidth === 'auto';
-
             // Percent width, can be `100%`, can be used in drawing separate
             // line when box width is needed to be auto.
             if (typeof tokenWidth === 'string' && tokenWidth.charAt(tokenWidth.length - 1) === '%') {
@@ -7701,12 +6675,10 @@ function parseRichText(text, style) {
             else {
                 if (tokenWidthNotSpecified) {
                     tokenWidth = token.textWidth;
-
                     // FIXME: If image is not loaded and textWidth is not specified, calling
                     // `getBoundingRect()` will not get correct result.
                     var textBackgroundColor = tokenStyle.textBackgroundColor;
                     var bgImg = textBackgroundColor && textBackgroundColor.image;
-
                     // Use cases:
                     // (1) If image is not loaded, it will be loaded at render phase and call
                     // `dirty()` and `textBackgroundColor.image` will be replaced with the loaded
@@ -7724,12 +6696,9 @@ function parseRichText(text, style) {
                         }
                     }
                 }
-
                 var paddingW = textPadding ? textPadding[1] + textPadding[3] : 0;
                 tokenWidth += paddingW;
-
                 var remianTruncWidth = truncateWidth != null ? truncateWidth - lineWidth : null;
-
                 if (remianTruncWidth != null && remianTruncWidth < tokenWidth) {
                     if (!tokenWidthNotSpecified || remianTruncWidth < paddingW) {
                         token.text = '';
@@ -7745,40 +6714,32 @@ function parseRichText(text, style) {
                     }
                 }
             }
-
             lineWidth += (token.width = tokenWidth);
             tokenStyle && (lineHeight = Math.max(lineHeight, token.lineHeight));
         }
-
         line.width = lineWidth;
         line.lineHeight = lineHeight;
         contentHeight += lineHeight;
         contentWidth = Math.max(contentWidth, lineWidth);
     }
-
     contentBlock.outerWidth = contentBlock.width = retrieve2(style.textWidth, contentWidth);
     contentBlock.outerHeight = contentBlock.height = retrieve2(style.textHeight, contentHeight);
-
     if (stlPadding) {
         contentBlock.outerWidth += stlPadding[1] + stlPadding[3];
         contentBlock.outerHeight += stlPadding[0] + stlPadding[2];
     }
-
     for (var i = 0; i < pendingList.length; i++) {
         var token = pendingList[i];
         var percentWidth = token.percentWidth;
         // Should not base on outerWidth, because token can not be placed out of padding.
         token.width = parseInt(percentWidth, 10) / 100 * contentWidth;
     }
-
     return contentBlock;
 }
-
 function pushTokens(block, str, styleName) {
     var isEmptyStr = str === '';
     var strs = str.split('\n');
     var lines = block.lines;
-
     for (var i = 0; i < strs.length; i++) {
         var text = strs[i];
         var token = {
@@ -7786,11 +6747,9 @@ function pushTokens(block, str, styleName) {
             text: text,
             isLineHolder: !text && !isEmptyStr
         };
-
         // The first token should be appended to the last line.
         if (!i) {
             var tokens = (lines[lines.length - 1] || (lines[0] = {tokens: []})).tokens;
-
             // Consider cases:
             // (1) ''.split('\n') => ['', '\n', ''], the '' at the first item
             // (which is a placeholder) should be replaced by new token.
@@ -7812,7 +6771,6 @@ function pushTokens(block, str, styleName) {
         }
     }
 }
-
 function makeFont(style) {
     // FIXME in node-canvas fontWeight is before fontStyle
     // Use `fontSize` `fontFamily` to check whether font properties are defined.
@@ -7825,7 +6783,6 @@ function makeFont(style) {
     ].join(' ');
     return font && trim(font) || style.textFont || style.font;
 }
-
 /**
  * @param {Object} ctx
  * @param {Object} shape
@@ -7845,7 +6802,6 @@ function buildPath(ctx, shape) {
     var r2;
     var r3;
     var r4;
-
     // Convert width and height to positive for better borderRadius
     if (width < 0) {
         x = x + width;
@@ -7855,7 +6811,6 @@ function buildPath(ctx, shape) {
         y = y + height;
         height = -height;
     }
-
     if (typeof r === 'number') {
         r1 = r2 = r3 = r4 = r;
     }
@@ -7882,7 +6837,6 @@ function buildPath(ctx, shape) {
     else {
         r1 = r2 = r3 = r4 = 0;
     }
-
     var total;
     if (r1 + r2 > width) {
         total = r1 + r2;
@@ -7914,9 +6868,7 @@ function buildPath(ctx, shape) {
     ctx.lineTo(x, y + r1);
     r1 !== 0 && ctx.arc(x + r1, y + r1, r1, Math.PI, Math.PI * 1.5);
 }
-
 var DEFAULT_FONT = DEFAULT_FONT$1;
-
 // TODO: Have not support 'start', 'end' yet.
 var VALID_TEXT_ALIGN = {left: 1, right: 1, center: 1};
 var VALID_TEXT_VERTICAL_ALIGN = {top: 1, bottom: 1, middle: 1};
@@ -7928,7 +6880,6 @@ var SHADOW_STYLE_COMMON_PROPS = [
     ['textShadowOffsetY', 'shadowOffsetY', 0],
     ['textShadowColor', 'shadowColor', 'transparent']
 ];
-
 /**
  * @param {module:zrender/graphic/Style} style
  * @return {module:zrender/graphic/Style} The input style.
@@ -7938,32 +6889,26 @@ function normalizeTextStyle(style) {
     each$1(style.rich, normalizeStyle);
     return style;
 }
-
 function normalizeStyle(style) {
     if (style) {
-
         style.font = makeFont(style);
-
         var textAlign = style.textAlign;
         textAlign === 'middle' && (textAlign = 'center');
         style.textAlign = (
             textAlign == null || VALID_TEXT_ALIGN[textAlign]
         ) ? textAlign : 'left';
-
         // Compatible with textBaseline.
         var textVerticalAlign = style.textVerticalAlign || style.textBaseline;
         textVerticalAlign === 'center' && (textVerticalAlign = 'middle');
         style.textVerticalAlign = (
             textVerticalAlign == null || VALID_TEXT_VERTICAL_ALIGN[textVerticalAlign]
         ) ? textVerticalAlign : 'top';
-
         var textPadding = style.textPadding;
         if (textPadding) {
             style.textPadding = normalizeCssArray(style.textPadding);
         }
     }
 }
-
 /**
  * @param {CanvasRenderingContext2D} ctx
  * @param {string} text
@@ -7977,25 +6922,20 @@ function renderText(hostEl, ctx, text, style, rect, prevEl) {
         ? renderRichText(hostEl, ctx, text, style, rect, prevEl)
         : renderPlainText(hostEl, ctx, text, style, rect, prevEl);
 }
-
 // Avoid setting to ctx according to prevEl if possible for
 // performance in scenarios of large amount text.
 function renderPlainText(hostEl, ctx, text, style, rect, prevEl) {
     'use strict';
-
     var needDrawBg = needDrawBackground(style);
-
     var prevStyle;
     var checkCache = false;
     var cachedByMe = ctx.__attrCachedBy === ContextCachedBy.PLAIN_TEXT;
-
     // Only take and check cache for `Text` el, but not RectText.
     if (prevEl !== WILL_BE_RESTORED) {
         if (prevEl) {
             prevStyle = prevEl.style;
             checkCache = !needDrawBg && cachedByMe && prevStyle;
         }
-
         // Prevent from using cache in `Style::bind`, because of the case:
         // ctx property is modified by other properties than `Style::bind`
         // used, and Style::bind is called next.
@@ -8006,7 +6946,6 @@ function renderPlainText(hostEl, ctx, text, style, rect, prevEl) {
     else if (cachedByMe) {
         ctx.__attrCachedBy = ContextCachedBy.NONE;
     }
-
     var styleFont = style.font || DEFAULT_FONT;
     // PENDING
     // Only `Text` el set `font` and keep it (`RectText` will restore). So theoretically
@@ -8021,7 +6960,6 @@ function renderPlainText(hostEl, ctx, text, style, rect, prevEl) {
     if (!checkCache || styleFont !== (prevStyle.font || DEFAULT_FONT)) {
         ctx.font = styleFont;
     }
-
     // Use the final font from context-2d, because the final
     // font might not be the style.font when it is illegal.
     // But get `ctx.font` might be time consuming.
@@ -8030,50 +6968,39 @@ function renderPlainText(hostEl, ctx, text, style, rect, prevEl) {
         hostEl.__styleFont = styleFont;
         computedFont = hostEl.__computedFont = ctx.font;
     }
-
     var textPadding = style.textPadding;
     var textLineHeight = style.textLineHeight;
-
     var contentBlock = hostEl.__textCotentBlock;
     if (!contentBlock || hostEl.__dirtyText) {
         contentBlock = hostEl.__textCotentBlock = parsePlainText(
             text, computedFont, textPadding, textLineHeight, style.truncate
         );
     }
-
     var outerHeight = contentBlock.outerHeight;
-
     var textLines = contentBlock.lines;
     var lineHeight = contentBlock.lineHeight;
-
     var boxPos = getBoxPosition(outerHeight, style, rect);
     var baseX = boxPos.baseX;
     var baseY = boxPos.baseY;
     var textAlign = boxPos.textAlign || 'left';
     var textVerticalAlign = boxPos.textVerticalAlign;
-
     // Origin of textRotation should be the base point of text drawing.
     applyTextRotation(ctx, style, rect, baseX, baseY);
-
     var boxY = adjustTextY(baseY, outerHeight, textVerticalAlign);
     var textX = baseX;
     var textY = boxY;
-
     if (needDrawBg || textPadding) {
         // Consider performance, do not call getTextWidth util necessary.
         var textWidth = getWidth(text, computedFont);
         var outerWidth = textWidth;
         textPadding && (outerWidth += textPadding[1] + textPadding[3]);
         var boxX = adjustTextX(baseX, outerWidth, textAlign);
-
         needDrawBg && drawBackground(hostEl, ctx, style, boxX, boxY, outerWidth, outerHeight);
-
         if (textPadding) {
             textX = getTextXForPadding(baseX, textAlign, textPadding);
             textY += textPadding[0];
         }
     }
-
     // Always set textAlign and textBase line, because it is difficute to calculate
     // textAlign from prevEl, and we dont sure whether textAlign will be reset if
     // font set happened.
@@ -8083,7 +7010,6 @@ function renderPlainText(hostEl, ctx, text, style, rect, prevEl) {
     ctx.textBaseline = 'middle';
     // Set text opacity
     ctx.globalAlpha = style.opacity || 1;
-
     // Always set shadowBlur and shadowOffset to avoid leak from displayable.
     for (var i = 0; i < SHADOW_STYLE_COMMON_PROPS.length; i++) {
         var propItem = SHADOW_STYLE_COMMON_PROPS[i];
@@ -8094,17 +7020,14 @@ function renderPlainText(hostEl, ctx, text, style, rect, prevEl) {
             ctx[ctxProp] = fixShadow(ctx, ctxProp, val || propItem[2]);
         }
     }
-
     // `textBaseline` is set as 'middle'.
     textY += lineHeight / 2;
-
     var textStrokeWidth = style.textStrokeWidth;
     var textStrokeWidthPrev = checkCache ? prevStyle.textStrokeWidth : null;
     var strokeWidthChanged = !checkCache || textStrokeWidth !== textStrokeWidthPrev;
     var strokeChanged = !checkCache || strokeWidthChanged || style.textStroke !== prevStyle.textStroke;
     var textStroke = getStroke(style.textStroke, textStrokeWidth);
     var textFill = getFill(style.textFill);
-
     if (textStroke) {
         if (strokeWidthChanged) {
             ctx.lineWidth = textStrokeWidth;
@@ -8118,7 +7041,6 @@ function renderPlainText(hostEl, ctx, text, style, rect, prevEl) {
             ctx.fillStyle = textFill;
         }
     }
-
     // Optimize simply, in most cases only one line exists.
     if (textLines.length === 1) {
         // Fill after stroke so the outline will not cover the main part.
@@ -8134,38 +7056,30 @@ function renderPlainText(hostEl, ctx, text, style, rect, prevEl) {
         }
     }
 }
-
 function renderRichText(hostEl, ctx, text, style, rect, prevEl) {
     // Do not do cache for rich text because of the complexity.
     // But `RectText` this will be restored, do not need to clear other cache like `Style::bind`.
     if (prevEl !== WILL_BE_RESTORED) {
         ctx.__attrCachedBy = ContextCachedBy.NONE;
     }
-
     var contentBlock = hostEl.__textCotentBlock;
-
     if (!contentBlock || hostEl.__dirtyText) {
         contentBlock = hostEl.__textCotentBlock = parseRichText(text, style);
     }
-
     drawRichText(hostEl, ctx, contentBlock, style, rect);
 }
-
 function drawRichText(hostEl, ctx, contentBlock, style, rect) {
     var contentWidth = contentBlock.width;
     var outerWidth = contentBlock.outerWidth;
     var outerHeight = contentBlock.outerHeight;
     var textPadding = style.textPadding;
-
     var boxPos = getBoxPosition(outerHeight, style, rect);
     var baseX = boxPos.baseX;
     var baseY = boxPos.baseY;
     var textAlign = boxPos.textAlign;
     var textVerticalAlign = boxPos.textVerticalAlign;
-
     // Origin of textRotation should be the base point of text drawing.
     applyTextRotation(ctx, style, rect, baseX, baseY);
-
     var boxX = adjustTextX(baseX, outerWidth, textAlign);
     var boxY = adjustTextY(baseY, outerHeight, textVerticalAlign);
     var xLeft = boxX;
@@ -8175,24 +7089,20 @@ function drawRichText(hostEl, ctx, contentBlock, style, rect) {
         lineTop += textPadding[0];
     }
     var xRight = xLeft + contentWidth;
-
     needDrawBackground(style) && drawBackground(
         hostEl, ctx, style, boxX, boxY, outerWidth, outerHeight
     );
-
     for (var i = 0; i < contentBlock.lines.length; i++) {
         var line = contentBlock.lines[i];
         var tokens = line.tokens;
         var tokenCount = tokens.length;
         var lineHeight = line.lineHeight;
         var usedWidth = line.width;
-
         var leftIndex = 0;
         var lineXLeft = xLeft;
         var lineXRight = xRight;
         var rightIndex = tokenCount - 1;
         var token;
-
         while (
             leftIndex < tokenCount
             && (token = tokens[leftIndex], !token.textAlign || token.textAlign === 'left')
@@ -8202,7 +7112,6 @@ function drawRichText(hostEl, ctx, contentBlock, style, rect) {
             lineXLeft += token.width;
             leftIndex++;
         }
-
         while (
             rightIndex >= 0
             && (token = tokens[rightIndex], token.textAlign === 'right')
@@ -8212,7 +7121,6 @@ function drawRichText(hostEl, ctx, contentBlock, style, rect) {
             lineXRight -= token.width;
             rightIndex--;
         }
-
         // The other tokens are placed as textAlign 'center' if there is enough space.
         lineXLeft += (contentWidth - (lineXLeft - xLeft) - (xRight - lineXRight) - usedWidth) / 2;
         while (leftIndex <= rightIndex) {
@@ -8222,11 +7130,9 @@ function drawRichText(hostEl, ctx, contentBlock, style, rect) {
             lineXLeft += token.width;
             leftIndex++;
         }
-
         lineTop += lineHeight;
     }
 }
-
 function applyTextRotation(ctx, style, rect, x, y) {
     // textRotation only apply in RectText.
     if (rect && style.textRotation) {
@@ -8239,18 +7145,15 @@ function applyTextRotation(ctx, style, rect, x, y) {
             x = origin[0] + rect.x;
             y = origin[1] + rect.y;
         }
-
         ctx.translate(x, y);
         // Positive: anticlockwise
         ctx.rotate(-style.textRotation);
         ctx.translate(-x, -y);
     }
 }
-
 function placeToken(hostEl, ctx, token, style, lineHeight, lineTop, x, textAlign) {
     var tokenStyle = style.rich[token.styleName] || {};
     tokenStyle.text = token.text;
-
     // 'ctx.textBaseline' is always set as 'middle', for sake of
     // the bias of "Microsoft YaHei".
     var textVerticalAlign = token.textVerticalAlign;
@@ -8261,7 +7164,6 @@ function placeToken(hostEl, ctx, token, style, lineHeight, lineTop, x, textAlign
     else if (textVerticalAlign === 'bottom') {
         y = lineTop + lineHeight - token.height / 2;
     }
-
     !token.isLineHolder && needDrawBackground(tokenStyle) && drawBackground(
         hostEl,
         ctx,
@@ -8275,29 +7177,23 @@ function placeToken(hostEl, ctx, token, style, lineHeight, lineTop, x, textAlign
         token.width,
         token.height
     );
-
     var textPadding = token.textPadding;
     if (textPadding) {
         x = getTextXForPadding(x, textAlign, textPadding);
         y -= token.height / 2 - textPadding[2] - token.textHeight / 2;
     }
-
     setCtx(ctx, 'shadowBlur', retrieve3(tokenStyle.textShadowBlur, style.textShadowBlur, 0));
     setCtx(ctx, 'shadowColor', tokenStyle.textShadowColor || style.textShadowColor || 'transparent');
     setCtx(ctx, 'shadowOffsetX', retrieve3(tokenStyle.textShadowOffsetX, style.textShadowOffsetX, 0));
     setCtx(ctx, 'shadowOffsetY', retrieve3(tokenStyle.textShadowOffsetY, style.textShadowOffsetY, 0));
-
     setCtx(ctx, 'textAlign', textAlign);
     // Force baseline to be "middle". Otherwise, if using "top", the
     // text will offset downward a little bit in font "Microsoft YaHei".
     setCtx(ctx, 'textBaseline', 'middle');
-
     setCtx(ctx, 'font', token.font || DEFAULT_FONT);
-
     var textStroke = getStroke(tokenStyle.textStroke || style.textStroke, textStrokeWidth);
     var textFill = getFill(tokenStyle.textFill || style.textFill);
     var textStrokeWidth = retrieve2(tokenStyle.textStrokeWidth, style.textStrokeWidth);
-
     // Fill after stroke so the outline will not cover the main part.
     if (textStroke) {
         setCtx(ctx, 'lineWidth', textStrokeWidth);
@@ -8309,14 +7205,12 @@ function placeToken(hostEl, ctx, token, style, lineHeight, lineTop, x, textAlign
         ctx.fillText(token.text, x, y);
     }
 }
-
 function needDrawBackground(style) {
     return !!(
         style.textBackgroundColor
         || (style.textBorderWidth && style.textBorderColor)
     );
 }
-
 // style: {textBackgroundColor, textBorderWidth, textBorderColor, textBorderRadius, text}
 // shape: {x, y, width, height}
 function drawBackground(hostEl, ctx, style, x, y, width, height) {
@@ -8324,12 +7218,10 @@ function drawBackground(hostEl, ctx, style, x, y, width, height) {
     var textBorderWidth = style.textBorderWidth;
     var textBorderColor = style.textBorderColor;
     var isPlainBg = isString(textBackgroundColor);
-
     setCtx(ctx, 'shadowBlur', style.textBoxShadowBlur || 0);
     setCtx(ctx, 'shadowColor', style.textBoxShadowColor || 'transparent');
     setCtx(ctx, 'shadowOffsetX', style.textBoxShadowOffsetX || 0);
     setCtx(ctx, 'shadowOffsetY', style.textBoxShadowOffsetY || 0);
-
     if (isPlainBg || (textBorderWidth && textBorderColor)) {
         ctx.beginPath();
         var textBorderRadius = style.textBorderRadius;
@@ -8343,10 +7235,8 @@ function drawBackground(hostEl, ctx, style, x, y, width, height) {
         }
         ctx.closePath();
     }
-
     if (isPlainBg) {
         setCtx(ctx, 'fillStyle', textBackgroundColor);
-
         if (style.fillOpacity != null) {
             var originalGlobalAlpha = ctx.globalAlpha;
             ctx.globalAlpha = style.fillOpacity * style.opacity;
@@ -8359,7 +7249,6 @@ function drawBackground(hostEl, ctx, style, x, y, width, height) {
     }
     else if (isObject$1(textBackgroundColor)) {
         var image = textBackgroundColor.image;
-
         image = createOrUpdateImage(
             image, null, hostEl, onBgImageLoaded, textBackgroundColor
         );
@@ -8367,11 +7256,9 @@ function drawBackground(hostEl, ctx, style, x, y, width, height) {
             ctx.drawImage(image, x, y, width, height);
         }
     }
-
     if (textBorderWidth && textBorderColor) {
         setCtx(ctx, 'lineWidth', textBorderWidth);
         setCtx(ctx, 'strokeStyle', textBorderColor);
-
         if (style.strokeOpacity != null) {
             var originalGlobalAlpha = ctx.globalAlpha;
             ctx.globalAlpha = style.strokeOpacity * style.opacity;
@@ -8383,19 +7270,16 @@ function drawBackground(hostEl, ctx, style, x, y, width, height) {
         }
     }
 }
-
 function onBgImageLoaded(image, textBackgroundColor) {
     // Replace image, so that `contain/text.js#parseRichText`
     // will get correct result in next tick.
     textBackgroundColor.image = image;
 }
-
 function getBoxPosition(blockHeiht, style, rect) {
     var baseX = style.x || 0;
     var baseY = style.y || 0;
     var textAlign = style.textAlign;
     var textVerticalAlign = style.textVerticalAlign;
-
     // Text position represented by coord
     if (rect) {
         var textPosition = style.textPosition;
@@ -8414,7 +7298,6 @@ function getBoxPosition(blockHeiht, style, rect) {
             textAlign = textAlign || res.textAlign;
             textVerticalAlign = textVerticalAlign || res.textVerticalAlign;
         }
-
         // textOffset is only support in RectText, otherwise
         // we have to adjust boundingRect for textOffset.
         var textOffset = style.textOffset;
@@ -8423,7 +7306,6 @@ function getBoxPosition(blockHeiht, style, rect) {
             baseY += textOffset[1];
         }
     }
-
     return {
         baseX: baseX,
         baseY: baseY,
@@ -8431,12 +7313,10 @@ function getBoxPosition(blockHeiht, style, rect) {
         textVerticalAlign: textVerticalAlign
     };
 }
-
 function setCtx(ctx, prop, value) {
     ctx[prop] = fixShadow(ctx, prop, value);
     return ctx[prop];
 }
-
 /**
  * @param {string} [stroke] If specified, do not check style.textStroke.
  * @param {string} [lineWidth] If specified, do not check style.textStroke.
@@ -8450,7 +7330,6 @@ function getStroke(stroke, lineWidth) {
         ? '#000'
         : stroke;
 }
-
 function getFill(fill) {
     return (fill == null || fill === 'none')
         ? null
@@ -8459,7 +7338,6 @@ function getFill(fill) {
         ? '#000'
         : fill;
 }
-
 function parsePercent(value, maxValue) {
     if (typeof value === 'string') {
         if (value.lastIndexOf('%') >= 0) {
@@ -8469,7 +7347,6 @@ function parsePercent(value, maxValue) {
     }
     return value;
 }
-
 function getTextXForPadding(x, textAlign, textPadding) {
     return textAlign === 'right'
         ? (x - textPadding[1])
@@ -8477,7 +7354,6 @@ function getTextXForPadding(x, textAlign, textPadding) {
         ? (x + textPadding[3] / 2 - textPadding[1] / 2)
         : (x + textPadding[3]);
 }
-
 /**
  * @param {string} text
  * @param {module:zrender/Style} style
@@ -8491,20 +7367,14 @@ function needDrawText(text, style) {
             || style.textPadding
         );
 }
-
 /**
  * Mixin for drawing text in a element bounding rect
  * @module zrender/mixin/RectText
  */
-
 var tmpRect$1 = new BoundingRect();
-
 var RectText = function () {};
-
 RectText.prototype = {
-
     constructor: RectText,
-
     /**
      * Draw text in a rect with specified position.
      * @param  {CanvasRenderingContext2D} ctx
@@ -8512,27 +7382,20 @@ RectText.prototype = {
      */
     drawRectText: function (ctx, rect) {
         var style = this.style;
-
         rect = style.textRect || rect;
-
         // Optimize, avoid normalize every time.
         this.__dirty && normalizeTextStyle(style, true);
-
         var text = style.text;
-
         // Convert to string
         text != null && (text += '');
-
         if (!needDrawText(text, style)) {
             return;
         }
-
         // FIXME
         // Do not provide prevEl to `textHelper.renderText` for ctx prop cache,
         // but use `ctx.save()` and `ctx.restore()`. Because the cache for rect
         // text propably break the cache for its host elements.
         ctx.save();
-
         // Transform rect to view space
         var transform = this.transform;
         if (!style.transformText) {
@@ -8545,32 +7408,24 @@ RectText.prototype = {
         else {
             this.setTransform(ctx);
         }
-
         // transformText and textRotation can not be used at the same time.
         renderText(this, ctx, text, style, rect, WILL_BE_RESTORED);
-
         ctx.restore();
     }
 };
-
 /**
  * 可绘制的图形基类
  * Base class of all displayable graphic objects
  * @module zrender/graphic/Displayable
  */
-
-
 /**
  * @alias module:zrender/graphic/Displayable
  * @extends module:zrender/Element
  * @extends module:zrender/graphic/mixin/RectText
  */
 function Displayable(opts) {
-
     opts = opts || {};
-
     Element.call(this, opts);
-
     // Extend properties
     for (var name in opts) {
         if (
@@ -8580,26 +7435,19 @@ function Displayable(opts) {
             this[name] = opts[name];
         }
     }
-
     /**
      * @type {module:zrender/graphic/Style}
      */
     this.style = new Style(opts.style, this);
-
     this._rect = null;
     // Shapes for cascade clipping.
     this.__clipPaths = [];
-
     // FIXME Stateful must be mixined after style is setted
     // Stateful.call(this, opts);
 }
-
 Displayable.prototype = {
-
     constructor: Displayable,
-
     type: 'displayable',
-
     /**
      * Displayable 是否为脏，Painter 中会根据该标记判断是否需要是否需要重新绘制
      * Dirty flag. From which painter will determine if this displayable object needs brush
@@ -8607,7 +7455,6 @@ Displayable.prototype = {
      * @type {boolean}
      */
     __dirty: true,
-
     /**
      * 图形是否可见，为true时不绘制图形，但是仍能触发鼠标事件
      * If ignore drawing of the displayable object. Mouse event will still be triggered
@@ -8616,21 +7463,18 @@ Displayable.prototype = {
      * @default false
      */
     invisible: false,
-
     /**
      * @name module:/zrender/graphic/Displayable#z
      * @type {number}
      * @default 0
      */
     z: 0,
-
     /**
      * @name module:/zrender/graphic/Displayable#z
      * @type {number}
      * @default 0
      */
     z2: 0,
-
     /**
      * z层level，决定绘画在哪层canvas中
      * @name module:/zrender/graphic/Displayable#zlevel
@@ -8638,7 +7482,6 @@ Displayable.prototype = {
      * @default 0
      */
     zlevel: 0,
-
     /**
      * 是否可拖拽
      * @name module:/zrender/graphic/Displayable#draggable
@@ -8646,7 +7489,6 @@ Displayable.prototype = {
      * @default false
      */
     draggable: false,
-
     /**
      * 是否正在拖拽
      * @name module:/zrender/graphic/Displayable#draggable
@@ -8654,7 +7496,6 @@ Displayable.prototype = {
      * @default false
      */
     dragging: false,
-
     /**
      * 是否相应鼠标事件
      * @name module:/zrender/graphic/Displayable#silent
@@ -8662,35 +7503,30 @@ Displayable.prototype = {
      * @default false
      */
     silent: false,
-
     /**
      * If enable culling
      * @type {boolean}
      * @default false
      */
     culling: false,
-
     /**
      * Mouse cursor when hovered
      * @name module:/zrender/graphic/Displayable#cursor
      * @type {string}
      */
     cursor: 'pointer',
-
     /**
      * If hover area is bounding rect
      * @name module:/zrender/graphic/Displayable#rectHover
      * @type {string}
      */
     rectHover: false,
-
     /**
      * Render the element progressively when the value >= 0,
      * usefull for large data.
      * @type {boolean}
      */
     progressive: false,
-
     /**
      * @type {boolean}
      */
@@ -8700,25 +7536,20 @@ Displayable.prototype = {
      * @type {boolean}
      */
     globalScaleRatio: 1,
-
     beforeBrush: function (ctx) {},
-
     afterBrush: function (ctx) {},
-
     /**
      * 图形绘制方法
      * @param {CanvasRenderingContext2D} ctx
      */
     // Interface
     brush: function (ctx, prevEl) {},
-
     /**
      * 获取最小包围盒
      * @return {module:zrender/core/BoundingRect}
      */
     // Interface
     getBoundingRect: function () {},
-
     /**
      * 判断坐标 x, y 是否在图形上
      * If displayable element contain coord x, y
@@ -8729,7 +7560,6 @@ Displayable.prototype = {
     contain: function (x, y) {
         return this.rectContain(x, y);
     },
-
     /**
      * @param  {Function} cb
      * @param  {}   context
@@ -8737,7 +7567,6 @@ Displayable.prototype = {
     traverse: function (cb, context) {
         cb.call(context, this);
     },
-
     /**
      * 判断坐标 x, y 是否在图形的包围盒上
      * If bounding rect of element contain coord x, y
@@ -8750,19 +7579,15 @@ Displayable.prototype = {
         var rect = this.getBoundingRect();
         return rect.contain(coord[0], coord[1]);
     },
-
     /**
      * 标记图形元素为脏，并且在下一帧重绘
      * Mark displayable element dirty and refresh next frame
      */
     dirty: function () {
         this.__dirty = this.__dirtyText = true;
-
         this._rect = null;
-
         this.__zr && this.__zr.refresh();
     },
-
     /**
      * 图形是否会触发事件
      * If displayable object binded any event
@@ -8785,7 +7610,6 @@ Displayable.prototype = {
     animateStyle: function (loop) {
         return this.animate('style', loop);
     },
-
     attrKV: function (key, value) {
         if (key !== 'style') {
             Element.prototype.attrKV.call(this, key, value);
@@ -8794,7 +7618,6 @@ Displayable.prototype = {
             this.style.set(value);
         }
     },
-
     /**
      * @param {Object|string} key
      * @param {*} value
@@ -8804,7 +7627,6 @@ Displayable.prototype = {
         this.dirty(false);
         return this;
     },
-
     /**
      * Use given style object
      * @param  {Object} obj
@@ -8815,11 +7637,8 @@ Displayable.prototype = {
         return this;
     }
 };
-
 inherits(Displayable, Element);
-
 mixin(Displayable, RectText);
-
 /**
  * @alias zrender/graphic/Image
  * @extends module:zrender/graphic/Displayable
@@ -8829,31 +7648,23 @@ mixin(Displayable, RectText);
 function ZImage(opts) {
     Displayable.call(this, opts);
 }
-
 ZImage.prototype = {
-
     constructor: ZImage,
-
     type: 'image',
-
     brush: function (ctx, prevEl) {
         var style = this.style;
         var src = style.image;
-
         // Must bind each time
         style.bind(ctx, this, prevEl);
-
         var image = this._image = createOrUpdateImage(
             src,
             this._image,
             this,
             this.onload
         );
-
         if (!image || !isImageReady(image)) {
             return;
         }
-
         // 图片已经加载完成
         // if (image.nodeName.toUpperCase() == 'IMG') {
         //     if (!image.complete) {
@@ -8861,7 +7672,6 @@ ZImage.prototype = {
         //     }
         // }
         // Else is canvas
-
         var x = style.x || 0;
         var y = style.y || 0;
         var width = style.width;
@@ -8878,10 +7688,8 @@ ZImage.prototype = {
             width = image.width;
             height = image.height;
         }
-
         // 设置transform
         this.setTransform(ctx);
-
         if (style.sWidth && style.sHeight) {
             var sx = style.sx || 0;
             var sy = style.sy || 0;
@@ -8905,7 +7713,6 @@ ZImage.prototype = {
         else {
             ctx.drawImage(image, x, y, width, height);
         }
-
         // Draw rect text
         if (style.text != null) {
             // Only restore transform when needs draw text.
@@ -8913,7 +7720,6 @@ ZImage.prototype = {
             this.drawRectText(ctx, this.getBoundingRect());
         }
     },
-
     getBoundingRect: function () {
         var style = this.style;
         if (!this._rect) {
@@ -8924,37 +7730,28 @@ ZImage.prototype = {
         return this._rect;
     }
 };
-
 inherits(ZImage, Displayable);
-
 var HOVER_LAYER_ZLEVEL = 1e5;
 var CANVAS_ZLEVEL = 314159;
-
 var EL_AFTER_INCREMENTAL_INC = 0.01;
 var INCREMENTAL_INC = 0.001;
-
 function parseInt10(val) {
     return parseInt(val, 10);
 }
-
 function isLayerValid(layer) {
     if (!layer) {
         return false;
     }
-
     if (layer.__builtin__) {
         return true;
     }
-
     if (typeof (layer.resize) !== 'function'
         || typeof (layer.refresh) !== 'function'
     ) {
         return false;
     }
-
     return true;
 }
-
 var tmpRect = new BoundingRect(0, 0, 0, 0);
 var viewRect = new BoundingRect(0, 0, 0, 0);
 function isDisplayableCulled(el, width, height) {
@@ -8966,12 +7763,10 @@ function isDisplayableCulled(el, width, height) {
     viewRect.height = height;
     return !tmpRect.intersect(viewRect);
 }
-
 function isClipPathChanged(clipPaths, prevClipPaths) {
     if (clipPaths === prevClipPaths) { // Can both be null or undefined
         return false;
     }
-
     if (!clipPaths || !prevClipPaths || (clipPaths.length !== prevClipPaths.length)) {
         return true;
     }
@@ -8981,11 +7776,9 @@ function isClipPathChanged(clipPaths, prevClipPaths) {
         }
     }
 }
-
 function doClip(clipPaths, ctx) {
     for (var i = 0; i < clipPaths.length; i++) {
         var clipPath = clipPaths[i];
-
         clipPath.setTransform(ctx);
         ctx.beginPath();
         clipPath.buildPath(ctx, clipPath.shape);
@@ -8994,10 +7787,8 @@ function doClip(clipPaths, ctx) {
         clipPath.restoreTransform(ctx);
     }
 }
-
 function createRoot(width, height) {
     var domRoot = document.createElement('div');
-
     // domRoot.onselectstart = returnFalse; // 避免页面选中的尴尬
     domRoot.style.cssText = [
         'position:relative',
@@ -9008,11 +7799,8 @@ function createRoot(width, height) {
         'margin:0',
         'border-width:0'
     ].join(';') + ';';
-
     return domRoot;
 }
-
-
 /**
  * @alias module:zrender/Painter
  * @constructor
@@ -9021,15 +7809,11 @@ function createRoot(width, height) {
  * @param {Object} opts
  */
 var Painter = function (root, storage, opts) {
-
     this.type = 'canvas';
-
     // In node environment using node-canvas
     var singleCanvas = !root.nodeName // In node ?
         || root.nodeName.toUpperCase() === 'CANVAS';
-
     this._opts = opts = extend({}, opts || {});
-
     /**
      * @type {number}
      */
@@ -9044,50 +7828,40 @@ var Painter = function (root, storage, opts) {
      * @type {HTMLElement}
      */
     this.root = root;
-
     var rootStyle = root.style;
-
     if (rootStyle) {
         rootStyle['-webkit-tap-highlight-color'] = 'transparent';
         rootStyle['-webkit-user-select'] =
         rootStyle['user-select'] =
         rootStyle['-webkit-touch-callout'] = 'none';
-
         root.innerHTML = '';
     }
-
     /**
      * @type {module:zrender/Storage}
      */
     this.storage = storage;
-
     /**
      * @type {Array.<number>}
      * @private
      */
     var zlevelList = this._zlevelList = [];
-
     /**
      * @type {Object.<string, module:zrender/Layer>}
      * @private
      */
     var layers = this._layers = {};
-
     /**
      * @type {Object.<string, Object>}
      * @private
      */
     this._layerConfig = {};
-
     /**
      * zrender will do compositing when root is a canvas and have multiple zlevels.
      */
     this._needsManuallyCompositing = false;
-
     if (!singleCanvas) {
         this._width = this._getSize(0);
         this._height = this._getSize(1);
-
         var domRoot = this._domRoot = createRoot(
             this._width, this._height
         );
@@ -9096,7 +7870,6 @@ var Painter = function (root, storage, opts) {
     else {
         var width = root.width;
         var height = root.height;
-
         if (opts.width != null) {
             width = opts.width;
         }
@@ -9104,14 +7877,11 @@ var Painter = function (root, storage, opts) {
             height = opts.height;
         }
         this.dpr = opts.devicePixelRatio || 1;
-
         // Use canvas width and height directly
         root.width = width * this.dpr;
         root.height = height * this.dpr;
-
         this._width = width;
         this._height = height;
-
         // Create layer if only one given canvas
         // Device can be specified to create a high dpi image.
         var mainLayer = new Layer(root, this, this.dpr);
@@ -9123,27 +7893,20 @@ var Painter = function (root, storage, opts) {
         mainLayer.zlevel = CANVAS_ZLEVEL;
         // Not use common zlevel.
         zlevelList.push(CANVAS_ZLEVEL);
-
         this._domRoot = root;
     }
-
     /**
      * @type {module:zrender/Layer}
      * @private
      */
     this._hoverlayer = null;
-
     this._hoverElements = [];
 };
-
 Painter.prototype = {
-
     constructor: Painter,
-
     getType: function () {
         return 'canvas';
     },
-
     /**
      * If painter use a single canvas
      * @return {boolean}
@@ -9157,7 +7920,6 @@ Painter.prototype = {
     getViewportRoot: function () {
         return this._domRoot;
     },
-
     getViewportRootOffset: function () {
         var viewportRoot = this.getViewportRoot();
         if (viewportRoot) {
@@ -9167,21 +7929,15 @@ Painter.prototype = {
             };
         }
     },
-
     /**
      * 刷新
      * @param {boolean} [paintAll=false] 强制绘制所有displayable
      */
     refresh: function (paintAll) {
-
         var list = this.storage.getDisplayList(true);
-
         var zlevelList = this._zlevelList;
-
         this._redrawId = Math.random();
-
         this._paintList(list, paintAll, this._redrawId);
-
         // Paint custum layers
         for (var i = 0; i < zlevelList.length; i++) {
             var z = zlevelList[i];
@@ -9191,12 +7947,9 @@ Painter.prototype = {
                 layer.refresh(clearColor);
             }
         }
-
         this.refreshHover();
-
         return this;
     },
-
     addHover: function (el, hoverStyle) {
         if (el.__hoverMir) {
             return;
@@ -9212,10 +7965,8 @@ Painter.prototype = {
         el.__hoverMir = elMirror;
         hoverStyle && elMirror.setStyle(hoverStyle);
         this._hoverElements.push(elMirror);
-
         return elMirror;
     },
-
     removeHover: function (el) {
         var elMirror = el.__hoverMir;
         var hoverElements = this._hoverElements;
@@ -9225,7 +7976,6 @@ Painter.prototype = {
         }
         el.__hoverMir = null;
     },
-
     clearHover: function (el) {
         var hoverElements = this._hoverElements;
         for (var i = 0; i < hoverElements.length; i++) {
@@ -9236,24 +7986,20 @@ Painter.prototype = {
         }
         hoverElements.length = 0;
     },
-
     refreshHover: function () {
         var hoverElements = this._hoverElements;
         var len = hoverElements.length;
         var hoverLayer = this._hoverlayer;
         hoverLayer && hoverLayer.clear();
-
         if (!len) {
             return;
         }
         sort(hoverElements, this.storage.displayableSortFunc);
-
         // Use a extream large zlevel
         // FIXME?
         if (!hoverLayer) {
             hoverLayer = this._hoverlayer = this.getLayer(HOVER_LAYER_ZLEVEL);
         }
-
         var scope = {};
         hoverLayer.ctx.save();
         for (var i = 0; i < len;) {
@@ -9268,7 +8014,6 @@ Painter.prototype = {
                 continue;
             }
             i++;
-
             // Use transform
             // FIXME style and shape ?
             if (!originalEl.invisible) {
@@ -9279,29 +8024,21 @@ Painter.prototype = {
                 this._doPaintEl(el, hoverLayer, true, scope);
             }
         }
-
         hoverLayer.ctx.restore();
     },
-
     getHoverLayer: function () {
         return this.getLayer(HOVER_LAYER_ZLEVEL);
     },
-
     _paintList: function (list, paintAll, redrawId) {
         if (this._redrawId !== redrawId) {
             return;
         }
-
         paintAll = paintAll || false;
-
         this._updateLayerStatus(list);
-
         var finished = this._doPaintList(list, paintAll);
-
         if (this._needsManuallyCompositing) {
             this._compositeManually();
         }
-
         if (!finished) {
             var self = this;
             requestAnimationFrame(function () {
@@ -9309,7 +8046,6 @@ Painter.prototype = {
             });
         }
     },
-
     _compositeManually: function () {
         var ctx = this.getLayer(CANVAS_ZLEVEL).ctx;
         var width = this._domRoot.width;
@@ -9322,7 +8058,6 @@ Painter.prototype = {
             }
         });
     },
-
     _doPaintList: function (list, paintAll) {
         var layerList = [];
         for (var zi = 0; zi < this._zlevelList.length; zi++) {
@@ -9335,20 +8070,15 @@ Painter.prototype = {
                 layerList.push(layer);
             }
         }
-
         var finished = true;
-
         for (var k = 0; k < layerList.length; k++) {
             var layer = layerList[k];
             var ctx = layer.ctx;
             var scope = {};
             ctx.save();
-
             var start = paintAll ? layer.__startIndex : layer.__drawIndex;
-
             var useTimer = !paintAll && layer.incremental && Date.now;
             var startTime = useTimer && Date.now();
-
             var clearColor = layer.zlevel === this._zlevelList[0]
                 ? this._backgroundColor : null;
             // All elements in this layer are cleared.
@@ -9369,7 +8099,6 @@ Painter.prototype = {
                 var el = list[i];
                 this._doPaintEl(el, layer, paintAll, scope);
                 el.__dirty = el.__dirtyText = false;
-
                 if (useTimer) {
                     // Date.now can be executed in 13,025,305 ops/second.
                     var dTime = Date.now() - startTime;
@@ -9380,21 +8109,16 @@ Painter.prototype = {
                     }
                 }
             }
-
             layer.__drawIndex = i;
-
             if (layer.__drawIndex < layer.__endIndex) {
                 finished = false;
             }
-
             if (scope.prevElClipPaths) {
                 // Needs restore the state. If last drawn element is in the clipping area.
                 ctx.restore();
             }
-
             ctx.restore();
         }
-
         if (env$1.wxa) {
             // Flush for weixin application
             each$1(this._layers, function (layer) {
@@ -9403,10 +8127,8 @@ Painter.prototype = {
                 }
             });
         }
-
         return finished;
     },
-
     _doPaintEl: function (el, currentLayer, forcePaint, scope) {
         var ctx = currentLayer.ctx;
         var m = el.transform;
@@ -9423,9 +8145,7 @@ Painter.prototype = {
             // Ignore culled element
             && !(el.culling && isDisplayableCulled(el, this._width, this._height))
         ) {
-
             var clipPaths = el.__clipPaths;
-
             // Optimize when clipping on group with several elements
             if (!scope.prevElClipPaths
                 || isClipPathChanged(clipPaths, scope.prevElClipPaths)
@@ -9434,7 +8154,6 @@ Painter.prototype = {
                 if (scope.prevElClipPaths) {
                     currentLayer.ctx.restore();
                     scope.prevElClipPaths = null;
-
                     // Reset prevEl since context has been restored
                     scope.prevEl = null;
                 }
@@ -9446,14 +8165,11 @@ Painter.prototype = {
                 }
             }
             el.beforeBrush && el.beforeBrush(ctx);
-
             el.brush(ctx, scope.prevEl || null);
             scope.prevEl = el;
-
             el.afterBrush && el.afterBrush(ctx);
         }
     },
-
     /**
      * 获取 zlevel 所在层，如果不存在则会创建一个新的层
      * @param {number} zlevel
@@ -9470,34 +8186,26 @@ Painter.prototype = {
             layer = new Layer('zr_' + zlevel, this, this.dpr);
             layer.zlevel = zlevel;
             layer.__builtin__ = true;
-
             if (this._layerConfig[zlevel]) {
                 merge(layer, this._layerConfig[zlevel], true);
             }
-
             if (virtual) {
                 layer.virtual = virtual;
             }
-
             this.insertLayer(zlevel, layer);
-
             // Context is created after dom inserted to document
             // Or excanvas will get 0px clientWidth and clientHeight
             layer.initContext();
         }
-
         return layer;
     },
-
     insertLayer: function (zlevel, layer) {
-
         var layersMap = this._layers;
         var zlevelList = this._zlevelList;
         var len = zlevelList.length;
         var prevLayer = null;
         var i = -1;
         var domRoot = this._domRoot;
-
         if (layersMap[zlevel]) {
             log$1('ZLevel ' + zlevel + ' has been used already');
             return;
@@ -9507,7 +8215,6 @@ Painter.prototype = {
             log$1('Layer of zlevel ' + zlevel + ' is not valid');
             return;
         }
-
         if (len > 0 && zlevel > zlevelList[0]) {
             for (i = 0; i < len - 1; i++) {
                 if (
@@ -9520,9 +8227,7 @@ Painter.prototype = {
             prevLayer = layersMap[zlevelList[i]];
         }
         zlevelList.splice(i + 1, 0, zlevel);
-
         layersMap[zlevel] = layer;
-
         // Vitual layer will not directly show on the screen.
         // (It can be a WebGL layer and assigned to a ZImage element)
         // But it still under management of zrender.
@@ -9549,7 +8254,6 @@ Painter.prototype = {
             }
         }
     },
-
     // Iterate each layer
     eachLayer: function (cb, context) {
         var zlevelList = this._zlevelList;
@@ -9560,7 +8264,6 @@ Painter.prototype = {
             cb.call(context, this._layers[z], z);
         }
     },
-
     // Iterate each buildin layer
     eachBuiltinLayer: function (cb, context) {
         var zlevelList = this._zlevelList;
@@ -9575,7 +8278,6 @@ Painter.prototype = {
             }
         }
     },
-
     // Iterate each other layer except buildin layer
     eachOtherLayer: function (cb, context) {
         var zlevelList = this._zlevelList;
@@ -9590,7 +8292,6 @@ Painter.prototype = {
             }
         }
     },
-
     /**
      * 获取所有已创建的层
      * @param {Array.<module:zrender/Layer>} [prevLayer]
@@ -9598,13 +8299,10 @@ Painter.prototype = {
     getLayers: function () {
         return this._layers;
     },
-
     _updateLayerStatus: function (list) {
-
         this.eachBuiltinLayer(function (layer, z) {
             layer.__dirty = layer.__used = false;
         });
-
         function updatePrevLayer(idx) {
             if (prevLayer) {
                 if (prevLayer.__endIndex !== idx) {
@@ -9613,7 +8311,6 @@ Painter.prototype = {
                 prevLayer.__endIndex = idx;
             }
         }
-
         if (this._singleCanvas) {
             for (var i = 1; i < list.length; i++) {
                 var el = list[i];
@@ -9623,7 +8320,6 @@ Painter.prototype = {
                 }
             }
         }
-
         var prevLayer = null;
         var incrementalLayerCount = 0;
         for (var i = 0; i < list.length; i++) {
@@ -9640,11 +8336,9 @@ Painter.prototype = {
             else {
                 layer = this.getLayer(zlevel + (incrementalLayerCount > 0 ? EL_AFTER_INCREMENTAL_INC : 0), this._needsManuallyCompositing);
             }
-
             if (!layer.__builtin__) {
                 log$1('ZLevel ' + zlevel + ' has been used by unkown layer ' + layer.id);
             }
-
             if (layer !== prevLayer) {
                 layer.__used = true;
                 if (layer.__startIndex !== i) {
@@ -9669,9 +8363,7 @@ Painter.prototype = {
                 }
             }
         }
-
         updatePrevLayer(i);
-
         this.eachBuiltinLayer(function (layer, z) {
             // Used in last frame but not in this frame. Needs clear
             if (!layer.__used && layer.getElementCount() > 0) {
@@ -9684,7 +8376,6 @@ Painter.prototype = {
             }
         });
     },
-
     /**
      * 清除hover层外所有内容
      */
@@ -9692,15 +8383,12 @@ Painter.prototype = {
         this.eachBuiltinLayer(this._clearLayer);
         return this;
     },
-
     _clearLayer: function (layer) {
         layer.clear();
     },
-
     setBackgroundColor: function (backgroundColor) {
         this._backgroundColor = backgroundColor;
     },
-
     /**
      * 修改指定zlevel的绘制参数
      *
@@ -9720,7 +8408,6 @@ Painter.prototype = {
             else {
                 merge(layerConfig[zlevel], config, true);
             }
-
             for (var i = 0; i < this._zlevelList.length; i++) {
                 var _zlevel = this._zlevelList[i];
                 if (_zlevel === zlevel || _zlevel === zlevel + EL_AFTER_INCREMENTAL_INC) {
@@ -9730,7 +8417,6 @@ Painter.prototype = {
             }
         }
     },
-
     /**
      * 删除指定层
      * @param {number} zlevel 层所在的zlevel
@@ -9744,10 +8430,8 @@ Painter.prototype = {
         }
         layer.dom.parentNode.removeChild(layer.dom);
         delete layers[zlevel];
-
         zlevelList.splice(indexOf(zlevelList, zlevel), 1);
     },
-
     /**
      * 区域大小变化后重绘
      */
@@ -9758,29 +8442,23 @@ Painter.prototype = {
             }
             this._width = width;
             this._height = height;
-
             this.getLayer(CANVAS_ZLEVEL).resize(width, height);
         }
         else {
             var domRoot = this._domRoot;
             // FIXME Why ?
             domRoot.style.display = 'none';
-
             // Save input w/h
             var opts = this._opts;
             width != null && (opts.width = width);
             height != null && (opts.height = height);
-
             width = this._getSize(0);
             height = this._getSize(1);
-
             domRoot.style.display = '';
-
             // 优化没有实际改变的resize
             if (this._width !== width || height !== this._height) {
                 domRoot.style.width = width + 'px';
                 domRoot.style.height = height + 'px';
-
                 for (var id in this._layers) {
                     if (this._layers.hasOwnProperty(id)) {
                         this._layers[id].resize(width, height);
@@ -9789,17 +8467,13 @@ Painter.prototype = {
                 each$1(this._progressiveLayers, function (layer) {
                     layer.resize(width, height);
                 });
-
                 this.refresh(true);
             }
-
             this._width = width;
             this._height = height;
-
         }
         return this;
     },
-
     /**
      * 清除单独的一个层
      * @param {number} zlevel
@@ -9810,20 +8484,16 @@ Painter.prototype = {
             layer.clear();
         }
     },
-
     /**
      * 释放
      */
     dispose: function () {
         this.root.innerHTML = '';
-
         this.root =
         this.storage =
-
         this._domRoot =
         this._layers = null;
     },
-
     /**
      * Get canvas which has all thing rendered
      * @param {Object} opts
@@ -9835,14 +8505,11 @@ Painter.prototype = {
         if (this._singleCanvas && !this._compositeManually) {
             return this._layers[CANVAS_ZLEVEL].dom;
         }
-
         var imageLayer = new Layer('image', this, opts.pixelRatio || this.dpr);
         imageLayer.initContext();
         imageLayer.clear(false, opts.backgroundColor || this._backgroundColor);
-
         if (opts.pixelRatio <= this.dpr) {
             this.refresh();
-
             var width = imageLayer.dom.width;
             var height = imageLayer.dom.height;
             var ctx = imageLayer.ctx;
@@ -9866,7 +8533,6 @@ Painter.prototype = {
                 this._doPaintEl(el, imageLayer, true, scope);
             }
         }
-
         return imageLayer.dom;
     },
     /**
@@ -9875,39 +8541,32 @@ Painter.prototype = {
     getWidth: function () {
         return this._width;
     },
-
     /**
      * 获取绘图区域高度
      */
     getHeight: function () {
         return this._height;
     },
-
     _getSize: function (whIdx) {
         var opts = this._opts;
         var wh = ['width', 'height'][whIdx];
         var cwh = ['clientWidth', 'clientHeight'][whIdx];
         var plt = ['paddingLeft', 'paddingTop'][whIdx];
         var prb = ['paddingRight', 'paddingBottom'][whIdx];
-
         if (opts[wh] != null && opts[wh] !== 'auto') {
             return parseFloat(opts[wh]);
         }
-
         var root = this.root;
         // IE8 does not support getComputedStyle, but it use VML.
         var stl = document.defaultView.getComputedStyle(root);
-
         return (
             (root[cwh] || parseInt10(stl[wh]) || parseInt10(root.style[wh]))
             - (parseInt10(stl[plt]) || 0)
             - (parseInt10(stl[prb]) || 0)
         ) | 0;
     },
-
     pathToImage: function (path, dpr) {
         dpr = dpr || this.dpr;
-
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');
         var rect = path.getBoundingRect();
@@ -9916,21 +8575,17 @@ Painter.prototype = {
         var shadowOffsetX = style.shadowOffsetX * dpr;
         var shadowOffsetY = style.shadowOffsetY * dpr;
         var lineWidth = style.hasStroke() ? style.lineWidth : 0;
-
         var leftMargin = Math.max(lineWidth / 2, -shadowOffsetX + shadowBlurSize);
         var rightMargin = Math.max(lineWidth / 2, shadowOffsetX + shadowBlurSize);
         var topMargin = Math.max(lineWidth / 2, -shadowOffsetY + shadowBlurSize);
         var bottomMargin = Math.max(lineWidth / 2, shadowOffsetY + shadowBlurSize);
         var width = rect.width + leftMargin + rightMargin;
         var height = rect.height + topMargin + bottomMargin;
-
         canvas.width = width * dpr;
         canvas.height = height * dpr;
-
         ctx.scale(dpr, dpr);
         ctx.clearRect(0, 0, width, height);
         ctx.dpr = dpr;
-
         var pathTransform = {
             position: path.position,
             rotation: path.rotation,
@@ -9943,7 +8598,6 @@ Painter.prototype = {
         if (path) {
             path.brush(ctx);
         }
-
         var ImageShape = ZImage;
         var imgShape = new ImageShape({
             style: {
@@ -9952,23 +8606,18 @@ Painter.prototype = {
                 image: canvas
             }
         });
-
         if (pathTransform.position != null) {
             imgShape.position = path.position = pathTransform.position;
         }
-
         if (pathTransform.rotation != null) {
             imgShape.rotation = path.rotation = pathTransform.rotation;
         }
-
         if (pathTransform.scale != null) {
             imgShape.scale = path.scale = pathTransform.scale;
         }
-
         return imgShape;
     }
 };
-
 /**
  * 动画主类, 调度和管理所有动画控制器
  *
@@ -9978,12 +8627,10 @@ Painter.prototype = {
 // TODO Additive animation
 // http://iosoteric.com/additive-animations-animatewithduration-in-ios-8/
 // https://developer.apple.com/videos/wwdc2014/#236
-
 /**
  * @typedef {Object} IZRenderStage
  * @property {Function} update
  */
-
 /**
  * @alias module:zrender/animation/Animation
  * @constructor
@@ -10008,31 +8655,19 @@ Painter.prototype = {
  *         .start('spline');
  */
 var Animation = function (options) {
-
     options = options || {};
-
     this.stage = options.stage || {};
-
     this.onframe = options.onframe || function () {};
-
     // private properties
     this._clips = [];
-
     this._running = false;
-
     this._time;
-
     this._pausedTime;
-
     this._pauseStart;
-
     this._paused = false;
-
     Eventful.call(this);
 };
-
 Animation.prototype = {
-
     constructor: Animation,
     /**
      * 添加 clip
@@ -10062,7 +8697,6 @@ Animation.prototype = {
             this._clips.splice(idx, 1);
         }
     },
-
     /**
      * 删除动画片段
      * @param {module:zrender/animation/Animator} animator
@@ -10074,13 +8708,11 @@ Animation.prototype = {
         }
         animator.animation = null;
     },
-
     _update: function () {
         var time = new Date().getTime() - this._pausedTime;
         var delta = time - this._time;
         var clips = this._clips;
         var len = clips.length;
-
         var deferredEvents = [];
         var deferredClips = [];
         for (var i = 0; i < len; i++) {
@@ -10093,7 +8725,6 @@ Animation.prototype = {
                 deferredClips.push(clip);
             }
         }
-
         // Remove the finished clip
         for (var i = 0; i < len;) {
             if (clips[i]._needsRemove) {
@@ -10105,61 +8736,45 @@ Animation.prototype = {
                 i++;
             }
         }
-
         len = deferredEvents.length;
         for (var i = 0; i < len; i++) {
             deferredClips[i].fire(deferredEvents[i]);
         }
-
         this._time = time;
-
         this.onframe(delta);
-
         // 'frame' should be triggered before stage, because upper application
         // depends on the sequence (e.g., echarts-stream and finish
         // event judge)
         this.trigger('frame', delta);
-
         if (this.stage.update) {
             this.stage.update();
         }
     },
-
     _startLoop: function () {
         var self = this;
-
         this._running = true;
-
         function step() {
             if (self._running) {
-
                 requestAnimationFrame(step);
-
                 !self._paused && self._update();
             }
         }
-
         requestAnimationFrame(step);
     },
-
     /**
      * Start animation.
      */
     start: function () {
-
         this._time = new Date().getTime();
         this._pausedTime = 0;
-
         this._startLoop();
     },
-
     /**
      * Stop animation.
      */
     stop: function () {
         this._running = false;
     },
-
     /**
      * Pause animation.
      */
@@ -10169,7 +8784,6 @@ Animation.prototype = {
             this._paused = true;
         }
     },
-
     /**
      * Resume animation.
      */
@@ -10179,21 +8793,18 @@ Animation.prototype = {
             this._paused = false;
         }
     },
-
     /**
      * Clear animation.
      */
     clear: function () {
         this._clips = [];
     },
-
     /**
      * Whether animation finished.
      */
     isFinished: function () {
         return !this._clips.length;
     },
-
     /**
      * Creat animator for a target, whose props can be animated.
      *
@@ -10207,46 +8818,35 @@ Animation.prototype = {
     // TODO Gap
     animate: function (target, options) {
         options = options || {};
-
         var animator = new Animator(
             target,
             options.loop,
             options.getter,
             options.setter
         );
-
         this.addAnimator(animator);
-
         return animator;
     }
 };
-
 mixin(Animation, Eventful);
-
 var TOUCH_CLICK_DELAY = 300;
-
 var mouseHandlerNames = [
     'click', 'dblclick', 'mousewheel', 'mouseout',
     'mouseup', 'mousedown', 'mousemove', 'contextmenu'
 ];
-
 var touchHandlerNames = [
     'touchstart', 'touchend', 'touchmove'
 ];
-
 var pointerEventNames = {
     pointerdown: 1, pointerup: 1, pointermove: 1, pointerout: 1
 };
-
 var pointerHandlerNames = map(mouseHandlerNames, function (name) {
     var nm = name.replace('mouse', 'pointer');
     return pointerEventNames[nm] ? nm : name;
 });
-
 function eventNameFix(name) {
     return (name === 'mousewheel' && env$1.browser.firefox) ? 'DOMMouseScroll' : name;
 }
-
 // function onMSGestureChange(proxy, event) {
 //     if (event.translationX || event.translationY) {
 //         // mousemove is carried by MSGesture to reduce the sensitivity.
@@ -10259,7 +8859,6 @@ function eventNameFix(name) {
 //         proxy.handler.dispatchToElement(event.target, 'pinch', event);
 //     }
 // }
-
 /**
  * Prevent mouse event from being dispatched after Touch Events action
  * @see <https://github.com/deltakosh/handjs/blob/master/src/hand.base.js>
@@ -10274,8 +8873,6 @@ function setTouchTimer(instance) {
         instance._touching = false;
     }, 700);
 }
-
-
 var domHandlers = {
     /**
      * Mouse move handler
@@ -10284,10 +8881,8 @@ var domHandlers = {
      */
     mousemove: function (event) {
         event = normalizeEvent(this.dom, event);
-
         this.trigger('mousemove', event);
     },
-
     /**
      * Mouse out handler
      * @inner
@@ -10295,7 +8890,6 @@ var domHandlers = {
      */
     mouseout: function (event) {
         event = normalizeEvent(this.dom, event);
-
         var element = event.toElement || event.relatedTarget;
         if (element !== this.dom) {
             while (element && element.nodeType !== 9) {
@@ -10303,14 +8897,11 @@ var domHandlers = {
                 if (element === this.dom) {
                     return;
                 }
-
                 element = element.parentNode;
             }
         }
-
         this.trigger('mouseout', event);
     },
-
     /**
      * Touch开始响应函数
      * @inner
@@ -10320,64 +8911,46 @@ var domHandlers = {
         // Default mouse behaviour should not be disabled here.
         // For example, page may needs to be slided.
         event = normalizeEvent(this.dom, event);
-
         // Mark touch, which is useful in distinguish touch and
         // mouse event in upper applicatoin.
         event.zrByTouch = true;
-
         this._lastTouchMoment = new Date();
-
         this.handler.processGesture(this, event, 'start');
-
         // In touch device, trigger `mousemove`(`mouseover`) should
         // be triggered, and must before `mousedown` triggered.
         domHandlers.mousemove.call(this, event);
-
         domHandlers.mousedown.call(this, event);
-
         setTouchTimer(this);
     },
-
     /**
      * Touch移动响应函数
      * @inner
      * @param {Event} event
      */
     touchmove: function (event) {
-
         event = normalizeEvent(this.dom, event);
-
         // Mark touch, which is useful in distinguish touch and
         // mouse event in upper applicatoin.
         event.zrByTouch = true;
-
         this.handler.processGesture(this, event, 'change');
-
         // Mouse move should always be triggered no matter whether
         // there is gestrue event, because mouse move and pinch may
         // be used at the same time.
         domHandlers.mousemove.call(this, event);
-
         setTouchTimer(this);
     },
-
     /**
      * Touch结束响应函数
      * @inner
      * @param {Event} event
      */
     touchend: function (event) {
-
         event = normalizeEvent(this.dom, event);
-
         // Mark touch, which is useful in distinguish touch and
         // mouse event in upper applicatoin.
         event.zrByTouch = true;
-
         this.handler.processGesture(this, event, 'end');
-
         domHandlers.mouseup.call(this, event);
-
         // Do not trigger `mouseout` here, in spite of `mousemove`(`mouseover`) is
         // triggered in `touchstart`. This seems to be illogical, but by this mechanism,
         // we can conveniently implement "hover style" in both PC and touch device just
@@ -10385,24 +8958,19 @@ var domHandlers = {
         // to remove "hover style" on an element, without any additional code for
         // compatibility. (`mouseout` will not be triggered in `touchend`, so "hover
         // style" will remain for user view)
-
         // click event should always be triggered no matter whether
         // there is gestrue event. System click can not be prevented.
         if (+new Date() - this._lastTouchMoment < TOUCH_CLICK_DELAY) {
             domHandlers.click.call(this, event);
         }
-
         setTouchTimer(this);
     },
-
     pointerdown: function (event) {
         domHandlers.mousedown.call(this, event);
-
         // if (useMSGuesture(this, event)) {
         //     this._msGesture.addPointer(event.pointerId);
         // }
     },
-
     pointermove: function (event) {
         // FIXME
         // pointermove is so sensitive that it always triggered when
@@ -10413,11 +8981,9 @@ var domHandlers = {
             domHandlers.mousemove.call(this, event);
         }
     },
-
     pointerup: function (event) {
         domHandlers.mouseup.call(this, event);
     },
-
     pointerout: function (event) {
         // pointerout will be triggered when tap on touch screen
         // (IE11+/Edge on MS Surface) after click event triggered,
@@ -10429,16 +8995,13 @@ var domHandlers = {
         }
     }
 };
-
 function isPointerFromTouch(event) {
     var pointerType = event.pointerType;
     return pointerType === 'pen' || pointerType === 'touch';
 }
-
 // function useMSGuesture(handlerProxy, event) {
 //     return isPointerFromTouch(event) && !!handlerProxy._msGesture;
 // }
-
 // Common handlers
 each$1(['click', 'mousedown', 'mouseup', 'mousewheel', 'dblclick', 'contextmenu'], function (name) {
     domHandlers[name] = function (event) {
@@ -10446,7 +9009,6 @@ each$1(['click', 'mousedown', 'mouseup', 'mousewheel', 'dblclick', 'contextmenu'
         this.trigger(name, event);
     };
 });
-
 /**
  * 为控制类实例初始化dom 事件处理函数
  *
@@ -10457,15 +9019,12 @@ function initDomHandler(instance) {
     each$1(touchHandlerNames, function (name) {
         instance._handlers[name] = bind(domHandlers[name], instance);
     });
-
     each$1(pointerHandlerNames, function (name) {
         instance._handlers[name] = bind(domHandlers[name], instance);
     });
-
     each$1(mouseHandlerNames, function (name) {
         instance._handlers[name] = makeMouseHandler(domHandlers[name], instance);
     });
-
     function makeMouseHandler(fn, instance) {
         return function () {
             if (instance._touching) {
@@ -10475,29 +9034,21 @@ function initDomHandler(instance) {
         };
     }
 }
-
-
 function HandlerDomProxy(dom) {
     Eventful.call(this);
-
     this.dom = dom;
-
     /**
      * @private
      * @type {boolean}
      */
     this._touching = false;
-
     /**
      * @private
      * @type {number}
      */
     this._touchTimer;
-
     this._handlers = {};
-
     initDomHandler(this);
-
     if (env$1.pointerEventsSupported) { // Only IE11+/Edge
         // 1. On devices that both enable touch and mouse (e.g., MS Surface and lenovo X240),
         // IE11+/Edge do not trigger touch event, but trigger pointer event and mouse event
@@ -10506,14 +9057,12 @@ function HandlerDomProxy(dom) {
         // screen, which do not occurs in pointer event.
         // So we use pointer event to both detect touch gesture and mouse behavior.
         mountHandlers(pointerHandlerNames, this);
-
         // FIXME
         // Note: MS Gesture require CSS touch-action set. But touch-action is not reliable,
         // which does not prevent defuault behavior occasionally (which may cause view port
         // zoomed in but use can not zoom it back). And event.preventDefault() does not work.
         // So we have to not to use MSGesture and not to support touchmove and pinch on MS
         // touch screen. And we only support click behavior on MS touch screen now.
-
         // MS Gesture Event is only supported on IE11+/Edge and on Windows 8+.
         // We dont support touch on IE on win7.
         // See <https://msdn.microsoft.com/en-us/library/dn433243(v=vs.85).aspx>
@@ -10528,7 +9077,6 @@ function HandlerDomProxy(dom) {
             // Handler of 'mouseout' event is needed in touch mode, which will be mounted below.
             // addEventListener(root, 'mouseout', this._mouseoutHandler);
         }
-
         // 1. Considering some devices that both enable touch and mouse event (like on MS Surface
         // and lenovo X240, @see #2350), we make mouse event be always listened, otherwise
         // mouse event can not be handle in those devices.
@@ -10536,30 +9084,24 @@ function HandlerDomProxy(dom) {
         // mouseevent after touch event triggered, see `setTouchTimer`.
         mountHandlers(mouseHandlerNames, this);
     }
-
     function mountHandlers(handlerNames, instance) {
         each$1(handlerNames, function (name) {
             addEventListener(dom, eventNameFix(name), instance._handlers[name]);
         }, instance);
     }
 }
-
 var handlerDomProxyProto = HandlerDomProxy.prototype;
 handlerDomProxyProto.dispose = function () {
     var handlerNames = mouseHandlerNames.concat(touchHandlerNames);
-
     for (var i = 0; i < handlerNames.length; i++) {
         var name = handlerNames[i];
         removeEventListener(this.dom, eventNameFix(name), this._handlers[name]);
     }
 };
-
 handlerDomProxyProto.setCursor = function (cursorStyle) {
     this.dom.style && (this.dom.style.cursor = cursorStyle || 'default');
 };
-
 mixin(HandlerDomProxy, Eventful);
-
 /*!
 * ZRender, a high performance 2d drawing library.
 *
@@ -10569,18 +9111,14 @@ mixin(HandlerDomProxy, Eventful);
 * LICENSE
 * https://github.com/ecomfe/zrender/blob/master/LICENSE.txt
 */
-
 var useVML = !env$1.canvasSupported;
-
 var painterCtors = {
     canvas: Painter
 };
-
 /**
  * @type {string}
  */
 var version$1 = '4.0.7';
-
 /**
  * Initializing a zrender instance
  * @param {HTMLElement} dom
@@ -10595,22 +9133,15 @@ function init$1(dom, opts) {
     var zr = new ZRender(guid(), dom, opts);
     return zr;
 }
-
 /**
  * Dispose zrender instance
  * @param {module:zrender/ZRender} zr
  */
-
-
 /**
  * Get zrender instance by id
  * @param {string} id zrender instance id
  * @return {module:zrender/ZRender}
  */
-
-
-
-
 /**
  * @module zrender/ZRender
  */
@@ -10626,22 +9157,17 @@ function init$1(dom, opts) {
  * @param {number} [opts.height] Can be 'auto' (the same as null/undefined)
  */
 var ZRender = function (id, dom, opts) {
-
     opts = opts || {};
-
     /**
      * @type {HTMLDomElement}
      */
     this.dom = dom;
-
     /**
      * @type {string}
      */
     this.id = id;
-
     var self = this;
     var storage = new Storage();
-
     var rendererType = opts.renderer;
     // TODO WebGL
     if (useVML) {
@@ -10654,13 +9180,10 @@ var ZRender = function (id, dom, opts) {
         rendererType = 'canvas';
     }
     var painter = new painterCtors[rendererType](dom, storage, opts, id);
-
     this.storage = storage;
     this.painter = painter;
-
     var handerProxy = (!env$1.node && !env$1.worker) ? new HandlerDomProxy(painter.getViewportRoot()) : null;
     this.handler = new Handler(storage, painter, handerProxy, painter.root);
-
     /**
      * @type {module:zrender/animation/Animation}
      */
@@ -10670,33 +9193,25 @@ var ZRender = function (id, dom, opts) {
         }
     });
     this.animation.start();
-
     /**
      * @type {boolean}
      * @private
      */
     this._needsRefresh;
-
     // 修改 storage.delFromStorage, 每次删除元素之前删除动画
     // FIXME 有点ugly
     var oldDelFromStorage = storage.delFromStorage;
     var oldAddToStorage = storage.addToStorage;
-
     storage.delFromStorage = function (el) {
         oldDelFromStorage.call(storage, el);
-
         el && el.removeSelfFromZr(self);
     };
-
     storage.addToStorage = function (el) {
         oldAddToStorage.call(storage, el);
-
         el.addSelfToZr(self);
     };
 };
-
 ZRender.prototype = {
-
     constructor: ZRender,
     /**
      * 获取实例唯一标识
@@ -10705,7 +9220,6 @@ ZRender.prototype = {
     getId: function () {
         return this.id;
     },
-
     /**
      * 添加元素
      * @param  {module:zrender/Element} el
@@ -10714,7 +9228,6 @@ ZRender.prototype = {
         this.storage.addRoot(el);
         this._needsRefresh = true;
     },
-
     /**
      * 删除元素
      * @param  {module:zrender/Element} el
@@ -10723,7 +9236,6 @@ ZRender.prototype = {
         this.storage.delRoot(el);
         this._needsRefresh = true;
     },
-
     /**
      * Change configuration of layer
      * @param {string} zLevel
@@ -10738,7 +9250,6 @@ ZRender.prototype = {
         }
         this._needsRefresh = true;
     },
-
     /**
      * Set background color
      * @param {string} backgroundColor
@@ -10749,7 +9260,6 @@ ZRender.prototype = {
         }
         this._needsRefresh = true;
     },
-
     /**
      * Repaint the canvas immediately
      */
@@ -10769,20 +9279,17 @@ ZRender.prototype = {
         //     log.innerHTML = log.innerHTML + '<br>' + (end - start);
         // }
     },
-
     /**
      * Mark and repaint the canvas in the next frame of browser
      */
     refresh: function () {
         this._needsRefresh = true;
     },
-
     /**
      * Perform all refresh
      */
     flush: function () {
         var triggerRendered;
-
         if (this._needsRefresh) {
             triggerRendered = true;
             this.refreshImmediately();
@@ -10791,10 +9298,8 @@ ZRender.prototype = {
             triggerRendered = true;
             this.refreshHoverImmediately();
         }
-
         triggerRendered && this.trigger('rendered');
     },
-
     /**
      * Add element to hover layer
      * @param  {module:zrender/Element} el
@@ -10807,7 +9312,6 @@ ZRender.prototype = {
             return elMirror;
         }
     },
-
     /**
      * Add element from hover layer
      * @param  {module:zrender/Element} el
@@ -10818,7 +9322,6 @@ ZRender.prototype = {
             this.refreshHover();
         }
     },
-
     /**
      * Clear all hover elements in hover layer
      * @param  {module:zrender/Element} el
@@ -10829,14 +9332,12 @@ ZRender.prototype = {
             this.refreshHover();
         }
     },
-
     /**
      * Refresh hover in next frame
      */
     refreshHover: function () {
         this._needsRefreshHover = true;
     },
-
     /**
      * Refresh hover immediately
      */
@@ -10844,7 +9345,6 @@ ZRender.prototype = {
         this._needsRefreshHover = false;
         this.painter.refreshHover && this.painter.refreshHover();
     },
-
     /**
      * Resize the canvas.
      * Should be invoked when container size is changed
@@ -10857,28 +9357,24 @@ ZRender.prototype = {
         this.painter.resize(opts.width, opts.height);
         this.handler.resize();
     },
-
     /**
      * Stop and clear all animation immediately
      */
     clearAnimation: function () {
         this.animation.clear();
     },
-
     /**
      * Get container width
      */
     getWidth: function () {
         return this.painter.getWidth();
     },
-
     /**
      * Get container height
      */
     getHeight: function () {
         return this.painter.getHeight();
     },
-
     /**
      * Export the canvas as Base64 URL
      * @param {string} type
@@ -10890,7 +9386,6 @@ ZRender.prototype = {
     //         backgroundColor: backgroundColor
     //     }).toDataURL(type);
     // },
-
     /**
      * Converting a path to image.
      * It has much better performance of drawing image rather than drawing a vector path.
@@ -10901,7 +9396,6 @@ ZRender.prototype = {
     pathToImage: function (e, dpr) {
         return this.painter.pathToImage(e, dpr);
     },
-
     /**
      * Set default cursor
      * @param {string} [cursorStyle='default'] 例如 crosshair
@@ -10909,7 +9403,6 @@ ZRender.prototype = {
     setCursorStyle: function (cursorStyle) {
         this.handler.setCursorStyle(cursorStyle);
     },
-
     /**
      * Find hovered element
      * @param {number} x
@@ -10919,7 +9412,6 @@ ZRender.prototype = {
     findHover: function (x, y) {
         return this.handler.findHover(x, y);
     },
-
     /**
      * Bind event
      *
@@ -10930,7 +9422,6 @@ ZRender.prototype = {
     on: function (eventName, eventHandler, context) {
         this.handler.on(eventName, eventHandler, context);
     },
-
     /**
      * Unbind event
      * @param {string} eventName Event name
@@ -10939,7 +9430,6 @@ ZRender.prototype = {
     off: function (eventName, eventHandler) {
         this.handler.off(eventName, eventHandler);
     },
-
     /**
      * Trigger event manually
      *
@@ -10949,8 +9439,6 @@ ZRender.prototype = {
     trigger: function (eventName, event) {
         this.handler.trigger(eventName, event);
     },
-
-
     /**
      * Clear all objects and the canvas.
      */
@@ -10958,27 +9446,21 @@ ZRender.prototype = {
         this.storage.delRoot();
         this.painter.clear();
     },
-
     /**
      * Dispose self.
      */
     dispose: function () {
         this.animation.stop();
-
         this.clear();
         this.storage.dispose();
         this.painter.dispose();
         this.handler.dispose();
-
         this.animation =
         this.storage =
         this.painter =
         this.handler = null;
-
-        
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -10997,18 +9479,15 @@ ZRender.prototype = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var each$2 = each$1;
 var isObject$2 = isObject$1;
 var isArray$1 = isArray;
-
 /**
  * Make the name displayable. But we should
  * make sure it is not duplicated with user
  * specified name, so use '\0';
  */
 var DUMMY_COMPONENT_NAME_PREFIX = 'series\0';
-
 /**
  * If value is not array, then translate it to array.
  * @param  {*} value
@@ -11021,7 +9500,6 @@ function normalizeToArray(value) {
         ? []
         : [value];
 }
-
 /**
  * Sync default option between normal and emphasis like `position` and `show`
  * In case some one will write code like
@@ -11043,7 +9521,6 @@ function defaultEmphasis(opt, key, subOpts) {
         opt[key] = opt[key] || {};
         opt.emphasis = opt.emphasis || {};
         opt.emphasis[key] = opt.emphasis[key] || {};
-
         // Default emphasis option from normal
         for (var i = 0, len = subOpts.length; i < len; i++) {
             var subOptName = subOpts[i];
@@ -11055,7 +9532,6 @@ function defaultEmphasis(opt, key, subOpts) {
         }
     }
 }
-
 var TEXT_STYLE_OPTIONS = [
     'fontStyle', 'fontWeight', 'fontSize', 'fontFamily',
     'rich', 'tag', 'color', 'textBorderColor', 'textBorderWidth',
@@ -11064,14 +9540,12 @@ var TEXT_STYLE_OPTIONS = [
     'textShadowColor', 'textShadowBlur', 'textShadowOffsetX', 'textShadowOffsetY',
     'backgroundColor', 'borderColor', 'borderWidth', 'borderRadius', 'padding'
 ];
-
 // modelUtil.LABEL_OPTIONS = modelUtil.TEXT_STYLE_OPTIONS.concat([
 //     'position', 'offset', 'rotate', 'origin', 'show', 'distance', 'formatter',
 //     'fontStyle', 'fontWeight', 'fontSize', 'fontFamily',
 //     // FIXME: deprecated, check and remove it.
 //     'textStyle'
 // ]);
-
 /**
  * The method do not ensure performance.
  * data could be [12, 2323, {value: 223}, [1221, 23], {value: [2, 23]}]
@@ -11083,7 +9557,6 @@ function getDataItemValue(dataItem) {
     return (isObject$2(dataItem) && !isArray$1(dataItem) && !(dataItem instanceof Date))
         ? dataItem.value : dataItem;
 }
-
 /**
  * data could be [12, 2323, {value: 223}, [1221, 23], {value: [2, 23]}]
  * This helper method determine if dataItem has extra option besides value
@@ -11095,7 +9568,6 @@ function isDataItemOption(dataItem) {
         // // markLine data can be array
         // && !(dataItem[0] && isObject(dataItem[0]) && !(dataItem[0] instanceof Array));
 }
-
 /**
  * Mapping to exists for merge.
  *
@@ -11113,17 +9585,14 @@ function mappingToExists(exists, newCptOptions) {
     // media query. And in most case, merge option is used to
     // update partial option but not be expected to change order.
     newCptOptions = (newCptOptions || []).slice();
-
     var result = map(exists || [], function (obj, index) {
         return {exist: obj};
     });
-
     // Mapping by id or name if specified.
     each$2(newCptOptions, function (cptOption, index) {
         if (!isObject$2(cptOption)) {
             return;
         }
-
         // id has highest priority.
         for (var i = 0; i < result.length; i++) {
             if (!result[i].option // Consider name: two map to one.
@@ -11135,7 +9604,6 @@ function mappingToExists(exists, newCptOptions) {
                 return;
             }
         }
-
         for (var i = 0; i < result.length; i++) {
             var exist = result[i].exist;
             if (!result[i].option // Consider name: two map to one.
@@ -11152,13 +9620,11 @@ function mappingToExists(exists, newCptOptions) {
             }
         }
     });
-
     // Otherwise mapping by index.
     each$2(newCptOptions, function (cptOption, index) {
         if (!isObject$2(cptOption)) {
             return;
         }
-
         var i = 0;
         for (; i < result.length; i++) {
             var exist = result[i].exist;
@@ -11179,15 +9645,12 @@ function mappingToExists(exists, newCptOptions) {
                 break;
             }
         }
-
         if (i >= result.length) {
             result.push({option: cptOption});
         }
     });
-
     return result;
 }
-
 /**
  * Make id and name for mapping result (result of mappingToExists)
  * into `keyInfo` field.
@@ -11200,45 +9663,35 @@ function mappingToExists(exists, newCptOptions) {
 function makeIdAndName(mapResult) {
     // We use this id to hash component models and view instances
     // in echarts. id can be specified by user, or auto generated.
-
     // The id generation rule ensures new view instance are able
     // to mapped to old instance when setOption are called in
     // no-merge mode. So we generate model id by name and plus
     // type in view id.
-
     // name can be duplicated among components, which is convenient
     // to specify multi components (like series) by one name.
-
     // Ensure that each id is distinct.
     var idMap = createHashMap();
-
     each$2(mapResult, function (item, index) {
         var existCpt = item.exist;
         existCpt && idMap.set(existCpt.id, item);
     });
-
     each$2(mapResult, function (item, index) {
         var opt = item.option;
-
         assert$1(
             !opt || opt.id == null || !idMap.get(opt.id) || idMap.get(opt.id) === item,
             'id duplicates: ' + (opt && opt.id)
         );
-
         opt && opt.id != null && idMap.set(opt.id, item);
         !item.keyInfo && (item.keyInfo = {});
     });
-
     // Make name and id.
     each$2(mapResult, function (item, index) {
         var existCpt = item.exist;
         var opt = item.option;
         var keyInfo = item.keyInfo;
-
         if (!isObject$2(opt)) {
             return;
         }
-
         // name can be overwitten. Consider case: axis.name = '20km'.
         // But id generated by name will not be changed, which affect
         // only in that case: setOption with 'not merge mode' and view
@@ -11250,7 +9703,6 @@ function makeIdAndName(mapResult) {
             // Avoid diffferent series has the same name,
             // because name may be used like in color pallet.
             : DUMMY_COMPONENT_NAME_PREFIX + index;
-
         if (existCpt) {
             keyInfo.id = existCpt.id;
         }
@@ -11269,17 +9721,14 @@ function makeIdAndName(mapResult) {
             }
             while (idMap.get(keyInfo.id));
         }
-
         idMap.set(keyInfo.id, item);
     });
 }
-
 function isNameSpecified(componentModel) {
     var name = componentModel.name;
     // Is specified when `indexOf` get -1 or > 0.
     return !!(name && name.indexOf(DUMMY_COMPONENT_NAME_PREFIX));
 }
-
 /**
  * @public
  * @param {Object} cptOption
@@ -11290,7 +9739,6 @@ function isIdInner(cptOption) {
         && cptOption.id
         && (cptOption.id + '').indexOf('\0_ec_\0') === 0;
 }
-
 /**
  * A helper for removing duplicate items between batchA and batchB,
  * and in themselves, and categorize by series.
@@ -11299,8 +9747,6 @@ function isIdInner(cptOption) {
  * @param {Array.<Object>} batchB Like: [{seriesId: 2, dataIndex: [32, 4, 5]}, ...]
  * @return {Array.<Array.<Object>, Array.<Object>>} result: [resultBatchA, resultBatchB]
  */
-
-
 /**
  * @param {module:echarts/data/List} data
  * @param {Object} payload Contains dataIndex (means rawIndex) / dataIndexInside / name
@@ -11326,7 +9772,6 @@ function queryDataIndex(data, payload) {
             : data.indexOfName(payload.name);
     }
 }
-
 /**
  * Enable property storage to any host object.
  * Notice: Serialization is not supported.
@@ -11355,7 +9800,6 @@ function makeInner() {
     };
 }
 var innerUniqueIndex = 0;
-
 /**
  * @param {module:echarts/model/Global} ecModel
  * @param {string|Object} finder
@@ -11397,7 +9841,6 @@ function parseFinder(ecModel, finder, opt) {
         obj[finder + 'Index'] = 0;
         finder = obj;
     }
-
     var defaultMainType = opt && opt.defaultMainType;
     if (defaultMainType
         && !has(finder, defaultMainType + 'Index')
@@ -11406,22 +9849,17 @@ function parseFinder(ecModel, finder, opt) {
     ) {
         finder[defaultMainType + 'Index'] = 0;
     }
-
     var result = {};
-
     each$2(finder, function (value, key) {
         var value = finder[key];
-
         // Exclude 'dataIndex' and other illgal keys.
         if (key === 'dataIndex' || key === 'dataIndexInside') {
             result[key] = value;
             return;
         }
-
         var parsedKey = key.match(/^(\w+)(Index|Id|Name)$/) || [];
         var mainType = parsedKey[1];
         var queryType = (parsedKey[2] || '').toLowerCase();
-
         if (!mainType
             || !queryType
             || value == null
@@ -11430,36 +9868,29 @@ function parseFinder(ecModel, finder, opt) {
         ) {
             return;
         }
-
         var queryParam = {mainType: mainType};
         if (queryType !== 'index' || value !== 'all') {
             queryParam[queryType] = value;
         }
-
         var models = ecModel.queryComponents(queryParam);
         result[mainType + 'Models'] = models;
         result[mainType + 'Model'] = models[0];
     });
-
     return result;
 }
-
 function has(obj, prop) {
     return obj && obj.hasOwnProperty(prop);
 }
-
 function setAttribute(dom, key, value) {
     dom.setAttribute
         ? dom.setAttribute(key, value)
         : (dom[key] = value);
 }
-
 function getAttribute(dom, key) {
     return dom.getAttribute
         ? dom.getAttribute(key)
         : dom[key];
 }
-
 function getTooltipRenderMode(renderModeOption) {
     if (renderModeOption === 'auto') {
         // Using html when `document` exists, use richText otherwise
@@ -11469,7 +9900,6 @@ function getTooltipRenderMode(renderModeOption) {
         return renderModeOption || 'html';
     }
 }
-
 /**
  * Group a list by key.
  *
@@ -11481,7 +9911,6 @@ function getTooltipRenderMode(renderModeOption) {
  *        {Array}: keys,
  *        {module:zrender/core/util/HashMap} buckets: {key -> Array}
  */
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -11500,10 +9929,8 @@ function getTooltipRenderMode(renderModeOption) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var TYPE_DELIMITER = '.';
 var IS_CONTAINER = '___EC__COMPONENT__CONTAINER___';
-
 /**
  * Notice, parseClassType('') should returns {main: '', sub: ''}
  * @public
@@ -11517,7 +9944,6 @@ function parseClassType$1(componentType) {
     }
     return ret;
 }
-
 /**
  * @public
  */
@@ -11527,15 +9953,12 @@ function checkClassType(componentType) {
         'componentType "' + componentType + '" illegal'
     );
 }
-
 /**
  * @public
  */
 function enableClassExtend(RootClass, mandatoryMethods) {
-
     RootClass.$constructor = RootClass;
     RootClass.extend = function (proto) {
-
         if (__DEV__) {
             each$1(mandatoryMethods, function (method) {
                 if (!proto[method]) {
@@ -11546,7 +9969,6 @@ function enableClassExtend(RootClass, mandatoryMethods) {
                 }
             });
         }
-
         var superClass = this;
         var ExtendedClass = function () {
             if (!proto.$constructor) {
@@ -11556,21 +9978,16 @@ function enableClassExtend(RootClass, mandatoryMethods) {
                 proto.$constructor.apply(this, arguments);
             }
         };
-
         extend(ExtendedClass.prototype, proto);
-
         ExtendedClass.extend = this.extend;
         ExtendedClass.superCall = superCall;
         ExtendedClass.superApply = superApply;
         inherits(ExtendedClass, this);
         ExtendedClass.superClass = superClass;
-
         return ExtendedClass;
     };
 }
-
 var classBase = 0;
-
 /**
  * Can not use instanceof, consider different scope by
  * cross domain or es module import in ec extensions.
@@ -11579,16 +9996,13 @@ var classBase = 0;
 function enableClassCheck(Clz) {
     var classAttr = ['__\0is_clz', classBase++, Math.random().toFixed(3)].join('_');
     Clz.prototype[classAttr] = true;
-
     if (__DEV__) {
         assert$1(!Clz.isInstance, 'The method "is" can not be defined.');
     }
-
     Clz.isInstance = function (obj) {
         return !!(obj && obj[classAttr]);
     };
 }
-
 // superCall should have class info, which can not be fetch from 'this'.
 // Consider this case:
 // class A has method f,
@@ -11599,11 +10013,9 @@ function superCall(context, methodName) {
     var args = slice(arguments, 2);
     return this.superClass.prototype[methodName].apply(context, args);
 }
-
 function superApply(context, methodName, args) {
     return this.superClass.prototype[methodName].apply(context, args);
 }
-
 /**
  * @param {Object} entity
  * @param {Object} options
@@ -11612,7 +10024,6 @@ function superApply(context, methodName, args) {
  */
 function enableClassManagement(entity, options) {
     options = options || {};
-
     /**
      * Component model classes
      * key: componentType,
@@ -11622,12 +10033,10 @@ function enableClassManagement(entity, options) {
      * @type {Object}
      */
     var storage = {};
-
     entity.registerClass = function (Clazz, componentType) {
         if (componentType) {
             checkClassType(componentType);
             componentType = parseClassType$1(componentType);
-
             if (!componentType.sub) {
                 if (__DEV__) {
                     if (storage[componentType.main]) {
@@ -11643,14 +10052,11 @@ function enableClassManagement(entity, options) {
         }
         return Clazz;
     };
-
     entity.getClass = function (componentMainType, subType, throwWhenNotFound) {
         var Clazz = storage[componentMainType];
-
         if (Clazz && Clazz[IS_CONTAINER]) {
             Clazz = subType ? Clazz[subType] : null;
         }
-
         if (throwWhenNotFound && !Clazz) {
             throw new Error(
                 !subType
@@ -11658,16 +10064,12 @@ function enableClassManagement(entity, options) {
                     : 'Component ' + componentMainType + '.' + (subType || '') + ' not exists. Load it first.'
             );
         }
-
         return Clazz;
     };
-
     entity.getClassesByMainType = function (componentType) {
         componentType = parseClassType$1(componentType);
-
         var result = [];
         var obj = storage[componentType.main];
-
         if (obj && obj[IS_CONTAINER]) {
             each$1(obj, function (o, type) {
                 type !== IS_CONTAINER && result.push(o);
@@ -11676,16 +10078,13 @@ function enableClassManagement(entity, options) {
         else {
             result.push(obj);
         }
-
         return result;
     };
-
     entity.hasClass = function (componentType) {
         // Just consider componentType.main.
         componentType = parseClassType$1(componentType);
         return !!storage[componentType.main];
     };
-
     /**
      * @return {Array.<string>} Like ['aa', 'bb'], but can not be ['aa.xx']
      */
@@ -11696,7 +10095,6 @@ function enableClassManagement(entity, options) {
         });
         return types;
     };
-
     /**
      * If a main type is container and has sub types
      * @param  {string}  mainType
@@ -11707,9 +10105,7 @@ function enableClassManagement(entity, options) {
         var obj = storage[componentType.main];
         return obj && obj[IS_CONTAINER];
     };
-
     entity.parseClassType = parseClassType$1;
-
     function makeContainer(componentType) {
         var container = storage[componentType.main];
         if (!container || !container[IS_CONTAINER]) {
@@ -11718,7 +10114,6 @@ function enableClassManagement(entity, options) {
         }
         return container;
     }
-
     if (options.registerWhenExtend) {
         var originalExtend = entity.extend;
         if (originalExtend) {
@@ -11728,14 +10123,11 @@ function enableClassManagement(entity, options) {
             };
         }
     }
-
     return entity;
 }
-
 /**
  * @param {string|Array.<string>} properties
  */
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -11754,7 +10146,6 @@ function enableClassManagement(entity, options) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // TODO Parse shadow style
 // TODO Only shallow path support
 var makeStyleMapper = function (properties) {
@@ -11781,7 +10172,6 @@ var makeStyleMapper = function (properties) {
         return style;
     };
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -11800,7 +10190,6 @@ var makeStyleMapper = function (properties) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var getLineStyle = makeStyleMapper(
     [
         ['lineWidth', 'width'],
@@ -11812,7 +10201,6 @@ var getLineStyle = makeStyleMapper(
         ['shadowColor']
     ]
 );
-
 var lineStyleMixin = {
     getLineStyle: function (excludes) {
         var style = getLineStyle(this, excludes);
@@ -11820,7 +10208,6 @@ var lineStyleMixin = {
         lineDash && (style.lineDash = lineDash);
         return style;
     },
-
     getLineDash: function (lineWidth) {
         if (lineWidth == null) {
             lineWidth = 1;
@@ -11832,7 +10219,6 @@ var lineStyleMixin = {
             : (lineType === 'dashed' ? [dashSize, dashSize] : [dotSize, dotSize]);
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -11851,7 +10237,6 @@ var lineStyleMixin = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var getAreaStyle = makeStyleMapper(
     [
         ['fill', 'color'],
@@ -11862,33 +10247,26 @@ var getAreaStyle = makeStyleMapper(
         ['shadowColor']
     ]
 );
-
 var areaStyleMixin = {
     getAreaStyle: function (excludes, includes) {
         return getAreaStyle(this, excludes, includes);
     }
 };
-
 /**
  * 曲线辅助模块
  * @module zrender/core/curve
  * @author pissang(https://www.github.com/pissang)
  */
-
 var mathPow = Math.pow;
 var mathSqrt$2 = Math.sqrt;
-
 var EPSILON$1 = 1e-8;
 var EPSILON_NUMERIC = 1e-4;
-
 var THREE_SQRT = mathSqrt$2(3);
 var ONE_THIRD = 1 / 3;
-
 // 临时变量
 var _v0 = create();
 var _v1 = create();
 var _v2 = create();
-
 function isAroundZero(val) {
     return val > -EPSILON$1 && val < EPSILON$1;
 }
@@ -11910,7 +10288,6 @@ function cubicAt(p0, p1, p2, p3, t) {
     return onet * onet * (onet * p0 + 3 * t * p1)
             + t * t * (t * p3 + 3 * onet * p2);
 }
-
 /**
  * 计算三次贝塞尔导数值
  * @memberOf module:zrender/core/curve
@@ -11928,7 +10305,6 @@ function cubicDerivativeAt(p0, p1, p2, p3, t) {
         + (p3 - p2) * t * t
     );
 }
-
 /**
  * 计算三次贝塞尔方程根，使用盛金公式
  * @memberOf module:zrender/core/curve
@@ -11946,13 +10322,10 @@ function cubicRootAt(p0, p1, p2, p3, val, roots) {
     var b = 3 * (p2 - p1 * 2 + p0);
     var c = 3 * (p1 - p0);
     var d = p0 - val;
-
     var A = b * b - 3 * a * c;
     var B = b * c - 9 * a * d;
     var C = c * c - 3 * b * d;
-
     var n = 0;
-
     if (isAroundZero(A) && isAroundZero(B)) {
         if (isAroundZero(b)) {
             roots[0] = 0;
@@ -11966,7 +10339,6 @@ function cubicRootAt(p0, p1, p2, p3, val, roots) {
     }
     else {
         var disc = B * B - 4 * A * C;
-
         if (isAroundZero(disc)) {
             var K = B / A;
             var t1 = -b / a + K;  // t1, a is not zero
@@ -12004,7 +10376,6 @@ function cubicRootAt(p0, p1, p2, p3, val, roots) {
             var theta = Math.acos(T) / 3;
             var ASqrt = mathSqrt$2(A);
             var tmp = Math.cos(theta);
-
             var t1 = (-b - 2 * ASqrt * tmp) / (3 * a);
             var t2 = (-b + ASqrt * (tmp + THREE_SQRT * Math.sin(theta))) / (3 * a);
             var t3 = (-b + ASqrt * (tmp - THREE_SQRT * Math.sin(theta))) / (3 * a);
@@ -12021,7 +10392,6 @@ function cubicRootAt(p0, p1, p2, p3, val, roots) {
     }
     return n;
 }
-
 /**
  * 计算三次贝塞尔方程极限值的位置
  * @memberOf module:zrender/core/curve
@@ -12036,7 +10406,6 @@ function cubicExtrema(p0, p1, p2, p3, extrema) {
     var b = 6 * p2 - 12 * p1 + 6 * p0;
     var a = 9 * p1 + 3 * p3 - 3 * p0 - 9 * p2;
     var c = 3 * p1 - 3 * p0;
-
     var n = 0;
     if (isAroundZero(a)) {
         if (isNotAroundZero$1(b)) {
@@ -12065,7 +10434,6 @@ function cubicExtrema(p0, p1, p2, p3, extrema) {
     }
     return n;
 }
-
 /**
  * 细分三次贝塞尔曲线
  * @memberOf module:zrender/core/curve
@@ -12080,10 +10448,8 @@ function cubicSubdivide(p0, p1, p2, p3, t, out) {
     var p01 = (p1 - p0) * t + p0;
     var p12 = (p2 - p1) * t + p1;
     var p23 = (p3 - p2) * t + p2;
-
     var p012 = (p12 - p01) * t + p01;
     var p123 = (p23 - p12) * t + p12;
-
     var p0123 = (p123 - p012) * t + p012;
     // Seg0
     out[0] = p0;
@@ -12096,7 +10462,6 @@ function cubicSubdivide(p0, p1, p2, p3, t, out) {
     out[6] = p23;
     out[7] = p3;
 }
-
 /**
  * 投射点到三次贝塞尔曲线上，返回投射距离。
  * 投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
@@ -12125,10 +10490,8 @@ function cubicProjectPoint(
     var next;
     var d1;
     var d2;
-
     _v0[0] = x;
     _v0[1] = y;
-
     // 先粗略估计一下可能的最小距离的 t 值
     // PENDING
     for (var _t = 0; _t < 1; _t += 0.05) {
@@ -12141,7 +10504,6 @@ function cubicProjectPoint(
         }
     }
     d = Infinity;
-
     // At most 32 iteration
     for (var i = 0; i < 32; i++) {
         if (interval < EPSILON_NUMERIC) {
@@ -12152,9 +10514,7 @@ function cubicProjectPoint(
         // t - interval
         _v1[0] = cubicAt(x0, x1, x2, x3, prev);
         _v1[1] = cubicAt(y0, y1, y2, y3, prev);
-
         d1 = distSquare(_v1, _v0);
-
         if (prev >= 0 && d1 < d) {
             t = prev;
             d = d1;
@@ -12164,7 +10524,6 @@ function cubicProjectPoint(
             _v2[0] = cubicAt(x0, x1, x2, x3, next);
             _v2[1] = cubicAt(y0, y1, y2, y3, next);
             d2 = distSquare(_v2, _v0);
-
             if (next <= 1 && d2 < d) {
                 t = next;
                 d = d2;
@@ -12182,7 +10541,6 @@ function cubicProjectPoint(
     // console.log(interval, i);
     return mathSqrt$2(d);
 }
-
 /**
  * 计算二次方贝塞尔值
  * @param  {number} p0
@@ -12195,7 +10553,6 @@ function quadraticAt(p0, p1, p2, t) {
     var onet = 1 - t;
     return onet * (onet * p0 + 2 * t * p1) + t * t * p2;
 }
-
 /**
  * 计算二次方贝塞尔导数值
  * @param  {number} p0
@@ -12207,7 +10564,6 @@ function quadraticAt(p0, p1, p2, t) {
 function quadraticDerivativeAt(p0, p1, p2, t) {
     return 2 * ((1 - t) * (p1 - p0) + t * (p2 - p1));
 }
-
 /**
  * 计算二次方贝塞尔方程根
  * @param  {number} p0
@@ -12221,7 +10577,6 @@ function quadraticRootAt(p0, p1, p2, val, roots) {
     var a = p0 - 2 * p1 + p2;
     var b = 2 * (p1 - p0);
     var c = p0 - val;
-
     var n = 0;
     if (isAroundZero(a)) {
         if (isNotAroundZero$1(b)) {
@@ -12253,7 +10608,6 @@ function quadraticRootAt(p0, p1, p2, val, roots) {
     }
     return n;
 }
-
 /**
  * 计算二次贝塞尔方程极限值
  * @memberOf module:zrender/core/curve
@@ -12272,7 +10626,6 @@ function quadraticExtremum(p0, p1, p2) {
         return (p0 - p1) / divider;
     }
 }
-
 /**
  * 细分二次贝塞尔曲线
  * @memberOf module:zrender/core/curve
@@ -12286,18 +10639,15 @@ function quadraticSubdivide(p0, p1, p2, t, out) {
     var p01 = (p1 - p0) * t + p0;
     var p12 = (p2 - p1) * t + p1;
     var p012 = (p12 - p01) * t + p01;
-
     // Seg0
     out[0] = p0;
     out[1] = p01;
     out[2] = p012;
-
     // Seg1
     out[3] = p012;
     out[4] = p12;
     out[5] = p2;
 }
-
 /**
  * 投射点到二次贝塞尔曲线上，返回投射距离。
  * 投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
@@ -12320,10 +10670,8 @@ function quadraticProjectPoint(
     var t;
     var interval = 0.005;
     var d = Infinity;
-
     _v0[0] = x;
     _v0[1] = y;
-
     // 先粗略估计一下可能的最小距离的 t 值
     // PENDING
     for (var _t = 0; _t < 1; _t += 0.05) {
@@ -12336,7 +10684,6 @@ function quadraticProjectPoint(
         }
     }
     d = Infinity;
-
     // At most 32 iteration
     for (var i = 0; i < 32; i++) {
         if (interval < EPSILON_NUMERIC) {
@@ -12347,9 +10694,7 @@ function quadraticProjectPoint(
         // t - interval
         _v1[0] = quadraticAt(x0, x1, x2, prev);
         _v1[1] = quadraticAt(y0, y1, y2, prev);
-
         var d1 = distSquare(_v1, _v0);
-
         if (prev >= 0 && d1 < d) {
             t = prev;
             d = d1;
@@ -12376,21 +10721,17 @@ function quadraticProjectPoint(
     // console.log(interval, i);
     return mathSqrt$2(d);
 }
-
 /**
  * @author Yi Shen(https://github.com/pissang)
  */
-
 var mathMin$3 = Math.min;
 var mathMax$3 = Math.max;
 var mathSin$2 = Math.sin;
 var mathCos$2 = Math.cos;
 var PI2 = Math.PI * 2;
-
 var start = create();
 var end = create();
 var extremity = create();
-
 /**
  * 从顶点数组中计算出最小包围盒，写入`min`和`max`中
  * @module zrender/core/bbox
@@ -12398,8 +10739,6 @@ var extremity = create();
  * @param {number} min
  * @param {number} max
  */
-
-
 /**
  * @memberOf module:zrender/core/bbox
  * @param {number} x0
@@ -12415,7 +10754,6 @@ function fromLine(x0, y0, x1, y1, min$$1, max$$1) {
     max$$1[0] = mathMax$3(x0, x1);
     max$$1[1] = mathMax$3(y0, y1);
 }
-
 var xDim = [];
 var yDim = [];
 /**
@@ -12443,7 +10781,6 @@ function fromCubic(
     min$$1[1] = Infinity;
     max$$1[0] = -Infinity;
     max$$1[1] = -Infinity;
-
     for (i = 0; i < n; i++) {
         var x = cubicAt$$1(x0, x1, x2, x3, xDim[i]);
         min$$1[0] = mathMin$3(x, min$$1[0]);
@@ -12455,18 +10792,15 @@ function fromCubic(
         min$$1[1] = mathMin$3(y, min$$1[1]);
         max$$1[1] = mathMax$3(y, max$$1[1]);
     }
-
     min$$1[0] = mathMin$3(x0, min$$1[0]);
     max$$1[0] = mathMax$3(x0, max$$1[0]);
     min$$1[0] = mathMin$3(x3, min$$1[0]);
     max$$1[0] = mathMax$3(x3, max$$1[0]);
-
     min$$1[1] = mathMin$3(y0, min$$1[1]);
     max$$1[1] = mathMax$3(y0, max$$1[1]);
     min$$1[1] = mathMin$3(y3, min$$1[1]);
     max$$1[1] = mathMax$3(y3, max$$1[1]);
 }
-
 /**
  * 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒，写入`min`和`max`中
  * @memberOf module:zrender/core/bbox
@@ -12491,16 +10825,13 @@ function fromQuadratic(x0, y0, x1, y1, x2, y2, min$$1, max$$1) {
         mathMax$3(
             mathMin$3(quadraticExtremum$$1(y0, y1, y2), 1), 0
         );
-
     var x = quadraticAt$$1(x0, x1, x2, tx);
     var y = quadraticAt$$1(y0, y1, y2, ty);
-
     min$$1[0] = mathMin$3(x0, x2, x);
     min$$1[1] = mathMin$3(y0, y2, y);
     max$$1[0] = mathMax$3(x0, x2, x);
     max$$1[1] = mathMax$3(y0, y2, y);
 }
-
 /**
  * 从圆弧中计算出最小包围盒，写入`min`和`max`中
  * @method
@@ -12520,10 +10851,7 @@ function fromArc(
 ) {
     var vec2Min = min;
     var vec2Max = max;
-
     var diff = Math.abs(startAngle - endAngle);
-
-
     if (diff % PI2 < 1e-4 && diff > 1e-4) {
         // Is a circle
         min$$1[0] = x - rx;
@@ -12532,16 +10860,12 @@ function fromArc(
         max$$1[1] = y + ry;
         return;
     }
-
     start[0] = mathCos$2(startAngle) * rx + x;
     start[1] = mathSin$2(startAngle) * ry + y;
-
     end[0] = mathCos$2(endAngle) * rx + x;
     end[1] = mathSin$2(endAngle) * ry + y;
-
     vec2Min(min$$1, start, end);
     vec2Max(max$$1, start, end);
-
     // Thresh to [0, Math.PI * 2]
     startAngle = startAngle % (PI2);
     if (startAngle < 0) {
@@ -12551,7 +10875,6 @@ function fromArc(
     if (endAngle < 0) {
         endAngle = endAngle + PI2;
     }
-
     if (startAngle > endAngle && !anticlockwise) {
         endAngle += PI2;
     }
@@ -12563,20 +10886,17 @@ function fromArc(
         endAngle = startAngle;
         startAngle = tmp;
     }
-
     // var number = 0;
     // var step = (anticlockwise ? -Math.PI : Math.PI) / 2;
     for (var angle = 0; angle < endAngle; angle += Math.PI / 2) {
         if (angle > startAngle) {
             extremity[0] = mathCos$2(angle) * rx + x;
             extremity[1] = mathSin$2(angle) * ry + y;
-
             vec2Min(min$$1, extremity, min$$1);
             vec2Max(max$$1, extremity, max$$1);
         }
     }
 }
-
 /**
  * Path 代理，可以在`buildPath`中用于替代`ctx`, 会保存每个path操作的命令到pathCommands属性中
  * 可以用于 isInsidePath 判断以及获取boundingRect
@@ -12584,9 +10904,7 @@ function fromArc(
  * @module zrender/core/PathProxy
  * @author Yi Shen (http://www.github.com/pissang)
  */
-
 // TODO getTotalLength, getPointAtLength
-
 var CMD = {
     M: 1,
     L: 2,
@@ -12597,7 +10915,6 @@ var CMD = {
     // Rect
     R: 7
 };
-
 // var CMD_MEM_SIZE = {
 //     M: 3,
 //     L: 3,
@@ -12607,7 +10924,6 @@ var CMD = {
 //     R: 5,
 //     Z: 1
 // };
-
 var min$1 = [];
 var max$1 = [];
 var min2 = [];
@@ -12618,17 +10934,13 @@ var mathCos$1 = Math.cos;
 var mathSin$1 = Math.sin;
 var mathSqrt$1 = Math.sqrt;
 var mathAbs = Math.abs;
-
 var hasTypedArray = typeof Float32Array !== 'undefined';
-
 /**
  * @alias module:zrender/core/PathProxy
  * @constructor
  */
 var PathProxy = function (notSaveData) {
-
     this._saveData = !(notSaveData || false);
-
     if (this._saveData) {
         /**
          * Path data. Stored as flat array
@@ -12636,37 +10948,26 @@ var PathProxy = function (notSaveData) {
          */
         this.data = [];
     }
-
     this._ctx = null;
 };
-
 /**
  * 快速计算Path包围盒（并不是最小包围盒）
  * @return {Object}
  */
 PathProxy.prototype = {
-
     constructor: PathProxy,
-
     _xi: 0,
     _yi: 0,
-
     _x0: 0,
     _y0: 0,
     // Unit x, Unit y. Provide for avoiding drawing that too short line segment
     _ux: 0,
     _uy: 0,
-
     _len: 0,
-
     _lineDash: null,
-
     _dashOffset: 0,
-
     _dashIdx: 0,
-
     _dashSum: 0,
-
     /**
      * @readOnly
      */
@@ -12674,37 +10975,27 @@ PathProxy.prototype = {
         this._ux = mathAbs(1 / devicePixelRatio / sx) || 0;
         this._uy = mathAbs(1 / devicePixelRatio / sy) || 0;
     },
-
     getContext: function () {
         return this._ctx;
     },
-
     /**
      * @param  {CanvasRenderingContext2D} ctx
      * @return {module:zrender/core/PathProxy}
      */
     beginPath: function (ctx) {
-
         this._ctx = ctx;
-
         ctx && ctx.beginPath();
-
         ctx && (this.dpr = ctx.dpr);
-
         // Reset
         if (this._saveData) {
             this._len = 0;
         }
-
         if (this._lineDash) {
             this._lineDash = null;
-
             this._dashOffset = 0;
         }
-
         return this;
     },
-
     /**
      * @param  {number} x
      * @param  {number} y
@@ -12713,20 +11004,16 @@ PathProxy.prototype = {
     moveTo: function (x, y) {
         this.addData(CMD.M, x, y);
         this._ctx && this._ctx.moveTo(x, y);
-
         // x0, y0, xi, yi 是记录在 _dashedXXXXTo 方法中使用
         // xi, yi 记录当前点, x0, y0 在 closePath 的时候回到起始点。
         // 有可能在 beginPath 之后直接调用 lineTo，这时候 x0, y0 需要
         // 在 lineTo 方法中记录，这里先不考虑这种情况，dashed line 也只在 IE10- 中不支持
         this._x0 = x;
         this._y0 = y;
-
         this._xi = x;
         this._yi = y;
-
         return this;
     },
-
     /**
      * @param  {number} x
      * @param  {number} y
@@ -12737,9 +11024,7 @@ PathProxy.prototype = {
             || mathAbs(y - this._yi) > this._uy
             // Force draw the first segment
             || this._len < 5;
-
         this.addData(CMD.L, x, y);
-
         if (this._ctx && exceedUnit) {
             this._needsDash() ? this._dashedLineTo(x, y)
                 : this._ctx.lineTo(x, y);
@@ -12748,10 +11033,8 @@ PathProxy.prototype = {
             this._xi = x;
             this._yi = y;
         }
-
         return this;
     },
-
     /**
      * @param  {number} x1
      * @param  {number} y1
@@ -12771,7 +11054,6 @@ PathProxy.prototype = {
         this._yi = y3;
         return this;
     },
-
     /**
      * @param  {number} x1
      * @param  {number} y1
@@ -12789,7 +11071,6 @@ PathProxy.prototype = {
         this._yi = y2;
         return this;
     },
-
     /**
      * @param  {number} cx
      * @param  {number} cy
@@ -12804,12 +11085,10 @@ PathProxy.prototype = {
             CMD.A, cx, cy, r, r, startAngle, endAngle - startAngle, 0, anticlockwise ? 0 : 1
         );
         this._ctx && this._ctx.arc(cx, cy, r, startAngle, endAngle, anticlockwise);
-
         this._xi = mathCos$1(endAngle) * r + cx;
         this._yi = mathSin$1(endAngle) * r + cy;
         return this;
     },
-
     // TODO
     arcTo: function (x1, y1, x2, y2, radius) {
         if (this._ctx) {
@@ -12817,20 +11096,17 @@ PathProxy.prototype = {
         }
         return this;
     },
-
     // TODO
     rect: function (x, y, w, h) {
         this._ctx && this._ctx.rect(x, y, w, h);
         this.addData(CMD.R, x, y, w, h);
         return this;
     },
-
     /**
      * @return {module:zrender/core/PathProxy}
      */
     closePath: function () {
         this.addData(CMD.Z);
-
         var ctx = this._ctx;
         var x0 = this._x0;
         var y0 = this._y0;
@@ -12838,12 +11114,10 @@ PathProxy.prototype = {
             this._needsDash() && this._dashedLineTo(x0, y0);
             ctx.closePath();
         }
-
         this._xi = x0;
         this._yi = y0;
         return this;
     },
-
     /**
      * Context 从外部传入，因为有可能是 rebuildPath 完之后再 fill。
      * stroke 同样
@@ -12854,7 +11128,6 @@ PathProxy.prototype = {
         ctx && ctx.fill();
         this.toStatic();
     },
-
     /**
      * @param {CanvasRenderingContext2D} ctx
      * @return {module:zrender/core/PathProxy}
@@ -12863,7 +11136,6 @@ PathProxy.prototype = {
         ctx && ctx.stroke();
         this.toStatic();
     },
-
     /**
      * 必须在其它绘制命令前调用
      * Must be invoked before all other path drawing methods
@@ -12872,9 +11144,7 @@ PathProxy.prototype = {
     setLineDash: function (lineDash) {
         if (lineDash instanceof Array) {
             this._lineDash = lineDash;
-
             this._dashIdx = 0;
-
             var lineDashSum = 0;
             for (var i = 0; i < lineDash.length; i++) {
                 lineDashSum += lineDash[i];
@@ -12883,7 +11153,6 @@ PathProxy.prototype = {
         }
         return this;
     },
-
     /**
      * 必须在其它绘制命令前调用
      * Must be invoked before all other path drawing methods
@@ -12893,7 +11162,6 @@ PathProxy.prototype = {
         this._dashOffset = offset;
         return this;
     },
-
     /**
      *
      * @return {boolean}
@@ -12901,25 +11169,19 @@ PathProxy.prototype = {
     len: function () {
         return this._len;
     },
-
     /**
      * 直接设置 Path 数据
      */
     setData: function (data) {
-
         var len$$1 = data.length;
-
         if (!(this.data && this.data.length === len$$1) && hasTypedArray) {
             this.data = new Float32Array(len$$1);
         }
-
         for (var i = 0; i < len$$1; i++) {
             this.data[i] = data[i];
         }
-
         this._len = len$$1;
     },
-
     /**
      * 添加子路径
      * @param {module:zrender/core/PathProxy|Array.<module:zrender/core/PathProxy>} path
@@ -12945,7 +11207,6 @@ PathProxy.prototype = {
         }
         this._len = offset;
     },
-
     /**
      * 填充 Path 数据。
      * 尽量复用而不申明新的数组。大部分图形重绘的指令数据长度都是不变的。
@@ -12954,7 +11215,6 @@ PathProxy.prototype = {
         if (!this._saveData) {
             return;
         }
-
         var data = this.data;
         if (this._len + arguments.length > data.length) {
             // 因为之前的数组已经转换成静态的 Float32Array
@@ -12965,10 +11225,8 @@ PathProxy.prototype = {
         for (var i = 0; i < arguments.length; i++) {
             data[this._len++] = arguments[i];
         }
-
         this._prevCmd = cmd;
     },
-
     _expandData: function () {
         // Only if data is Float32Array
         if (!(this.data instanceof Array)) {
@@ -12979,7 +11237,6 @@ PathProxy.prototype = {
             this.data = newData;
         }
     },
-
     /**
      * If needs js implemented dashed line
      * @return {boolean}
@@ -12988,13 +11245,11 @@ PathProxy.prototype = {
     _needsDash: function () {
         return this._lineDash;
     },
-
     _dashedLineTo: function (x1, y1) {
         var dashSum = this._dashSum;
         var offset = this._dashOffset;
         var lineDash = this._lineDash;
         var ctx = this._ctx;
-
         var x0 = this._xi;
         var y0 = this._yi;
         var dx = x1 - x0;
@@ -13007,7 +11262,6 @@ PathProxy.prototype = {
         var idx;
         dx /= dist$$1;
         dy /= dist$$1;
-
         if (offset < 0) {
             // Convert to positive offset
             offset = dashSum + offset;
@@ -13015,7 +11269,6 @@ PathProxy.prototype = {
         offset %= dashSum;
         x -= offset * dx;
         y -= offset * dy;
-
         while ((dx > 0 && x <= x1) || (dx < 0 && x >= x1)
         || (dx === 0 && ((dy > 0 && y <= y1) || (dy < 0 && y >= y1)))) {
             idx = this._dashIdx;
@@ -13037,14 +11290,12 @@ PathProxy.prototype = {
         dy = y - y1;
         this._dashOffset = -mathSqrt$1(dx * dx + dy * dy);
     },
-
     // Not accurate dashed line to
     _dashedBezierTo: function (x1, y1, x2, y2, x3, y3) {
         var dashSum = this._dashSum;
         var offset = this._dashOffset;
         var lineDash = this._lineDash;
         var ctx = this._ctx;
-
         var x0 = this._xi;
         var y0 = this._yi;
         var t;
@@ -13054,12 +11305,9 @@ PathProxy.prototype = {
         var bezierLen = 0;
         var idx = this._dashIdx;
         var nDash = lineDash.length;
-
         var x;
         var y;
-
         var tmpLen = 0;
-
         if (offset < 0) {
             // Convert to positive offset
             offset = dashSum + offset;
@@ -13073,7 +11321,6 @@ PathProxy.prototype = {
                 - cubicAt$$1(y0, y1, y2, y3, t);
             bezierLen += mathSqrt$1(dx * dx + dy * dy);
         }
-
         // Find idx after add offset
         for (; idx < nDash; idx++) {
             tmpLen += lineDash[idx];
@@ -13082,29 +11329,22 @@ PathProxy.prototype = {
             }
         }
         t = (tmpLen - offset) / bezierLen;
-
         while (t <= 1) {
-
             x = cubicAt$$1(x0, x1, x2, x3, t);
             y = cubicAt$$1(y0, y1, y2, y3, t);
-
             // Use line to approximate dashed bezier
             // Bad result if dash is long
             idx % 2 ? ctx.moveTo(x, y)
                 : ctx.lineTo(x, y);
-
             t += lineDash[idx] / bezierLen;
-
             idx = (idx + 1) % nDash;
         }
-
         // Finish the last segment and calculate the new offset
         (idx % 2 !== 0) && ctx.lineTo(x3, y3);
         dx = x3 - x;
         dy = y3 - y;
         this._dashOffset = -mathSqrt$1(dx * dx + dy * dy);
     },
-
     _dashedQuadraticTo: function (x1, y1, x2, y2) {
         // Convert quadratic to cubic using degree elevation
         var x3 = x2;
@@ -13113,10 +11353,8 @@ PathProxy.prototype = {
         y2 = (y2 + 2 * y1) / 3;
         x1 = (this._xi + 2 * x1) / 3;
         y1 = (this._yi + 2 * y1) / 3;
-
         this._dashedBezierTo(x1, y1, x2, y2, x3, y3);
     },
-
     /**
      * 转成静态的 Float32Array 减少堆内存占用
      * Convert dynamic array to static Float32Array
@@ -13130,23 +11368,19 @@ PathProxy.prototype = {
             }
         }
     },
-
     /**
      * @return {module:zrender/core/BoundingRect}
      */
     getBoundingRect: function () {
         min$1[0] = min$1[1] = min2[0] = min2[1] = Number.MAX_VALUE;
         max$1[0] = max$1[1] = max2[0] = max2[1] = -Number.MAX_VALUE;
-
         var data = this.data;
         var xi = 0;
         var yi = 0;
         var x0 = 0;
         var y0 = 0;
-
         for (var i = 0; i < data.length;) {
             var cmd = data[i++];
-
             if (i === 1) {
                 // 如果第一个命令是 L, C, Q
                 // 则 previous point 同绘制命令的第一个 point
@@ -13154,11 +11388,9 @@ PathProxy.prototype = {
                 // 第一个命令为 Arc 的情况下会在后面特殊处理
                 xi = data[i];
                 yi = data[i + 1];
-
                 x0 = xi;
                 y0 = yi;
             }
-
             switch (cmd) {
                 case CMD.M:
                     // moveTo 命令重新创建一个新的 subpath, 并且更新新的起点
@@ -13204,19 +11436,16 @@ PathProxy.prototype = {
                     // TODO Arc 旋转
                     i += 1;
                     var anticlockwise = 1 - data[i++];
-
                     if (i === 1) {
                         // 直接使用 arc 命令
                         // 第一个命令起点还未定义
                         x0 = mathCos$1(startAngle) * rx + cx;
                         y0 = mathSin$1(startAngle) * ry + cy;
                     }
-
                     fromArc(
                         cx, cy, rx, ry, startAngle, endAngle,
                         anticlockwise, min2, max2
                     );
-
                     xi = mathCos$1(endAngle) * rx + cx;
                     yi = mathSin$1(endAngle) * ry + cy;
                     break;
@@ -13233,22 +11462,18 @@ PathProxy.prototype = {
                     yi = y0;
                     break;
             }
-
             // Union
             min(min$1, min$1, min2);
             max(max$1, max$1, max2);
         }
-
         // No data
         if (i === 0) {
             min$1[0] = min$1[1] = max$1[0] = max$1[1] = 0;
         }
-
         return new BoundingRect(
             min$1[0], min$1[1], max$1[0] - min$1[0], max$1[1] - min$1[1]
         );
     },
-
     /**
      * Rebuild path from current data
      * Rebuild path will not consider javascript implemented line dash.
@@ -13264,7 +11489,6 @@ PathProxy.prototype = {
         var len$$1 = this._len;
         for (var i = 0; i < len$$1;) {
             var cmd = d[i++];
-
             if (i === 1) {
                 // 如果第一个命令是 L, C, Q
                 // 则 previous point 同绘制命令的第一个 point
@@ -13272,7 +11496,6 @@ PathProxy.prototype = {
                 // 第一个命令为 Arc 的情况下会在后面特殊处理
                 xi = d[i];
                 yi = d[i + 1];
-
                 x0 = xi;
                 y0 = yi;
             }
@@ -13330,7 +11553,6 @@ PathProxy.prototype = {
                     else {
                         ctx.arc(cx, cy, r, theta, endAngle, 1 - fs);
                     }
-
                     if (i === 1) {
                         // 直接使用 arc 命令
                         // 第一个命令起点还未定义
@@ -13353,9 +11575,7 @@ PathProxy.prototype = {
         }
     }
 };
-
 PathProxy.CMD = CMD;
-
 /**
  * 线段包含判断
  * @param  {number}  x0
@@ -13383,7 +11603,6 @@ function containStroke$1(x0, y0, x1, y1, lineWidth, x, y) {
     ) {
         return false;
     }
-
     if (x0 !== x1) {
         _a = (y0 - y1) / (x0 - x1);
         _b = (x0 * y1 - x1 * y0) / (x0 - x1);
@@ -13395,7 +11614,6 @@ function containStroke$1(x0, y0, x1, y1, lineWidth, x, y) {
     var _s = tmp * tmp / (_a * _a + 1);
     return _s <= _l / 2 * _l / 2;
 }
-
 /**
  * 三次贝塞尔曲线描边包含判断
  * @param  {number}  x0
@@ -13431,7 +11649,6 @@ function containStroke$2(x0, y0, x1, y1, x2, y2, x3, y3, lineWidth, x, y) {
     );
     return d <= _l / 2;
 }
-
 /**
  * 二次贝塞尔曲线描边包含判断
  * @param  {number}  x0
@@ -13465,9 +11682,7 @@ function containStroke$3(x0, y0, x1, y1, x2, y2, lineWidth, x, y) {
     );
     return d <= _l / 2;
 }
-
 var PI2$3 = Math.PI * 2;
-
 function normalizeRadian(angle) {
     angle %= PI2$3;
     if (angle < 0) {
@@ -13475,9 +11690,7 @@ function normalizeRadian(angle) {
     }
     return angle;
 }
-
 var PI2$2 = Math.PI * 2;
-
 /**
  * 圆弧描边包含判断
  * @param  {number}  cx
@@ -13495,16 +11708,13 @@ function containStroke$4(
     cx, cy, r, startAngle, endAngle, anticlockwise,
     lineWidth, x, y
 ) {
-
     if (lineWidth === 0) {
         return false;
     }
     var _l = lineWidth;
-
     x -= cx;
     y -= cy;
     var d = Math.sqrt(x * x + y * y);
-
     if ((d - _l > r) || (d + _l < r)) {
         return false;
     }
@@ -13524,7 +11734,6 @@ function containStroke$4(
     if (startAngle > endAngle) {
         endAngle += PI2$2;
     }
-
     var angle = Math.atan2(y, x);
     if (angle < 0) {
         angle += PI2$2;
@@ -13532,7 +11741,6 @@ function containStroke$4(
     return (angle >= startAngle && angle <= endAngle)
         || (angle + PI2$2 >= startAngle && angle + PI2$2 <= endAngle);
 }
-
 function windingLine(x0, y0, x1, y1, x, y) {
     if ((y > y0 && y > y1) || (y < y0 && y < y1)) {
         return 0;
@@ -13543,37 +11751,28 @@ function windingLine(x0, y0, x1, y1, x, y) {
     }
     var dir = y1 < y0 ? 1 : -1;
     var t = (y - y0) / (y1 - y0);
-
     // Avoid winding error when intersection point is the connect point of two line of polygon
     if (t === 1 || t === 0) {
         dir = y1 < y0 ? 0.5 : -0.5;
     }
-
     var x_ = t * (x1 - x0) + x0;
-
     // If (x, y) on the line, considered as "contain".
     return x_ === x ? Infinity : x_ > x ? dir : 0;
 }
-
 var CMD$1 = PathProxy.CMD;
 var PI2$1 = Math.PI * 2;
-
 var EPSILON$2 = 1e-4;
-
 function isAroundEqual(a, b) {
     return Math.abs(a - b) < EPSILON$2;
 }
-
 // 临时数组
 var roots = [-1, -1, -1];
 var extrema = [-1, -1];
-
 function swapExtrema() {
     var tmp = extrema[0];
     extrema[0] = extrema[1];
     extrema[1] = tmp;
 }
-
 function windingCubic(x0, y0, x1, y1, x2, y2, x3, y3, x, y) {
     // Quick reject
     if (
@@ -13593,10 +11792,8 @@ function windingCubic(x0, y0, x1, y1, x2, y2, x3, y3, x, y) {
         var y1_;
         for (var i = 0; i < nRoots; i++) {
             var t = roots[i];
-
             // Avoid winding error when intersection point is the connect point of two line of polygon
             var unit = (t === 0 || t === 1) ? 0.5 : 1;
-
             var x_ = cubicAt(x0, x1, x2, x3, t);
             if (x_ < x) { // Quick reject
                 continue;
@@ -13636,7 +11833,6 @@ function windingCubic(x0, y0, x1, y1, x2, y2, x3, y3, x, y) {
         return w;
     }
 }
-
 function windingQuadratic(x0, y0, x1, y1, x2, y2, x, y) {
     // Quick reject
     if (
@@ -13657,7 +11853,6 @@ function windingQuadratic(x0, y0, x1, y1, x2, y2, x, y) {
             for (var i = 0; i < nRoots; i++) {
                 // Remove one endpoint.
                 var unit = (roots[i] === 0 || roots[i] === 1) ? 0.5 : 1;
-
                 var x_ = quadraticAt(x0, x1, x2, roots[i]);
                 if (x_ < x) {   // Quick reject
                     continue;
@@ -13674,7 +11869,6 @@ function windingQuadratic(x0, y0, x1, y1, x2, y2, x, y) {
         else {
             // Remove one endpoint.
             var unit = (roots[0] === 0 || roots[0] === 1) ? 0.5 : 1;
-
             var x_ = quadraticAt(x0, x1, x2, roots[0]);
             if (x_ < x) {   // Quick reject
                 return 0;
@@ -13683,7 +11877,6 @@ function windingQuadratic(x0, y0, x1, y1, x2, y2, x, y) {
         }
     }
 }
-
 // TODO
 // Arc 旋转
 function windingArc(
@@ -13696,7 +11889,6 @@ function windingArc(
     var tmp = Math.sqrt(r * r - y * y);
     roots[0] = -tmp;
     roots[1] = tmp;
-
     var diff = Math.abs(startAngle - endAngle);
     if (diff < 1e-4) {
         return 0;
@@ -13713,7 +11905,6 @@ function windingArc(
             return 0;
         }
     }
-
     if (anticlockwise) {
         var tmp = startAngle;
         startAngle = normalizeRadian(endAngle);
@@ -13726,7 +11917,6 @@ function windingArc(
     if (startAngle > endAngle) {
         endAngle += PI2$1;
     }
-
     var w = 0;
     for (var i = 0; i < 2; i++) {
         var x_ = roots[i];
@@ -13749,14 +11939,12 @@ function windingArc(
     }
     return w;
 }
-
 function containPath(data, lineWidth, isStroke, x, y) {
     var w = 0;
     var xi = 0;
     var yi = 0;
     var x0 = 0;
     var y0 = 0;
-
     for (var i = 0; i < data.length;) {
         var cmd = data[i++];
         // Begin a new subpath
@@ -13770,7 +11958,6 @@ function containPath(data, lineWidth, isStroke, x, y) {
             //     return true;
             // }
         }
-
         if (i === 1) {
             // 如果第一个命令是 L, C, Q
             // 则 previous point 同绘制命令的第一个 point
@@ -13778,11 +11965,9 @@ function containPath(data, lineWidth, isStroke, x, y) {
             // 第一个命令为 Arc 的情况下会在后面特殊处理
             xi = data[i];
             yi = data[i + 1];
-
             x0 = xi;
             y0 = yi;
         }
-
         switch (cmd) {
             case CMD$1.M:
                 // moveTo 命令重新创建一个新的 subpath, 并且更新新的起点
@@ -13933,19 +12118,14 @@ function containPath(data, lineWidth, isStroke, x, y) {
     }
     return w !== 0;
 }
-
 function contain(pathData, x, y) {
     return containPath(pathData, 0, false, x, y);
 }
-
 function containStroke(pathData, lineWidth, x, y) {
     return containPath(pathData, lineWidth, true, x, y);
 }
-
 var getCanvasPattern = Pattern.prototype.getCanvasPattern;
-
 var abs = Math.abs;
-
 var pathProxyForDraw = new PathProxy(true);
 /**
  * @alias module:zrender/graphic/Path
@@ -13955,30 +12135,22 @@ var pathProxyForDraw = new PathProxy(true);
  */
 function Path(opts) {
     Displayable.call(this, opts);
-
     /**
      * @type {module:zrender/core/PathProxy}
      * @readOnly
      */
     this.path = null;
 }
-
 Path.prototype = {
-
     constructor: Path,
-
     type: 'path',
-
     __dirtyPath: true,
-
     strokeContainThreshold: 5,
-
     /**
      * See `module:zrender/src/graphic/helper/subPixelOptimize`.
      * @type {boolean}
      */
     subPixelOptimize: false,
-
     brush: function (ctx, prevEl) {
         var style = this.style;
         var path = this.path || pathProxyForDraw;
@@ -13990,10 +12162,8 @@ Path.prototype = {
         var hasStrokeGradient = hasStroke && !!(stroke.colorStops);
         var hasFillPattern = hasFill && !!(fill.image);
         var hasStrokePattern = hasStroke && !!(stroke.image);
-
         style.bind(ctx, this, prevEl);
         this.setTransform(ctx);
-
         if (this.__dirty) {
             var rect;
             // Update gradient because bounding rect may changed
@@ -14020,16 +12190,12 @@ Path.prototype = {
         else if (hasStrokePattern) {
             ctx.strokeStyle = getCanvasPattern.call(stroke, ctx);
         }
-
         var lineDash = style.lineDash;
         var lineDashOffset = style.lineDashOffset;
-
         var ctxLineDash = !!ctx.setLineDash;
-
         // Update path sx, sy
         var scale = this.getGlobalScale();
         path.setScale(scale[0], scale[1]);
-
         // Proxy context
         // Rebuild path in following 2 cases
         // 1. Path is dirty
@@ -14039,15 +12205,12 @@ Path.prototype = {
             || (lineDash && !ctxLineDash && hasStroke)
         ) {
             path.beginPath(ctx);
-
             // Setting line dash before build path
             if (lineDash && !ctxLineDash) {
                 path.setLineDash(lineDash);
                 path.setLineDashOffset(lineDashOffset);
             }
-
             this.buildPath(path, this.shape, false);
-
             // Clear path dirty flag
             if (this.path) {
                 this.__dirtyPath = false;
@@ -14058,7 +12221,6 @@ Path.prototype = {
             ctx.beginPath();
             this.path.rebuildPath(ctx);
         }
-
         if (hasFill) {
             if (style.fillOpacity != null) {
                 var originalGlobalAlpha = ctx.globalAlpha;
@@ -14070,12 +12232,10 @@ Path.prototype = {
                 path.fill(ctx);
             }
         }
-
         if (lineDash && ctxLineDash) {
             ctx.setLineDash(lineDash);
             ctx.lineDashOffset = lineDashOffset;
         }
-
         if (hasStroke) {
             if (style.strokeOpacity != null) {
                 var originalGlobalAlpha = ctx.globalAlpha;
@@ -14087,13 +12247,11 @@ Path.prototype = {
                 path.stroke(ctx);
             }
         }
-
         if (lineDash && ctxLineDash) {
             // PENDING
             // Remove lineDash
             ctx.setLineDash([]);
         }
-
         // Draw rect text
         if (style.text != null) {
             // Only restore transform when needs draw text.
@@ -14101,15 +12259,12 @@ Path.prototype = {
             this.drawRectText(ctx, this.getBoundingRect());
         }
     },
-
     // When bundling path, some shape may decide if use moveTo to begin a new subpath or closePath
     // Like in circle
     buildPath: function (ctx, shapeCfg, inBundle) {},
-
     createPathProxy: function () {
         this.path = new PathProxy();
     },
-
     getBoundingRect: function () {
         var rect = this._rect;
         var style = this.style;
@@ -14127,7 +12282,6 @@ Path.prototype = {
             rect = path.getBoundingRect();
         }
         this._rect = rect;
-
         if (style.hasStroke()) {
             // Needs update rect with stroke lineWidth when
             // 1. Element changes scale or lineWidth
@@ -14139,7 +12293,6 @@ Path.prototype = {
                 var w = style.lineWidth;
                 // PENDING, Min line width is needed when line is horizontal or vertical
                 var lineScale = style.strokeNoScale ? this.getLineScale() : 1;
-
                 // Only add extra hover lineWidth when there are no fill
                 if (!style.hasFill()) {
                     w = Math.max(w, this.strokeContainThreshold || 4);
@@ -14153,21 +12306,17 @@ Path.prototype = {
                     rectWithStroke.y -= w / lineScale / 2;
                 }
             }
-
             // Return rect with stroke
             return rectWithStroke;
         }
-
         return rect;
     },
-
     contain: function (x, y) {
         var localPos = this.transformCoordToLocal(x, y);
         var rect = this.getBoundingRect();
         var style = this.style;
         x = localPos[0];
         y = localPos[1];
-
         if (rect.contain(x, y)) {
             var pathData = this.path.data;
             if (style.hasStroke()) {
@@ -14192,7 +12341,6 @@ Path.prototype = {
         }
         return false;
     },
-
     /**
      * @param  {boolean} dirtyPath
      */
@@ -14205,17 +12353,13 @@ Path.prototype = {
             this.__dirtyPath = dirtyPath;
             this._rect = null;
         }
-
         this.__dirty = this.__dirtyText = true;
-
         this.__zr && this.__zr.refresh();
-
         // Used as a clipping path
         if (this.__clipTarget) {
             this.__clipTarget.dirty();
         }
     },
-
     /**
      * Alias for animate('shape')
      * @param {boolean} loop
@@ -14223,7 +12367,6 @@ Path.prototype = {
     animateShape: function (loop) {
         return this.animate('shape', loop);
     },
-
     // Overwrite attrKV
     attrKV: function (key, value) {
         // FIXME
@@ -14236,7 +12379,6 @@ Path.prototype = {
             Displayable.prototype.attrKV.call(this, key, value);
         }
     },
-
     /**
      * @param {Object|string} key
      * @param {*} value
@@ -14259,7 +12401,6 @@ Path.prototype = {
         }
         return this;
     },
-
     getLineScale: function () {
         var m = this.transform;
         // Get the line scale.
@@ -14271,7 +12412,6 @@ Path.prototype = {
             : 1;
     }
 };
-
 /**
  * 扩展一个 Path element, 比如星形，圆等。
  * Extend a path element
@@ -14285,12 +12425,10 @@ Path.prototype = {
 Path.extend = function (defaults$$1) {
     var Sub = function (opts) {
         Path.call(this, opts);
-
         if (defaults$$1.style) {
             // Extend default style
             this.style.extendFrom(defaults$$1.style, false);
         }
-
         // Extend default shape
         var defaultShape = defaults$$1.shape;
         if (defaultShape) {
@@ -14305,12 +12443,9 @@ Path.extend = function (defaults$$1) {
                 }
             }
         }
-
         defaults$$1.init && defaults$$1.init.call(this, opts);
     };
-
     inherits(Sub, Path);
-
     // FIXME 不能 extend position, rotation 等引用对象
     for (var name in defaults$$1) {
         // Extending prototype values and methods
@@ -14318,18 +12453,13 @@ Path.extend = function (defaults$$1) {
             Sub.prototype[name] = defaults$$1[name];
         }
     }
-
     return Sub;
 };
-
 inherits(Path, Displayable);
-
 var CMD$2 = PathProxy.CMD;
-
 var points = [[], [], []];
 var mathSqrt$3 = Math.sqrt;
 var mathAtan2 = Math.atan2;
-
 var transformPath = function (path, m) {
     var data = path.data;
     var cmd;
@@ -14338,19 +12468,16 @@ var transformPath = function (path, m) {
     var j;
     var k;
     var p;
-
     var M = CMD$2.M;
     var C = CMD$2.C;
     var L = CMD$2.L;
     var R = CMD$2.R;
     var A = CMD$2.A;
     var Q = CMD$2.Q;
-
     for (i = 0, j = 0; i < data.length;) {
         cmd = data[i++];
         j = i;
         nPoint = 0;
-
         switch (cmd) {
             case M:
                 nPoint = 1;
@@ -14380,7 +12507,6 @@ var transformPath = function (path, m) {
                 // FIXME Assume psi is 0 here
                 data[i++] *= sx;
                 data[i++] *= sy;
-
                 // Start angle
                 data[i++] += angle;
                 // end angle
@@ -14403,12 +12529,10 @@ var transformPath = function (path, m) {
                 data[j++] = p[0];
                 data[j++] = p[1];
         }
-
         for (k = 0; k < nPoint; k++) {
             var p = points[k];
             p[0] = data[i++];
             p[1] = data[i++];
-
             applyTransform(p, p, m);
             // Write back
             data[j++] = p[0];
@@ -14416,18 +12540,15 @@ var transformPath = function (path, m) {
         }
     }
 };
-
 // command chars
 // var cc = [
 //     'm', 'M', 'l', 'L', 'v', 'V', 'h', 'H', 'z', 'Z',
 //     'c', 'C', 'q', 'Q', 't', 'T', 's', 'S', 'a', 'A'
 // ];
-
 var mathSqrt = Math.sqrt;
 var mathSin = Math.sin;
 var mathCos = Math.cos;
 var PI = Math.PI;
-
 var vMag = function (v) {
     return Math.sqrt(v[0] * v[0] + v[1] * v[1]);
 };
@@ -14438,43 +12559,35 @@ var vAngle = function (u, v) {
     return (u[0] * v[1] < u[1] * v[0] ? -1 : 1)
             * Math.acos(vRatio(u, v));
 };
-
 function processArc(x1, y1, x2, y2, fa, fs, rx, ry, psiDeg, cmd, path) {
     var psi = psiDeg * (PI / 180.0);
     var xp = mathCos(psi) * (x1 - x2) / 2.0
                 + mathSin(psi) * (y1 - y2) / 2.0;
     var yp = -1 * mathSin(psi) * (x1 - x2) / 2.0
                 + mathCos(psi) * (y1 - y2) / 2.0;
-
     var lambda = (xp * xp) / (rx * rx) + (yp * yp) / (ry * ry);
-
     if (lambda > 1) {
         rx *= mathSqrt(lambda);
         ry *= mathSqrt(lambda);
     }
-
     var f = (fa === fs ? -1 : 1)
         * mathSqrt((((rx * rx) * (ry * ry))
                 - ((rx * rx) * (yp * yp))
                 - ((ry * ry) * (xp * xp))) / ((rx * rx) * (yp * yp)
                 + (ry * ry) * (xp * xp))
             ) || 0;
-
     var cxp = f * rx * yp / ry;
     var cyp = f * -ry * xp / rx;
-
     var cx = (x1 + x2) / 2.0
                 + mathCos(psi) * cxp
                 - mathSin(psi) * cyp;
     var cy = (y1 + y2) / 2.0
             + mathSin(psi) * cxp
             + mathCos(psi) * cyp;
-
     var theta = vAngle([ 1, 0 ], [ (xp - cxp) / rx, (yp - cyp) / ry ]);
     var u = [ (xp - cxp) / rx, (yp - cyp) / ry ];
     var v = [ (-1 * xp - cxp) / rx, (-1 * yp - cyp) / ry ];
     var dTheta = vAngle(u, v);
-
     if (vRatio(u, v) <= -1) {
         dTheta = PI;
     }
@@ -14487,11 +12600,8 @@ function processArc(x1, y1, x2, y2, fa, fs, rx, ry, psiDeg, cmd, path) {
     if (fs === 1 && dTheta < 0) {
         dTheta = dTheta + 2 * PI;
     }
-
     path.addData(cmd, cx, cy, rx, ry, theta, dTheta, psi, fs);
 }
-
-
 var commandReg = /([mlvhzcqtsa])([^mlvhzcqtsa]*)/ig;
 // Consider case:
 // (1) delimiter can be comma or space, where continuous commas
@@ -14501,25 +12611,20 @@ var commandReg = /([mlvhzcqtsa])([^mlvhzcqtsa]*)/ig;
 // 'l-.5E1,54', '121-23-44-11' (no delimiter)
 var numberReg = /-?([0-9]*\.)?[0-9]+([eE]-?[0-9]+)?/g;
 // var valueSplitReg = /[\s,]+/;
-
 function createPathProxyFromString(data) {
     if (!data) {
         return new PathProxy();
     }
-
     // var data = data.replace(/-/g, ' -')
     //     .replace(/  /g, ' ')
     //     .replace(/ /g, ',')
     //     .replace(/,,/g, ',');
-
     // var n;
     // create pipes so that we can split the data
     // for (n = 0; n < cc.length; n++) {
     //     cs = cs.replace(new RegExp(cc[n], 'g'), '|' + cc[n]);
     // }
-
     // data = data.replace(/-/g, ',-');
-
     // create array
     // var arr = cs.split('|');
     // init context point
@@ -14528,23 +12633,18 @@ function createPathProxyFromString(data) {
     var subpathX = cpx;
     var subpathY = cpy;
     var prevCmd;
-
     var path = new PathProxy();
     var CMD = PathProxy.CMD;
-
     // commandReg.lastIndex = 0;
     // var cmdResult;
     // while ((cmdResult = commandReg.exec(data)) != null) {
     //     var cmdStr = cmdResult[1];
     //     var cmdContent = cmdResult[2];
-
     var cmdList = data.match(commandReg);
     for (var l = 0; l < cmdList.length; l++) {
         var cmdText = cmdList[l];
         var cmdStr = cmdText.charAt(0);
-
         var cmd;
-
         // String#split is faster a little bit than String#replace or RegExp#exec.
         // var p = cmdContent.split(valueSplitReg);
         // var pLen = 0;
@@ -14553,27 +12653,22 @@ function createPathProxyFromString(data) {
         //     var val = parseFloat(p[i]);
         //     !isNaN(val) && (p[pLen++] = val);
         // }
-
         var p = cmdText.match(numberReg) || [];
         var pLen = p.length;
         for (var i = 0; i < pLen; i++) {
             p[i] = parseFloat(p[i]);
         }
-
         var off = 0;
         while (off < pLen) {
             var ctlPtx;
             var ctlPty;
-
             var rx;
             var ry;
             var psi;
             var fa;
             var fs;
-
             var x1 = cpx;
             var y1 = cpy;
-
             // convert l, H, h, V, and v to L
             switch (cmdStr) {
                 case 'l':
@@ -14727,7 +12822,6 @@ function createPathProxyFromString(data) {
                     psi = p[off++];
                     fa = p[off++];
                     fs = p[off++];
-
                     x1 = cpx, y1 = cpy;
                     cpx = p[off++];
                     cpy = p[off++];
@@ -14742,7 +12836,6 @@ function createPathProxyFromString(data) {
                     psi = p[off++];
                     fa = p[off++];
                     fs = p[off++];
-
                     x1 = cpx, y1 = cpy;
                     cpx += p[off++];
                     cpy += p[off++];
@@ -14753,7 +12846,6 @@ function createPathProxyFromString(data) {
                     break;
             }
         }
-
         if (cmdStr === 'z' || cmdStr === 'Z') {
             cmd = CMD.Z;
             path.addData(cmd);
@@ -14761,15 +12853,11 @@ function createPathProxyFromString(data) {
             cpx = subpathX;
             cpy = subpathY;
         }
-
         prevCmd = cmd;
     }
-
     path.toStatic();
-
     return path;
 }
-
 // TODO Optimize double memory cost problem
 function createPathOptions(str, opts) {
     var pathProxy = createPathProxyFromString(str);
@@ -14788,15 +12876,12 @@ function createPathOptions(str, opts) {
             pathProxy.rebuildPath(ctx);
         }
     };
-
     opts.applyTransform = function (m) {
         transformPath(pathProxy, m);
         this.dirty(true);
     };
-
     return opts;
 }
-
 /**
  * Create a Path object from path string data
  * http://www.w3.org/TR/SVG/paths.html#PathData
@@ -14805,7 +12890,6 @@ function createPathOptions(str, opts) {
 function createFromString(str, opts) {
     return new Path(createPathOptions(str, opts));
 }
-
 /**
  * Create a Path class from path string data
  * @param  {string} str
@@ -14814,7 +12898,6 @@ function createFromString(str, opts) {
 function extendFromString(str, opts) {
     return Path.extend(createPathOptions(str, opts));
 }
-
 /**
  * Merge multiple paths
  */
@@ -14834,7 +12917,6 @@ function mergePath$1(pathEls, opts) {
         }
         pathList.push(pathEl.path);
     }
-
     var pathBundle = new Path(opts);
     // Need path proxy.
     pathBundle.createPathProxy();
@@ -14846,10 +12928,8 @@ function mergePath$1(pathEls, opts) {
             path.rebuildPath(ctx);
         }
     };
-
     return pathBundle;
 }
-
 /**
  * @alias zrender/graphic/Text
  * @extends module:zrender/graphic/Displayable
@@ -14859,56 +12939,40 @@ function mergePath$1(pathEls, opts) {
 var Text = function (opts) { // jshint ignore:line
     Displayable.call(this, opts);
 };
-
 Text.prototype = {
-
     constructor: Text,
-
     type: 'text',
-
     brush: function (ctx, prevEl) {
         var style = this.style;
-
         // Optimize, avoid normalize every time.
         this.__dirty && normalizeTextStyle(style, true);
-
         // Use props with prefix 'text'.
         style.fill = style.stroke = style.shadowBlur = style.shadowColor =
             style.shadowOffsetX = style.shadowOffsetY = null;
-
         var text = style.text;
         // Convert to string
         text != null && (text += '');
-
         // Do not apply style.bind in Text node. Because the real bind job
         // is in textHelper.renderText, and performance of text render should
         // be considered.
         // style.bind(ctx, this, prevEl);
-
         if (!needDrawText(text, style)) {
             // The current el.style is not applied
             // and should not be used as cache.
             ctx.__attrCachedBy = ContextCachedBy.NONE;
             return;
         }
-
         this.setTransform(ctx);
-
         renderText(this, ctx, text, style, null, prevEl);
-
         this.restoreTransform(ctx);
     },
-
     getBoundingRect: function () {
         var style = this.style;
-
         // Optimize, avoid normalize every time.
         this.__dirty && normalizeTextStyle(style, true);
-
         if (!this._rect) {
             var text = style.text;
             text != null ? (text += '') : (text = '');
-
             var rect = getBoundingRect(
                 style.text + '',
                 style.font,
@@ -14918,10 +12982,8 @@ Text.prototype = {
                 style.textLineHeight,
                 style.rich
             );
-
             rect.x += style.x || 0;
             rect.y += style.y || 0;
-
             if (getStroke(style.textStroke, style.textStrokeWidth)) {
                 var w = style.textStrokeWidth;
                 rect.x -= w / 2;
@@ -14929,32 +12991,23 @@ Text.prototype = {
                 rect.width += w;
                 rect.height += w;
             }
-
             this._rect = rect;
         }
-
         return this._rect;
     }
 };
-
 inherits(Text, Displayable);
-
 /**
  * 圆形
  * @module zrender/shape/Circle
  */
-
 var Circle = Path.extend({
-
     type: 'circle',
-
     shape: {
         cx: 0,
         cy: 0,
         r: 0
     },
-
-
     buildPath: function (ctx, shape, inBundle) {
         // Better stroking in ShapeBundle
         // Always do it may have performence issue ( fill may be 2x more cost)
@@ -14971,7 +13024,6 @@ var Circle = Path.extend({
         ctx.arc(shape.cx, shape.cy, shape.r, 0, Math.PI * 2, true);
     }
 });
-
 // Fix weird bug in some version of IE11 (like 11.0.9600.178**),
 // where exception "unexpected call to method or property access"
 // might be thrown when calling ctx.fill or ctx.stroke after a path
@@ -14986,30 +13038,24 @@ var Circle = Path.extend({
 //  ...
 //  ctx.fill();
 // )
-
 var shadowTemp = [
     ['shadowBlur', 0],
     ['shadowColor', '#000'],
     ['shadowOffsetX', 0],
     ['shadowOffsetY', 0]
 ];
-
 var fixClipWithShadow = function (orignalBrush) {
-
     // version string can be: '11.0'
     return (env$1.browser.ie && env$1.browser.version >= 11)
-
         ? function () {
             var clipPaths = this.__clipPaths;
             var style = this.style;
             var modified;
-
             if (clipPaths) {
                 for (var i = 0; i < clipPaths.length; i++) {
                     var clipPath = clipPaths[i];
                     var shape = clipPath && clipPath.shape;
                     var type = clipPath && clipPath.type;
-
                     if (shape && (
                         (type === 'sector' && shape.startAngle === shape.endAngle)
                         || (type === 'rect' && (!shape.width || !shape.height))
@@ -15025,49 +13071,32 @@ var fixClipWithShadow = function (orignalBrush) {
                     }
                 }
             }
-
             orignalBrush.apply(this, arguments);
-
             if (modified) {
                 for (var j = 0; j < shadowTemp.length; j++) {
                     style[shadowTemp[j][0]] = shadowTemp[j][2];
                 }
             }
         }
-
         : orignalBrush;
 };
-
 /**
  * 扇形
  * @module zrender/graphic/shape/Sector
  */
-
 var Sector = Path.extend({
-
     type: 'sector',
-
     shape: {
-
         cx: 0,
-
         cy: 0,
-
         r0: 0,
-
         r: 0,
-
         startAngle: 0,
-
         endAngle: Math.PI * 2,
-
         clockwise: true
     },
-
     brush: fixClipWithShadow(Path.prototype.brush),
-
     buildPath: function (ctx, shape) {
-
         var x = shape.cx;
         var y = shape.cy;
         var r0 = Math.max(shape.r0 || 0, 0);
@@ -15075,45 +13104,33 @@ var Sector = Path.extend({
         var startAngle = shape.startAngle;
         var endAngle = shape.endAngle;
         var clockwise = shape.clockwise;
-
         var unitX = Math.cos(startAngle);
         var unitY = Math.sin(startAngle);
-
         ctx.moveTo(unitX * r0 + x, unitY * r0 + y);
-
         ctx.lineTo(unitX * r + x, unitY * r + y);
-
         ctx.arc(x, y, r, startAngle, endAngle, !clockwise);
-
         ctx.lineTo(
             Math.cos(endAngle) * r0 + x,
             Math.sin(endAngle) * r0 + y
         );
-
         if (r0 !== 0) {
             ctx.arc(x, y, r0, endAngle, startAngle, clockwise);
         }
-
         ctx.closePath();
     }
 });
-
 /**
  * 圆环
  * @module zrender/graphic/shape/Ring
  */
-
 var Ring = Path.extend({
-
     type: 'ring',
-
     shape: {
         cx: 0,
         cy: 0,
         r: 0,
         r0: 0
     },
-
     buildPath: function (ctx, shape) {
         var x = shape.cx;
         var y = shape.cy;
@@ -15124,7 +13141,6 @@ var Ring = Path.extend({
         ctx.arc(x, y, shape.r0, 0, PI2, true);
     }
 });
-
 /**
  * Catmull-Rom spline 插值折线
  * @module zrender/shape/util/smoothSpline
@@ -15132,7 +13148,6 @@ var Ring = Path.extend({
  *         Kener (@Kener-林峰, kener.linfeng@gmail.com)
  *         errorrik (errorrik@gmail.com)
  */
-
 /**
  * @inner
  */
@@ -15143,7 +13158,6 @@ function interpolate(p0, p1, p2, p3, t, t2, t3) {
             + (-3 * (p1 - p2) - 2 * v0 - v1) * t2
             + v0 * t + p1;
 }
-
 /**
  * @alias module:zrender/shape/util/smoothSpline
  * @param {Array} points 线段顶点数组
@@ -15153,20 +13167,16 @@ function interpolate(p0, p1, p2, p3, t, t2, t3) {
 var smoothSpline = function (points, isLoop) {
     var len$$1 = points.length;
     var ret = [];
-
     var distance$$1 = 0;
     for (var i = 1; i < len$$1; i++) {
         distance$$1 += distance(points[i - 1], points[i]);
     }
-
     var segs = distance$$1 / 2;
     segs = segs < len$$1 ? len$$1 : segs;
     for (var i = 0; i < segs; i++) {
         var pos = i / (segs - 1) * (isLoop ? len$$1 : len$$1 - 1);
         var idx = Math.floor(pos);
-
         var w = pos - idx;
-
         var p0;
         var p1 = points[idx % len$$1];
         var p2;
@@ -15181,10 +13191,8 @@ var smoothSpline = function (points, isLoop) {
             p2 = points[(idx + 1) % len$$1];
             p3 = points[(idx + 2) % len$$1];
         }
-
         var w2 = w * w;
         var w3 = w * w2;
-
         ret.push([
             interpolate(p0[0], p1[0], p2[0], p3[0], w, w2, w3),
             interpolate(p0[1], p1[1], p2[1], p3[1], w, w2, w3)
@@ -15192,7 +13200,6 @@ var smoothSpline = function (points, isLoop) {
     }
     return ret;
 };
-
 /**
  * 贝塞尔平滑曲线
  * @module zrender/shape/util/smoothBezier
@@ -15200,7 +13207,6 @@ var smoothSpline = function (points, isLoop) {
  *         Kener (@Kener-林峰, kener.linfeng@gmail.com)
  *         errorrik (errorrik@gmail.com)
  */
-
 /**
  * 贝塞尔平滑曲线
  * @alias module:zrender/shape/util/smoothBezier
@@ -15214,13 +13220,11 @@ var smoothSpline = function (points, isLoop) {
  */
 var smoothBezier = function (points, smooth, isLoop, constraint) {
     var cps = [];
-
     var v = [];
     var v1 = [];
     var v2 = [];
     var prevPoint;
     var nextPoint;
-
     var min$$1;
     var max$$1;
     if (constraint) {
@@ -15234,10 +13238,8 @@ var smoothBezier = function (points, smooth, isLoop, constraint) {
         min(min$$1, min$$1, constraint[0]);
         max(max$$1, max$$1, constraint[1]);
     }
-
     for (var i = 0, len$$1 = points.length; i < len$$1; i++) {
         var point = points[i];
-
         if (isLoop) {
             prevPoint = points[i ? i - 1 : len$$1 - 1];
             nextPoint = points[(i + 1) % len$$1];
@@ -15252,12 +13254,9 @@ var smoothBezier = function (points, smooth, isLoop, constraint) {
                 nextPoint = points[i + 1];
             }
         }
-
         sub(v, nextPoint, prevPoint);
-
         // use degree to scale the handle length
         scale(v, v, smooth);
-
         var d0 = distance(point, prevPoint);
         var d1 = distance(point, nextPoint);
         var sum = d0 + d1;
@@ -15265,7 +13264,6 @@ var smoothBezier = function (points, smooth, isLoop, constraint) {
             d0 /= sum;
             d1 /= sum;
         }
-
         scale(v1, v, -d0);
         scale(v2, v, d1);
         var cp0 = add([], point, v1);
@@ -15279,14 +13277,11 @@ var smoothBezier = function (points, smooth, isLoop, constraint) {
         cps.push(cp0);
         cps.push(cp1);
     }
-
     if (isLoop) {
         cps.push(cps.shift());
     }
-
     return cps;
 };
-
 function buildPath$1(ctx, shape, closePath) {
     var points = shape.points;
     var smooth = shape.smooth;
@@ -15295,7 +13290,6 @@ function buildPath$1(ctx, shape, closePath) {
             var controlPoints = smoothBezier(
                 points, smooth, closePath, shape.smoothConstraint
             );
-
             ctx.moveTo(points[0][0], points[0][1]);
             var len = points.length;
             for (var i = 0; i < (closePath ? len : len - 1); i++) {
@@ -15311,73 +13305,52 @@ function buildPath$1(ctx, shape, closePath) {
             if (smooth === 'spline') {
                 points = smoothSpline(points, closePath);
             }
-
             ctx.moveTo(points[0][0], points[0][1]);
             for (var i = 1, l = points.length; i < l; i++) {
                 ctx.lineTo(points[i][0], points[i][1]);
             }
         }
-
         closePath && ctx.closePath();
     }
 }
-
 /**
  * 多边形
  * @module zrender/shape/Polygon
  */
-
 var Polygon = Path.extend({
-
     type: 'polygon',
-
     shape: {
         points: null,
-
         smooth: false,
-
         smoothConstraint: null
     },
-
     buildPath: function (ctx, shape) {
         buildPath$1(ctx, shape, true);
     }
 });
-
 /**
  * @module zrender/graphic/shape/Polyline
  */
-
 var Polyline = Path.extend({
-
     type: 'polyline',
-
     shape: {
         points: null,
-
         smooth: false,
-
         smoothConstraint: null
     },
-
     style: {
         stroke: '#000',
-
         fill: null
     },
-
     buildPath: function (ctx, shape) {
         buildPath$1(ctx, shape, false);
     }
 });
-
 /**
  * Sub-pixel optimize for canvas rendering, prevent from blur
  * when rendering a thin vertical/horizontal line.
  */
-
 var round$1 = Math.round;
-
 /**
  * Sub pixel optimize line for canvas
  *
@@ -15395,16 +13368,13 @@ var round$1 = Math.round;
  */
 function subPixelOptimizeLine$1(outputShape, inputShape, style) {
     var lineWidth = style && style.lineWidth;
-
     if (!inputShape || !lineWidth) {
         return;
     }
-
     var x1 = inputShape.x1;
     var x2 = inputShape.x2;
     var y1 = inputShape.y1;
     var y2 = inputShape.y2;
-
     if (round$1(x1 * 2) === round$1(x2 * 2)) {
         outputShape.x1 = outputShape.x2 = subPixelOptimize$1(x1, lineWidth, true);
     }
@@ -15420,7 +13390,6 @@ function subPixelOptimizeLine$1(outputShape, inputShape, style) {
         outputShape.y2 = y2;
     }
 }
-
 /**
  * Sub pixel optimize rect for canvas
  *
@@ -15438,16 +13407,13 @@ function subPixelOptimizeLine$1(outputShape, inputShape, style) {
  */
 function subPixelOptimizeRect$1(outputShape, inputShape, style) {
     var lineWidth = style && style.lineWidth;
-
     if (!inputShape || !lineWidth) {
         return;
     }
-
     var originX = inputShape.x;
     var originY = inputShape.y;
     var originWidth = inputShape.width;
     var originHeight = inputShape.height;
-
     outputShape.x = subPixelOptimize$1(originX, lineWidth, true);
     outputShape.y = subPixelOptimize$1(originY, lineWidth, true);
     outputShape.width = Math.max(
@@ -15459,7 +13425,6 @@ function subPixelOptimizeRect$1(outputShape, inputShape, style) {
         originHeight === 0 ? 0 : 1
     );
 }
-
 /**
  * Sub pixel optimize for canvas
  *
@@ -15476,19 +13441,14 @@ function subPixelOptimize$1(position, lineWidth, positiveOrNegative) {
         ? doubledPosition / 2
         : (doubledPosition + (positiveOrNegative ? 1 : -1)) / 2;
 }
-
 /**
  * 矩形
  * @module zrender/graphic/shape/Rect
  */
-
 // Avoid create repeatly.
 var subPixelOptimizeOutputShape = {};
-
 var Rect = Path.extend({
-
     type: 'rect',
-
     shape: {
         // 左上、右上、右下、左下角的半径依次为r1、r2、r3、r4
         // r缩写为1         相当于 [1, 1, 1, 1]
@@ -15496,19 +13456,16 @@ var Rect = Path.extend({
         // r缩写为[1, 2]    相当于 [1, 2, 1, 2]
         // r缩写为[1, 2, 3] 相当于 [1, 2, 3, 2]
         r: 0,
-
         x: 0,
         y: 0,
         width: 0,
         height: 0
     },
-
     buildPath: function (ctx, shape) {
         var x;
         var y;
         var width;
         var height;
-
         if (this.subPixelOptimize) {
             subPixelOptimizeRect$1(subPixelOptimizeOutputShape, shape, this.style);
             x = subPixelOptimizeOutputShape.x;
@@ -15524,7 +13481,6 @@ var Rect = Path.extend({
             width = shape.width;
             height = shape.height;
         }
-
         if (!shape.r) {
             ctx.rect(x, y, width, height);
         }
@@ -15535,19 +13491,14 @@ var Rect = Path.extend({
         return;
     }
 });
-
 /**
  * 直线
  * @module zrender/graphic/shape/Line
  */
-
 // Avoid create repeatly.
 var subPixelOptimizeOutputShape$1 = {};
-
 var Line = Path.extend({
-
     type: 'line',
-
     shape: {
         // Start point
         x1: 0,
@@ -15555,21 +13506,17 @@ var Line = Path.extend({
         // End point
         x2: 0,
         y2: 0,
-
         percent: 1
     },
-
     style: {
         stroke: '#000',
         fill: null
     },
-
     buildPath: function (ctx, shape) {
         var x1;
         var y1;
         var x2;
         var y2;
-
         if (this.subPixelOptimize) {
             subPixelOptimizeLine$1(subPixelOptimizeOutputShape$1, shape, this.style);
             x1 = subPixelOptimizeOutputShape$1.x1;
@@ -15583,22 +13530,17 @@ var Line = Path.extend({
             x2 = shape.x2;
             y2 = shape.y2;
         }
-
         var percent = shape.percent;
-
         if (percent === 0) {
             return;
         }
-
         ctx.moveTo(x1, y1);
-
         if (percent < 1) {
             x2 = x1 * (1 - percent) + x2 * percent;
             y2 = y1 * (1 - percent) + y2 * percent;
         }
         ctx.lineTo(x2, y2);
     },
-
     /**
      * Get point at percent
      * @param  {number} percent
@@ -15612,14 +13554,11 @@ var Line = Path.extend({
         ];
     }
 });
-
 /**
  * 贝塞尔曲线
  * @module zrender/shape/BezierCurve
  */
-
 var out = [];
-
 function someVectorAt(shape, t, isTangent) {
     var cpx2 = shape.cpx2;
     var cpy2 = shape.cpy2;
@@ -15636,11 +13575,8 @@ function someVectorAt(shape, t, isTangent) {
         ];
     }
 }
-
 var BezierCurve = Path.extend({
-
     type: 'bezier-curve',
-
     shape: {
         x1: 0,
         y1: 0,
@@ -15650,16 +13586,13 @@ var BezierCurve = Path.extend({
         cpy1: 0,
         // cpx2: 0,
         // cpy2: 0
-
         // Curve show percent, for animating
         percent: 1
     },
-
     style: {
         stroke: '#000',
         fill: null
     },
-
     buildPath: function (ctx, shape) {
         var x1 = shape.x1;
         var y1 = shape.y1;
@@ -15673,9 +13606,7 @@ var BezierCurve = Path.extend({
         if (percent === 0) {
             return;
         }
-
         ctx.moveTo(x1, y1);
-
         if (cpx2 == null || cpy2 == null) {
             if (percent < 1) {
                 quadraticSubdivide(
@@ -15689,7 +13620,6 @@ var BezierCurve = Path.extend({
                 cpy1 = out[1];
                 y2 = out[2];
             }
-
             ctx.quadraticCurveTo(
                 cpx1, cpy1,
                 x2, y2
@@ -15717,7 +13647,6 @@ var BezierCurve = Path.extend({
             );
         }
     },
-
     /**
      * Get point at percent
      * @param  {number} t
@@ -15726,7 +13655,6 @@ var BezierCurve = Path.extend({
     pointAt: function (t) {
         return someVectorAt(this.shape, t, false);
     },
-
     /**
      * Get tangent at percent
      * @param  {number} t
@@ -15737,66 +13665,43 @@ var BezierCurve = Path.extend({
         return normalize(p, p);
     }
 });
-
 /**
  * 圆弧
  * @module zrender/graphic/shape/Arc
  */
-
 var Arc = Path.extend({
-
     type: 'arc',
-
     shape: {
-
         cx: 0,
-
         cy: 0,
-
         r: 0,
-
         startAngle: 0,
-
         endAngle: Math.PI * 2,
-
         clockwise: true
     },
-
     style: {
-
         stroke: '#000',
-
         fill: null
     },
-
     buildPath: function (ctx, shape) {
-
         var x = shape.cx;
         var y = shape.cy;
         var r = Math.max(shape.r, 0);
         var startAngle = shape.startAngle;
         var endAngle = shape.endAngle;
         var clockwise = shape.clockwise;
-
         var unitX = Math.cos(startAngle);
         var unitY = Math.sin(startAngle);
-
         ctx.moveTo(unitX * r + x, unitY * r + y);
         ctx.arc(x, y, r, startAngle, endAngle, !clockwise);
     }
 });
-
 // CompoundPath to improve performance
-
 var CompoundPath = Path.extend({
-
     type: 'compound',
-
     shape: {
-
         paths: null
     },
-
     _updatePathDirty: function () {
         var dirtyPath = this.__dirtyPath;
         var paths = this.shape.paths;
@@ -15807,7 +13712,6 @@ var CompoundPath = Path.extend({
         this.__dirtyPath = dirtyPath;
         this.__dirty = this.__dirty || dirtyPath;
     },
-
     beforeBrush: function () {
         this._updatePathDirty();
         var paths = this.shape.paths || [];
@@ -15820,51 +13724,38 @@ var CompoundPath = Path.extend({
             paths[i].path.setScale(scale[0], scale[1]);
         }
     },
-
     buildPath: function (ctx, shape) {
         var paths = shape.paths || [];
         for (var i = 0; i < paths.length; i++) {
             paths[i].buildPath(ctx, paths[i].shape, true);
         }
     },
-
     afterBrush: function () {
         var paths = this.shape.paths || [];
         for (var i = 0; i < paths.length; i++) {
             paths[i].__dirtyPath = false;
         }
     },
-
     getBoundingRect: function () {
         this._updatePathDirty();
         return Path.prototype.getBoundingRect.call(this);
     }
 });
-
 /**
  * @param {Array.<Object>} colorStops
  */
 var Gradient = function (colorStops) {
-
     this.colorStops = colorStops || [];
-
 };
-
 Gradient.prototype = {
-
     constructor: Gradient,
-
     addColorStop: function (offset, color) {
         this.colorStops.push({
-
             offset: offset,
-
             color: color
         });
     }
-
 };
-
 /**
  * x, y, x2, y2 are all percent from 0 to 1
  * @param {number} [x=0]
@@ -15878,31 +13769,20 @@ var LinearGradient = function (x, y, x2, y2, colorStops, globalCoord) {
     // Should do nothing more in this constructor. Because gradient can be
     // declard by `color: {type: 'linear', colorStops: ...}`, where
     // this constructor will not be called.
-
     this.x = x == null ? 0 : x;
-
     this.y = y == null ? 0 : y;
-
     this.x2 = x2 == null ? 1 : x2;
-
     this.y2 = y2 == null ? 0 : y2;
-
     // Can be cloned
     this.type = 'linear';
-
     // If use global coord
     this.global = globalCoord || false;
-
     Gradient.call(this, colorStops);
 };
-
 LinearGradient.prototype = {
-
     constructor: LinearGradient
 };
-
 inherits(LinearGradient, Gradient);
-
 /**
  * x, y, r are all percent from 0 to 1
  * @param {number} [x=0.5]
@@ -15915,29 +13795,19 @@ var RadialGradient = function (x, y, r, colorStops, globalCoord) {
     // Should do nothing more in this constructor. Because gradient can be
     // declard by `color: {type: 'radial', colorStops: ...}`, where
     // this constructor will not be called.
-
     this.x = x == null ? 0.5 : x;
-
     this.y = y == null ? 0.5 : y;
-
     this.r = r == null ? 0.5 : r;
-
     // Can be cloned
     this.type = 'radial';
-
     // If use global coord
     this.global = globalCoord || false;
-
     Gradient.call(this, colorStops);
 };
-
 RadialGradient.prototype = {
-
     constructor: RadialGradient
 };
-
 inherits(RadialGradient, Gradient);
-
 /**
  * Displayable for incremental rendering. It will be rendered in a separate layer
  * IncrementalDisplay have two main methods. `clearDisplayables` and `addDisplayables`
@@ -15947,29 +13817,20 @@ inherits(RadialGradient, Gradient);
  */
 // TODO Style override ?
 function IncrementalDisplayble(opts) {
-
     Displayable.call(this, opts);
-
     this._displayables = [];
-
     this._temporaryDisplayables = [];
-
     this._cursor = 0;
-
     this.notClear = true;
 }
-
 IncrementalDisplayble.prototype.incremental = true;
-
 IncrementalDisplayble.prototype.clearDisplaybles = function () {
     this._displayables = [];
     this._temporaryDisplayables = [];
     this._cursor = 0;
     this.dirty();
-
     this.notClear = false;
 };
-
 IncrementalDisplayble.prototype.addDisplayable = function (displayable, notPersistent) {
     if (notPersistent) {
         this._temporaryDisplayables.push(displayable);
@@ -15979,14 +13840,12 @@ IncrementalDisplayble.prototype.addDisplayable = function (displayable, notPersi
     }
     this.dirty();
 };
-
 IncrementalDisplayble.prototype.addDisplayables = function (displayables, notPersistent) {
     notPersistent = notPersistent || false;
     for (var i = 0; i < displayables.length; i++) {
         this.addDisplayable(displayables[i], notPersistent);
     }
 };
-
 IncrementalDisplayble.prototype.eachPendingDisplayable = function (cb) {
     for (var i = this._cursor; i < this._displayables.length; i++) {
         cb && cb(this._displayables[i]);
@@ -15995,7 +13854,6 @@ IncrementalDisplayble.prototype.eachPendingDisplayable = function (cb) {
         cb && cb(this._temporaryDisplayables[i]);
     }
 };
-
 IncrementalDisplayble.prototype.update = function () {
     this.updateTransform();
     for (var i = this._cursor; i < this._displayables.length; i++) {
@@ -16013,7 +13871,6 @@ IncrementalDisplayble.prototype.update = function () {
         displayable.parent = null;
     }
 };
-
 IncrementalDisplayble.prototype.brush = function (ctx, prevEl) {
     // Render persistant displayables.
     for (var i = this._cursor; i < this._displayables.length; i++) {
@@ -16030,12 +13887,9 @@ IncrementalDisplayble.prototype.brush = function (ctx, prevEl) {
         displayable.brush(ctx, i === 0 ? null : this._temporaryDisplayables[i - 1]);
         displayable.afterBrush && displayable.afterBrush(ctx);
     }
-
     this._temporaryDisplayables = [];
-
     this.notClear = true;
 };
-
 var m = [];
 IncrementalDisplayble.prototype.getBoundingRect = function () {
     if (!this._rect) {
@@ -16052,11 +13906,9 @@ IncrementalDisplayble.prototype.getBoundingRect = function () {
     }
     return this._rect;
 };
-
 IncrementalDisplayble.prototype.contain = function (x, y) {
     var localPos = this.transformCoordToLocal(x, y);
     var rect = this.getBoundingRect();
-
     if (rect.contain(localPos[0], localPos[1])) {
         for (var i = 0; i < this._displayables.length; i++) {
             var displayable = this._displayables[i];
@@ -16067,9 +13919,7 @@ IncrementalDisplayble.prototype.contain = function (x, y) {
     }
     return false;
 };
-
 inherits(IncrementalDisplayble, Displayable);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -16088,29 +13938,23 @@ inherits(IncrementalDisplayble, Displayable);
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var round = Math.round;
 var mathMax$1 = Math.max;
 var mathMin$1 = Math.min;
-
 var EMPTY_OBJ = {};
-
 var Z2_EMPHASIS_LIFT = 1;
-
 /**
  * Extend shape with parameters
  */
 function extendShape(opts) {
     return Path.extend(opts);
 }
-
 /**
  * Extend path
  */
 function extendPath(pathData, opts) {
     return extendFromString(pathData, opts);
 }
-
 /**
  * Create a path element from path data string
  * @param {string} pathData
@@ -16128,7 +13972,6 @@ function makePath(pathData, opts, rect, layout) {
     }
     return path;
 }
-
 /**
  * Create a image element from image url
  * @param {string} imageUrl image url
@@ -16157,7 +14000,6 @@ function makeImage(imageUrl, rect, layout) {
     });
     return path;
 }
-
 /**
  * Get position of centered element in bounding box.
  *
@@ -16179,7 +14021,6 @@ function centerGraphic(rect, boundingRect) {
     }
     var cx = rect.x + rect.width / 2;
     var cy = rect.y + rect.height / 2;
-
     return {
         x: cx - width / 2,
         y: cy - height / 2,
@@ -16187,9 +14028,7 @@ function centerGraphic(rect, boundingRect) {
         height: height
     };
 }
-
 var mergePath = mergePath$1;
-
 /**
  * Resize a path to fit the rect
  * @param {module:zrender/graphic/Path} path
@@ -16199,14 +14038,10 @@ function resizePath(path, rect) {
     if (!path.applyTransform) {
         return;
     }
-
     var pathRect = path.getBoundingRect();
-
     var m = pathRect.calculateTransform(rect);
-
     path.applyTransform(m);
 }
-
 /**
  * Sub pixel optimize line for canvas
  *
@@ -16223,7 +14058,6 @@ function resizePath(path, rect) {
 function subPixelOptimizeLine(param) {
     var shape = param.shape;
     var lineWidth = param.style.lineWidth;
-
     if (round(shape.x1 * 2) === round(shape.x2 * 2)) {
         shape.x1 = shape.x2 = subPixelOptimize(shape.x1, lineWidth, true);
     }
@@ -16232,7 +14066,6 @@ function subPixelOptimizeLine(param) {
     }
     return param;
 }
-
 /**
  * Sub pixel optimize rect for canvas
  *
@@ -16265,7 +14098,6 @@ function subPixelOptimizeRect(param) {
     );
     return param;
 }
-
 /**
  * Sub pixel optimize for canvas
  *
@@ -16282,15 +14114,12 @@ function subPixelOptimize(position, lineWidth, positiveOrNegative) {
         ? doubledPosition / 2
         : (doubledPosition + (positiveOrNegative ? 1 : -1)) / 2;
 }
-
 function hasFillOrStroke(fillOrStroke) {
     return fillOrStroke != null && fillOrStroke !== 'none';
 }
-
 // Most lifted color are duplicated.
 var liftedColorMap = createHashMap();
 var liftedColorCount = 0;
-
 function liftColor(color) {
     if (typeof color !== 'string') {
         return color;
@@ -16305,64 +14134,50 @@ function liftColor(color) {
     }
     return liftedColor;
 }
-
 function cacheElementStl(el) {
     if (!el.__hoverStlDirty) {
         return;
     }
     el.__hoverStlDirty = false;
-
     var hoverStyle = el.__hoverStl;
     if (!hoverStyle) {
         el.__cachedNormalStl = el.__cachedNormalZ2 = null;
         return;
     }
-
     var normalStyle = el.__cachedNormalStl = {};
     el.__cachedNormalZ2 = el.z2;
     var elStyle = el.style;
-
     for (var name in hoverStyle) {
         // See comment in `doSingleEnterHover`.
         if (hoverStyle[name] != null) {
             normalStyle[name] = elStyle[name];
         }
     }
-
     // Always cache fill and stroke to normalStyle for lifting color.
     normalStyle.fill = elStyle.fill;
     normalStyle.stroke = elStyle.stroke;
 }
-
 function doSingleEnterHover(el) {
     var hoverStl = el.__hoverStl;
-
     if (!hoverStl || el.__highlighted) {
         return;
     }
-
     var useHoverLayer = el.useHoverLayer;
     el.__highlighted = useHoverLayer ? 'layer' : 'plain';
-
     var zr = el.__zr;
     if (!zr && useHoverLayer) {
         return;
     }
-
     var elTarget = el;
     var targetStyle = el.style;
-
     if (useHoverLayer) {
         elTarget = zr.addHover(el);
         targetStyle = elTarget.style;
     }
-
     rollbackDefaultTextStyle(targetStyle);
-
     if (!useHoverLayer) {
         cacheElementStl(elTarget);
     }
-
     // styles can be:
     // {
     //    label: {
@@ -16383,39 +14198,30 @@ function doSingleEnterHover(el) {
     // only properties that is not `null/undefined` can be set. The disadventage:
     // null/undefined can not be used to remove style any more in `emphasis`.
     targetStyle.extendFrom(hoverStl);
-
     setDefaultHoverFillStroke(targetStyle, hoverStl, 'fill');
     setDefaultHoverFillStroke(targetStyle, hoverStl, 'stroke');
-
     applyDefaultTextStyle(targetStyle);
-
     if (!useHoverLayer) {
         el.dirty(false);
         el.z2 += Z2_EMPHASIS_LIFT;
     }
 }
-
 function setDefaultHoverFillStroke(targetStyle, hoverStyle, prop) {
     if (!hasFillOrStroke(hoverStyle[prop]) && hasFillOrStroke(targetStyle[prop])) {
         targetStyle[prop] = liftColor(targetStyle[prop]);
     }
 }
-
 function doSingleLeaveHover(el) {
     var highlighted = el.__highlighted;
-
     if (!highlighted) {
         return;
     }
-
     el.__highlighted = false;
-
     if (highlighted === 'layer') {
         el.__zr && el.__zr.removeHover(el);
     }
     else if (highlighted) {
         var style = el.style;
-
         var normalStl = el.__cachedNormalStl;
         if (normalStl) {
             rollbackDefaultTextStyle(style);
@@ -16433,7 +14239,6 @@ function doSingleLeaveHover(el) {
         }
     }
 }
-
 function traverseCall(el, method) {
     el.isGroup
         ? el.traverse(function (child) {
@@ -16441,7 +14246,6 @@ function traverseCall(el, method) {
         })
         : method(el);
 }
-
 /**
  * Set hover style (namely "emphasis style") of element, based on the current
  * style of the given `el`.
@@ -16462,7 +14266,6 @@ function setElementHoverStyle(el, hoverStl) {
     // difference properties from the "normal style", but not a entire copy of all styles.
     hoverStl = el.__hoverStl = hoverStl !== false && (hoverStl || {});
     el.__hoverStlDirty = true;
-
     // FIXME
     // It is not completely right to save "normal"/"emphasis" flag on elements.
     // It probably should be saved on `data` of series. Consider the cases:
@@ -16480,11 +14283,9 @@ function setElementHoverStyle(el, hoverStl) {
         // to rollback. Of course, that would bring bug, but only in a rare case, see
         // `doSingleLeaveHover` for details.
         doSingleLeaveHover(el);
-
         doSingleEnterHover(el);
     }
 }
-
 /**
  * Emphasis (called by API) has higher priority than `mouseover`.
  * When element has been called to be entered emphasis, mouse over
@@ -16499,35 +14300,28 @@ function setElementHoverStyle(el, hoverStl) {
 function isInEmphasis(el) {
     return el && el.__isEmphasisEntered;
 }
-
 function onElementMouseOver(e) {
     if (this.__hoverSilentOnTouch && e.zrByTouch) {
         return;
     }
-
     // Only if element is not in emphasis status
     !this.__isEmphasisEntered && traverseCall(this, doSingleEnterHover);
 }
-
 function onElementMouseOut(e) {
     if (this.__hoverSilentOnTouch && e.zrByTouch) {
         return;
     }
-
     // Only if element is not in emphasis status
     !this.__isEmphasisEntered && traverseCall(this, doSingleLeaveHover);
 }
-
 function enterEmphasis() {
     this.__isEmphasisEntered = true;
     traverseCall(this, doSingleEnterHover);
 }
-
 function leaveEmphasis() {
     this.__isEmphasisEntered = false;
     traverseCall(this, doSingleLeaveHover);
 }
-
 /**
  * Set hover style (namely "emphasis style") of element,
  * based on the current style of the given `el`.
@@ -16570,10 +14364,8 @@ function setHoverStyle(el, hoverStyle, opt) {
             !child.isGroup && setElementHoverStyle(child, child.hoverStyle || hoverStyle);
         })
         : setElementHoverStyle(el, el.hoverStyle || hoverStyle);
-
     setAsHoverStyleTrigger(el, opt);
 }
-
 /**
  * @param {Object|boolean} [opt] If `false`, means disable trigger.
  * @param {boolean} [opt.hoverSilentOnTouch=false]
@@ -16590,21 +14382,17 @@ function setHoverStyle(el, hoverStyle, opt) {
 function setAsHoverStyleTrigger(el, opt) {
     var disable = opt === false;
     el.__hoverSilentOnTouch = opt != null && opt.hoverSilentOnTouch;
-
     // Simple optimize, since this method might be
     // called for each elements of a group in some cases.
     if (!disable || el.__hoverStyleTrigger) {
         var method = disable ? 'off' : 'on';
-
         // Duplicated function will be auto-ignored, see Eventful.js.
         el[method]('mouseover', onElementMouseOver)[method]('mouseout', onElementMouseOut);
         // Emphasis, normal can be triggered manually
         el[method]('emphasis', enterEmphasis)[method]('normal', leaveEmphasis);
-
         el.__hoverStyleTrigger = !disable;
     }
 }
-
 /**
  * See more info in `setTextStyleCommon`.
  * @param {Object|module:zrender/graphic/Style} normalStyle
@@ -16632,13 +14420,10 @@ function setLabelStyle(
     var labelFetcher = opt.labelFetcher;
     var labelDataIndex = opt.labelDataIndex;
     var labelDimIndex = opt.labelDimIndex;
-
     // This scenario, `label.normal.show = true; label.emphasis.show = false`,
     // is not supported util someone requests.
-
     var showNormal = normalModel.getShallow('show');
     var showEmphasis = emphasisModel.getShallow('show');
-
     // Consider performance, only fetch label when necessary.
     // If `normal.show` is `false` and `emphasis.show` is `true` and `emphasis.formatter` is not set,
     // label should be displayed, where text is fetched by `normal.formatter` or `opt.defaultText`.
@@ -16660,7 +14445,6 @@ function setLabelStyle(
             baseText
         )
         : null;
-
     // Optimize: If style.text is null, text will not be drawn.
     if (normalStyleText != null || emphasisStyleText != null) {
         // Always set `textStyle` even if `normalStyle.text` is null, because default
@@ -16672,11 +14456,9 @@ function setLabelStyle(
         setTextStyle(normalStyle, normalModel, normalSpecified, opt);
         setTextStyle(emphasisStyle, emphasisModel, emphasisSpecified, opt, true);
     }
-
     normalStyle.text = normalStyleText;
     emphasisStyle.text = emphasisStyleText;
 }
-
 /**
  * Set basic textStyle properties.
  * See more info in `setTextStyleCommon`.
@@ -16692,10 +14474,8 @@ function setTextStyle(
     setTextStyleCommon(textStyle, textStyleModel, opt, isEmphasis);
     specifiedTextStyle && extend(textStyle, specifiedTextStyle);
     // textStyle.host && textStyle.host.dirty && textStyle.host.dirty(false);
-
     return textStyle;
 }
-
 /**
  * Set text option in the style.
  * See more info in `setTextStyleCommon`.
@@ -16708,7 +14488,6 @@ function setTextStyle(
 function setText(textStyle, labelModel, defaultColor) {
     var opt = {isRectText: true};
     var isEmphasis;
-
     if (defaultColor === false) {
         isEmphasis = true;
     }
@@ -16719,7 +14498,6 @@ function setText(textStyle, labelModel, defaultColor) {
     setTextStyleCommon(textStyle, labelModel, opt, isEmphasis);
     // textStyle.host && textStyle.host.dirty && textStyle.host.dirty(false);
 }
-
 /**
  * The uniform entry of set text style, that is, retrieve style definitions
  * from `model` and set to `textStyle` object.
@@ -16755,7 +14533,6 @@ function setText(textStyle, labelModel, defaultColor) {
 function setTextStyleCommon(textStyle, textStyleModel, opt, isEmphasis) {
     // Consider there will be abnormal when merge hover style to normal style if given default value.
     opt = opt || EMPTY_OBJ;
-
     if (opt.isRectText) {
         var textPosition = textStyleModel.getShallow('position')
             || (isEmphasis ? null : 'inside');
@@ -16771,10 +14548,8 @@ function setTextStyleCommon(textStyle, textStyleModel, opt, isEmphasis) {
             textStyleModel.getShallow('distance'), isEmphasis ? null : 5
         );
     }
-
     var ecModel = textStyleModel.ecModel;
     var globalTextStyle = ecModel && ecModel.option.textStyle;
-
     // Consider case:
     // {
     //     data: [{
@@ -16803,16 +14578,12 @@ function setTextStyleCommon(textStyle, textStyleModel, opt, isEmphasis) {
         }
     }
     textStyle.rich = richResult;
-
     setTokenTextStyle(textStyle, textStyleModel, globalTextStyle, opt, isEmphasis, true);
-
     if (opt.forceRich && !opt.textStyle) {
         opt.textStyle = {};
     }
-
     return textStyle;
 }
-
 // Consider case:
 // {
 //     data: [{
@@ -16844,11 +14615,9 @@ function getRichItemNames(textStyleModel) {
     }
     return richItemNameMap;
 }
-
 function setTokenTextStyle(textStyle, textStyleModel, globalTextStyle, opt, isEmphasis, isBlock) {
     // In merge mode, default value should not be given.
     globalTextStyle = !isEmphasis && globalTextStyle || EMPTY_OBJ;
-
     textStyle.textFill = getAutoColor(textStyleModel.getShallow('color'), opt)
         || globalTextStyle.color;
     textStyle.textStroke = getAutoColor(textStyleModel.getShallow('textBorderColor'), opt)
@@ -16857,23 +14626,19 @@ function setTokenTextStyle(textStyle, textStyleModel, globalTextStyle, opt, isEm
         textStyleModel.getShallow('textBorderWidth'),
         globalTextStyle.textBorderWidth
     );
-
     // Save original textPosition, because style.textPosition will be repalced by
     // real location (like [10, 30]) in zrender.
     textStyle.insideRawTextPosition = textStyle.textPosition;
-
     if (!isEmphasis) {
         if (isBlock) {
             textStyle.insideRollbackOpt = opt;
             applyDefaultTextStyle(textStyle);
         }
-
         // Set default finally.
         if (textStyle.textFill == null) {
             textStyle.textFill = opt.autoColor;
         }
     }
-
     // Do not use `getFont` here, because merge should be supported, where
     // part of these properties may be changed in emphasis style, and the
     // others should remain their original value got from normal style.
@@ -16881,29 +14646,24 @@ function setTokenTextStyle(textStyle, textStyleModel, globalTextStyle, opt, isEm
     textStyle.fontWeight = textStyleModel.getShallow('fontWeight') || globalTextStyle.fontWeight;
     textStyle.fontSize = textStyleModel.getShallow('fontSize') || globalTextStyle.fontSize;
     textStyle.fontFamily = textStyleModel.getShallow('fontFamily') || globalTextStyle.fontFamily;
-
     textStyle.textAlign = textStyleModel.getShallow('align');
     textStyle.textVerticalAlign = textStyleModel.getShallow('verticalAlign')
         || textStyleModel.getShallow('baseline');
-
     textStyle.textLineHeight = textStyleModel.getShallow('lineHeight');
     textStyle.textWidth = textStyleModel.getShallow('width');
     textStyle.textHeight = textStyleModel.getShallow('height');
     textStyle.textTag = textStyleModel.getShallow('tag');
-
     if (!isBlock || !opt.disableBox) {
         textStyle.textBackgroundColor = getAutoColor(textStyleModel.getShallow('backgroundColor'), opt);
         textStyle.textPadding = textStyleModel.getShallow('padding');
         textStyle.textBorderColor = getAutoColor(textStyleModel.getShallow('borderColor'), opt);
         textStyle.textBorderWidth = textStyleModel.getShallow('borderWidth');
         textStyle.textBorderRadius = textStyleModel.getShallow('borderRadius');
-
         textStyle.textBoxShadowColor = textStyleModel.getShallow('shadowColor');
         textStyle.textBoxShadowBlur = textStyleModel.getShallow('shadowBlur');
         textStyle.textBoxShadowOffsetX = textStyleModel.getShallow('shadowOffsetX');
         textStyle.textBoxShadowOffsetY = textStyleModel.getShallow('shadowOffsetY');
     }
-
     textStyle.textShadowColor = textStyleModel.getShallow('textShadowColor')
         || globalTextStyle.textShadowColor;
     textStyle.textShadowBlur = textStyleModel.getShallow('textShadowBlur')
@@ -16913,11 +14673,9 @@ function setTokenTextStyle(textStyle, textStyleModel, globalTextStyle, opt, isEm
     textStyle.textShadowOffsetY = textStyleModel.getShallow('textShadowOffsetY')
         || globalTextStyle.textShadowOffsetY;
 }
-
 function getAutoColor(color, opt) {
     return color !== 'auto' ? color : (opt && opt.autoColor) ? opt.autoColor : null;
 }
-
 /**
  * Give some default value to the input `textStyle` object, based on the current settings
  * in this `textStyle` object.
@@ -16937,18 +14695,15 @@ function getAutoColor(color, opt) {
  */
 function applyDefaultTextStyle(textStyle) {
     var opt = textStyle.insideRollbackOpt;
-
     // Only `insideRollbackOpt` created (in `setTextStyleCommon`),
     // applyDefaultTextStyle works.
     if (!opt || textStyle.textFill != null) {
         return;
     }
-
     var useInsideStyle = opt.useInsideStyle;
     var textPosition = textStyle.insideRawTextPosition;
     var insideRollback;
     var autoColor = opt.autoColor;
-
     if (useInsideStyle !== false
         && (useInsideStyle === true
             || (opt.isRectText
@@ -16975,13 +14730,11 @@ function applyDefaultTextStyle(textStyle) {
         insideRollback = {textFill: null};
         textStyle.textFill = autoColor;
     }
-
     // Always set `insideRollback`, for clearing previous.
     if (insideRollback) {
         textStyle.insideRollback = insideRollback;
     }
 }
-
 /**
  * Consider the case: in a scatter,
  * label: {
@@ -17001,7 +14754,6 @@ function rollbackDefaultTextStyle(style) {
         style.insideRollback = null;
     }
 }
-
 function getFont(opt, ecModel) {
     // ecModel or default text style model.
     var gTextStyleModel = ecModel || ecModel.getModel('textStyle');
@@ -17013,7 +14765,6 @@ function getFont(opt, ecModel) {
         opt.fontFamily || gTextStyleModel && gTextStyleModel.getShallow('fontFamily') || 'sans-serif'
     ].join(' '));
 }
-
 function animateOrSetProps(isUpdate, el, props, animatableModel, dataIndex, cb) {
     if (typeof dataIndex === 'function') {
         cb = dataIndex;
@@ -17023,7 +14774,6 @@ function animateOrSetProps(isUpdate, el, props, animatableModel, dataIndex, cb) 
     // animation model is an `itemModel`, whose does not have `isAnimationEnabled`
     // but its parent model (`seriesModel`) does.
     var animationEnabled = animatableModel && animatableModel.isAnimationEnabled();
-
     if (animationEnabled) {
         var postfix = isUpdate ? 'Update' : '';
         var duration = animatableModel.getShallow('animationDuration' + postfix);
@@ -17040,7 +14790,6 @@ function animateOrSetProps(isUpdate, el, props, animatableModel, dataIndex, cb) 
         if (typeof duration === 'function') {
             duration = duration(dataIndex);
         }
-
         duration > 0
             ? el.animateTo(props, duration, animationDelay || 0, animationEasing, cb, !!cb)
             : (el.stopAnimation(), el.attr(props), cb && cb());
@@ -17051,7 +14800,6 @@ function animateOrSetProps(isUpdate, el, props, animatableModel, dataIndex, cb) 
         cb && cb();
     }
 }
-
 /**
  * Update graphic element properties with or without animation according to the
  * configuration in series.
@@ -17077,7 +14825,6 @@ function animateOrSetProps(isUpdate, el, props, animatableModel, dataIndex, cb) 
 function updateProps(el, props, animatableModel, dataIndex, cb) {
     animateOrSetProps(true, el, props, animatableModel, dataIndex, cb);
 }
-
 /**
  * Init graphic element properties with or without animation according to the
  * configuration in series.
@@ -17095,7 +14842,6 @@ function updateProps(el, props, animatableModel, dataIndex, cb) {
 function initProps(el, props, animatableModel, dataIndex, cb) {
     animateOrSetProps(false, el, props, animatableModel, dataIndex, cb);
 }
-
 /**
  * Get transform matrix of target (param target),
  * in coordinate of its ancestor (param ancestor)
@@ -17105,15 +14851,12 @@ function initProps(el, props, animatableModel, dataIndex, cb) {
  */
 function getTransform(target, ancestor) {
     var mat = identity([]);
-
     while (target && target !== ancestor) {
         mul$1(mat, target.getLocalTransform(), mat);
         target = target.parent;
     }
-
     return mat;
 }
-
 /**
  * Apply transform to an vertex.
  * @param {Array.<number>} target [x, y]
@@ -17127,13 +14870,11 @@ function applyTransform$1(target, transform, invert$$1) {
     if (transform && !isArrayLike(transform)) {
         transform = Transformable.getLocalTransform(transform);
     }
-
     if (invert$$1) {
         transform = invert([], transform);
     }
     return applyTransform([], target, transform);
 }
-
 /**
  * @param {string} direction 'left' 'right' 'top' 'bottom'
  * @param {Array.<number>} transform Transform matrix: like [1, 0, 0, 1, 0, 0]
@@ -17141,25 +14882,20 @@ function applyTransform$1(target, transform, invert$$1) {
  * @return {string} Transformed direction. 'left' 'right' 'top' 'bottom'
  */
 function transformDirection(direction, transform, invert$$1) {
-
     // Pick a base, ensure that transform result will not be (0, 0).
     var hBase = (transform[4] === 0 || transform[5] === 0 || transform[0] === 0)
         ? 1 : Math.abs(2 * transform[4] / transform[0]);
     var vBase = (transform[4] === 0 || transform[5] === 0 || transform[2] === 0)
         ? 1 : Math.abs(2 * transform[4] / transform[2]);
-
     var vertex = [
         direction === 'left' ? -hBase : direction === 'right' ? hBase : 0,
         direction === 'top' ? -vBase : direction === 'bottom' ? vBase : 0
     ];
-
     vertex = applyTransform$1(vertex, transform, invert$$1);
-
     return Math.abs(vertex[0]) > Math.abs(vertex[1])
         ? (vertex[0] > 0 ? 'right' : 'left')
         : (vertex[1] > 0 ? 'bottom' : 'top');
 }
-
 /**
  * Apply group transition animation from g1 to g2.
  * If no animatableModel, no animation.
@@ -17168,7 +14904,6 @@ function groupTransition(g1, g2, animatableModel, cb) {
     if (!g1 || !g2) {
         return;
     }
-
     function getElMap(g) {
         var elMap = {};
         g.traverse(function (el) {
@@ -17189,7 +14924,6 @@ function groupTransition(g1, g2, animatableModel, cb) {
         return obj;
     }
     var elMap1 = getElMap(g1);
-
     g2.traverse(function (el) {
         if (!el.isGroup && el.anid) {
             var oldEl = elMap1[el.anid];
@@ -17206,7 +14940,6 @@ function groupTransition(g1, g2, animatableModel, cb) {
         }
     });
 }
-
 /**
  * @param {Array.<Array.<number>>} points Like: [[23, 44], [53, 66], ...]
  * @param {Object} rect {x, y, width, height}
@@ -17225,7 +14958,6 @@ function clipPointsByRect(points, rect) {
         return [x, y];
     });
 }
-
 /**
  * @param {Object} targetRect {x, y, width, height}
  * @param {Object} rect {x, y, width, height}
@@ -17236,7 +14968,6 @@ function clipRectByRect(targetRect, rect) {
     var x2 = mathMin$1(targetRect.x + targetRect.width, rect.x + rect.width);
     var y = mathMax$1(targetRect.y, rect.y);
     var y2 = mathMin$1(targetRect.y + targetRect.height, rect.y + rect.height);
-
     // If the total rect is cliped, nothing, including the border,
     // should be painted. So return undefined.
     if (x2 >= x && y2 >= y) {
@@ -17248,7 +14979,6 @@ function clipRectByRect(targetRect, rect) {
         };
     }
 }
-
 /**
  * @param {string} iconStr Support 'image://' or 'path://' or direct svg path.
  * @param {Object} [opt] Properties of `module:zrender/Element`, except `style`.
@@ -17259,7 +14989,6 @@ function createIcon(iconStr, opt, rect) {
     opt = extend({rectHover: true}, opt);
     var style = opt.style = {strokeNoScale: true};
     rect = rect || {x: -1, y: -1, width: 2, height: 2};
-
     if (iconStr) {
         return iconStr.indexOf('image://') === 0
             ? (
@@ -17277,10 +15006,6 @@ function createIcon(iconStr, opt, rect) {
             );
     }
 }
-
-
-
-
 var graphic = (Object.freeze || Object)({
 	Z2_EMPHASIS_LIFT: Z2_EMPHASIS_LIFT,
 	extendShape: extendShape,
@@ -17327,7 +15052,6 @@ var graphic = (Object.freeze || Object)({
 	RadialGradient: RadialGradient,
 	BoundingRect: BoundingRect
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -17346,9 +15070,7 @@ var graphic = (Object.freeze || Object)({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var PATH_COLOR = ['textStyle', 'color'];
-
 var textStyleMixin = {
     /**
      * Get color property or get color from option.textStyle.color
@@ -17362,7 +15084,6 @@ var textStyleMixin = {
                 (!isEmphasis && ecModel) ? ecModel.get(PATH_COLOR) : null
             );
     },
-
     /**
      * Create font string from fontStyle, fontWeight, fontSize, fontFamily
      * @return {string}
@@ -17375,7 +15096,6 @@ var textStyleMixin = {
             fontFamily: this.getShallow('fontFamily')
         }, this.ecModel);
     },
-
     getTextRect: function (text) {
         return getBoundingRect(
             text,
@@ -17389,7 +15109,6 @@ var textStyleMixin = {
         );
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -17408,7 +15127,6 @@ var textStyleMixin = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var getItemStyle = makeStyleMapper(
     [
         ['fill', 'color'],
@@ -17423,7 +15141,6 @@ var getItemStyle = makeStyleMapper(
         ['textAlign']
     ]
 );
-
 var itemStyleMixin = {
     getItemStyle: function (excludes, includes) {
         var style = getItemStyle(this, excludes, includes);
@@ -17431,14 +15148,12 @@ var itemStyleMixin = {
         lineDash && (style.lineDash = lineDash);
         return style;
     },
-
     getBorderLineDash: function () {
         var lineType = this.get('borderType');
         return (lineType === 'solid' || lineType == null) ? null
             : (lineType === 'dashed' ? [5, 5] : [1, 1]);
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -17457,14 +15172,11 @@ var itemStyleMixin = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @module echarts/model/Model
  */
-
 var mixin$1 = mixin;
 var inner = makeInner();
-
 /**
  * @alias module:echarts/model/Model
  * @constructor
@@ -17478,19 +15190,16 @@ function Model(option, parentModel, ecModel) {
      * @readOnly
      */
     this.parentModel = parentModel;
-
     /**
      * @type {module:echarts/model/Global}
      * @readOnly
      */
     this.ecModel = ecModel;
-
     /**
      * @type {Object}
      * @protected
      */
     this.option = option;
-
     // Simple optimization
     // if (this.init) {
     //     if (arguments.length <= 4) {
@@ -17501,24 +15210,19 @@ function Model(option, parentModel, ecModel) {
     //     }
     // }
 }
-
 Model.prototype = {
-
     constructor: Model,
-
     /**
      * Model 的初始化函数
      * @param {Object} option
      */
     init: null,
-
     /**
      * 从新的 Option merge
      */
     mergeOption: function (option) {
         merge(this.option, option, true);
     },
-
     /**
      * @param {string|Array.<string>} path
      * @param {boolean} [ignoreParent=false]
@@ -17528,14 +15232,12 @@ Model.prototype = {
         if (path == null) {
             return this.option;
         }
-
         return doGet(
             this.option,
             this.parsePath(path),
             !ignoreParent && getParent(this, path)
         );
     },
-
     /**
      * @param {string} key
      * @param {boolean} [ignoreParent=false]
@@ -17543,7 +15245,6 @@ Model.prototype = {
      */
     getShallow: function (key, ignoreParent) {
         var option = this.option;
-
         var val = option == null ? option : option[key];
         var parentModel = !ignoreParent && getParent(this, key);
         if (val == null && parentModel) {
@@ -17551,7 +15252,6 @@ Model.prototype = {
         }
         return val;
     },
-
     /**
      * @param {string|Array.<string>} [path]
      * @param {module:echarts/model/Model} [parentModel]
@@ -17561,35 +15261,28 @@ Model.prototype = {
         var obj = path == null
             ? this.option
             : doGet(this.option, path = this.parsePath(path));
-
         var thisParentModel;
         parentModel = parentModel || (
             (thisParentModel = getParent(this, path))
                 && thisParentModel.getModel(path)
         );
-
         return new Model(obj, parentModel, this.ecModel);
     },
-
     /**
      * If model has option
      */
     isEmpty: function () {
         return this.option == null;
     },
-
     restoreData: function () {},
-
     // Pending
     clone: function () {
         var Ctor = this.constructor;
         return new Ctor(clone(this.option));
     },
-
     setReadOnly: function (properties) {
         // clazzUtil.setReadOnly(this, properties);
     },
-
     // If path is null/undefined, return null/undefined.
     parsePath: function (path) {
         if (typeof path === 'string') {
@@ -17597,7 +15290,6 @@ Model.prototype = {
         }
         return path;
     },
-
     /**
      * @param {Function} getParentMethod
      *        param {Array.<string>|string} path
@@ -17606,7 +15298,6 @@ Model.prototype = {
     customizeGetParent: function (getParentMethod) {
         inner(this).getParent = getParentMethod;
     },
-
     isAnimationEnabled: function () {
         if (!env$1.node) {
             if (this.option.animation != null) {
@@ -17617,9 +15308,7 @@ Model.prototype = {
             }
         }
     }
-
 };
-
 function doGet(obj, pathArr, parentModel) {
     for (var i = 0; i < pathArr.length; i++) {
         // Ignore empty
@@ -17637,22 +15326,18 @@ function doGet(obj, pathArr, parentModel) {
     }
     return obj;
 }
-
 // `path` can be null/undefined
 function getParent(model, path) {
     var getParentMethod = inner(model).getParent;
     return getParentMethod ? getParentMethod.call(model, path) : model.parentModel;
 }
-
 // Enable Model.extend.
 enableClassExtend(Model);
 enableClassCheck(Model);
-
 mixin$1(Model, lineStyleMixin);
 mixin$1(Model, areaStyleMixin);
 mixin$1(Model, textStyleMixin);
 mixin$1(Model, itemStyleMixin);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -17671,9 +15356,7 @@ mixin$1(Model, itemStyleMixin);
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var base = 0;
-
 /**
  * @public
  * @param {string} type
@@ -17684,19 +15367,15 @@ function getUID(type) {
     // use Math.random to make id as unique as possible.
     return [(type || ''), base++, Math.random().toFixed(5)].join('_');
 }
-
 /**
  * @inner
  */
 function enableSubTypeDefaulter(entity) {
-
     var subTypeDefaulters = {};
-
     entity.registerSubTypeDefaulter = function (componentType, defaulter) {
         componentType = parseClassType$1(componentType);
         subTypeDefaulters[componentType.main] = defaulter;
     };
-
     entity.determineSubType = function (componentType, option) {
         var type = option.type;
         if (!type) {
@@ -17707,10 +15386,8 @@ function enableSubTypeDefaulter(entity) {
         }
         return type;
     };
-
     return entity;
 }
-
 /**
  * Topological travel on Activity Network (Activity On Vertices).
  * Dependencies is defined in Model.prototype.dependencies, like ['xAxis', 'yAxis'].
@@ -17721,7 +15398,6 @@ function enableSubTypeDefaulter(entity) {
  *
  */
 function enableTopologicalTravel(entity, dependencyGetter) {
-
     /**
      * @public
      * @param {Array.<string>} targetNameList Target Component type list.
@@ -17734,16 +15410,13 @@ function enableTopologicalTravel(entity, dependencyGetter) {
         if (!targetNameList.length) {
             return;
         }
-
         var result = makeDepndencyGraph(fullNameList);
         var graph = result.graph;
         var stack = result.noEntryList;
-
         var targetNameSet = {};
         each$1(targetNameList, function (name) {
             targetNameSet[name] = true;
         });
-
         while (stack.length) {
             var currComponentType = stack.pop();
             var currVertex = graph[currComponentType];
@@ -17757,18 +15430,15 @@ function enableTopologicalTravel(entity, dependencyGetter) {
                 isInTargetNameSet ? removeEdgeAndAdd : removeEdge
             );
         }
-
         each$1(targetNameSet, function () {
             throw new Error('Circle dependency may exists');
         });
-
         function removeEdge(succComponentType) {
             graph[succComponentType].entryCount--;
             if (graph[succComponentType].entryCount === 0) {
                 stack.push(succComponentType);
             }
         }
-
         // Consider this case: legend depends on series, and we call
         // chart.setOption({series: [...]}), where only series is in option.
         // If we do not have 'removeEdgeAndAdd', legendModel.mergeOption will
@@ -17780,7 +15450,6 @@ function enableTopologicalTravel(entity, dependencyGetter) {
             removeEdge(succComponentType);
         }
     };
-
     /**
      * DepndencyGraph: {Object}
      * key: conponentType,
@@ -17793,18 +15462,14 @@ function enableTopologicalTravel(entity, dependencyGetter) {
     function makeDepndencyGraph(fullNameList) {
         var graph = {};
         var noEntryList = [];
-
         each$1(fullNameList, function (name) {
-
             var thisItem = createDependencyGraphItem(graph, name);
             var originalDeps = thisItem.originalDeps = dependencyGetter(name);
-
             var availableDeps = getAvailableDependencies(originalDeps, fullNameList);
             thisItem.entryCount = availableDeps.length;
             if (thisItem.entryCount === 0) {
                 noEntryList.push(name);
             }
-
             each$1(availableDeps, function (dependentName) {
                 if (indexOf(thisItem.predecessor, dependentName) < 0) {
                     thisItem.predecessor.push(dependentName);
@@ -17815,17 +15480,14 @@ function enableTopologicalTravel(entity, dependencyGetter) {
                 }
             });
         });
-
         return {graph: graph, noEntryList: noEntryList};
     }
-
     function createDependencyGraphItem(graph, name) {
         if (!graph[name]) {
             graph[name] = {predecessor: [], successor: []};
         }
         return graph[name];
     }
-
     function getAvailableDependencies(originalDeps, fullNameList) {
         var availableDeps = [];
         each$1(originalDeps, function (dep) {
@@ -17834,7 +15496,6 @@ function enableTopologicalTravel(entity, dependencyGetter) {
         return availableDeps;
     }
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -17853,7 +15514,6 @@ function enableTopologicalTravel(entity, dependencyGetter) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /*
 * A third-party license is embeded for some of the code in this file:
 * The method "quantile" was copied from "d3.js".
@@ -17862,13 +15522,10 @@ function enableTopologicalTravel(entity, dependencyGetter) {
 * and consitions of the license of "d3.js" (BSD-3Clause, see
 * </licenses/LICENSE-d3>).
 */
-
 var RADIAN_EPSILON = 1e-4;
-
 function _trim(str) {
     return str.replace(/^\s+/, '').replace(/\s+$/, '');
 }
-
 /**
  * Linear mapping a value from domain to range
  * @memberOf module:echarts/util/number
@@ -17881,13 +15538,11 @@ function _trim(str) {
 function linearMap(val, domain, range, clamp) {
     var subDomain = domain[1] - domain[0];
     var subRange = range[1] - range[0];
-
     if (subDomain === 0) {
         return subRange === 0
             ? range[0]
             : (range[0] + range[1]) / 2;
     }
-
     // Avoid accuracy problem in edge, such as
     // 146.39 - 62.83 === 83.55999999999999.
     // See echarts/test/ut/spec/util/number.js#linearMap#accuracyError
@@ -17919,10 +15574,8 @@ function linearMap(val, domain, range, clamp) {
             return range[1];
         }
     }
-
     return (val - domain[0]) / subDomain * subRange + range[0];
 }
-
 /**
  * Convert a percent string to absolute number.
  * Returns NaN if percent is not a valid string or number
@@ -17950,13 +15603,10 @@ function parsePercent$1(percent, all) {
         if (_trim(percent).match(/%$/)) {
             return parseFloat(percent) / 100 * all;
         }
-
         return parseFloat(percent);
     }
-
     return percent == null ? NaN : +percent;
 }
-
 /**
  * (1) Fix rounding error of float numbers.
  * (2) Support return string to avoid scientific notation like '3.5e-7'.
@@ -17975,22 +15625,16 @@ function round$2(x, precision, returnStr) {
     x = (+x).toFixed(precision);
     return returnStr ? x : +x;
 }
-
-
-
 /**
  * Get precision
  * @param {number} val
  */
-
-
 /**
  * @param {string|number} val
  * @return {number}
  */
 function getPrecisionSafe(val) {
     var str = val.toString();
-
     // Consider scientific notation: '3.4e-12' '3.4e+12'
     var eIndex = str.indexOf('e');
     if (eIndex > 0) {
@@ -18002,7 +15646,6 @@ function getPrecisionSafe(val) {
         return dotIndex < 0 ? 0 : str.length - 1 - dotIndex;
     }
 }
-
 /**
  * Minimal dicernible data precisioin according to a single pixel.
  *
@@ -18019,7 +15662,6 @@ function getPixelPrecision(dataExtent, pixelExtent) {
     var precision = Math.min(Math.max(-dataQuantity + sizeQuantity, 0), 20);
     return !isFinite(precision) ? 20 : precision;
 }
-
 /**
  * Get a data of given precision, assuring the sum of percentages
  * in valueList is 1.
@@ -18035,20 +15677,17 @@ function getPercentWithPrecision(valueList, idx, precision) {
     if (!valueList[idx]) {
         return 0;
     }
-
     var sum = reduce(valueList, function (acc, val) {
         return acc + (isNaN(val) ? 0 : val);
     }, 0);
     if (sum === 0) {
         return 0;
     }
-
     var digits = Math.pow(10, precision);
     var votesPerQuota = map(valueList, function (val) {
         return (isNaN(val) ? 0 : val) / sum * digits * 100;
     });
     var targetSeats = digits * 100;
-
     var seats = map(votesPerQuota, function (votes) {
         // Assign automatic seats.
         return Math.floor(votes);
@@ -18056,11 +15695,9 @@ function getPercentWithPrecision(valueList, idx, precision) {
     var currentSum = reduce(seats, function (acc, val) {
         return acc + val;
     }, 0);
-
     var remainder = map(votesPerQuota, function (votes, idx) {
         return votes - seats[idx];
     });
-
     // Has remainding votes.
     while (currentSum < targetSeats) {
         // Find next largest remainder.
@@ -18072,19 +15709,14 @@ function getPercentWithPrecision(valueList, idx, precision) {
                 maxId = i;
             }
         }
-
         // Add a vote to max remainder.
         ++seats[maxId];
         remainder[maxId] = 0;
         ++currentSum;
     }
-
     return seats[idx] / digits;
 }
-
 // Number.MAX_SAFE_INTEGER, ie do not support.
-
-
 /**
  * To 0 - 2 * PI, considering negative radian.
  * @param {number} radian
@@ -18094,7 +15726,6 @@ function remRadian(radian) {
     var pi2 = Math.PI * 2;
     return (radian % pi2 + pi2) % pi2;
 }
-
 /**
  * @param {type} radian
  * @return {boolean}
@@ -18102,11 +15733,9 @@ function remRadian(radian) {
 function isRadianAroundZero(val) {
     return val > -RADIAN_EPSILON && val < RADIAN_EPSILON;
 }
-
 /* eslint-disable */
 var TIME_REG = /^(?:(\d{4})(?:[-\/](\d{1,2})(?:[-\/](\d{1,2})(?:[T ](\d{1,2})(?::(\d\d)(?::(\d\d)(?:[.,](\d+))?)?)?(Z|[\+\-]\d\d:?\d\d)?)?)?)?)?$/; // jshint ignore:line
 /* eslint-enable */
-
 /**
  * @param {string|Date|number} value These values can be accepted:
  *   + An instance of Date, represent a time in its own time zone.
@@ -18133,12 +15762,10 @@ function parseDate(value) {
         // new Date('1970/01/01') and new Date('1970-1-01') is local.
         // See issue #3623
         var match = TIME_REG.exec(value);
-
         if (!match) {
             // return Invalid Date.
             return new Date(NaN);
         }
-
         // Use local time when no timezone offset specifed.
         if (!match[8]) {
             // match[n] can only be string or undefined.
@@ -18179,10 +15806,8 @@ function parseDate(value) {
     else if (value == null) {
         return new Date(NaN);
     }
-
     return new Date(Math.round(value));
 }
-
 /**
  * Quantity of a number. e.g. 0.1, 1, 10, 100
  *
@@ -18192,11 +15817,9 @@ function parseDate(value) {
 function quantity(val) {
     return Math.pow(10, quantityExponent(val));
 }
-
 function quantityExponent(val) {
     return Math.floor(Math.log(val) / Math.LN10);
 }
-
 /**
  * find a “nice” number approximately equal to x. Round the number if round = true,
  * take ceiling if round = false. The primary observation is that the “nicest”
@@ -18248,20 +15871,16 @@ function nice(val, round) {
         }
     }
     val = nf * exp10;
-
     // Fix 3 * 0.1 === 0.30000000000000004 issue (see IEEE 754).
     // 20 is the uppper bound of toFixed.
     return exponent >= -20 ? +val.toFixed(exponent < 0 ? -exponent : 0) : val;
 }
-
 /**
  * This code was copied from "d3.js"
  * <https://github.com/d3/d3/blob/9cc9a875e636a1dcf36cc1e07bdf77e1ad6e2c74/src/arrays/quantile.js>.
  * See the license statement at the head of this file.
  * @param {Array.<number>} ascArr
  */
-
-
 /**
  * Order intervals asc, and split them when overlap.
  * expect(numberUtil.reformIntervals([
@@ -18284,8 +15903,6 @@ function nice(val, round) {
  *        of the interval, and Infinity can be used.
  * @return {Array.<Object>} The origin list, which has been reformed.
  */
-
-
 /**
  * parseFloat NaNs numeric-cast false positives (null|true|false|"")
  * ...but misinterprets leading-number strings, particularly hex literals ("0x...")
@@ -18294,7 +15911,6 @@ function nice(val, round) {
  * @param {*} v
  * @return {boolean}
  */
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -18313,9 +15929,7 @@ function nice(val, round) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // import Text from 'zrender/src/graphic/Text';
-
 /**
  * 每三位默认加,格式化
  * @param {string|number} x
@@ -18329,17 +15943,12 @@ function addCommas(x) {
     return x[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
             + (x.length > 1 ? ('.' + x[1]) : '');
 }
-
 /**
  * @param {string} str
  * @param {boolean} [upperCaseFirst=false]
  * @return {string} str
  */
-
-
 var normalizeCssArray$1 = normalizeCssArray;
-
-
 var replaceReg = /([&<>"'])/g;
 var replaceMap = {
     '&': '&amp;',
@@ -18348,7 +15957,6 @@ var replaceMap = {
     '"': '&quot;',
     '\'': '&#39;'
 };
-
 function encodeHTML(source) {
     return source == null
         ? ''
@@ -18356,13 +15964,10 @@ function encodeHTML(source) {
             return replaceMap[c];
         });
 }
-
 var TPL_VAR_ALIAS = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-
 var wrapVar = function (varName, seriesIdx) {
     return '{' + varName + (seriesIdx == null ? '' : seriesIdx) + '}';
 };
-
 /**
  * Template formatter
  * @param {string} tpl
@@ -18378,7 +15983,6 @@ function formatTpl(tpl, paramsList, encode) {
     if (!seriesLen) {
         return '';
     }
-
     var $vars = paramsList[0].$vars || [];
     for (var i = 0; i < $vars.length; i++) {
         var alias = TPL_VAR_ALIAS[i];
@@ -18393,10 +15997,8 @@ function formatTpl(tpl, paramsList, encode) {
             );
         }
     }
-
     return tpl;
 }
-
 /**
  * simple Template formatter
  *
@@ -18405,8 +16007,6 @@ function formatTpl(tpl, paramsList, encode) {
  * @param {boolean} [encode=false]
  * @return {string}
  */
-
-
 /**
  * @param {Object|string} [opt] If string, means color.
  * @param {string} [opt.color]
@@ -18423,11 +16023,9 @@ function getTooltipMarker(opt, extraCssText) {
     var extraCssText = opt.extraCssText;
     var renderMode = opt.renderMode || 'html';
     var markerId = opt.markerId || 'X';
-
     if (!color) {
         return '';
     }
-
     if (renderMode === 'html') {
         return type === 'subItem'
         ? '<span style="display:inline-block;vertical-align:middle;margin-right:8px;margin-left:3px;'
@@ -18448,13 +16046,10 @@ function getTooltipMarker(opt, extraCssText) {
         };
     }
 }
-
 function pad(str, len) {
     str += '';
     return '0000'.substr(0, len - str.length) + str;
 }
-
-
 /**
  * ISO Date format
  * @param {string} tpl
@@ -18473,7 +16068,6 @@ function formatTime(tpl, value, isUTC) {
     ) {
         tpl = 'MM-dd\nyyyy';
     }
-
     var date = parseDate(value);
     var utc = isUTC ? 'UTC' : '';
     var y = date['get' + utc + 'FullYear']();
@@ -18483,7 +16077,6 @@ function formatTime(tpl, value, isUTC) {
     var m = date['get' + utc + 'Minutes']();
     var s = date['get' + utc + 'Seconds']();
     var S = date['get' + utc + 'Milliseconds']();
-
     tpl = tpl.replace('MM', pad(M, 2))
         .replace('M', M)
         .replace('yyyy', y)
@@ -18497,19 +16090,14 @@ function formatTime(tpl, value, isUTC) {
         .replace('ss', pad(s, 2))
         .replace('s', s)
         .replace('SSS', pad(S, 3));
-
     return tpl;
 }
-
 /**
  * Capital first
  * @param {string} str
  * @return {string}
  */
-
-
 var truncateText$1 = truncateText;
-
 /**
  * @public
  * @param {Object} opt
@@ -18523,15 +16111,12 @@ var truncateText$1 = truncateText;
  * @param {Object} [opt.truncate]
  * @return {Object} {x, y, width, height, lineHeight}
  */
-
-
 /**
  * @deprecated
  * the `textLineHeight` was added later.
  * For backward compatiblility, put it as the last parameter.
  * But deprecated this interface. Please use `getTextBoundingRect` instead.
  */
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -18550,18 +16135,14 @@ var truncateText$1 = truncateText;
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // Layout helpers for each component positioning
-
 var each$3 = each$1;
-
 /**
  * @public
  */
 var LOCATION_PARAMS = [
     'left', 'right', 'top', 'bottom', 'width', 'height'
 ];
-
 /**
  * @public
  */
@@ -18569,11 +16150,9 @@ var HV_NAMES = [
     ['width', 'left', 'right'],
     ['height', 'top', 'bottom']
 ];
-
 function boxLayout(orient, group, gap, maxWidth, maxHeight) {
     var x = 0;
     var y = 0;
-
     if (maxWidth == null) {
         maxWidth = Infinity;
     }
@@ -18581,7 +16160,6 @@ function boxLayout(orient, group, gap, maxWidth, maxHeight) {
         maxHeight = Infinity;
     }
     var currentLineMaxSize = 0;
-
     group.eachChild(function (child, idx) {
         var position = child.position;
         var rect = child.getBoundingRect();
@@ -18589,7 +16167,6 @@ function boxLayout(orient, group, gap, maxWidth, maxHeight) {
         var nextChildRect = nextChild && nextChild.getBoundingRect();
         var nextX;
         var nextY;
-
         if (orient === 'horizontal') {
             var moveX = rect.width + (nextChildRect ? (-nextChildRect.x + rect.x) : 0);
             nextX = x + moveX;
@@ -18620,20 +16197,16 @@ function boxLayout(orient, group, gap, maxWidth, maxHeight) {
                 currentLineMaxSize = Math.max(currentLineMaxSize, rect.width);
             }
         }
-
         if (child.newline) {
             return;
         }
-
         position[0] = x;
         position[1] = y;
-
         orient === 'horizontal'
             ? (x = nextX + gap)
             : (y = nextY + gap);
     });
 }
-
 /**
  * VBox or HBox layouting
  * @param {string} orient
@@ -18642,8 +16215,6 @@ function boxLayout(orient, group, gap, maxWidth, maxHeight) {
  * @param {number} [width=Infinity]
  * @param {number} [height=Infinity]
  */
-
-
 /**
  * VBox layouting
  * @param {module:zrender/container/Group} group
@@ -18652,7 +16223,6 @@ function boxLayout(orient, group, gap, maxWidth, maxHeight) {
  * @param {number} [height=Infinity]
  */
 var vbox = curry(boxLayout, 'vertical');
-
 /**
  * HBox layouting
  * @param {module:zrender/container/Group} group
@@ -18661,7 +16231,6 @@ var vbox = curry(boxLayout, 'vertical');
  * @param {number} [height=Infinity]
  */
 var hbox = curry(boxLayout, 'horizontal');
-
 /**
  * If x or x2 is not specified or 'center' 'left' 'right',
  * the width would be as long as possible.
@@ -18677,8 +16246,6 @@ var hbox = curry(boxLayout, 'horizontal');
  * @param {string|number} margin
  * @return {Object} {width, height}
  */
-
-
 /**
  * Parse position info.
  *
@@ -18699,21 +16266,17 @@ function getLayoutRect(
     positionInfo, containerRect, margin
 ) {
     margin = normalizeCssArray$1(margin || 0);
-
     var containerWidth = containerRect.width;
     var containerHeight = containerRect.height;
-
     var left = parsePercent$1(positionInfo.left, containerWidth);
     var top = parsePercent$1(positionInfo.top, containerHeight);
     var right = parsePercent$1(positionInfo.right, containerWidth);
     var bottom = parsePercent$1(positionInfo.bottom, containerHeight);
     var width = parsePercent$1(positionInfo.width, containerWidth);
     var height = parsePercent$1(positionInfo.height, containerHeight);
-
     var verticalMargin = margin[2] + margin[0];
     var horizontalMargin = margin[1] + margin[3];
     var aspect = positionInfo.aspect;
-
     // If width is not specified, calculate width from left and right
     if (isNaN(width)) {
         width = containerWidth - right - horizontalMargin - left;
@@ -18721,7 +16284,6 @@ function getLayoutRect(
     if (isNaN(height)) {
         height = containerHeight - bottom - verticalMargin - top;
     }
-
     if (aspect != null) {
         // If width and height are not given
         // 1. Graph should not exceeds the container
@@ -18738,7 +16300,6 @@ function getLayoutRect(
                 height = containerHeight * 0.8;
             }
         }
-
         // Calculate width or height with given aspect
         if (isNaN(width)) {
             width = aspect * height;
@@ -18747,7 +16308,6 @@ function getLayoutRect(
             height = width / aspect;
         }
     }
-
     // If left is not specified, calculate left from right and width
     if (isNaN(left)) {
         left = containerWidth - right - width - horizontalMargin;
@@ -18755,7 +16315,6 @@ function getLayoutRect(
     if (isNaN(top)) {
         top = containerHeight - bottom - height - verticalMargin;
     }
-
     // Align left and top
     switch (positionInfo.left || positionInfo.right) {
         case 'center':
@@ -18785,13 +16344,10 @@ function getLayoutRect(
         // Height may be NaN if only one value is given except height
         height = containerHeight - verticalMargin - top - (bottom || 0);
     }
-
     var rect = new BoundingRect(left + margin[3], top + margin[0], width, height);
     rect.margin = margin;
     return rect;
 }
-
-
 /**
  * Position a zr element in viewport
  *  Group position is specified by either
@@ -18830,14 +16386,10 @@ function getLayoutRect(
  *               container. (Consider a rotated circle needs to be located in a corner.)
  *               In this mode positionInfo.width/height can only be number.
  */
-
-
 /**
  * @param {Object} option Contains some of the properties in HV_NAMES.
  * @param {number} hvIdx 0: horizontal; 1: vertical.
  */
-
-
 /**
  * Consider Case:
  * When defulat option has {left: 0, width: 100}, and we set {right: 0}
@@ -18865,23 +16417,18 @@ function getLayoutRect(
  */
 function mergeLayoutParam(targetOption, newOption, opt) {
     !isObject$1(opt) && (opt = {});
-
     var ignoreSize = opt.ignoreSize;
     !isArray(ignoreSize) && (ignoreSize = [ignoreSize, ignoreSize]);
-
     var hResult = merge$$1(HV_NAMES[0], 0);
     var vResult = merge$$1(HV_NAMES[1], 1);
-
     copy(HV_NAMES[0], targetOption, hResult);
     copy(HV_NAMES[1], targetOption, vResult);
-
     function merge$$1(names, hvIdx) {
         var newParams = {};
         var newValueCount = 0;
         var merged = {};
         var mergedValueCount = 0;
         var enoughParamNumber = 2;
-
         each$3(names, function (name) {
             merged[name] = targetOption[name];
         });
@@ -18892,7 +16439,6 @@ function mergeLayoutParam(targetOption, newOption, opt) {
             hasValue(newParams, name) && newValueCount++;
             hasValue(merged, name) && mergedValueCount++;
         });
-
         if (ignoreSize[hvIdx]) {
             // Only one of left/right is premitted to exist.
             if (hasValue(newOption, names[1])) {
@@ -18903,7 +16449,6 @@ function mergeLayoutParam(targetOption, newOption, opt) {
             }
             return merged;
         }
-
         // Case: newOption: {width: ..., right: ...},
         // or targetOption: {right: ...} and newOption: {width: ...},
         // There is no conflict when merged only has params count
@@ -18929,22 +16474,18 @@ function mergeLayoutParam(targetOption, newOption, opt) {
             return newParams;
         }
     }
-
     function hasProp(obj, name) {
         return obj.hasOwnProperty(name);
     }
-
     function hasValue(obj, name) {
         return obj[name] != null && obj[name] !== 'auto';
     }
-
     function copy(names, target, source) {
         each$3(names, function (name) {
             target[name] = source[name];
         });
     }
 }
-
 /**
  * Retrieve 'left', 'right', 'top', 'bottom', 'width', 'height' from object.
  * @param {Object} source
@@ -18953,7 +16494,6 @@ function mergeLayoutParam(targetOption, newOption, opt) {
 function getLayoutParams(source) {
     return copyLayoutParams({}, source);
 }
-
 /**
  * Retrieve 'left', 'right', 'top', 'bottom', 'width', 'height' from object.
  * @param {Object} source
@@ -18965,7 +16505,6 @@ function copyLayoutParams(target, source) {
     });
     return target;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -18984,8 +16523,6 @@ function copyLayoutParams(target, source) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
-
 var boxLayoutMixin = {
     getBoxLayoutParams: function () {
         return {
@@ -18998,7 +16535,6 @@ var boxLayoutMixin = {
         };
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -19017,15 +16553,12 @@ var boxLayoutMixin = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Component model
  *
  * @module echarts/model/Component
  */
-
 var inner$1 = makeInner();
-
 /**
  * @alias module:echarts/model/Component
  * @constructor
@@ -19034,15 +16567,12 @@ var inner$1 = makeInner();
  * @param {module:echarts/model/Model} ecModel
  */
 var ComponentModel = Model.extend({
-
     type: 'component',
-
     /**
      * @readOnly
      * @type {string}
      */
     id: '',
-
     /**
      * Because simplified concept is probably better, series.name (or component.name)
      * has been having too many resposibilities:
@@ -19053,37 +16583,31 @@ var ComponentModel = Model.extend({
      * @readOnly
      */
     name: '',
-
     /**
      * @readOnly
      * @type {string}
      */
     mainType: '',
-
     /**
      * @readOnly
      * @type {string}
      */
     subType: '',
-
     /**
      * @readOnly
      * @type {number}
      */
     componentIndex: 0,
-
     /**
      * @type {Object}
      * @protected
      */
     defaultOption: null,
-
     /**
      * @type {module:echarts/model/Global}
      * @readOnly
      */
     ecModel: null,
-
     /**
      * key: componentType
      * value:  Component model list, can not be null.
@@ -19091,13 +16615,11 @@ var ComponentModel = Model.extend({
      * @readOnly
      */
     dependentModels: [],
-
     /**
      * @type {string}
      * @readOnly
      */
     uid: null,
-
     /**
      * Support merge layout params.
      * Only support 'box' now (left/right/top/bottom/width/height).
@@ -19105,43 +16627,33 @@ var ComponentModel = Model.extend({
      * @readOnly
      */
     layoutMode: null,
-
     $constructor: function (option, parentModel, ecModel, extraOpt) {
         Model.call(this, option, parentModel, ecModel, extraOpt);
-
         this.uid = getUID('ec_cpt_model');
     },
-
     init: function (option, parentModel, ecModel, extraOpt) {
         this.mergeDefaultAndTheme(option, ecModel);
     },
-
     mergeDefaultAndTheme: function (option, ecModel) {
         var layoutMode = this.layoutMode;
         var inputPositionParams = layoutMode
             ? getLayoutParams(option) : {};
-
         var themeModel = ecModel.getTheme();
         merge(option, themeModel.get(this.mainType));
         merge(option, this.getDefaultOption());
-
         if (layoutMode) {
             mergeLayoutParam(option, inputPositionParams, layoutMode);
         }
     },
-
     mergeOption: function (option, extraOpt) {
         merge(this.option, option, true);
-
         var layoutMode = this.layoutMode;
         if (layoutMode) {
             mergeLayoutParam(this.option, option, layoutMode);
         }
     },
-
     // Hooker after init or mergeOption
     optionUpdated: function (newCptOption, isInit) {},
-
     getDefaultOption: function () {
         var fields = inner$1(this);
         if (!fields.defaultOption) {
@@ -19152,7 +16664,6 @@ var ComponentModel = Model.extend({
                 opt && optList.push(opt);
                 Class = Class.superClass;
             }
-
             var defaultOption = {};
             for (var i = optList.length - 1; i >= 0; i--) {
                 defaultOption = merge(defaultOption, optList[i], true);
@@ -19161,7 +16672,6 @@ var ComponentModel = Model.extend({
         }
         return fields.defaultOption;
     },
-
     getReferringComponents: function (mainType) {
         return this.ecModel.queryComponents({
             mainType: mainType,
@@ -19169,55 +16679,43 @@ var ComponentModel = Model.extend({
             id: this.get(mainType + 'Id', true)
         });
     }
-
 });
-
 // Reset ComponentModel.extend, add preConstruct.
 // clazzUtil.enableClassExtend(
 //     ComponentModel,
 //     function (option, parentModel, ecModel, extraOpt) {
 //         // Set dependentModels, componentIndex, name, id, mainType, subType.
 //         zrUtil.extend(this, extraOpt);
-
 //         this.uid = componentUtil.getUID('componentModel');
-
 //         // this.setReadOnly([
 //         //     'type', 'id', 'uid', 'name', 'mainType', 'subType',
 //         //     'dependentModels', 'componentIndex'
 //         // ]);
 //     }
 // );
-
 // Add capability of registerClass, getClass, hasClass, registerSubTypeDefaulter and so on.
 enableClassManagement(
     ComponentModel, {registerWhenExtend: true}
 );
 enableSubTypeDefaulter(ComponentModel);
-
 // Add capability of ComponentModel.topologicalTravel.
 enableTopologicalTravel(ComponentModel, getDependencies);
-
 function getDependencies(componentType) {
     var deps = [];
     each$1(ComponentModel.getClassesByMainType(componentType), function (Clazz) {
         deps = deps.concat(Clazz.prototype.dependencies || []);
     });
-
     // Ensure main type.
     deps = map(deps, function (type) {
         return parseClassType$1(type).main;
     });
-
     // Hack dataset for convenience.
     if (componentType !== 'dataset' && indexOf(deps, 'dataset') <= 0) {
         deps.unshift('dataset');
     }
-
     return deps;
 }
-
 mixin(ComponentModel, boxLayoutMixin);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -19236,17 +16734,13 @@ mixin(ComponentModel, boxLayoutMixin);
 * specific language governing permissions and limitations
 * under the License.
 */
-
-
 var platform = '';
 // Navigator not exists in node
 if (typeof navigator !== 'undefined') {
     platform = navigator.platform || '';
 }
-
 var globalDefault = {
     // backgroundColor: 'rgba(0,0,0,0)',
-
     // https://dribbble.com/shots/1065960-Infographic-Pie-chart-visualization
     // color: ['#5793f3', '#d14a61', '#fd9c35', '#675bba', '#fec42c', '#dd4444', '#d4df5a', '#cd4870'],
     // Light colors:
@@ -19257,12 +16751,9 @@ var globalDefault = {
         '#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83',
         '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'
     ],
-
     gradientColor: ['#f6efa6', '#d88273', '#bf444c'],
-
     // If xAxis and yAxis declared, grid is created by default.
     // grid: {},
-
     textStyle: {
         // color: '#000',
         // decoration: 'none',
@@ -19273,34 +16764,28 @@ var globalDefault = {
         fontStyle: 'normal',
         fontWeight: 'normal'
     },
-
     // http://blogs.adobe.com/webplatform/2014/02/24/using-blend-modes-in-html-canvas/
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
     // Default is source-over
     blendMode: null,
-
     animation: 'auto',
     animationDuration: 1000,
     animationDurationUpdate: 300,
     animationEasing: 'exponentialOut',
     animationEasingUpdate: 'cubicOut',
-
     animationThreshold: 2000,
     // Configuration for progressive/incremental rendering
     progressiveThreshold: 3000,
     progressive: 400,
-
     // Threshold of if use single hover layer to optimize.
     // It is recommended that `hoverLayerThreshold` is equivalent to or less than
     // `progressiveThreshold`, otherwise hover will cause restart of progressive,
     // which is unexpected.
     // see example <echarts/test/heatmap-large.html>.
     hoverLayerThreshold: 3000,
-
     // See: module:echarts/scale/Time
     useUTC: false
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -19319,9 +16804,7 @@ var globalDefault = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var inner$2 = makeInner();
-
 function getNearestColorPalette(colors, requestColorNum) {
     var paletteNum = colors.length;
     // TODO colors must be in order
@@ -19332,13 +16815,11 @@ function getNearestColorPalette(colors, requestColorNum) {
     }
     return colors[paletteNum - 1];
 }
-
 var colorPaletteMixin = {
     clearColorPalette: function () {
         inner$2(this).colorIdx = 0;
         inner$2(this).colorNameMap = {};
     },
-
     /**
      * @param {string} name MUST NOT be null/undefined. Otherwise call this function
      *                 twise with the same parameters will get different result.
@@ -19359,24 +16840,19 @@ var colorPaletteMixin = {
         var layeredColorPalette = this.get('colorLayer', true);
         var colorPalette = ((requestColorNum == null || !layeredColorPalette)
             ? defaultColorPalette : getNearestColorPalette(layeredColorPalette, requestColorNum));
-
         // In case can't find in layered color palette.
         colorPalette = colorPalette || defaultColorPalette;
-
         if (!colorPalette || !colorPalette.length) {
             return;
         }
-
         var color = colorPalette[colorIdx];
         if (name) {
             colorNameMap[name] = color;
         }
         scopeFields.colorIdx = (colorIdx + 1) % colorPalette.length;
-
         return color;
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -19395,16 +16871,13 @@ var colorPaletteMixin = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Helper for model references.
  * There are many manners to refer axis/coordSys.
  */
-
 // TODO
 // merge relevant logic to this file?
 // check: "modelHelper" of tooltip and "BrushTargetManager".
-
 /**
  * @return {Object} For example:
  * {
@@ -19437,13 +16910,10 @@ function getCoordSysDefineBySeries(seriesModel) {
         return result;
     }
 }
-
 var fetchers = {
-
     cartesian2d: function (seriesModel, result, axisMap, categoryAxisMap) {
         var xAxisModel = seriesModel.getReferringComponents('xAxis')[0];
         var yAxisModel = seriesModel.getReferringComponents('yAxis')[0];
-
         if (__DEV__) {
             if (!xAxisModel) {
                 throw new Error('xAxis "' + retrieve(
@@ -19460,11 +16930,9 @@ var fetchers = {
                 ) + '" not found');
             }
         }
-
         result.coordSysDims = ['x', 'y'];
         axisMap.set('x', xAxisModel);
         axisMap.set('y', yAxisModel);
-
         if (isCategory(xAxisModel)) {
             categoryAxisMap.set('x', xAxisModel);
             result.firstCategoryDimIndex = 0;
@@ -19474,30 +16942,24 @@ var fetchers = {
             result.firstCategoryDimIndex = 1;
         }
     },
-
     singleAxis: function (seriesModel, result, axisMap, categoryAxisMap) {
         var singleAxisModel = seriesModel.getReferringComponents('singleAxis')[0];
-
         if (__DEV__) {
             if (!singleAxisModel) {
                 throw new Error('singleAxis should be specified.');
             }
         }
-
         result.coordSysDims = ['single'];
         axisMap.set('single', singleAxisModel);
-
         if (isCategory(singleAxisModel)) {
             categoryAxisMap.set('single', singleAxisModel);
             result.firstCategoryDimIndex = 0;
         }
     },
-
     polar: function (seriesModel, result, axisMap, categoryAxisMap) {
         var polarModel = seriesModel.getReferringComponents('polar')[0];
         var radiusAxisModel = polarModel.findAxisModel('radiusAxis');
         var angleAxisModel = polarModel.findAxisModel('angleAxis');
-
         if (__DEV__) {
             if (!angleAxisModel) {
                 throw new Error('angleAxis option not found');
@@ -19506,11 +16968,9 @@ var fetchers = {
                 throw new Error('radiusAxis option not found');
             }
         }
-
         result.coordSysDims = ['radius', 'angle'];
         axisMap.set('radius', radiusAxisModel);
         axisMap.set('angle', angleAxisModel);
-
         if (isCategory(radiusAxisModel)) {
             categoryAxisMap.set('radius', radiusAxisModel);
             result.firstCategoryDimIndex = 0;
@@ -19520,23 +16980,19 @@ var fetchers = {
             result.firstCategoryDimIndex = 1;
         }
     },
-
     geo: function (seriesModel, result, axisMap, categoryAxisMap) {
         result.coordSysDims = ['lng', 'lat'];
     },
-
     parallel: function (seriesModel, result, axisMap, categoryAxisMap) {
         var ecModel = seriesModel.ecModel;
         var parallelModel = ecModel.getComponent(
             'parallel', seriesModel.get('parallelIndex')
         );
         var coordSysDims = result.coordSysDims = parallelModel.dimensions.slice();
-
         each$1(parallelModel.parallelAxisIndex, function (axisIndex, index) {
             var axisModel = ecModel.getComponent('parallelAxis', axisIndex);
             var axisDim = coordSysDims[index];
             axisMap.set(axisDim, axisModel);
-
             if (isCategory(axisModel) && result.firstCategoryDimIndex == null) {
                 categoryAxisMap.set(axisDim, axisModel);
                 result.firstCategoryDimIndex = index;
@@ -19544,11 +17000,9 @@ var fetchers = {
         });
     }
 };
-
 function isCategory(axisModel) {
     return axisModel.get('type') === 'category';
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -19567,7 +17021,6 @@ function isCategory(axisModel) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // Avoid typo.
 var SOURCE_FORMAT_ORIGINAL = 'original';
 var SOURCE_FORMAT_ARRAY_ROWS = 'arrayRows';
@@ -19576,10 +17029,8 @@ var SOURCE_FORMAT_KEYED_COLUMNS = 'keyedColumns';
 var SOURCE_FORMAT_UNKNOWN = 'unknown';
 // ??? CHANGE A NAME
 var SOURCE_FORMAT_TYPED_ARRAY = 'typedArray';
-
 var SERIES_LAYOUT_BY_COLUMN = 'column';
 var SERIES_LAYOUT_BY_ROW = 'row';
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -19598,7 +17049,6 @@ var SERIES_LAYOUT_BY_ROW = 'row';
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * [sourceFormat]
  *
@@ -19634,7 +17084,6 @@ var SERIES_LAYOUT_BY_ROW = 'row';
  *
  * + "unknown"
  */
-
 /**
  * @constructor
  * @param {Object} fields
@@ -19648,12 +17097,10 @@ var SERIES_LAYOUT_BY_ROW = 'row';
  * @param {number} [dimensionsDetectCount]
  */
 function Source(fields) {
-
     /**
      * @type {boolean}
      */
     this.fromDataset = fields.fromDataset;
-
     /**
      * Not null/undefined.
      * @type {Array|Object}
@@ -19661,48 +17108,41 @@ function Source(fields) {
     this.data = fields.data || (
         fields.sourceFormat === SOURCE_FORMAT_KEYED_COLUMNS ? {} : []
     );
-
     /**
      * See also "detectSourceFormat".
      * Not null/undefined.
      * @type {string}
      */
     this.sourceFormat = fields.sourceFormat || SOURCE_FORMAT_UNKNOWN;
-
     /**
      * 'row' or 'column'
      * Not null/undefined.
      * @type {string} seriesLayoutBy
      */
     this.seriesLayoutBy = fields.seriesLayoutBy || SERIES_LAYOUT_BY_COLUMN;
-
     /**
      * dimensions definition in option.
      * can be null/undefined.
      * @type {Array.<Object|string>}
      */
     this.dimensionsDefine = fields.dimensionsDefine;
-
     /**
      * encode definition in option.
      * can be null/undefined.
      * @type {Objet|HashMap}
      */
     this.encodeDefine = fields.encodeDefine && createHashMap(fields.encodeDefine);
-
     /**
      * Not null/undefined, uint.
      * @type {number}
      */
     this.startIndex = fields.startIndex || 0;
-
     /**
      * Can be null/undefined (when unknown), uint.
      * @type {number}
      */
     this.dimensionsDetectCount = fields.dimensionsDetectCount;
 }
-
 /**
  * Wrap original series data for some compatibility cases.
  */
@@ -19715,9 +17155,7 @@ Source.seriesDataToSource = function (data) {
         fromDataset: false
     });
 };
-
 enableClassCheck(Source);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -19736,9 +17174,7 @@ enableClassCheck(Source);
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var inner$3 = makeInner();
-
 /**
  * @see {module:echarts/data/Source}
  * @param {module:echarts/component/dataset/DatasetModel} datasetModel
@@ -19747,7 +17183,6 @@ var inner$3 = makeInner();
 function detectSourceFormat(datasetModel) {
     var data = datasetModel.option.source;
     var sourceFormat = SOURCE_FORMAT_UNKNOWN;
-
     if (isTypedArray(data)) {
         sourceFormat = SOURCE_FORMAT_TYPED_ARRAY;
     }
@@ -19756,10 +17191,8 @@ function detectSourceFormat(datasetModel) {
         if (data.length === 0) {
             sourceFormat = SOURCE_FORMAT_ARRAY_ROWS;
         }
-
         for (var i = 0, len = data.length; i < len; i++) {
             var item = data[i];
-
             if (item == null) {
                 continue;
             }
@@ -19784,10 +17217,8 @@ function detectSourceFormat(datasetModel) {
     else if (data != null) {
         throw new Error('Invalid data');
     }
-
     inner$3(datasetModel).sourceFormat = sourceFormat;
 }
-
 /**
  * [Scenarios]:
  * (1) Provide source data directly:
@@ -19814,7 +17245,6 @@ function detectSourceFormat(datasetModel) {
 function getSource(seriesModel) {
     return inner$3(seriesModel).source;
 }
-
 /**
  * MUST be called before mergeOption of all series.
  * @param {module:echarts/model/Global} ecModel
@@ -19823,7 +17253,6 @@ function resetSourceDefaulter(ecModel) {
     // `datasetMap` is used to make default encode.
     inner$3(ecModel).datasetMap = createHashMap();
 }
-
 /**
  * [Caution]:
  * MUST be called after series option merged and
@@ -19842,34 +17271,27 @@ function resetSourceDefaulter(ecModel) {
  */
 function prepareSource(seriesModel) {
     var seriesOption = seriesModel.option;
-
     var data = seriesOption.data;
     var sourceFormat = isTypedArray(data)
         ? SOURCE_FORMAT_TYPED_ARRAY : SOURCE_FORMAT_ORIGINAL;
     var fromDataset = false;
-
     var seriesLayoutBy = seriesOption.seriesLayoutBy;
     var sourceHeader = seriesOption.sourceHeader;
     var dimensionsDefine = seriesOption.dimensions;
-
     var datasetModel = getDatasetModel(seriesModel);
     if (datasetModel) {
         var datasetOption = datasetModel.option;
-
         data = datasetOption.source;
         sourceFormat = inner$3(datasetModel).sourceFormat;
         fromDataset = true;
-
         // These settings from series has higher priority.
         seriesLayoutBy = seriesLayoutBy || datasetOption.seriesLayoutBy;
         sourceHeader == null && (sourceHeader = datasetOption.sourceHeader);
         dimensionsDefine = dimensionsDefine || datasetOption.dimensions;
     }
-
     var completeResult = completeBySourceData(
         data, sourceFormat, seriesLayoutBy, sourceHeader, dimensionsDefine
     );
-
     // Note: dataset option does not have `encode`.
     var encodeDefine = seriesOption.encode;
     if (!encodeDefine && datasetModel) {
@@ -19877,7 +17299,6 @@ function prepareSource(seriesModel) {
             seriesModel, datasetModel, data, sourceFormat, seriesLayoutBy, completeResult
         );
     }
-
     inner$3(seriesModel).source = new Source({
         data: data,
         fromDataset: fromDataset,
@@ -19889,17 +17310,14 @@ function prepareSource(seriesModel) {
         encodeDefine: encodeDefine
     });
 }
-
 // return {startIndex, dimensionsDefine, dimensionsCount}
 function completeBySourceData(data, sourceFormat, seriesLayoutBy, sourceHeader, dimensionsDefine) {
     if (!data) {
         return {dimensionsDefine: normalizeDimensionsDefine(dimensionsDefine)};
     }
-
     var dimensionsDetectCount;
     var startIndex;
     var findPotentialName;
-
     if (sourceFormat === SOURCE_FORMAT_ARRAY_ROWS) {
         // Rule: Most of the first line are string: it is header.
         // Caution: consider a line with 5 string and 1 number,
@@ -19922,14 +17340,12 @@ function completeBySourceData(data, sourceFormat, seriesLayoutBy, sourceHeader, 
         else {
             startIndex = sourceHeader ? 1 : 0;
         }
-
         if (!dimensionsDefine && startIndex === 1) {
             dimensionsDefine = [];
             arrayRowsTravelFirst(function (val, index) {
                 dimensionsDefine[index] = val != null ? val : '';
             }, seriesLayoutBy, data);
         }
-
         dimensionsDetectCount = dimensionsDefine
             ? dimensionsDefine.length
             : seriesLayoutBy === SERIES_LAYOUT_BY_ROW
@@ -19962,7 +17378,6 @@ function completeBySourceData(data, sourceFormat, seriesLayoutBy, sourceHeader, 
             assert$1(!!dimensionsDefine, 'dimensions must be given if data is TypedArray.');
         }
     }
-
     var potentialNameDimIndex;
     if (findPotentialName) {
         each$1(dimensionsDefine, function (dim, idx) {
@@ -19971,7 +17386,6 @@ function completeBySourceData(data, sourceFormat, seriesLayoutBy, sourceHeader, 
             }
         });
     }
-
     return {
         startIndex: startIndex,
         dimensionsDefine: normalizeDimensionsDefine(dimensionsDefine),
@@ -19980,7 +17394,6 @@ function completeBySourceData(data, sourceFormat, seriesLayoutBy, sourceHeader, 
         // TODO: potentialIdDimIdx
     };
 }
-
 // Consider dimensions defined like ['A', 'price', 'B', 'price', 'C', 'price'],
 // which is reasonable. But dimension name is duplicated.
 // Returns undefined or an array contains only object without null/undefiend or string.
@@ -19992,14 +17405,12 @@ function normalizeDimensionsDefine(dimensionsDefine) {
     var nameMap = createHashMap();
     return map(dimensionsDefine, function (item, index) {
         item = extend({}, isObject$1(item) ? item : {name: item});
-
         // User can set null in dimensions.
         // We dont auto specify name, othewise a given name may
         // cause it be refered unexpectedly.
         if (item.name == null) {
             return item;
         }
-
         // Also consider number form like 2012.
         item.name += '';
         // User may also specify displayName.
@@ -20010,7 +17421,6 @@ function normalizeDimensionsDefine(dimensionsDefine) {
         if (item.displayName == null) {
             item.displayName = item.name;
         }
-
         var exist = nameMap.get(item.name);
         if (!exist) {
             nameMap.set(item.name, {count: 1});
@@ -20018,11 +17428,9 @@ function normalizeDimensionsDefine(dimensionsDefine) {
         else {
             item.name += '-' + exist.count++;
         }
-
         return item;
     });
 }
-
 function arrayRowsTravelFirst(cb, seriesLayoutBy, data, maxLoop) {
     maxLoop == null && (maxLoop = Infinity);
     if (seriesLayoutBy === SERIES_LAYOUT_BY_ROW) {
@@ -20037,7 +17445,6 @@ function arrayRowsTravelFirst(cb, seriesLayoutBy, data, maxLoop) {
         }
     }
 }
-
 function objectRowsCollectDimensions(data) {
     var firstIndex = 0;
     var obj;
@@ -20050,7 +17457,6 @@ function objectRowsCollectDimensions(data) {
         return dimensions;
     }
 }
-
 // ??? TODO merge to completedimensions, where also has
 // default encode making logic. And the default rule
 // should depends on series? consider 'map'.
@@ -20064,7 +17470,6 @@ function makeDefaultEncode(
     var encodeItemName = [];
     var encodeSeriesName = [];
     var seriesType = seriesModel.subType;
-
     // ??? TODO refactor: provide by series itself.
     // Consider the case: 'map' series is based on geo coordSys,
     // 'graph', 'heatmap' can be based on cartesian. But can not
@@ -20073,7 +17478,6 @@ function makeDefaultEncode(
     var cSeriesMap = createHashMap([
         'line', 'bar', 'pictorialBar', 'scatter', 'effectScatter', 'candlestick', 'boxplot'
     ]);
-
     // Usually in this case series will use the first data
     // dimension as the "value" dimension, or other default
     // processes respectively.
@@ -20083,7 +17487,6 @@ function makeDefaultEncode(
         var key = datasetModel.uid + '_' + seriesLayoutBy;
         var datasetRecord = datasetMap.get(key)
             || datasetMap.set(key, {categoryWayDim: 1, valueWayDim: 0});
-
         // TODO
         // Auto detect first time axis and do arrangement.
         each$1(coordSysDefine.coordSysDims, function (coordDim) {
@@ -20091,14 +17494,12 @@ function makeDefaultEncode(
             if (coordSysDefine.firstCategoryDimIndex == null) {
                 var dataDim = datasetRecord.valueWayDim++;
                 encode[coordDim] = dataDim;
-
                 // ??? TODO give a better default series name rule?
                 // especially when encode x y specified.
                 // consider: when mutiple series share one dimension
                 // category axis, series name should better use
                 // the other dimsion name. On the other hand, use
                 // both dimensions name.
-
                 encodeSeriesName.push(dataDim);
                 // encodeTooltip.push(dataDim);
                 // encodeLabel.push(dataDim);
@@ -20143,15 +17544,12 @@ function makeDefaultEncode(
             // encodeTooltip.push(firstNotOrdinal);
         }
     }
-
     // encodeTooltip.length && (encode.tooltip = encodeTooltip);
     // encodeLabel.length && (encode.label = encodeLabel);
     encodeItemName.length && (encode.itemName = encodeItemName);
     encodeSeriesName.length && (encode.seriesName = encodeSeriesName);
-
     return encode;
 }
-
 /**
  * If return null/undefined, indicate that should not use datasetModel.
  */
@@ -20167,7 +17565,6 @@ function getDatasetModel(seriesModel) {
         return seriesModel.ecModel.getComponent('dataset', option.datasetIndex || 0);
     }
 }
-
 /**
  * The rule should not be complex, otherwise user might not
  * be able to known where the data is wrong.
@@ -20187,7 +17584,6 @@ function guessOrdinal(source, dimIndex) {
         dimIndex
     );
 }
-
 // dimIndex may be overflow source data.
 function doGuessOrdinal(
     data, sourceFormat, seriesLayoutBy, dimensionsDefine, startIndex, dimIndex
@@ -20195,11 +17591,9 @@ function doGuessOrdinal(
     var result;
     // Experience value.
     var maxLoop = 5;
-
     if (isTypedArray(data)) {
         return false;
     }
-
     // When sourceType is 'objectRows' or 'keyedColumns', dimensionsDefine
     // always exists in source.
     var dimName;
@@ -20207,7 +17601,6 @@ function doGuessOrdinal(
         dimName = dimensionsDefine[dimIndex];
         dimName = isObject$1(dimName) ? dimName.name : dimName;
     }
-
     if (sourceFormat === SOURCE_FORMAT_ARRAY_ROWS) {
         if (seriesLayoutBy === SERIES_LAYOUT_BY_ROW) {
             var sample = data[dimIndex];
@@ -20263,7 +17656,6 @@ function doGuessOrdinal(
             }
         }
     }
-
     function detectValue(val) {
         // Consider usage convenience, '1', '2' will be treated as "number".
         // `isFinit('')` get `true`.
@@ -20274,10 +17666,8 @@ function doGuessOrdinal(
             return true;
         }
     }
-
     return false;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -20296,14 +17686,11 @@ function doGuessOrdinal(
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * ECharts global model
  *
  * @module {echarts/model/Global}
  */
-
-
 /**
  * Caution: If the mechanism should be changed some day, these cases
  * should be considered:
@@ -20316,9 +17703,7 @@ function doGuessOrdinal(
  * (3) `reset` feature (in toolbox). Find detailed info in comments about
  * `mergeOption` in module:echarts/model/OptionManager.
  */
-
 var OPTION_INNER_KEY = '\0_ec_inner';
-
 /**
  * @alias module:echarts/model/Global
  *
@@ -20327,35 +17712,27 @@ var OPTION_INNER_KEY = '\0_ec_inner';
  * @param {Object} theme
  */
 var GlobalModel = Model.extend({
-
     init: function (option, parentModel, theme, optionManager) {
         theme = theme || {};
-
         this.option = null; // Mark as not initialized.
-
         /**
          * @type {module:echarts/model/Model}
          * @private
          */
         this._theme = new Model(theme);
-
         /**
          * @type {module:echarts/model/OptionManager}
          */
         this._optionManager = optionManager;
     },
-
     setOption: function (option, optionPreprocessorFuncs) {
         assert$1(
             !(OPTION_INNER_KEY in option),
             'please use chart.getOption()'
         );
-
         this._optionManager.setOption(option, optionPreprocessorFuncs);
-
         this.resetOption(null);
     },
-
     /**
      * @param {string} type null/undefined: reset all.
      *                      'recreate': force recreate all.
@@ -20366,10 +17743,8 @@ var GlobalModel = Model.extend({
     resetOption: function (type) {
         var optionChanged = false;
         var optionManager = this._optionManager;
-
         if (!type || type === 'recreate') {
             var baseOption = optionManager.mountOption(type === 'recreate');
-
             if (!this.option || type === 'recreate') {
                 initBase.call(this, baseOption);
             }
@@ -20379,16 +17754,13 @@ var GlobalModel = Model.extend({
             }
             optionChanged = true;
         }
-
         if (type === 'timeline' || type === 'media') {
             this.restoreData();
         }
-
         if (!type || type === 'recreate' || type === 'timeline') {
             var timelineOption = optionManager.getTimelineOption(this);
             timelineOption && (this.mergeOption(timelineOption), optionChanged = true);
         }
-
         if (!type || type === 'recreate' || type === 'media') {
             var mediaOptions = optionManager.getMediaOption(this, this._api);
             if (mediaOptions.length) {
@@ -20397,10 +17769,8 @@ var GlobalModel = Model.extend({
                 }, this);
             }
         }
-
         return optionChanged;
     },
-
     /**
      * @protected
      */
@@ -20408,16 +17778,13 @@ var GlobalModel = Model.extend({
         var option = this.option;
         var componentsMap = this._componentsMap;
         var newCptTypes = [];
-
         resetSourceDefaulter(this);
-
         // If no component class, merge directly.
         // For example: color, animaiton options, etc.
         each$1(newOption, function (componentOption, mainType) {
             if (componentOption == null) {
                 return;
             }
-
             if (!ComponentModel.hasClass(mainType)) {
                 // globalSettingTask.dirty();
                 option[mainType] = option[mainType] == null
@@ -20428,21 +17795,15 @@ var GlobalModel = Model.extend({
                 newCptTypes.push(mainType);
             }
         });
-
         ComponentModel.topologicalTravel(
             newCptTypes, ComponentModel.getAllClassMainTypes(), visitComponent, this
         );
-
         function visitComponent(mainType, dependencies) {
-
             var newCptOptionList = normalizeToArray(newOption[mainType]);
-
             var mapResult = mappingToExists(
                 componentsMap.get(mainType), newCptOptionList
             );
-
             makeIdAndName(mapResult);
-
             // Set mainType and complete subType.
             each$1(mapResult, function (item, index) {
                 var opt = item.option;
@@ -20451,23 +17812,18 @@ var GlobalModel = Model.extend({
                     item.keyInfo.subType = determineSubType(mainType, opt, item.exist);
                 }
             });
-
             var dependentModels = getComponentsByTypes(
                 componentsMap, dependencies
             );
-
             option[mainType] = [];
             componentsMap.set(mainType, []);
-
             each$1(mapResult, function (resultItem, index) {
                 var componentModel = resultItem.exist;
                 var newCptOption = resultItem.option;
-
                 assert$1(
                     isObject$1(newCptOption) || componentModel,
                     'Empty component definition'
                 );
-
                 // Consider where is no new option and should be merged using {},
                 // see removeEdgeAndAdd in topologicalTravel and
                 // ComponentModel.getAllClassMainTypes.
@@ -20479,7 +17835,6 @@ var GlobalModel = Model.extend({
                     var ComponentModelClass = ComponentModel.getClass(
                         mainType, resultItem.keyInfo.subType, true
                     );
-
                     if (componentModel && componentModel instanceof ComponentModelClass) {
                         componentModel.name = resultItem.keyInfo.name;
                         // componentModel.settingTask && componentModel.settingTask.dirty();
@@ -20500,7 +17855,6 @@ var GlobalModel = Model.extend({
                         );
                         extend(componentModel, extraOpt);
                         componentModel.init(newCptOption, this, this, extraOpt);
-
                         // Call optionUpdated after init.
                         // newCptOption has been used as componentModel.option
                         // and may be merged with theme and default, so pass null
@@ -20508,22 +17862,18 @@ var GlobalModel = Model.extend({
                         componentModel.optionUpdated(null, true);
                     }
                 }
-
                 componentsMap.get(mainType)[index] = componentModel;
                 option[mainType][index] = componentModel.option;
             }, this);
-
             // Backup series for filtering.
             if (mainType === 'series') {
                 createSeriesIndices(this, componentsMap.get('series'));
             }
         }
-
         this._seriesIndicesMap = createHashMap(
             this._seriesIndices = this._seriesIndices || []
         );
     },
-
     /**
      * Get option for output (cloned option and inner info removed)
      * @public
@@ -20531,7 +17881,6 @@ var GlobalModel = Model.extend({
      */
     getOption: function () {
         var option = clone(this.option);
-
         each$1(option, function (opts, mainType) {
             if (ComponentModel.hasClass(mainType)) {
                 var opts = normalizeToArray(opts);
@@ -20544,19 +17893,15 @@ var GlobalModel = Model.extend({
                 option[mainType] = opts;
             }
         });
-
         delete option[OPTION_INNER_KEY];
-
         return option;
     },
-
     /**
      * @return {module:echarts/model/Model}
      */
     getTheme: function () {
         return this._theme;
     },
-
     /**
      * @param {string} mainType
      * @param {number} [idx=0]
@@ -20568,7 +17913,6 @@ var GlobalModel = Model.extend({
             return list[idx || 0];
         }
     },
-
     /**
      * If none of index and id and name used, return all components with mainType.
      * @param {Object} condition
@@ -20584,19 +17928,14 @@ var GlobalModel = Model.extend({
         if (!mainType) {
             return [];
         }
-
         var index = condition.index;
         var id = condition.id;
         var name = condition.name;
-
         var cpts = this._componentsMap.get(mainType);
-
         if (!cpts || !cpts.length) {
             return [];
         }
-
         var result;
-
         if (index != null) {
             if (!isArray(index)) {
                 index = [index];
@@ -20625,10 +17964,8 @@ var GlobalModel = Model.extend({
             // Return all components with mainType
             result = cpts.slice();
         }
-
         return filterBySubType(result, condition);
     },
-
     /**
      * The interface is different from queryComponents,
      * which is convenient for inner usage.
@@ -20660,14 +17997,11 @@ var GlobalModel = Model.extend({
     findComponents: function (condition) {
         var query = condition.query;
         var mainType = condition.mainType;
-
         var queryCond = getQueryCond(query);
         var result = queryCond
             ? this.queryComponents(queryCond)
             : this._componentsMap.get(mainType);
-
         return doFilter(filterBySubType(result, condition));
-
         function getQueryCond(q) {
             var indexAttr = mainType + 'Index';
             var idAttr = mainType + 'Id';
@@ -20686,14 +18020,12 @@ var GlobalModel = Model.extend({
                 }
                 : null;
         }
-
         function doFilter(res) {
             return condition.filter
                     ? filter(res, condition.filter)
                     : res;
         }
     },
-
     /**
      * @usage
      * eachComponent('legend', function (legendModel, index) {
@@ -20719,7 +18051,6 @@ var GlobalModel = Model.extend({
      */
     eachComponent: function (mainType, cb, context) {
         var componentsMap = this._componentsMap;
-
         if (typeof mainType === 'function') {
             context = cb;
             cb = mainType;
@@ -20737,7 +18068,6 @@ var GlobalModel = Model.extend({
             each$1(queryResult, cb, context);
         }
     },
-
     /**
      * @param {string} name
      * @return {Array.<module:echarts/model/Series>}
@@ -20748,7 +18078,6 @@ var GlobalModel = Model.extend({
             return oneSeries.name === name;
         });
     },
-
     /**
      * @param {number} seriesIndex
      * @return {module:echarts/model/Series}
@@ -20756,7 +18085,6 @@ var GlobalModel = Model.extend({
     getSeriesByIndex: function (seriesIndex) {
         return this._componentsMap.get('series')[seriesIndex];
     },
-
     /**
      * Get series list before filtered by type.
      * FIXME: rename to getRawSeriesByType?
@@ -20770,21 +18098,18 @@ var GlobalModel = Model.extend({
             return oneSeries.subType === subType;
         });
     },
-
     /**
      * @return {Array.<module:echarts/model/Series>}
      */
     getSeries: function () {
         return this._componentsMap.get('series').slice();
     },
-
     /**
      * @return {number}
      */
     getSeriesCount: function () {
         return this._componentsMap.get('series').length;
     },
-
     /**
      * After filtering, series may be different
      * frome raw series.
@@ -20799,7 +18124,6 @@ var GlobalModel = Model.extend({
             cb.call(context, series, rawSeriesIndex);
         }, this);
     },
-
     /**
      * Iterate raw series before filtered.
      *
@@ -20809,7 +18133,6 @@ var GlobalModel = Model.extend({
     eachRawSeries: function (cb, context) {
         each$1(this._componentsMap.get('series'), cb, context);
     },
-
     /**
      * After filtering, series may be different.
      * frome raw series.
@@ -20827,7 +18150,6 @@ var GlobalModel = Model.extend({
             }
         }, this);
     },
-
     /**
      * Iterate raw series before filtered of given type.
      *
@@ -20838,7 +18160,6 @@ var GlobalModel = Model.extend({
     eachRawSeriesByType: function (subType, cb, context) {
         return each$1(this.getSeriesByType(subType), cb, context);
     },
-
     /**
      * @param {module:echarts/model/Series} seriesModel
      */
@@ -20846,14 +18167,12 @@ var GlobalModel = Model.extend({
         assertSeriesInitialized(this);
         return this._seriesIndicesMap.get(seriesModel.componentIndex) == null;
     },
-
     /**
      * @return {Array.<number>}
      */
     getCurrentSeriesIndices: function () {
         return (this._seriesIndices || []).slice();
     },
-
     /**
      * @param {Function} cb
      * @param {*} context
@@ -20865,17 +18184,13 @@ var GlobalModel = Model.extend({
         );
         createSeriesIndices(this, filteredSeries);
     },
-
     restoreData: function (payload) {
         var componentsMap = this._componentsMap;
-
         createSeriesIndices(this, componentsMap.get('series'));
-
         var componentTypes = [];
         componentsMap.each(function (components, componentType) {
             componentTypes.push(componentType);
         });
-
         ComponentModel.topologicalTravel(
             componentTypes,
             ComponentModel.getAllClassMainTypes(),
@@ -20887,9 +18202,7 @@ var GlobalModel = Model.extend({
             }
         );
     }
-
 });
-
 function isNotTargetSeries(seriesModel, payload) {
     if (payload) {
         var index = payload.seiresIndex;
@@ -20900,7 +18213,6 @@ function isNotTargetSeries(seriesModel, payload) {
             || (name != null && seriesModel.name !== name);
     }
 }
-
 /**
  * @inner
  */
@@ -20908,7 +18220,6 @@ function mergeTheme(option, theme) {
     // PENDING
     // NOT use `colorLayer` in theme if option has `color`
     var notMergeColorLayer = option.color && !option.colorLayer;
-
     each$1(theme, function (themeItem, name) {
         if (name === 'colorLayer' && notMergeColorLayer) {
             return;
@@ -20928,15 +18239,12 @@ function mergeTheme(option, theme) {
         }
     });
 }
-
 function initBase(baseOption) {
     baseOption = baseOption;
-
     // Using OPTION_INNER_KEY to mark that this option can not be used outside,
     // i.e. `chart.setOption(chart.getModel().option);` is forbiden.
     this.option = {};
     this.option[OPTION_INNER_KEY] = 1;
-
     /**
      * Init with series: [], in case of calling findSeries method
      * before series initialized.
@@ -20944,7 +18252,6 @@ function initBase(baseOption) {
      * @private
      */
     this._componentsMap = createHashMap({series: []});
-
     /**
      * Mapping between filtered series list and raw series list.
      * key: filtered series indices, value: raw series indices.
@@ -20952,17 +18259,12 @@ function initBase(baseOption) {
      * @private
      */
     this._seriesIndices;
-
     this._seriesIndicesMap;
-
     mergeTheme(baseOption, this._theme.option);
-
     // TODO Needs clone when merging to the unexisted property
     merge(baseOption, globalDefault, false);
-
     this.mergeOption(baseOption);
 }
-
 /**
  * @inner
  * @param {Array.<string>|string} types model types
@@ -20972,15 +18274,12 @@ function getComponentsByTypes(componentsMap, types) {
     if (!isArray(types)) {
         types = types ? [types] : [];
     }
-
     var ret = {};
     each$1(types, function (type) {
         ret[type] = (componentsMap.get(type) || []).slice();
     });
-
     return ret;
 }
-
 /**
  * @inner
  */
@@ -20991,11 +18290,9 @@ function determineSubType(mainType, newCptOption, existComponent) {
         ? existComponent.subType
         // Use determineSubType only when there is no existComponent.
         : ComponentModel.determineSubType(mainType, newCptOption);
-
     // tooltip, markline, markpoint may always has no subType
     return subType;
 }
-
 /**
  * @inner
  */
@@ -21006,7 +18303,6 @@ function createSeriesIndices(ecModel, seriesModels) {
         }) || []
     );
 }
-
 /**
  * @inner
  */
@@ -21019,7 +18315,6 @@ function filterBySubType(components, condition) {
         })
         : components;
 }
-
 /**
  * @inner
  */
@@ -21032,9 +18327,7 @@ function assertSeriesInitialized(ecModel) {
         }
     }
 }
-
 mixin(GlobalModel, colorPaletteMixin);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -21053,20 +18346,17 @@ mixin(GlobalModel, colorPaletteMixin);
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var echartsAPIList = [
     'getDom', 'getZr', 'getWidth', 'getHeight', 'getDevicePixelRatio', 'dispatchAction', 'isDisposed',
     'on', 'off', 'getDataURL', 'getConnectedDataURL', 'getModel', 'getOption',
     'getViewOfComponentModel', 'getViewOfSeriesModel'
 ];
 // And `getCoordinateSystems` and `getComponentByElement` will be injected in echarts.js
-
 function ExtensionAPI(chartInstance) {
     each$1(echartsAPIList, function (name) {
         this[name] = bind(chartInstance[name], chartInstance);
     }, this);
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -21085,47 +18375,35 @@ function ExtensionAPI(chartInstance) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var coordinateSystemCreators = {};
-
 function CoordinateSystemManager() {
-
     this._coordinateSystems = [];
 }
-
 CoordinateSystemManager.prototype = {
-
     constructor: CoordinateSystemManager,
-
     create: function (ecModel, api) {
         var coordinateSystems = [];
         each$1(coordinateSystemCreators, function (creater, type) {
             var list = creater.create(ecModel, api);
             coordinateSystems = coordinateSystems.concat(list || []);
         });
-
         this._coordinateSystems = coordinateSystems;
     },
-
     update: function (ecModel, api) {
         each$1(this._coordinateSystems, function (coordSys) {
             coordSys.update && coordSys.update(ecModel, api);
         });
     },
-
     getCoordinateSystems: function () {
         return this._coordinateSystems.slice();
     }
 };
-
 CoordinateSystemManager.register = function (type, coordinateSystemCreator) {
     coordinateSystemCreators[type] = coordinateSystemCreator;
 };
-
 CoordinateSystemManager.get = function (type) {
     return coordinateSystemCreators[type];
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -21144,21 +18422,16 @@ CoordinateSystemManager.get = function (type) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * ECharts option manager
  *
  * @module {echarts/model/OptionManager}
  */
-
-
 var each$4 = each$1;
 var clone$3 = clone;
 var map$1 = map;
 var merge$1 = merge;
-
 var QUERY_REG = /^(min|max)?(.+)$/;
-
 /**
  * TERM EXPLANATIONS:
  *
@@ -21215,31 +18488,26 @@ var QUERY_REG = /^(min|max)?(.+)$/;
  * @param {module:echarts/ExtensionAPI} api
  */
 function OptionManager(api) {
-
     /**
      * @private
      * @type {module:echarts/ExtensionAPI}
      */
     this._api = api;
-
     /**
      * @private
      * @type {Array.<number>}
      */
     this._timelineOptions = [];
-
     /**
      * @private
      * @type {Array.<Object>}
      */
     this._mediaList = [];
-
     /**
      * @private
      * @type {Object}
      */
     this._mediaDefault;
-
     /**
      * -1, means default.
      * empty means no media.
@@ -21247,20 +18515,17 @@ function OptionManager(api) {
      * @type {Array.<number>}
      */
     this._currentMediaIndices = [];
-
     /**
      * @private
      * @type {Object}
      */
     this._optionBackup;
-
     /**
      * @private
      * @type {Object}
      */
     this._newBaseOption;
 }
-
 // timeline.notMerge is not supported in ec3. Firstly there is rearly
 // case that notMerge is needed. Secondly supporting 'notMerge' requires
 // rawOption cloned and backuped when timeline changed, which does no
@@ -21269,11 +18534,8 @@ function OptionManager(api) {
 // Consider this case:
 // (step1) chart.setOption({timeline: {notMerge: false}, ...}, false);
 // (step2) chart.setOption({timeline: {notMerge: true}, ...}, false);
-
 OptionManager.prototype = {
-
     constructor: OptionManager,
-
     /**
      * @public
      * @param {Object} rawOption Raw option.
@@ -21288,26 +18550,21 @@ OptionManager.prototype = {
                 series && series.data && isTypedArray(series.data) && setAsPrimitive(series.data);
             });
         }
-
         // Caution: some series modify option data, if do not clone,
         // it should ensure that the repeat modify correctly
         // (create a new object when modify itself).
         rawOption = clone$3(rawOption, true);
-
         // FIXME
         // 如果 timeline options 或者 media 中设置了某个属性，而baseOption中没有设置，则进行警告。
-
         var oldOptionBackup = this._optionBackup;
         var newParsedOption = parseRawOption.call(
             this, rawOption, optionPreprocessorFuncs, !oldOptionBackup
         );
         this._newBaseOption = newParsedOption.baseOption;
-
         // For setOption at second time (using merge mode);
         if (oldOptionBackup) {
             // Only baseOption can be merged.
             mergeOption(oldOptionBackup.baseOption, newParsedOption.baseOption);
-
             // For simplicity, timeline options and media options do not support merge,
             // that is, if you `setOption` twice and both has timeline options, the latter
             // timeline opitons will not be merged to the formers, but just substitude them.
@@ -21325,22 +18582,18 @@ OptionManager.prototype = {
             this._optionBackup = newParsedOption;
         }
     },
-
     /**
      * @param {boolean} isRecreate
      * @return {Object}
      */
     mountOption: function (isRecreate) {
         var optionBackup = this._optionBackup;
-
         // TODO
         // 如果没有reset功能则不clone。
-
         this._timelineOptions = map$1(optionBackup.timelineOptions, clone$3);
         this._mediaList = map$1(optionBackup.mediaList, clone$3);
         this._mediaDefault = clone$3(optionBackup.mediaDefault);
         this._currentMediaIndices = [];
-
         return clone$3(isRecreate
             // this._optionBackup.baseOption, which is created at the first `setOption`
             // called, and is merged into every new option by inner method `mergeOption`
@@ -21350,7 +18603,6 @@ OptionManager.prototype = {
             ? optionBackup.baseOption : this._newBaseOption
         );
     },
-
     /**
      * @param {module:echarts/model/Global} ecModel
      * @return {Object}
@@ -21358,7 +18610,6 @@ OptionManager.prototype = {
     getTimelineOption: function (ecModel) {
         var option;
         var timelineOptions = this._timelineOptions;
-
         if (timelineOptions.length) {
             // getTimelineOption can only be called after ecModel inited,
             // so we can get currentIndex from timelineModel.
@@ -21370,10 +18621,8 @@ OptionManager.prototype = {
                 );
             }
         }
-
         return option;
     },
-
     /**
      * @param {module:echarts/model/Global} ecModel
      * @return {Array.<Object>}
@@ -21385,25 +18634,21 @@ OptionManager.prototype = {
         var mediaDefault = this._mediaDefault;
         var indices = [];
         var result = [];
-
         // No media defined.
         if (!mediaList.length && !mediaDefault) {
             return result;
         }
-
         // Multi media may be applied, the latter defined media has higher priority.
         for (var i = 0, len = mediaList.length; i < len; i++) {
             if (applyMediaQuery(mediaList[i].query, ecWidth, ecHeight)) {
                 indices.push(i);
             }
         }
-
         // FIXME
         // 是否mediaDefault应该强制用户设置，否则可能修改不能回归。
         if (!indices.length && mediaDefault) {
             indices = [-1];
         }
-
         if (indices.length && !indicesEquals(indices, this._currentMediaIndices)) {
             result = map$1(indices, function (index) {
                 return clone$3(
@@ -21412,32 +18657,25 @@ OptionManager.prototype = {
             });
         }
         // Otherwise return nothing.
-
         this._currentMediaIndices = indices;
-
         return result;
     }
 };
-
 function parseRawOption(rawOption, optionPreprocessorFuncs, isNew) {
     var timelineOptions = [];
     var mediaList = [];
     var mediaDefault;
     var baseOption;
-
     // Compatible with ec2.
     var timelineOpt = rawOption.timeline;
-
     if (rawOption.baseOption) {
         baseOption = rawOption.baseOption;
     }
-
     // For timeline
     if (timelineOpt || rawOption.options) {
         baseOption = baseOption || {};
         timelineOptions = (rawOption.options || []).slice();
     }
-
     // For media query
     if (rawOption.media) {
         baseOption = baseOption || {};
@@ -21454,18 +18692,15 @@ function parseRawOption(rawOption, optionPreprocessorFuncs, isNew) {
             }
         });
     }
-
     // For normal option
     if (!baseOption) {
         baseOption = rawOption;
     }
-
     // Set timelineOpt to baseOption in ec3,
     // which is convenient for merge option.
     if (!baseOption.timeline) {
         baseOption.timeline = timelineOpt;
     }
-
     // Preprocess.
     each$4([baseOption].concat(timelineOptions)
         .concat(map(mediaList, function (media) {
@@ -21477,7 +18712,6 @@ function parseRawOption(rawOption, optionPreprocessorFuncs, isNew) {
             });
         }
     );
-
     return {
         baseOption: baseOption,
         timelineOptions: timelineOptions,
@@ -21485,7 +18719,6 @@ function parseRawOption(rawOption, optionPreprocessorFuncs, isNew) {
         mediaList: mediaList
     };
 }
-
 /**
  * @see <http://www.w3.org/TR/css3-mediaqueries/#media1>
  * Support: width, height, aspectRatio
@@ -21497,27 +18730,20 @@ function applyMediaQuery(query, ecWidth, ecHeight) {
         height: ecHeight,
         aspectratio: ecWidth / ecHeight // lowser case for convenientce.
     };
-
     var applicatable = true;
-
     each$1(query, function (value, attr) {
         var matched = attr.match(QUERY_REG);
-
         if (!matched || !matched[1] || !matched[2]) {
             return;
         }
-
         var operator = matched[1];
         var realAttr = matched[2].toLowerCase();
-
         if (!compare(realMap[realAttr], value, operator)) {
             applicatable = false;
         }
     });
-
     return applicatable;
 }
-
 function compare(real, expect, operator) {
     if (operator === 'min') {
         return real >= expect;
@@ -21529,12 +18755,10 @@ function compare(real, expect, operator) {
         return real === expect;
     }
 }
-
 function indicesEquals(indices1, indices2) {
     // indices is always order by asc and has only finite number.
     return indices1.join(',') === indices2.join(',');
 }
-
 /**
  * Consider case:
  * `chart.setOption(opt1);`
@@ -21558,23 +18782,18 @@ function indicesEquals(indices1, indices2) {
  */
 function mergeOption(oldOption, newOption) {
     newOption = newOption || {};
-
     each$4(newOption, function (newCptOpt, mainType) {
         if (newCptOpt == null) {
             return;
         }
-
         var oldCptOpt = oldOption[mainType];
-
         if (!ComponentModel.hasClass(mainType)) {
             oldOption[mainType] = merge$1(oldCptOpt, newCptOpt, true);
         }
         else {
             newCptOpt = normalizeToArray(newCptOpt);
             oldCptOpt = normalizeToArray(oldCptOpt);
-
             var mapResult = mappingToExists(oldCptOpt, newCptOpt);
-
             oldOption[mainType] = map$1(mapResult, function (item) {
                 return (item.option && item.exist)
                     ? merge$1(item.exist, item.option, true)
@@ -21583,7 +18802,6 @@ function mergeOption(oldOption, newOption) {
         }
     });
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -21602,15 +18820,12 @@ function mergeOption(oldOption, newOption) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var each$5 = each$1;
 var isObject$3 = isObject$1;
-
 var POSSIBLE_STYLES = [
     'areaStyle', 'lineStyle', 'nodeStyle', 'linkStyle',
     'chordStyle', 'label', 'labelLine'
 ];
-
 function compatEC2ItemStyle(opt) {
     var itemStyleOpt = opt && opt.itemStyle;
     if (!itemStyleOpt) {
@@ -21642,12 +18857,10 @@ function compatEC2ItemStyle(opt) {
         }
     }
 }
-
 function convertNormalEmphasis(opt, optType, useExtend) {
     if (opt && opt[optType] && (opt[optType].normal || opt[optType].emphasis)) {
         var normalOpt = opt[optType].normal;
         var emphasisOpt = opt[optType].emphasis;
-
         if (normalOpt) {
             // Timeline controlStyle has other properties besides normal and emphasis
             if (useExtend) {
@@ -21675,7 +18888,6 @@ function removeEC3NormalStatus(opt) {
     // graph
     convertNormalEmphasis(opt, 'edgeLabel');
 }
-
 function compatTextStyle(opt, propName) {
     // Check whether is not object (string\null\undefined ...)
     var labelOptSingle = isObject$3(opt) && opt[propName];
@@ -21689,7 +18901,6 @@ function compatTextStyle(opt, propName) {
         }
     }
 }
-
 function compatEC3CommonStyles(opt) {
     if (opt) {
         removeEC3NormalStatus(opt);
@@ -21697,15 +18908,12 @@ function compatEC3CommonStyles(opt) {
         opt.emphasis && compatTextStyle(opt.emphasis, 'label');
     }
 }
-
 function processSeries(seriesOpt) {
     if (!isObject$3(seriesOpt)) {
         return;
     }
-
     compatEC2ItemStyle(seriesOpt);
     removeEC3NormalStatus(seriesOpt);
-
     compatTextStyle(seriesOpt, 'label');
     // treemap
     compatTextStyle(seriesOpt, 'upperLabel');
@@ -21718,29 +18926,23 @@ function processSeries(seriesOpt) {
         // graph
         compatTextStyle(seriesOpt.emphasis, 'edgeLabel');
     }
-
     var markPoint = seriesOpt.markPoint;
     if (markPoint) {
         compatEC2ItemStyle(markPoint);
         compatEC3CommonStyles(markPoint);
     }
-
     var markLine = seriesOpt.markLine;
     if (markLine) {
         compatEC2ItemStyle(markLine);
         compatEC3CommonStyles(markLine);
     }
-
     var markArea = seriesOpt.markArea;
     if (markArea) {
         compatEC3CommonStyles(markArea);
     }
-
     var data = seriesOpt.data;
-
     // Break with ec3: if `setOption` again, there may be no `type` in option,
     // then the backward compat based on option type will not be performed.
-
     if (seriesOpt.type === 'graph') {
         data = data || seriesOpt.nodes;
         var edgeData = seriesOpt.links || seriesOpt.edges;
@@ -21753,13 +18955,11 @@ function processSeries(seriesOpt) {
             removeEC3NormalStatus(opt);
         });
     }
-
     if (data && !isTypedArray(data)) {
         for (var i = 0; i < data.length; i++) {
             compatEC3CommonStyles(data[i]);
         }
     }
-
     // mark point data
     var markPoint = seriesOpt.markPoint;
     if (markPoint && markPoint.data) {
@@ -21782,7 +18982,6 @@ function processSeries(seriesOpt) {
             }
         }
     }
-
     // Series
     if (seriesOpt.type === 'gauge') {
         compatTextStyle(seriesOpt, 'axisLabel');
@@ -21800,23 +18999,18 @@ function processSeries(seriesOpt) {
     }
     // sunburst starts from ec4, so it does not need to compat levels.
 }
-
 function toArr(o) {
     return isArray(o) ? o : o ? [o] : [];
 }
-
 function toObj(o) {
     return (isArray(o) ? o[0] : o) || {};
 }
-
 var compatStyle = function (option, isTheme) {
     each$5(toArr(option.series), function (seriesOpt) {
         isObject$3(seriesOpt) && processSeries(seriesOpt);
     });
-
     var axes = ['xAxis', 'yAxis', 'radiusAxis', 'angleAxis', 'singleAxis', 'parallelAxis', 'radar'];
     isTheme && axes.push('valueAxis', 'categoryAxis', 'logAxis', 'timeAxis');
-
     each$5(
         axes,
         function (axisName) {
@@ -21828,25 +19022,21 @@ var compatStyle = function (option, isTheme) {
             });
         }
     );
-
     each$5(toArr(option.parallel), function (parallelOpt) {
         var parallelAxisDefault = parallelOpt && parallelOpt.parallelAxisDefault;
         compatTextStyle(parallelAxisDefault, 'axisLabel');
         compatTextStyle(parallelAxisDefault && parallelAxisDefault.axisPointer, 'label');
     });
-
     each$5(toArr(option.calendar), function (calendarOpt) {
         convertNormalEmphasis(calendarOpt, 'itemStyle');
         compatTextStyle(calendarOpt, 'dayLabel');
         compatTextStyle(calendarOpt, 'monthLabel');
         compatTextStyle(calendarOpt, 'yearLabel');
     });
-
     // radar.name.textStyle
     each$5(toArr(option.radar), function (radarOpt) {
         compatTextStyle(radarOpt, 'name');
     });
-
     each$5(toArr(option.geo), function (geoOpt) {
         if (isObject$3(geoOpt)) {
             compatEC3CommonStyles(geoOpt);
@@ -21855,13 +19045,11 @@ var compatStyle = function (option, isTheme) {
             });
         }
     });
-
     each$5(toArr(option.timeline), function (timelineOpt) {
         compatEC3CommonStyles(timelineOpt);
         convertNormalEmphasis(timelineOpt, 'label');
         convertNormalEmphasis(timelineOpt, 'itemStyle');
         convertNormalEmphasis(timelineOpt, 'controlStyle', true);
-
         var data = timelineOpt.data;
         isArray(data) && each$1(data, function (item) {
             if (isObject$1(item)) {
@@ -21870,18 +19058,15 @@ var compatStyle = function (option, isTheme) {
             }
         });
     });
-
     each$5(toArr(option.toolbox), function (toolboxOpt) {
         convertNormalEmphasis(toolboxOpt, 'iconStyle');
         each$5(toolboxOpt.feature, function (featureOpt) {
             convertNormalEmphasis(featureOpt, 'iconStyle');
         });
     });
-
     compatTextStyle(toObj(option.axisPointer), 'label');
     compatTextStyle(toObj(option.tooltip).axisPointer, 'label');
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -21900,9 +19085,7 @@ var compatStyle = function (option, isTheme) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // Compatitable with 2.0
-
 function get(opt, path) {
     path = path.split(',');
     var obj = opt;
@@ -21914,7 +19097,6 @@ function get(opt, path) {
     }
     return obj;
 }
-
 function set$1(opt, path, val, overwrite) {
     path = path.split(',');
     var obj = opt;
@@ -21930,7 +19112,6 @@ function set$1(opt, path, val, overwrite) {
         obj[path[i]] = val;
     }
 }
-
 function compatLayoutProperties(option) {
     each$1(LAYOUT_PROPERTIES, function (prop) {
         if (prop[0] in option && !(prop[1] in option)) {
@@ -21938,28 +19119,21 @@ function compatLayoutProperties(option) {
         }
     });
 }
-
 var LAYOUT_PROPERTIES = [
     ['x', 'left'], ['y', 'top'], ['x2', 'right'], ['y2', 'bottom']
 ];
-
 var COMPATITABLE_COMPONENTS = [
     'grid', 'geo', 'parallel', 'legend', 'toolbox', 'title', 'visualMap', 'dataZoom', 'timeline'
 ];
-
 var backwardCompat = function (option, isTheme) {
     compatStyle(option, isTheme);
-
     // Make sure series array for model initialization.
     option.series = normalizeToArray(option.series);
-
     each$1(option.series, function (seriesOpt) {
         if (!isObject$1(seriesOpt)) {
             return;
         }
-
         var seriesType = seriesOpt.type;
-
         if (seriesType === 'pie' || seriesType === 'gauge') {
             if (seriesOpt.clockWise != null) {
                 seriesOpt.clockwise = seriesOpt.clockWise;
@@ -21970,15 +19144,12 @@ var backwardCompat = function (option, isTheme) {
             pointerColor != null
                 && set$1(seriesOpt, 'itemStyle.normal.color', pointerColor);
         }
-
         compatLayoutProperties(seriesOpt);
     });
-
     // dataRange has changed to visualMap
     if (option.dataRange) {
         option.visualMap = option.dataRange;
     }
-
     each$1(COMPATITABLE_COMPONENTS, function (componentName) {
         var options = option[componentName];
         if (options) {
@@ -21991,7 +19162,6 @@ var backwardCompat = function (option, isTheme) {
         }
     });
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -22010,7 +19180,6 @@ var backwardCompat = function (option, isTheme) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // (1) [Caution]: the logic is correct based on the premises:
 //     data processing stage is blocked in stream.
 //     See <module:echarts/stream/Scheduler#performDataProcessorTasks>
@@ -22024,7 +19193,6 @@ var dataStack = function (ecModel) {
         if (stack) {
             var stackInfoList = stackInfoMap.get(stack) || stackInfoMap.set(stack, []);
             var data = seriesModel.getData();
-
             var stackInfo = {
                 // Used for calculate axis extent automatically.
                 stackResultDimension: data.getCalculationInfo('stackResultDimension'),
@@ -22035,25 +19203,20 @@ var dataStack = function (ecModel) {
                 data: data,
                 seriesModel: seriesModel
             };
-
             // If stacked on axis that do not support data stack.
             if (!stackInfo.stackedDimension
                 || !(stackInfo.isStackedByIndex || stackInfo.stackedByDimension)
             ) {
                 return;
             }
-
             stackInfoList.length && data.setCalculationInfo(
                 'stackedOnSeries', stackInfoList[stackInfoList.length - 1].seriesModel
             );
-
             stackInfoList.push(stackInfo);
         }
     });
-
     stackInfoMap.each(calculateStack);
 };
-
 function calculateStack(stackInfoList) {
     each$1(stackInfoList, function (targetStackInfo, idxInStack) {
         var resultVal = [];
@@ -22061,42 +19224,33 @@ function calculateStack(stackInfoList) {
         var dims = [targetStackInfo.stackResultDimension, targetStackInfo.stackedOverDimension];
         var targetData = targetStackInfo.data;
         var isStackedByIndex = targetStackInfo.isStackedByIndex;
-
         // Should not write on raw data, because stack series model list changes
         // depending on legend selection.
         var newData = targetData.map(dims, function (v0, v1, dataIndex) {
             var sum = targetData.get(targetStackInfo.stackedDimension, dataIndex);
-
             // Consider `connectNulls` of line area, if value is NaN, stackedOver
             // should also be NaN, to draw a appropriate belt area.
             if (isNaN(sum)) {
                 return resultNaN;
             }
-
             var byValue;
             var stackedDataRawIndex;
-
             if (isStackedByIndex) {
                 stackedDataRawIndex = targetData.getRawIndex(dataIndex);
             }
             else {
                 byValue = targetData.get(targetStackInfo.stackedByDimension, dataIndex);
             }
-
             // If stackOver is NaN, chart view will render point on value start.
             var stackedOver = NaN;
-
             for (var j = idxInStack - 1; j >= 0; j--) {
                 var stackInfo = stackInfoList[j];
-
                 // Has been optimized by inverted indices on `stackedByDimension`.
                 if (!isStackedByIndex) {
                     stackedDataRawIndex = stackInfo.data.rawIndexOf(stackInfo.stackedByDimension, byValue);
                 }
-
                 if (stackedDataRawIndex >= 0) {
                     var val = stackInfo.data.getByRawIndex(stackInfo.stackResultDimension, stackedDataRawIndex);
-
                     // Considering positive stack, negative stack and empty data
                     if ((sum >= 0 && val > 0) // Positive stack
                         || (sum <= 0 && val < 0) // Negative stack
@@ -22107,19 +19261,15 @@ function calculateStack(stackInfoList) {
                     }
                 }
             }
-
             resultVal[0] = sum;
             resultVal[1] = stackedOver;
-
             return resultVal;
         });
-
         targetData.hostModel.setData(newData);
         // Update for consequent calculation
         targetStackInfo.data = newData;
     });
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -22138,11 +19288,9 @@ function calculateStack(stackInfoList) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // TODO
 // ??? refactor? check the outer usage of data provider.
 // merge with defaultDimValueGetter?
-
 /**
  * If normal array used, mutable chunk size is supported.
  * If typed array used, chunk size must be fixed.
@@ -22152,10 +19300,8 @@ function DefaultDataProvider(source, dimSize) {
         source = Source.seriesDataToSource(source);
     }
     this._source = source;
-
     var data = this._data = source.data;
     var sourceFormat = source.sourceFormat;
-
     // Typed array. TODO IE10+?
     if (sourceFormat === SOURCE_FORMAT_TYPED_ARRAY) {
         if (__DEV__) {
@@ -22167,33 +19313,26 @@ function DefaultDataProvider(source, dimSize) {
         this._dimSize = dimSize;
         this._data = data;
     }
-
     var methods = providerMethods[
         sourceFormat === SOURCE_FORMAT_ARRAY_ROWS
         ? sourceFormat + '_' + source.seriesLayoutBy
         : sourceFormat
     ];
-
     if (__DEV__) {
         assert$1(methods, 'Invalide sourceFormat: ' + sourceFormat);
     }
-
     extend(this, methods);
 }
-
 var providerProto = DefaultDataProvider.prototype;
 // If data is pure without style configuration
 providerProto.pure = false;
 // If data is persistent and will not be released after use.
 providerProto.persistent = true;
-
 // ???! FIXME legacy data provider do not has method getSource
 providerProto.getSource = function () {
     return this._source;
 };
-
 var providerMethods = {
-
     'arrayRows_column': {
         pure: true,
         count: function () {
@@ -22204,7 +19343,6 @@ var providerMethods = {
         },
         appendData: appendDataSimply
     },
-
     'arrayRows_row': {
         pure: true,
         count: function () {
@@ -22225,14 +19363,12 @@ var providerMethods = {
             throw new Error('Do not support appendData when set seriesLayoutBy: "row".');
         }
     },
-
     'objectRows': {
         pure: true,
         count: countSimply,
         getItem: getItemSimply,
         appendData: appendDataSimply
     },
-
     'keyedColumns': {
         pure: true,
         count: function () {
@@ -22259,13 +19395,11 @@ var providerMethods = {
             });
         }
     },
-
     'original': {
         count: countSimply,
         getItem: getItemSimply,
         appendData: appendDataSimply
     },
-
     'typedArray': {
         persistent: false,
         pure: true,
@@ -22288,10 +19422,8 @@ var providerMethods = {
                     'Added data must be TypedArray if data in initialization is TypedArray'
                 );
             }
-
             this._data = newData;
         },
-
         // Clean self if data is already used.
         clean: function () {
             // PENDING
@@ -22300,7 +19432,6 @@ var providerMethods = {
         }
     }
 };
-
 function countSimply() {
     return this._data.length;
 }
@@ -22312,19 +19443,12 @@ function appendDataSimply(newData) {
         this._data.push(newData[i]);
     }
 }
-
-
-
 var rawValueGetters = {
-
     arrayRows: getRawValueSimply,
-
     objectRows: function (dataItem, dataIndex, dimIndex, dimName) {
         return dimIndex != null ? dataItem[dimName] : dataItem;
     },
-
     keyedColumns: getRawValueSimply,
-
     original: function (dataItem, dataIndex, dimIndex, dimName) {
         // FIXME
         // In some case (markpoint in geo (geo-map.html)), dataItem
@@ -22334,32 +19458,23 @@ var rawValueGetters = {
             ? value
             : value[dimIndex];
     },
-
     typedArray: getRawValueSimply
 };
-
 function getRawValueSimply(dataItem, dataIndex, dimIndex, dimName) {
     return dimIndex != null ? dataItem[dimIndex] : dataItem;
 }
-
-
 var defaultDimValueGetters = {
-
     arrayRows: getDimValueSimply,
-
     objectRows: function (dataItem, dimName, dataIndex, dimIndex) {
         return converDataValue(dataItem[dimName], this._dimensionInfos[dimName]);
     },
-
     keyedColumns: getDimValueSimply,
-
     original: function (dataItem, dimName, dataIndex, dimIndex) {
         // Performance sensitive, do not use modelUtil.getDataItemValue.
         // If dataItem is an plain object with no value field, the var `value`
         // will be assigned with the object, but it will be tread correctly
         // in the `convertDataValue`.
         var value = dataItem && (dataItem.value == null ? dataItem : dataItem.value);
-
         // If any dataItem is like { value: 10 }
         if (!this._rawData.pure && isDataItemOption(dataItem)) {
             this.hasItemOption = true;
@@ -22372,17 +19487,13 @@ var defaultDimValueGetters = {
             this._dimensionInfos[dimName]
         );
     },
-
     typedArray: function (dataItem, dimName, dataIndex, dimIndex) {
         return dataItem[dimIndex];
     }
-
 };
-
 function getDimValueSimply(dataItem, dimName, dataIndex, dimIndex) {
     return converDataValue(dataItem[dimIndex], this._dimensionInfos[dimName]);
 }
-
 /**
  * This helper method convert value in data.
  * @param {string|number|Date} value
@@ -22399,7 +19510,6 @@ function converDataValue(value, dimInfo) {
             ? ordinalMeta.parseAndCollect(value)
             : value;
     }
-
     if (dimType === 'time'
         // spead up when using timestamp
         && typeof value !== 'number'
@@ -22408,7 +19518,6 @@ function converDataValue(value, dimInfo) {
     ) {
         value = +parseDate(value);
     }
-
     // dimType defaults 'number'.
     // If dimType is not ordinal and value is null or undefined or NaN or '-',
     // parse to NaN.
@@ -22418,7 +19527,6 @@ function converDataValue(value, dimInfo) {
         // If object, also parse to NaN
         : +value;
 }
-
 // ??? FIXME can these logic be more neat: getRawValue, getRawDataItem,
 // Consider persistent.
 // Caution: why use raw value to display on label or tooltip?
@@ -22436,27 +19544,21 @@ function retrieveRawValue(data, dataIndex, dim) {
     if (!data) {
         return;
     }
-
     // Consider data may be not persistent.
     var dataItem = data.getRawDataItem(dataIndex);
-
     if (dataItem == null) {
         return;
     }
-
     var sourceFormat = data.getProvider().getSource().sourceFormat;
     var dimName;
     var dimIndex;
-
     var dimInfo = data.getDimensionInfo(dim);
     if (dimInfo) {
         dimName = dimInfo.name;
         dimIndex = dimInfo.index;
     }
-
     return rawValueGetters[sourceFormat](dataItem, dataIndex, dimIndex, dimName);
 }
-
 /**
  * Compatible with some cases (in pie, map) like:
  * data: [{name: 'xx', value: 5, selected: true}, ...]
@@ -22473,15 +19575,12 @@ function retrieveRawAttr(data, dataIndex, attr) {
     if (!data) {
         return;
     }
-
     var sourceFormat = data.getProvider().getSource().sourceFormat;
-
     if (sourceFormat !== SOURCE_FORMAT_ORIGINAL
         && sourceFormat !== SOURCE_FORMAT_OBJECT_ROWS
     ) {
         return;
     }
-
     var dataItem = data.getRawDataItem(dataIndex);
     if (sourceFormat === SOURCE_FORMAT_ORIGINAL && !isObject$1(dataItem)) {
         dataItem = null;
@@ -22490,7 +19589,6 @@ function retrieveRawAttr(data, dataIndex, attr) {
         return dataItem[attr];
     }
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -22509,9 +19607,7 @@ function retrieveRawAttr(data, dataIndex, attr) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var DIMENSION_LABEL_REG = /\{@(.+?)\}/g;
-
 // PENDING A little ugly
 var dataFormatMixin = {
     /**
@@ -22532,7 +19628,6 @@ var dataFormatMixin = {
         var renderMode = getTooltipRenderMode(renderModeOption);
         var mainType = this.mainType;
         var isSeries = mainType === 'series';
-
         return {
             componentType: mainType,
             componentSubType: this.subType,
@@ -22551,12 +19646,10 @@ var dataFormatMixin = {
                 color: color,
                 renderMode: renderMode
             }),
-
             // Param name list for mapping `a`, `b`, `c`, `d`, `e`
             $vars: ['seriesName', 'name', 'value']
         };
     },
-
     /**
      * Format label
      * @param {number} dataIndex
@@ -22570,25 +19663,21 @@ var dataFormatMixin = {
         status = status || 'normal';
         var data = this.getData(dataType);
         var itemModel = data.getItemModel(dataIndex);
-
         var params = this.getDataParams(dataIndex, dataType);
         if (dimIndex != null && (params.value instanceof Array)) {
             params.value = params.value[dimIndex];
         }
-
         var formatter = itemModel.get(
             status === 'normal'
             ? [labelProp || 'label', 'formatter']
             : [status, labelProp || 'label', 'formatter']
         );
-
         if (typeof formatter === 'function') {
             params.status = status;
             return formatter(params);
         }
         else if (typeof formatter === 'string') {
             var str = formatTpl(formatter, params);
-
             // Support 'aaa{@[3]}bbb{@product}ccc'.
             // Do not support '}' in dim name util have to.
             return str.replace(DIMENSION_LABEL_REG, function (origin, dim) {
@@ -22600,7 +19689,6 @@ var dataFormatMixin = {
             });
         }
     },
-
     /**
      * Get raw value in option
      * @param {number} idx
@@ -22610,7 +19698,6 @@ var dataFormatMixin = {
     getRawValue: function (idx, dataType) {
         return retrieveRawValue(this.getData(dataType), idx);
     },
-
     /**
      * Should be implemented.
      * @param {number} dataIndex
@@ -22622,7 +19709,6 @@ var dataFormatMixin = {
         // Empty function
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -22641,7 +19727,6 @@ var dataFormatMixin = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @param {Object} define
  * @return See the return of `createTask`.
@@ -22649,7 +19734,6 @@ var dataFormatMixin = {
 function createTask(define) {
     return new Task(define);
 }
-
 /**
  * @constructor
  * @param {Object} define
@@ -22660,21 +19744,16 @@ function createTask(define) {
  */
 function Task(define) {
     define = define || {};
-
     this._reset = define.reset;
     this._plan = define.plan;
     this._count = define.count;
     this._onDirty = define.onDirty;
-
     this._dirty = true;
-
     // Context must be specified implicitly, to
     // avoid miss update context when model changed.
     this.context;
 }
-
 var taskProto = Task.prototype;
-
 /**
  * @param {Object} performArgs
  * @param {number} [performArgs.step] Specified step.
@@ -22685,7 +19764,6 @@ var taskProto = Task.prototype;
 taskProto.perform = function (performArgs) {
     var upTask = this._upstream;
     var skip = performArgs && performArgs.skip;
-
     // TODO some refactor.
     // Pull data. Must pull data each time, because context.data
     // may be updated by Series.setData.
@@ -22693,16 +19771,13 @@ taskProto.perform = function (performArgs) {
         var context = this.context;
         context.data = context.outputData = upTask.context.outputData;
     }
-
     if (this.__pipeline) {
         this.__pipeline.currentTask = this;
     }
-
     var planResult;
     if (this._plan && !skip) {
         planResult = this._plan(this.context);
     }
-
     // Support sharding by mod, which changes the render sequence and makes the rendered graphic
     // elements uniformed distributed when progress, especially when moving or zooming.
     var lastModBy = normalizeModBy(this._modBy);
@@ -22712,25 +19787,19 @@ taskProto.perform = function (performArgs) {
     if (lastModBy !== modBy || lastModDataCount !== modDataCount) {
         planResult = 'reset';
     }
-
     function normalizeModBy(val) {
         !(val >= 1) && (val = 1); // jshint ignore:line
         return val;
     }
-
     var forceFirstProgress;
     if (this._dirty || planResult === 'reset') {
         this._dirty = false;
         forceFirstProgress = reset(this, skip);
     }
-
     this._modBy = modBy;
     this._modDataCount = modDataCount;
-
     var step = performArgs && performArgs.step;
-
     if (upTask) {
-
         if (__DEV__) {
             assert$1(upTask._outputDueEnd != null);
         }
@@ -22743,7 +19812,6 @@ taskProto.perform = function (performArgs) {
         }
         this._dueEnd = this._count ? this._count(this.context) : Infinity;
     }
-
     // Note: Stubs, that its host overall task let it has progress, has progress.
     // If no progress, pass index from upstream to downstream each time plan called.
     if (this._progress) {
@@ -22752,7 +19820,6 @@ taskProto.perform = function (performArgs) {
             step != null ? this._dueIndex + step : Infinity,
             this._dueEnd
         );
-
         if (!skip && (forceFirstProgress || start < end)) {
             var progress = this._progress;
             if (isArray(progress)) {
@@ -22764,18 +19831,15 @@ taskProto.perform = function (performArgs) {
                 doProgress(this, progress, start, end, modBy, modDataCount);
             }
         }
-
         this._dueIndex = end;
         // If no `outputDueEnd`, assume that output data and
         // input data is the same, so use `dueIndex` as `outputDueEnd`.
         var outputDueEnd = this._settedOutputEnd != null
             ? this._settedOutputEnd : end;
-
         if (__DEV__) {
             // ??? Can not rollback.
             assert$1(outputDueEnd >= this._outputDueEnd);
         }
-
         this._outputDueEnd = outputDueEnd;
     }
     else {
@@ -22785,37 +19849,28 @@ taskProto.perform = function (performArgs) {
         this._dueIndex = this._outputDueEnd = this._settedOutputEnd != null
             ? this._settedOutputEnd : this._dueEnd;
     }
-
     return this.unfinished();
 };
-
 var iterator = (function () {
-
     var end;
     var current;
     var modBy;
     var modDataCount;
     var winCount;
-
     var it = {
         reset: function (s, e, sStep, sCount) {
             current = s;
             end = e;
-
             modBy = sStep;
             modDataCount = sCount;
             winCount = Math.ceil(modDataCount / modBy);
-
             it.next = (modBy > 1 && modDataCount > 0) ? modNext : sequentialNext;
         }
     };
-
     return it;
-
     function sequentialNext() {
         return current < end ? current++ : null;
     }
-
     function modNext() {
         var dataIndex = (current % winCount) * modBy + Math.ceil(current / winCount);
         var result = current >= end
@@ -22829,12 +19884,10 @@ var iterator = (function () {
         return result;
     }
 })();
-
 taskProto.dirty = function () {
     this._dirty = true;
     this._onDirty && this._onDirty(this.context);
 };
-
 function doProgress(taskIns, progress, start, end, modBy, modDataCount) {
     iterator.reset(start, end, modBy, modDataCount);
     taskIns._callingProgress = progress;
@@ -22842,14 +19895,11 @@ function doProgress(taskIns, progress, start, end, modBy, modDataCount) {
         start: start, end: end, count: end - start, next: iterator.next
     }, taskIns.context);
 }
-
 function reset(taskIns, skip) {
     taskIns._dueIndex = taskIns._outputDueEnd = taskIns._dueEnd = 0;
     taskIns._settedOutputEnd = null;
-
     var progress;
     var forceFirstProgress;
-
     if (!skip && taskIns._reset) {
         progress = taskIns._reset(taskIns.context);
         if (progress && progress.progress) {
@@ -22861,23 +19911,18 @@ function reset(taskIns, skip) {
             progress = null;
         }
     }
-
     taskIns._progress = progress;
     taskIns._modBy = taskIns._modDataCount = null;
-
     var downstream = taskIns._downstream;
     downstream && downstream.dirty();
-
     return forceFirstProgress;
 }
-
 /**
  * @return {boolean}
  */
 taskProto.unfinished = function () {
     return this._progress && this._dueIndex < this._dueEnd;
 };
-
 /**
  * @param {Object} downTask The downstream task.
  * @return {Object} The downstream task.
@@ -22886,7 +19931,6 @@ taskProto.pipe = function (downTask) {
     if (__DEV__) {
         assert$1(downTask && !downTask._disposed && downTask !== this);
     }
-
     // If already downstream, do not dirty downTask.
     if (this._downstream !== downTask || this._dirty) {
         this._downstream = downTask;
@@ -22894,27 +19938,21 @@ taskProto.pipe = function (downTask) {
         downTask.dirty();
     }
 };
-
 taskProto.dispose = function () {
     if (this._disposed) {
         return;
     }
-
     this._upstream && (this._upstream._downstream = null);
     this._downstream && (this._downstream._upstream = null);
-
     this._dirty = false;
     this._disposed = true;
 };
-
 taskProto.getUpstream = function () {
     return this._upstream;
 };
-
 taskProto.getDownstream = function () {
     return this._downstream;
 };
-
 taskProto.setOutputEnd = function (end) {
     // This only happend in dataTask, dataZoom, map, currently.
     // where dataZoom do not set end each time, but only set
@@ -22923,8 +19961,6 @@ taskProto.setOutputEnd = function (end) {
     // setted end by upstream.
     this._outputDueEnd = this._settedOutputEnd = end;
 };
-
-
 ///////////////////////////////////////////////////////////
 // For stream debug (Should be commented out after used!)
 // Usage: printTask(this, 'begin');
@@ -22968,7 +20004,6 @@ taskProto.setOutputEnd = function (end) {
 //     console.log.apply(console, [msg].concat(args));
 //     // console.log(this);
 // }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -22987,39 +20022,30 @@ taskProto.setOutputEnd = function (end) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var inner$4 = makeInner();
-
 var SeriesModel = ComponentModel.extend({
-
     type: 'series.__base__',
-
     /**
      * @readOnly
      */
     seriesIndex: 0,
-
     // coodinateSystem will be injected in the echarts/CoordinateSystem
     coordinateSystem: null,
-
     /**
      * @type {Object}
      * @protected
      */
     defaultOption: null,
-
     /**
      * Data provided for legend
      * @type {Function}
      */
     // PENDING
     legendDataProvider: null,
-
     /**
      * Access path of color for visual
      */
     visualColorAccessPath: 'itemStyle.color',
-
     /**
      * Support merge layout params.
      * Only support 'box' now (left/right/top/bottom/width/height).
@@ -23027,55 +20053,42 @@ var SeriesModel = ComponentModel.extend({
      * @readOnly
      */
     layoutMode: null,
-
     init: function (option, parentModel, ecModel, extraOpt) {
-
         /**
          * @type {number}
          * @readOnly
          */
         this.seriesIndex = this.componentIndex;
-
         this.dataTask = createTask({
             count: dataTaskCount,
             reset: dataTaskReset
         });
         this.dataTask.context = {model: this};
-
         this.mergeDefaultAndTheme(option, ecModel);
-
         prepareSource(this);
-
-
         var data = this.getInitialData(option, ecModel);
         wrapData(data, this);
         this.dataTask.context.data = data;
-
         if (__DEV__) {
             assert$1(data, 'getInitialData returned invalid data.');
         }
-
         /**
          * @type {module:echarts/data/List|module:echarts/data/Tree|module:echarts/data/Graph}
          * @private
          */
         inner$4(this).dataBeforeProcessed = data;
-
         // If we reverse the order (make data firstly, and then make
         // dataBeforeProcessed by cloneShallow), cloneShallow will
         // cause data.graph.data !== data when using
         // module:echarts/data/Graph or module:echarts/data/Tree.
         // See module:echarts/data/helper/linkList
-
         // Theoretically, it is unreasonable to call `seriesModel.getData()` in the model
         // init or merge stage, because the data can be restored. So we do not `restoreData`
         // and `setData` here, which forbids calling `seriesModel.getData()` in this stage.
         // Call `seriesModel.getRawData()` instead.
         // this.restoreData();
-
         autoSeriesName(this);
     },
-
     /**
      * Util for merge default and theme to option
      * @param  {Object} option
@@ -23085,7 +20098,6 @@ var SeriesModel = ComponentModel.extend({
         var layoutMode = this.layoutMode;
         var inputPositionParams = layoutMode
             ? getLayoutParams(option) : {};
-
         // Backward compat: using subType on theme.
         // But if name duplicate between series subType
         // (for example: parallel) add component mainType,
@@ -23099,40 +20111,29 @@ var SeriesModel = ComponentModel.extend({
             ecModel.getTheme().get(this.subType)
         );
         merge(option, this.getDefaultOption());
-
         // Default label emphasis `show`
         defaultEmphasis(option, 'label', ['show']);
-
         this.fillDataTextStyle(option.data);
-
         if (layoutMode) {
             mergeLayoutParam(option, inputPositionParams, layoutMode);
         }
     },
-
     mergeOption: function (newSeriesOption, ecModel) {
         // this.settingTask.dirty();
-
         newSeriesOption = merge(this.option, newSeriesOption, true);
         this.fillDataTextStyle(newSeriesOption.data);
-
         var layoutMode = this.layoutMode;
         if (layoutMode) {
             mergeLayoutParam(this.option, newSeriesOption, layoutMode);
         }
-
         prepareSource(this);
-
         var data = this.getInitialData(newSeriesOption, ecModel);
         wrapData(data, this);
         this.dataTask.dirty();
         this.dataTask.context.data = data;
-
         inner$4(this).dataBeforeProcessed = data;
-
         autoSeriesName(this);
     },
-
     fillDataTextStyle: function (data) {
         // Default data label emphasis `show`
         // FIXME Tree structure data ?
@@ -23146,13 +20147,11 @@ var SeriesModel = ComponentModel.extend({
             }
         }
     },
-
     /**
      * Init a data structure from data related option in series
      * Must be overwritten
      */
     getInitialData: function () {},
-
     /**
      * Append data to list
      * @param {Object} params
@@ -23165,7 +20164,6 @@ var SeriesModel = ComponentModel.extend({
         var data = this.getRawData();
         data.appendData(params.data);
     },
-
     /**
      * Consider some method like `filter`, `map` need make new data,
      * We should make sure that `seriesModel.getData()` get correct
@@ -23188,7 +20186,6 @@ var SeriesModel = ComponentModel.extend({
             return inner$4(this).data;
         }
     },
-
     /**
      * @param {module:echarts/data/List} data
      */
@@ -23215,7 +20212,6 @@ var SeriesModel = ComponentModel.extend({
         }
         inner$4(this).data = data;
     },
-
     /**
      * @see {module:echarts/data/helper/sourceHelper#getSource}
      * @return {module:echarts/data/Source} source
@@ -23223,7 +20219,6 @@ var SeriesModel = ComponentModel.extend({
     getSource: function () {
         return getSource(this);
     },
-
     /**
      * Get data before processed
      * @return {module:echarts/data/List}
@@ -23231,7 +20226,6 @@ var SeriesModel = ComponentModel.extend({
     getRawData: function () {
         return inner$4(this).dataBeforeProcessed;
     },
-
     /**
      * Get base axis if has coordinate system and has axis.
      * By default use coordSys.getBaseAxis();
@@ -23242,7 +20236,6 @@ var SeriesModel = ComponentModel.extend({
         var coordSys = this.coordinateSystem;
         return coordSys && coordSys.getBaseAxis && coordSys.getBaseAxis();
     },
-
     // FIXME
     /**
      * Default tooltip formatter
@@ -23258,14 +20251,12 @@ var SeriesModel = ComponentModel.extend({
      * @return {Object} formatted tooltip with `html` and `markers`
      */
     formatTooltip: function (dataIndex, multipleSeries, dataType, renderMode) {
-
         var series = this;
         renderMode = renderMode || 'html';
         var newLine = renderMode === 'html' ? '<br/>' : '\n';
         var isRichText = renderMode === 'richText';
         var markers = {};
         var markerId = 0;
-
         function formatArrayValue(value) {
             // ??? TODO refactor these logic.
             // check: category-no-encode-has-axis-data in dataset.html
@@ -23273,16 +20264,13 @@ var SeriesModel = ComponentModel.extend({
                 var dimItem = data.getDimensionInfo(idx);
                 return vertially |= dimItem && dimItem.tooltip !== false && dimItem.displayName != null;
             }, 0);
-
             var result = [];
-
             tooltipDims.length
                 ? each$1(tooltipDims, function (dim) {
                     setEachItem(retrieveRawValue(data, dataIndex, dim), dim);
                 })
                 // By default, all dims is used on tooltip.
                 : each$1(value, setEachItem);
-
             function setEachItem(val, dim) {
                 var dimInfo = data.getDimensionInfo(dim);
                 // If `dimInfo.tooltip` is not set, show tooltip.
@@ -23297,7 +20285,6 @@ var SeriesModel = ComponentModel.extend({
                     renderMode: renderMode,
                     markerId: markName
                 });
-
                 var dimHeadStr = typeof dimHead === 'string' ? dimHead : dimHead.content;
                 var valStr = (vertially
                         ? dimHeadStr + encodeHTML(dimInfo.displayName || '-') + ': '
@@ -23311,13 +20298,11 @@ var SeriesModel = ComponentModel.extend({
                         : addCommas(val)
                     );
                 valStr && result.push(valStr);
-
                 if (isRichText) {
                     markers[markName] = color;
                     ++markerId;
                 }
             }
-
             var newLine = vertially ? (isRichText ? '\n' : '<br/>') : '';
             var content = newLine + result.join(newLine || ', ');
             return {
@@ -23326,7 +20311,6 @@ var SeriesModel = ComponentModel.extend({
                 style: markers
             };
         }
-
         function formatSingleValue(val) {
             // return encodeHTML(addCommas(val));
             return {
@@ -23335,19 +20319,16 @@ var SeriesModel = ComponentModel.extend({
                 style: markers
             };
         }
-
         var data = this.getData();
         var tooltipDims = data.mapDimension('defaultedTooltip', true);
         var tooltipDimLen = tooltipDims.length;
         var value = this.getRawValue(dataIndex);
         var isValueArr = isArray(value);
-
         var color = data.getItemVisual(dataIndex, 'color');
         if (isObject$1(color) && color.colorStops) {
             color = (color.colorStops[0] || {}).color;
         }
         color = color || 'transparent';
-
         // Complicated rule for pretty tooltip.
         var formattedValue = (tooltipDimLen > 1 || (isValueArr && !tooltipDimLen))
             ? formatArrayValue(value)
@@ -23355,7 +20336,6 @@ var SeriesModel = ComponentModel.extend({
             ? formatSingleValue(retrieveRawValue(data, dataIndex, tooltipDims[0]))
             : formatSingleValue(isValueArr ? value[0] : value);
         var content = formattedValue.content;
-
         var markName = series.seriesIndex + 'at' + markerId;
         var colorEl = getTooltipMarker({
             color: color,
@@ -23365,9 +20345,7 @@ var SeriesModel = ComponentModel.extend({
         });
         markers[markName] = color;
         ++markerId;
-
         var name = data.getName(dataIndex);
-
         var seriesName = this.name;
         if (!isNameSpecified(this)) {
             seriesName = '';
@@ -23375,7 +20353,6 @@ var SeriesModel = ComponentModel.extend({
         seriesName = seriesName
             ? encodeHTML(seriesName) + (!multipleSeries ? newLine : ': ')
             : '';
-
         var colorStr = typeof colorEl === 'string' ? colorEl : colorEl.content;
         var html = !multipleSeries
             ? seriesName + colorStr
@@ -23384,13 +20361,11 @@ var SeriesModel = ComponentModel.extend({
                     : content
                 )
             : colorStr + seriesName + content;
-
         return {
             html: html,
             markers: markers
         };
     },
-
     /**
      * @return {boolean}
      */
@@ -23398,7 +20373,6 @@ var SeriesModel = ComponentModel.extend({
         if (env$1.node) {
             return false;
         }
-
         var animationEnabled = this.getShallow('animation');
         if (animationEnabled) {
             if (this.getData().count() > this.getShallow('animationThreshold')) {
@@ -23407,11 +20381,9 @@ var SeriesModel = ComponentModel.extend({
         }
         return animationEnabled;
     },
-
     restoreData: function () {
         this.dataTask.dirty();
     },
-
     getColorFromPalette: function (name, scope, requestColorNum) {
         var ecModel = this.ecModel;
         // PENDING
@@ -23421,7 +20393,6 @@ var SeriesModel = ComponentModel.extend({
         }
         return color;
     },
-
     /**
      * Use `data.mapDimension(coordDim, true)` instead.
      * @deprecated
@@ -23429,7 +20400,6 @@ var SeriesModel = ComponentModel.extend({
     coordDimToDataDim: function (coordDim) {
         return this.getRawData().mapDimension(coordDim, true);
     },
-
     /**
      * Get progressive rendering count each step
      * @return {number}
@@ -23437,7 +20407,6 @@ var SeriesModel = ComponentModel.extend({
     getProgressive: function () {
         return this.get('progressive');
     },
-
     /**
      * Get progressive rendering count each step
      * @return {number}
@@ -23445,7 +20414,6 @@ var SeriesModel = ComponentModel.extend({
     getProgressiveThreshold: function () {
         return this.get('progressiveThreshold');
     },
-
     /**
      * Get data indices for show tooltip content. See tooltip.
      * @abstract
@@ -23455,7 +20423,6 @@ var SeriesModel = ComponentModel.extend({
      * @return {Object} {dataIndices, nestestValue}.
      */
     getAxisTooltipData: null,
-
     /**
      * See tooltip.
      * @abstract
@@ -23463,32 +20430,25 @@ var SeriesModel = ComponentModel.extend({
      * @return {Array.<number>} Point of tooltip. null/undefined can be returned.
      */
     getTooltipPosition: null,
-
     /**
      * @see {module:echarts/stream/Scheduler}
      */
     pipeTask: null,
-
     /**
      * Convinient for override in extended class.
      * @protected
      * @type {Function}
      */
     preventIncremental: null,
-
     /**
      * @public
      * @readOnly
      * @type {Object}
      */
     pipelineContext: null
-
 });
-
-
 mixin(SeriesModel, dataFormatMixin);
 mixin(SeriesModel, colorPaletteMixin);
-
 /**
  * MUST be called after `prepareSource` called
  * Here we need to make auto series, especially for auto legend. But we
@@ -23502,7 +20462,6 @@ function autoSeriesName(seriesModel) {
         seriesModel.name = getSeriesAutoName(seriesModel) || name;
     }
 }
-
 function getSeriesAutoName(seriesModel) {
     var data = seriesModel.getRawData();
     var dataDims = data.mapDimension('seriesName', true);
@@ -23513,31 +20472,26 @@ function getSeriesAutoName(seriesModel) {
     });
     return nameArr.join(' ');
 }
-
 function dataTaskCount(context) {
     return context.model.getRawData().count();
 }
-
 function dataTaskReset(context) {
     var seriesModel = context.model;
     seriesModel.setData(seriesModel.getRawData().cloneShallow());
     return dataTaskProgress;
 }
-
 function dataTaskProgress(param, context) {
     // Avoid repead cloneShallow when data just created in reset.
     if (param.end > context.outputData.count()) {
         context.model.getRawData().cloneShallow(context.outputData);
     }
 }
-
 // TODO refactor
 function wrapData(data, seriesModel) {
     each$1(data.CHANGABLE_METHODS, function (methodName) {
         data.wrapMethod(methodName, curry(onDataSelfChange, seriesModel));
     });
 }
-
 function onDataSelfChange(seriesModel) {
     var task = getCurrentTask(seriesModel);
     if (task) {
@@ -23545,11 +20499,9 @@ function onDataSelfChange(seriesModel) {
         task.setOutputEnd(this.count());
     }
 }
-
 function getCurrentTask(seriesModel) {
     var scheduler = (seriesModel.ecModel || {}).scheduler;
     var pipeline = scheduler && scheduler.getPipeline(seriesModel.uid);
-
     if (pipeline) {
         // When pipline finished, the currrentTask keep the last
         // task (renderTask).
@@ -23563,7 +20515,6 @@ function getCurrentTask(seriesModel) {
         return task;
     }
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -23582,31 +20533,23 @@ function getCurrentTask(seriesModel) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var Component = function () {
     /**
      * @type {module:zrender/container/Group}
      * @readOnly
      */
     this.group = new Group();
-
     /**
      * @type {string}
      * @readOnly
      */
     this.uid = getUID('viewComponent');
 };
-
 Component.prototype = {
-
     constructor: Component,
-
     init: function (ecModel, api) {},
-
     render: function (componentModel, ecModel, api, payload) {},
-
     dispose: function () {},
-
     /**
      * @param {string} eventType
      * @param {Object} query
@@ -23615,9 +20558,7 @@ Component.prototype = {
      * @return {boolen} Pass only when return `true`.
      */
     filterForExposedEvent: null
-
 };
-
 var componentProto = Component.prototype;
 componentProto.updateView
     = componentProto.updateLayout
@@ -23627,10 +20568,8 @@ componentProto.updateView
     };
 // Enable Component.extend.
 enableClassExtend(Component);
-
 // Enable capability of registerClass, getClass, hasClass, registerSubTypeDefaulter and so on.
 enableClassManagement(Component, {registerWhenExtend: true});
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -23649,27 +20588,21 @@ enableClassManagement(Component, {registerWhenExtend: true});
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @return {string} If large mode changed, return string 'reset';
  */
 var createRenderPlanner = function () {
     var inner = makeInner();
-
     return function (seriesModel) {
         var fields = inner(seriesModel);
         var pipelineContext = seriesModel.pipelineContext;
-
         var originalLarge = fields.large;
         var originalProgressive = fields.progressiveRender;
-
         var large = fields.large = pipelineContext.large;
         var progressive = fields.progressiveRender = pipelineContext.progressiveRender;
-
         return !!((originalLarge ^ large) || (originalProgressive ^ progressive)) && 'reset';
     };
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -23688,42 +20621,33 @@ var createRenderPlanner = function () {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var inner$5 = makeInner();
 var renderPlanner = createRenderPlanner();
-
 function Chart() {
-
     /**
      * @type {module:zrender/container/Group}
      * @readOnly
      */
     this.group = new Group();
-
     /**
      * @type {string}
      * @readOnly
      */
     this.uid = getUID('viewChart');
-
     this.renderTask = createTask({
         plan: renderTaskPlan,
         reset: renderTaskReset
     });
     this.renderTask.context = {view: this};
 }
-
 Chart.prototype = {
-
     type: 'chart',
-
     /**
      * Init the chart.
      * @param  {module:echarts/model/Global} ecModel
      * @param  {module:echarts/ExtensionAPI} api
      */
     init: function (ecModel, api) {},
-
     /**
      * Render the chart.
      * @param  {module:echarts/model/Series} seriesModel
@@ -23732,7 +20656,6 @@ Chart.prototype = {
      * @param  {Object} payload
      */
     render: function (seriesModel, ecModel, api, payload) {},
-
     /**
      * Highlight series or specified data item.
      * @param  {module:echarts/model/Series} seriesModel
@@ -23743,7 +20666,6 @@ Chart.prototype = {
     highlight: function (seriesModel, ecModel, api, payload) {
         toggleHighlight(seriesModel.getData(), payload, 'emphasis');
     },
-
     /**
      * Downplay series or specified data item.
      * @param  {module:echarts/model/Series} seriesModel
@@ -23754,7 +20676,6 @@ Chart.prototype = {
     downplay: function (seriesModel, ecModel, api, payload) {
         toggleHighlight(seriesModel.getData(), payload, 'normal');
     },
-
     /**
      * Remove self.
      * @param  {module:echarts/model/Global} ecModel
@@ -23763,14 +20684,12 @@ Chart.prototype = {
     remove: function (ecModel, api) {
         this.group.removeAll();
     },
-
     /**
      * Dispose self.
      * @param  {module:echarts/model/Global} ecModel
      * @param  {module:echarts/ExtensionAPI} api
      */
     dispose: function () {},
-
     /**
      * Rendering preparation in progressive mode.
      * @param  {module:echarts/model/Series} seriesModel
@@ -23779,7 +20698,6 @@ Chart.prototype = {
      * @param  {Object} payload
      */
     incrementalPrepareRender: null,
-
     /**
      * Render in progressive mode.
      * @param  {Object} params See taskParams in `stream/task.js`
@@ -23789,7 +20707,6 @@ Chart.prototype = {
      * @param  {Object} payload
      */
     incrementalRender: null,
-
     /**
      * Update transform directly.
      * @param  {module:echarts/model/Series} seriesModel
@@ -23799,7 +20716,6 @@ Chart.prototype = {
      * @return {Object} {update: true}
      */
     updateTransform: null,
-
     /**
      * The view contains the given point.
      * @interface
@@ -23807,7 +20723,6 @@ Chart.prototype = {
      * @return {boolean}
      */
     // containPoint: function () {}
-
     /**
      * @param {string} eventType
      * @param {Object} query
@@ -23816,9 +20731,7 @@ Chart.prototype = {
      * @return {boolen} Pass only when return `true`.
      */
     filterForExposedEvent: null
-
 };
-
 var chartProto = Chart.prototype;
 chartProto.updateView
     = chartProto.updateLayout
@@ -23826,7 +20739,6 @@ chartProto.updateView
     = function (seriesModel, ecModel, api, payload) {
         this.render(seriesModel, ecModel, api, payload);
     };
-
 /**
  * Set state of single element
  * @param  {module:zrender/Element} el
@@ -23849,7 +20761,6 @@ function elSetState(el, state) {
  */
 function toggleHighlight(data, payload, state) {
     var dataIndex = queryDataIndex(data, payload);
-
     if (dataIndex != null) {
         each$1(normalizeToArray(dataIndex), function (dataIdx) {
             elSetState(data.getItemGraphicEl(dataIdx), state);
@@ -23861,21 +20772,16 @@ function toggleHighlight(data, payload, state) {
         });
     }
 }
-
 // Enable Chart.extend.
 enableClassExtend(Chart, ['dispose']);
-
 // Add capability of registerClass, getClass, hasClass, registerSubTypeDefaulter and so on.
 enableClassManagement(Chart, {registerWhenExtend: true});
-
 Chart.markUpdateMethod = function (payload, methodName) {
     inner$5(payload).updateMethod = methodName;
 };
-
 function renderTaskPlan(context) {
     return renderPlanner(context.model);
 }
-
 function renderTaskReset(context) {
     var seriesModel = context.model;
     var ecModel = context.ecModel;
@@ -23884,7 +20790,6 @@ function renderTaskReset(context) {
     // ???! remove updateView updateVisual
     var progressiveRender = seriesModel.pipelineContext.progressiveRender;
     var view = context.view;
-
     var updateMethod = payload && inner$5(payload).updateMethod;
     var methodName = progressiveRender
         ? 'incrementalPrepareRender'
@@ -23893,14 +20798,11 @@ function renderTaskReset(context) {
         // `appendData` is also supported when data amount
         // is less than progressive threshold.
         : 'render';
-
     if (methodName !== 'render') {
         view[methodName](seriesModel, ecModel, api, payload);
     }
-
     return progressMethodMap[methodName];
 }
-
 var progressMethodMap = {
     incrementalPrepareRender: {
         progress: function (params, context) {
@@ -23922,7 +20824,6 @@ var progressMethodMap = {
         }
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -23941,8 +20842,6 @@ var progressMethodMap = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
-
 /**
  * @public
  * @param {(Function)} fn
@@ -23953,7 +20852,6 @@ var progressMethodMap = {
  * @return {(Function)} throttled fn.
  */
 function throttle(fn, delay, debounce) {
-
     var currCall;
     var lastCall = 0;
     var lastExec = 0;
@@ -23962,15 +20860,12 @@ function throttle(fn, delay, debounce) {
     var scope;
     var args;
     var debounceNextCall;
-
     delay = delay || 0;
-
     function exec() {
         lastExec = (new Date()).getTime();
         timer = null;
         fn.apply(scope, args || []);
     }
-
     var cb = function () {
         currCall = (new Date()).getTime();
         scope = this;
@@ -23979,9 +20874,7 @@ function throttle(fn, delay, debounce) {
         var thisDebounce = debounceNextCall || debounce;
         debounceNextCall = null;
         diff = currCall - (thisDebounce ? lastCall : lastExec) - thisDelay;
-
         clearTimeout(timer);
-
         // Here we should make sure that: the `exec` SHOULD NOT be called later
         // than a new call of `cb`, that is, preserving the command order. Consider
         // calculating "scale rate" when roaming as an example. When a call of `cb`
@@ -24001,10 +20894,8 @@ function throttle(fn, delay, debounce) {
                 timer = setTimeout(exec, -diff);
             }
         }
-
         lastCall = currCall;
     };
-
     /**
      * Clear throttle.
      * @public
@@ -24015,17 +20906,14 @@ function throttle(fn, delay, debounce) {
             timer = null;
         }
     };
-
     /**
      * Enable debounce once.
      */
     cb.debounceNextCall = function (debounceDelay) {
         debounceNextCall = debounceDelay;
     };
-
     return cb;
 }
-
 /**
  * Create throttle method or update throttle rate.
  *
@@ -24053,8 +20941,6 @@ function throttle(fn, delay, debounce) {
  * @param {string} [throttleType='fixRate'] 'fixRate' or 'debounce'
  * @return {Function} throttled function.
  */
-
-
 /**
  * Clear throttle. Example see throttle.createOrUpdate.
  *
@@ -24062,7 +20948,6 @@ function throttle(fn, delay, debounce) {
  * @param {Object} obj
  * @param {string} fnAttr
  */
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -24081,7 +20966,6 @@ function throttle(fn, delay, debounce) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var seriesColor = {
     createOnAllSeries: true,
     performRawSeries: true,
@@ -24093,10 +20977,8 @@ var seriesColor = {
                 // TODO series count changed.
                 seriesModel.name, null, ecModel.getSeriesCount()
             );  // Default color
-
         // FIXME Set color function or use the platte color
         data.setVisual('color', color);
-
         // Only visible series has each data be visual encoded
         if (!ecModel.isSeriesFiltered(seriesModel)) {
             if (typeof color === 'function' && !(color instanceof Gradient)) {
@@ -24106,7 +20988,6 @@ var seriesColor = {
                     );
                 });
             }
-
             // itemStyle in each data item
             var dataEach = function (data, idx) {
                 var itemModel = data.getItemModel(idx);
@@ -24115,12 +20996,10 @@ var seriesColor = {
                     data.setItemVisual(idx, 'color', color);
                 }
             };
-
             return { dataEach: data.hasItemOption ? dataEach : null };
         }
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -24139,8 +21018,6 @@ var seriesColor = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
-
 var lang = {
     toolbox: {
         brush: {
@@ -24238,7 +21115,6 @@ var lang = {
         }
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -24257,7 +21133,6 @@ var lang = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var aria = function (dom, ecModel) {
     var ariaModel = ecModel.getModel('aria');
     if (!ariaModel.get('show')) {
@@ -24267,16 +21142,13 @@ var aria = function (dom, ecModel) {
         dom.setAttribute('aria-label', ariaModel.get('description'));
         return;
     }
-
     var seriesCnt = 0;
     ecModel.eachSeries(function (seriesModel, idx) {
         ++seriesCnt;
     }, this);
-
     var maxDataCnt = ariaModel.get('data.maxCount') || 10;
     var maxSeriesCnt = ariaModel.get('series.maxCount') || 10;
     var displaySeriesCnt = Math.min(seriesCnt, maxSeriesCnt);
-
     var ariaLabel;
     if (seriesCnt < 1) {
         // No series, no aria label
@@ -24292,30 +21164,25 @@ var aria = function (dom, ecModel) {
         else {
             ariaLabel = getConfig('general.withoutTitle');
         }
-
         var seriesLabels = [];
         var prefix = seriesCnt > 1
             ? 'series.multiple.prefix'
             : 'series.single.prefix';
         ariaLabel += replace(getConfig(prefix), { seriesCount: seriesCnt });
-
         ecModel.eachSeries(function (seriesModel, idx) {
             if (idx < displaySeriesCnt) {
                 var seriesLabel;
-
                 var seriesName = seriesModel.get('name');
                 var seriesTpl = 'series.'
                     + (seriesCnt > 1 ? 'multiple' : 'single') + '.';
                 seriesLabel = getConfig(seriesName
                     ? seriesTpl + 'withName'
                     : seriesTpl + 'withoutName');
-
                 seriesLabel = replace(seriesLabel, {
                     seriesId: seriesModel.seriesIndex,
                     seriesName: seriesModel.get('name'),
                     seriesType: getSeriesTypeName(seriesModel.subType)
                 });
-
                 var data = seriesModel.getData();
                 window.data = data;
                 if (data.count() > maxDataCnt) {
@@ -24327,7 +21194,6 @@ var aria = function (dom, ecModel) {
                 else {
                     seriesLabel += getConfig('data.allData');
                 }
-
                 var dataLabels = [];
                 for (var i = 0; i < data.count(); i++) {
                     if (i < maxDataCnt) {
@@ -24349,23 +21215,18 @@ var aria = function (dom, ecModel) {
                 seriesLabel += dataLabels
                     .join(getConfig('data.separator.middle'))
                     + getConfig('data.separator.end');
-
                 seriesLabels.push(seriesLabel);
             }
         });
-
         ariaLabel += seriesLabels
             .join(getConfig('series.multiple.separator.middle'))
             + getConfig('series.multiple.separator.end');
-
         dom.setAttribute('aria-label', ariaLabel);
     }
-
     function replace(str, keyValues) {
         if (typeof str !== 'string') {
             return str;
         }
-
         var result = str;
         each$1(keyValues, function (value, key) {
             result = result.replace(
@@ -24375,7 +21236,6 @@ var aria = function (dom, ecModel) {
         });
         return result;
     }
-
     function getConfig(path) {
         var userConfig = ariaModel.get(path);
         if (userConfig == null) {
@@ -24390,7 +21250,6 @@ var aria = function (dom, ecModel) {
             return userConfig;
         }
     }
-
     function getTitle() {
         var title = ecModel.getModel('title').option;
         if (title && title.length) {
@@ -24398,12 +21257,10 @@ var aria = function (dom, ecModel) {
         }
         return title && title.text;
     }
-
     function getSeriesTypeName(type) {
         return lang.series.typeNames[type] || '自定义图';
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -24422,9 +21279,7 @@ var aria = function (dom, ecModel) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var PI$1 = Math.PI;
-
 /**
  * @param {module:echarts/ExtensionAPI} api
  * @param {Object} [opts]
@@ -24474,7 +21329,6 @@ var loadingDefault = function (api, opts) {
         zlevel: opts.zlevel,
         z: 10001
     });
-
     arc.animateShape(true)
         .when(1000, {
             endAngle: PI$1 * 3 / 2
@@ -24486,7 +21340,6 @@ var loadingDefault = function (api, opts) {
         })
         .delay(300)
         .start('circularInOut');
-
     var group = new Group();
     group.add(arc);
     group.add(labelRect);
@@ -24506,7 +21359,6 @@ var loadingDefault = function (api, opts) {
             width: r * 2,
             height: r * 2
         });
-
         mask.setShape({
             x: 0,
             y: 0,
@@ -24517,7 +21369,6 @@ var loadingDefault = function (api, opts) {
     group.resize();
     return group;
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -24536,11 +21387,9 @@ var loadingDefault = function (api, opts) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @module echarts/stream/Scheduler
  */
-
 /**
  * @constructor
  */
@@ -24548,7 +21397,6 @@ function Scheduler(ecInstance, api, dataProcessorHandlers, visualHandlers) {
     this.ecInstance = ecInstance;
     this.api = api;
     this.unfinished;
-
     // Fix current processors in case that in some rear cases that
     // processors might be registered after echarts instance created.
     // Register processors incrementally for a echarts instance is
@@ -24556,7 +21404,6 @@ function Scheduler(ecInstance, api, dataProcessorHandlers, visualHandlers) {
     var dataProcessorHandlers = this._dataProcessorHandlers = dataProcessorHandlers.slice();
     var visualHandlers = this._visualHandlers = visualHandlers.slice();
     this._allHandlers = dataProcessorHandlers.concat(visualHandlers);
-
     /**
      * @private
      * @type {
@@ -24570,9 +21417,7 @@ function Scheduler(ecInstance, api, dataProcessorHandlers, visualHandlers) {
      */
     this._stageTaskMap = createHashMap();
 }
-
 var proto = Scheduler.prototype;
-
 /**
  * @param {module:echarts/model/Global} ecModel
  * @param {Object} payload
@@ -24592,12 +21437,9 @@ proto.restoreData = function (ecModel, payload) {
     // it should be re-performed when the result array of `getTargetSeries` changed.
     // We use `dependencies` to cover these issues.
     // (3) How to update target series when coordinate system related components modified.
-
     // TODO: simply the dirty mechanism? Check whether only the case here can set tasks dirty,
     // and this case all of the tasks will be set as dirty.
-
     ecModel.restoreData(payload);
-
     // Theoretically an overall task not only depends on each of its target series, but also
     // depends on all of the series.
     // The overall task is not in pipeline, and `ecModel.restoreData` only set pipeline tasks
@@ -24610,32 +21452,26 @@ proto.restoreData = function (ecModel, payload) {
         overallTask && overallTask.dirty();
     });
 };
-
 // If seriesModel provided, incremental threshold is check by series data.
 proto.getPerformArgs = function (task, isBlock) {
     // For overall task
     if (!task.__pipeline) {
         return;
     }
-
     var pipeline = this._pipelineMap.get(task.__pipeline.id);
     var pCtx = pipeline.context;
     var incremental = !isBlock
         && pipeline.progressiveEnabled
         && (!pCtx || pCtx.progressiveRender)
         && task.__idxInPipeline > pipeline.blockIndex;
-
     var step = incremental ? pipeline.step : null;
     var modDataCount = pCtx && pCtx.modDataCount;
     var modBy = modDataCount != null ? Math.ceil(modDataCount / step) : null;
-
     return {step: step, modBy: modBy, modDataCount: modDataCount};
 };
-
 proto.getPipeline = function (pipelineId) {
     return this._pipelineMap.get(pipelineId);
 };
-
 /**
  * Current, progressive rendering starts from visual and layout.
  * Always detect render mode in the same stage, avoiding that incorrect
@@ -24647,7 +21483,6 @@ proto.updateStreamModes = function (seriesModel, view) {
     var pipeline = this._pipelineMap.get(seriesModel.uid);
     var data = seriesModel.getData();
     var dataLen = data.count();
-
     // `progressiveRender` means that can render progressively in each
     // animation frame. Note that some types of series do not provide
     // `view.incrementalPrepareRender` but support `chart.appendData`. We
@@ -24656,28 +21491,22 @@ proto.updateStreamModes = function (seriesModel, view) {
     var progressiveRender = pipeline.progressiveEnabled
         && view.incrementalPrepareRender
         && dataLen >= pipeline.threshold;
-
     var large = seriesModel.get('large') && dataLen >= seriesModel.get('largeThreshold');
-
     // TODO: modDataCount should not updated if `appendData`, otherwise cause whole repaint.
     // see `test/candlestick-large3.html`
     var modDataCount = seriesModel.get('progressiveChunkMode') === 'mod' ? dataLen : null;
-
     seriesModel.pipelineContext = pipeline.context = {
         progressiveRender: progressiveRender,
         modDataCount: modDataCount,
         large: large
     };
 };
-
 proto.restorePipelines = function (ecModel) {
     var scheduler = this;
     var pipelineMap = scheduler._pipelineMap = createHashMap();
-
     ecModel.eachSeries(function (seriesModel) {
         var progressive = seriesModel.getProgressive();
         var pipelineId = seriesModel.uid;
-
         pipelineMap.set(pipelineId, {
             id: pipelineId,
             head: null,
@@ -24689,63 +21518,48 @@ proto.restorePipelines = function (ecModel) {
             step: Math.round(progressive || 700),
             count: 0
         });
-
         pipe(scheduler, seriesModel, seriesModel.dataTask);
     });
 };
-
 proto.prepareStageTasks = function () {
     var stageTaskMap = this._stageTaskMap;
     var ecModel = this.ecInstance.getModel();
     var api = this.api;
-
     each$1(this._allHandlers, function (handler) {
         var record = stageTaskMap.get(handler.uid) || stageTaskMap.set(handler.uid, []);
-
         handler.reset && createSeriesStageTask(this, handler, record, ecModel, api);
         handler.overallReset && createOverallStageTask(this, handler, record, ecModel, api);
     }, this);
 };
-
 proto.prepareView = function (view, model, ecModel, api) {
     var renderTask = view.renderTask;
     var context = renderTask.context;
-
     context.model = model;
     context.ecModel = ecModel;
     context.api = api;
-
     renderTask.__block = !view.incrementalPrepareRender;
-
     pipe(this, model, renderTask);
 };
-
-
 proto.performDataProcessorTasks = function (ecModel, payload) {
     // If we do not use `block` here, it should be considered when to update modes.
     performStageTasks(this, this._dataProcessorHandlers, ecModel, payload, {block: true});
 };
-
 // opt
 // opt.visualType: 'visual' or 'layout'
 // opt.setDirty
 proto.performVisualTasks = function (ecModel, payload, opt) {
     performStageTasks(this, this._visualHandlers, ecModel, payload, opt);
 };
-
 function performStageTasks(scheduler, stageHandlers, ecModel, payload, opt) {
     opt = opt || {};
     var unfinished;
-
     each$1(stageHandlers, function (stageHandler, idx) {
         if (opt.visualType && opt.visualType !== stageHandler.visualType) {
             return;
         }
-
         var stageHandlerRecord = scheduler._stageTaskMap.get(stageHandler.uid);
         var seriesTaskMap = stageHandlerRecord.seriesTaskMap;
         var overallTask = stageHandlerRecord.overallTask;
-
         if (overallTask) {
             var overallNeedDirty;
             var agentStubMap = overallTask.agentStubMap;
@@ -24780,25 +21594,19 @@ function performStageTasks(scheduler, stageHandlers, ecModel, payload, opt) {
             });
         }
     });
-
     function needSetDirty(opt, task) {
         return opt.setDirty && (!opt.dirtyMap || opt.dirtyMap.get(task.__pipeline.id));
     }
-
     scheduler.unfinished |= unfinished;
 }
-
 proto.performSeriesTasks = function (ecModel) {
     var unfinished;
-
     ecModel.eachSeries(function (seriesModel) {
         // Progress to the end for dataInit and dataRestore.
         unfinished |= seriesModel.dataTask.perform();
     });
-
     this.unfinished |= unfinished;
 };
-
 proto.plan = function () {
     // Travel pipelines, check block.
     this._pipelineMap.each(function (pipeline) {
@@ -24813,17 +21621,14 @@ proto.plan = function () {
         while (task);
     });
 };
-
 var updatePayload = proto.updatePayload = function (task, payload) {
     payload !== 'remain' && (task.context.payload = payload);
 };
-
 function createSeriesStageTask(scheduler, stageHandler, stageHandlerRecord, ecModel, api) {
     var seriesTaskMap = stageHandlerRecord.seriesTaskMap
         || (stageHandlerRecord.seriesTaskMap = createHashMap());
     var seriesType = stageHandler.seriesType;
     var getTargetSeries = stageHandler.getTargetSeries;
-
     // If a stageHandler should cover all series, `createOnAllSeries` should be declared mandatorily,
     // to avoid some typo or abuse. Otherwise if an extension do not specify a `seriesType`,
     // it works but it may cause other irrelevant charts blocked.
@@ -24836,10 +21641,8 @@ function createSeriesStageTask(scheduler, stageHandler, stageHandlerRecord, ecMo
     else if (getTargetSeries) {
         getTargetSeries(ecModel, api).each(create);
     }
-
     function create(seriesModel) {
         var pipelineId = seriesModel.uid;
-
         // Init tasks for each seriesModel only once.
         // Reuse original task instance.
         var task = seriesTaskMap.get(pipelineId)
@@ -24859,7 +21662,6 @@ function createSeriesStageTask(scheduler, stageHandler, stageHandlerRecord, ecMo
         };
         pipe(scheduler, seriesModel, task);
     }
-
     // Clear unused series tasks.
     var pipelineMap = scheduler._pipelineMap;
     seriesTaskMap.each(function (task, pipelineId) {
@@ -24869,27 +21671,22 @@ function createSeriesStageTask(scheduler, stageHandler, stageHandlerRecord, ecMo
         }
     });
 }
-
 function createOverallStageTask(scheduler, stageHandler, stageHandlerRecord, ecModel, api) {
     var overallTask = stageHandlerRecord.overallTask = stageHandlerRecord.overallTask
         // For overall task, the function only be called on reset stage.
         || createTask({reset: overallTaskReset});
-
     overallTask.context = {
         ecModel: ecModel,
         api: api,
         overallReset: stageHandler.overallReset,
         scheduler: scheduler
     };
-
     // Reuse orignal stubs.
     var agentStubMap = overallTask.agentStubMap = overallTask.agentStubMap || createHashMap();
-
     var seriesType = stageHandler.seriesType;
     var getTargetSeries = stageHandler.getTargetSeries;
     var overallProgress = true;
     var modifyOutputEnd = stageHandler.modifyOutputEnd;
-
     // An overall task with seriesType detected or has `getTargetSeries`, we add
     // stub in each pipelines, it will set the overall task dirty when the pipeline
     // progress. Moreover, to avoid call the overall task each frame (too frequent),
@@ -24908,7 +21705,6 @@ function createOverallStageTask(scheduler, stageHandler, stageHandlerRecord, ecM
         overallProgress = false;
         each$1(ecModel.getSeries(), createStub);
     }
-
     function createStub(seriesModel) {
         var pipelineId = seriesModel.uid;
         var stub = agentStubMap.get(pipelineId);
@@ -24927,10 +21723,8 @@ function createOverallStageTask(scheduler, stageHandler, stageHandlerRecord, ecM
         };
         stub.agent = overallTask;
         stub.__block = overallProgress;
-
         pipe(scheduler, seriesModel, stub);
     }
-
     // Clear unused stubs.
     var pipelineMap = scheduler._pipelineMap;
     agentStubMap.each(function (stub, pipelineId) {
@@ -24943,32 +21737,26 @@ function createOverallStageTask(scheduler, stageHandler, stageHandlerRecord, ecM
         }
     });
 }
-
 function overallTaskReset(context) {
     context.overallReset(
         context.ecModel, context.api, context.payload
     );
 }
-
 function stubReset(context, upstreamContext) {
     return context.overallProgress && stubProgress;
 }
-
 function stubProgress() {
     this.agent.dirty();
     this.getDownstream().dirty();
 }
-
 function stubOnDirty() {
     this.agent && this.agent.dirty();
 }
-
 function seriesTaskPlan(context) {
     return context.plan && context.plan(
         context.model, context.ecModel, context.api, context.payload
     );
 }
-
 function seriesTaskReset(context) {
     if (context.useClearVisual) {
         context.data.clearAllVisual();
@@ -24982,14 +21770,11 @@ function seriesTaskReset(context) {
         })
         : singleSeriesTaskProgress;
 }
-
 var singleSeriesTaskProgress = makeSeriesTaskProgress(0);
-
 function makeSeriesTaskProgress(resetDefineIdx) {
     return function (params, context) {
         var data = context.data;
         var resetDefine = context.resetDefines[resetDefineIdx];
-
         if (resetDefine && resetDefine.dataEach) {
             for (var i = params.start; i < params.end; i++) {
                 resetDefine.dataEach(data, i);
@@ -25000,11 +21785,9 @@ function makeSeriesTaskProgress(resetDefineIdx) {
         }
     };
 }
-
 function seriesTaskCount(context) {
     return context.data.count();
 }
-
 function pipe(scheduler, seriesModel, task) {
     var pipelineId = seriesModel.uid;
     var pipeline = scheduler._pipelineMap.get(pipelineId);
@@ -25014,7 +21797,6 @@ function pipe(scheduler, seriesModel, task) {
     task.__idxInPipeline = pipeline.count++;
     task.__pipeline = pipeline;
 }
-
 Scheduler.wrapStageHandler = function (stageHandler, visualType) {
     if (isFunction$1(stageHandler)) {
         stageHandler = {
@@ -25022,15 +21804,10 @@ Scheduler.wrapStageHandler = function (stageHandler, visualType) {
             seriesType: detectSeriseType(stageHandler)
         };
     }
-
     stageHandler.uid = getUID('stageHandler');
     visualType && (stageHandler.visualType = visualType);
-
     return stageHandler;
 };
-
-
-
 /**
  * Only some legacy stage handlers (usually in echarts extensions) are pure function.
  * To ensure that they can work normally, they should work in block mode, that is,
@@ -25048,11 +21825,9 @@ function detectSeriseType(legacyFunc) {
     }
     return seriesType;
 }
-
 var ecModelMock = {};
 var apiMock = {};
 var seriesType;
-
 mockMethods(ecModelMock, GlobalModel);
 mockMethods(apiMock, ExtensionAPI);
 ecModelMock.eachSeriesByType = ecModelMock.eachRawSeriesByType = function (type) {
@@ -25063,7 +21838,6 @@ ecModelMock.eachComponent = function (cond) {
         seriesType = cond.subType;
     }
 };
-
 function mockMethods(target, Clz) {
     /* eslint-disable */
     for (var name in Clz.prototype) {
@@ -25072,7 +21846,6 @@ function mockMethods(target, Clz) {
     }
     /* eslint-enable */
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -25091,16 +21864,12 @@ function mockMethods(target, Clz) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var colorAll = [
     '#37A2DA', '#32C5E9', '#67E0E3', '#9FE6B8', '#FFDB5C', '#ff9f7f',
     '#fb7293', '#E062AE', '#E690D1', '#e7bcf3', '#9d96f5', '#8378EA', '#96BFFF'
 ];
-
 var lightTheme = {
-
     color: colorAll,
-
     colorLayer: [
         ['#37A2DA', '#ffd85c', '#fd7b5f'],
         ['#37A2DA', '#67E0E3', '#FFDB5C', '#ff9f7f', '#E062AE', '#9d96f5'],
@@ -25108,7 +21877,6 @@ var lightTheme = {
         colorAll
     ]
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -25127,7 +21895,6 @@ var lightTheme = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var contrastColor = '#eee';
 var axisCommon = function () {
     return {
@@ -25159,7 +21926,6 @@ var axisCommon = function () {
         }
     };
 };
-
 var colorPalette = [
     '#dd6b66', '#759aa0', '#e69d87', '#8dc1a9', '#ea7e53',
     '#eedd78', '#73a373', '#73b9bc', '#7289ab', '#91ca8c', '#f49f42'
@@ -25234,7 +22000,6 @@ var theme = {
     logAxis: axisCommon(),
     valueAxis: axisCommon(),
     categoryAxis: axisCommon(),
-
     line: {
         symbol: 'circle'
     },
@@ -25260,7 +22025,6 @@ var theme = {
     }
 };
 theme.categoryAxis.splitLine.show = false;
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -25279,7 +22043,6 @@ theme.categoryAxis.splitLine.show = false;
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * This module is imported by echarts directly.
  *
@@ -25288,53 +22051,36 @@ theme.categoryAxis.splitLine.show = false;
  * Because before 4.1.0, dataset is an optional component,
  * some users may import this module manually.
  */
-
 ComponentModel.extend({
-
     type: 'dataset',
-
     /**
      * @protected
      */
     defaultOption: {
-
         // 'row', 'column'
         seriesLayoutBy: SERIES_LAYOUT_BY_COLUMN,
-
         // null/'auto': auto detect header, see "module:echarts/data/helper/sourceHelper"
         sourceHeader: null,
-
         dimensions: null,
-
         source: null
     },
-
     optionUpdated: function () {
         detectSourceFormat(this);
     }
-
 });
-
 Component.extend({
-
     type: 'dataset'
-
 });
-
 /**
  * 椭圆形状
  * @module zrender/graphic/shape/Ellipse
  */
-
 var Ellipse = Path.extend({
-
     type: 'ellipse',
-
     shape: {
         cx: 0, cy: 0,
         rx: 0, ry: 0
     },
-
     buildPath: function (ctx, shape) {
         var k = 0.5522848;
         var x = shape.cx;
@@ -25352,13 +22098,11 @@ var Ellipse = Path.extend({
         ctx.closePath();
     }
 });
-
 // import RadialGradient from '../graphic/RadialGradient';
 // import Pattern from '../graphic/Pattern';
 // import * as vector from '../core/vector';
 // Most of the values can be separated by comma and/or white space.
 var DILIMITER_REG = /[\s,]+/;
-
 /**
  * For big svg string, this method might be time consuming.
  *
@@ -25370,7 +22114,6 @@ function parseXML(svg) {
         var parser = new DOMParser();
         svg = parser.parseFromString(svg, 'text/xml');
     }
-
     // Document node. If using $.get, doc node may be input.
     if (svg.nodeType === 9) {
         svg = svg.firstChild;
@@ -25379,32 +22122,24 @@ function parseXML(svg) {
     while (svg.nodeName.toLowerCase() !== 'svg' || svg.nodeType !== 1) {
         svg = svg.nextSibling;
     }
-
     return svg;
 }
-
 function SVGParser() {
     this._defs = {};
     this._root = null;
-
     this._isDefine = false;
     this._isText = false;
 }
-
 SVGParser.prototype.parse = function (xml, opt) {
     opt = opt || {};
-
     var svg = parseXML(xml);
-
     if (!svg) {
         throw new Error('Illegal svg');
     }
-
     var root = new Group();
     this._root = root;
     // parse view port
     var viewBox = svg.getAttribute('viewBox') || '';
-
     // If width/height not specified, means "100%" of `opt.width/height`.
     // TODO: Other percent value not supported yet.
     var width = parseFloat(svg.getAttribute('width') || opt.width);
@@ -25412,19 +22147,15 @@ SVGParser.prototype.parse = function (xml, opt) {
     // If width/height not specified, set as null for output.
     isNaN(width) && (width = null);
     isNaN(height) && (height = null);
-
     // Apply inline style on svg element.
     parseAttributes(svg, root, null, true);
-
     var child = svg.firstChild;
     while (child) {
         this._parseNode(child, root);
         child = child.nextSibling;
     }
-
     var viewBoxRect;
     var viewBoxTransform;
-
     if (viewBox) {
         var viewBoxArr = trim(viewBox).split(DILIMITER_REG);
         // Some invalid case like viewBox: 'none'.
@@ -25437,10 +22168,8 @@ SVGParser.prototype.parse = function (xml, opt) {
             };
         }
     }
-
     if (viewBoxRect && width != null && height != null) {
         viewBoxTransform = makeViewBoxTransform(viewBoxRect, width, height);
-
         if (!opt.ignoreViewBox) {
             // If set transform on the output group, it probably bring trouble when
             // some users only intend to show the clipped content inside the viewBox,
@@ -25455,7 +22184,6 @@ SVGParser.prototype.parse = function (xml, opt) {
             elRoot.position = viewBoxTransform.position.slice();
         }
     }
-
     // Some shapes might be overflow the viewport, which should be
     // clipped despite whether the viewBox is used, as the SVG does.
     if (!opt.ignoreRootClip && width != null && height != null) {
@@ -25463,7 +22191,6 @@ SVGParser.prototype.parse = function (xml, opt) {
             shape: {x: 0, y: 0, width: width, height: height}
         }));
     }
-
     // Set width/height on group just for output the viewport size.
     return {
         root: root,
@@ -25473,15 +22200,11 @@ SVGParser.prototype.parse = function (xml, opt) {
         viewBoxTransform: viewBoxTransform
     };
 };
-
 SVGParser.prototype._parseNode = function (xmlNode, parentGroup) {
-
     var nodeName = xmlNode.nodeName.toLowerCase();
-
     // TODO
     // support <style>...</style> in svg, where nodeName is 'style',
     // CSS classes is defined globally wherever the style tags are declared.
-
     if (nodeName === 'defs') {
         // define flag
         this._isDefine = true;
@@ -25489,7 +22212,6 @@ SVGParser.prototype._parseNode = function (xmlNode, parentGroup) {
     else if (nodeName === 'text') {
         this._isText = true;
     }
-
     var el;
     if (this._isDefine) {
         var parser = defineParsers[nodeName];
@@ -25508,7 +22230,6 @@ SVGParser.prototype._parseNode = function (xmlNode, parentGroup) {
             parentGroup.add(el);
         }
     }
-
     var child = xmlNode.firstChild;
     while (child) {
         if (child.nodeType === 1) {
@@ -25520,7 +22241,6 @@ SVGParser.prototype._parseNode = function (xmlNode, parentGroup) {
         }
         child = child.nextSibling;
     }
-
     // Quit define
     if (nodeName === 'defs') {
         this._isDefine = false;
@@ -25529,7 +22249,6 @@ SVGParser.prototype._parseNode = function (xmlNode, parentGroup) {
         this._isText = false;
     }
 };
-
 SVGParser.prototype._parseText = function (xmlNode, parentGroup) {
     if (xmlNode.nodeType === 1) {
         var dx = xmlNode.getAttribute('dx') || 0;
@@ -25537,7 +22256,6 @@ SVGParser.prototype._parseText = function (xmlNode, parentGroup) {
         this._textX += parseFloat(dx);
         this._textY += parseFloat(dy);
     }
-
     var text = new Text({
         style: {
             text: xmlNode.textContent,
@@ -25545,10 +22263,8 @@ SVGParser.prototype._parseText = function (xmlNode, parentGroup) {
         },
         position: [this._textX || 0, this._textY || 0]
     });
-
     inheritStyle(parentGroup, text);
     parseAttributes(xmlNode, text, this._defs);
-
     var fontSize = text.style.fontSize;
     if (fontSize && fontSize < 9) {
         // PENDING
@@ -25557,72 +22273,59 @@ SVGParser.prototype._parseText = function (xmlNode, parentGroup) {
         text.scale[0] *= fontSize / 9;
         text.scale[1] *= fontSize / 9;
     }
-
     var rect = text.getBoundingRect();
     this._textX += rect.width;
-
     parentGroup.add(text);
-
     return text;
 };
-
 var nodeParsers = {
     'g': function (xmlNode, parentGroup) {
         var g = new Group();
         inheritStyle(parentGroup, g);
         parseAttributes(xmlNode, g, this._defs);
-
         return g;
     },
     'rect': function (xmlNode, parentGroup) {
         var rect = new Rect();
         inheritStyle(parentGroup, rect);
         parseAttributes(xmlNode, rect, this._defs);
-
         rect.setShape({
             x: parseFloat(xmlNode.getAttribute('x') || 0),
             y: parseFloat(xmlNode.getAttribute('y') || 0),
             width: parseFloat(xmlNode.getAttribute('width') || 0),
             height: parseFloat(xmlNode.getAttribute('height') || 0)
         });
-
         // console.log(xmlNode.getAttribute('transform'));
         // console.log(rect.transform);
-
         return rect;
     },
     'circle': function (xmlNode, parentGroup) {
         var circle = new Circle();
         inheritStyle(parentGroup, circle);
         parseAttributes(xmlNode, circle, this._defs);
-
         circle.setShape({
             cx: parseFloat(xmlNode.getAttribute('cx') || 0),
             cy: parseFloat(xmlNode.getAttribute('cy') || 0),
             r: parseFloat(xmlNode.getAttribute('r') || 0)
         });
-
         return circle;
     },
     'line': function (xmlNode, parentGroup) {
         var line = new Line();
         inheritStyle(parentGroup, line);
         parseAttributes(xmlNode, line, this._defs);
-
         line.setShape({
             x1: parseFloat(xmlNode.getAttribute('x1') || 0),
             y1: parseFloat(xmlNode.getAttribute('y1') || 0),
             x2: parseFloat(xmlNode.getAttribute('x2') || 0),
             y2: parseFloat(xmlNode.getAttribute('y2') || 0)
         });
-
         return line;
     },
     'ellipse': function (xmlNode, parentGroup) {
         var ellipse = new Ellipse();
         inheritStyle(parentGroup, ellipse);
         parseAttributes(xmlNode, ellipse, this._defs);
-
         ellipse.setShape({
             cx: parseFloat(xmlNode.getAttribute('cx') || 0),
             cy: parseFloat(xmlNode.getAttribute('cy') || 0),
@@ -25641,17 +22344,14 @@ var nodeParsers = {
                 points: points || []
             }
         });
-
         inheritStyle(parentGroup, polygon);
         parseAttributes(xmlNode, polygon, this._defs);
-
         return polygon;
     },
     'polyline': function (xmlNode, parentGroup) {
         var path = new Path();
         inheritStyle(parentGroup, path);
         parseAttributes(xmlNode, path, this._defs);
-
         var points = xmlNode.getAttribute('points');
         if (points) {
             points = parsePoints(points);
@@ -25661,14 +22361,12 @@ var nodeParsers = {
                 points: points || []
             }
         });
-
         return polyline;
     },
     'image': function (xmlNode, parentGroup) {
         var img = new ZImage();
         inheritStyle(parentGroup, img);
         parseAttributes(xmlNode, img, this._defs);
-
         img.setStyle({
             image: xmlNode.getAttribute('xlink:href'),
             x: xmlNode.getAttribute('x'),
@@ -25676,7 +22374,6 @@ var nodeParsers = {
             width: xmlNode.getAttribute('width'),
             height: xmlNode.getAttribute('height')
         });
-
         return img;
     },
     'text': function (xmlNode, parentGroup) {
@@ -25684,14 +22381,11 @@ var nodeParsers = {
         var y = xmlNode.getAttribute('y') || 0;
         var dx = xmlNode.getAttribute('dx') || 0;
         var dy = xmlNode.getAttribute('dy') || 0;
-
         this._textX = parseFloat(x) + parseFloat(dx);
         this._textY = parseFloat(y) + parseFloat(dy);
-
         var g = new Group();
         inheritStyle(parentGroup, g);
         parseAttributes(xmlNode, g, this._defs);
-
         return g;
     },
     'tspan': function (xmlNode, parentGroup) {
@@ -25707,16 +22401,11 @@ var nodeParsers = {
         }
         var dx = xmlNode.getAttribute('dx') || 0;
         var dy = xmlNode.getAttribute('dy') || 0;
-
         var g = new Group();
-
         inheritStyle(parentGroup, g);
         parseAttributes(xmlNode, g, this._defs);
-
-
         this._textX += dx;
         this._textY += dy;
-
         return g;
     },
     'path': function (xmlNode, parentGroup) {
@@ -25724,42 +22413,28 @@ var nodeParsers = {
         // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-rule
         // path.style.globalCompositeOperation = 'xor';
         var d = xmlNode.getAttribute('d') || '';
-
         // Performance sensitive.
-
         var path = createFromString(d);
-
         inheritStyle(parentGroup, path);
         parseAttributes(xmlNode, path, this._defs);
-
         return path;
     }
 };
-
 var defineParsers = {
-
     'lineargradient': function (xmlNode) {
         var x1 = parseInt(xmlNode.getAttribute('x1') || 0, 10);
         var y1 = parseInt(xmlNode.getAttribute('y1') || 0, 10);
         var x2 = parseInt(xmlNode.getAttribute('x2') || 10, 10);
         var y2 = parseInt(xmlNode.getAttribute('y2') || 0, 10);
-
         var gradient = new LinearGradient(x1, y1, x2, y2);
-
         _parseGradientColorStops(xmlNode, gradient);
-
         return gradient;
     },
-
     'radialgradient': function (xmlNode) {
-
     }
 };
-
 function _parseGradientColorStops(xmlNode, gradient) {
-
     var stop = xmlNode.firstChild;
-
     while (stop) {
         if (stop.nodeType === 1) {
             var offset = stop.getAttribute('offset');
@@ -25772,15 +22447,12 @@ function _parseGradientColorStops(xmlNode, gradient) {
             else {
                 offset = 0;
             }
-
             var stopColor = stop.getAttribute('stop-color') || '#000000';
-
             gradient.addColorStop(offset, stopColor);
         }
         stop = stop.nextSibling;
     }
 }
-
 function inheritStyle(parent, child) {
     if (parent && parent.__inheritedStyle) {
         if (!child.__inheritedStyle) {
@@ -25789,11 +22461,9 @@ function inheritStyle(parent, child) {
         defaults(child.__inheritedStyle, parent.__inheritedStyle);
     }
 }
-
 function parsePoints(pointsString) {
     var list = trim(pointsString).split(DILIMITER_REG);
     var points = [];
-
     for (var i = 0; i < list.length; i += 2) {
         var x = parseFloat(list[i]);
         var y = parseFloat(list[i + 1]);
@@ -25801,7 +22471,6 @@ function parsePoints(pointsString) {
     }
     return points;
 }
-
 var attributesMap = {
     'fill': 'fill',
     'stroke': 'stroke',
@@ -25818,21 +22487,16 @@ var attributesMap = {
     'font-size': 'fontSize',
     'font-style': 'fontStyle',
     'font-weight': 'fontWeight',
-
     'text-align': 'textAlign',
     'alignment-baseline': 'textBaseline'
 };
-
 function parseAttributes(xmlNode, el, defs, onlyInlineStyle) {
     var zrStyle = el.__inheritedStyle || {};
     var isTextEl = el.type === 'text';
-
     // TODO Shadow
     if (xmlNode.nodeType === 1) {
         parseTransformAttribute(xmlNode, el);
-
         extend(zrStyle, parseStyleAttribute(xmlNode));
-
         if (!onlyInlineStyle) {
             for (var svgAttrName in attributesMap) {
                 if (attributesMap.hasOwnProperty(svgAttrName)) {
@@ -25844,23 +22508,18 @@ function parseAttributes(xmlNode, el, defs, onlyInlineStyle) {
             }
         }
     }
-
     var elFillProp = isTextEl ? 'textFill' : 'fill';
     var elStrokeProp = isTextEl ? 'textStroke' : 'stroke';
-
     el.style = el.style || new Style();
     var elStyle = el.style;
-
     zrStyle.fill != null && elStyle.set(elFillProp, getPaint(zrStyle.fill, defs));
     zrStyle.stroke != null && elStyle.set(elStrokeProp, getPaint(zrStyle.stroke, defs));
-
     each$1([
         'lineWidth', 'opacity', 'fillOpacity', 'strokeOpacity', 'miterLimit', 'fontSize'
     ], function (propName) {
         var elPropName = (propName === 'lineWidth' && isTextEl) ? 'textStrokeWidth' : propName;
         zrStyle[propName] != null && elStyle.set(elPropName, parseFloat(zrStyle[propName]));
     });
-
     if (!zrStyle.textBaseline || zrStyle.textBaseline === 'auto') {
         zrStyle.textBaseline = 'alphabetic';
     }
@@ -25873,26 +22532,20 @@ function parseAttributes(xmlNode, el, defs, onlyInlineStyle) {
     if (zrStyle.textAlign === 'end') {
         zrStyle.textAlign = 'right';
     }
-
     each$1(['lineDashOffset', 'lineCap', 'lineJoin',
         'fontWeight', 'fontFamily', 'fontStyle', 'textAlign', 'textBaseline'
     ], function (propName) {
         zrStyle[propName] != null && elStyle.set(propName, zrStyle[propName]);
     });
-
     if (zrStyle.lineDash) {
         el.style.lineDash = trim(zrStyle.lineDash).split(DILIMITER_REG);
     }
-
     if (elStyle[elStrokeProp] && elStyle[elStrokeProp] !== 'none') {
         // enable stroke
         el[elStrokeProp] = true;
     }
-
     el.__inheritedStyle = zrStyle;
 }
-
-
 var urlRegex = /url\(\s*#(.*?)\)/;
 function getPaint(str, defs) {
     // if (str === 'none') {
@@ -25906,9 +22559,7 @@ function getPaint(str, defs) {
     }
     return str;
 }
-
 var transformRegex = /(translate|scale|rotate|skewX|skewY|matrix)\(([\-\s0-9\.e,]*)\)/g;
-
 function parseTransformAttribute(xmlNode, node) {
     var transform = xmlNode.getAttribute('transform');
     if (transform) {
@@ -25953,33 +22604,27 @@ function parseTransformAttribute(xmlNode, node) {
         node.setLocalTransform(m);
     }
 }
-
 // Value may contain space.
 var styleRegex = /([^\s:;]+)\s*:\s*([^:;]+)/g;
 function parseStyleAttribute(xmlNode) {
     var style = xmlNode.getAttribute('style');
     var result = {};
-
     if (!style) {
         return result;
     }
-
     var styleList = {};
     styleRegex.lastIndex = 0;
     var styleRegResult;
     while ((styleRegResult = styleRegex.exec(style)) != null) {
         styleList[styleRegResult[1]] = styleRegResult[2];
     }
-
     for (var svgAttrName in attributesMap) {
         if (attributesMap.hasOwnProperty(svgAttrName) && styleList[svgAttrName] != null) {
             result[attributesMap[svgAttrName]] = styleList[svgAttrName];
         }
     }
-
     return result;
 }
-
 /**
  * @param {Array.<number>} viewBoxRect
  * @param {number} width
@@ -25996,13 +22641,11 @@ function makeViewBoxTransform(viewBoxRect, width, height) {
         -(viewBoxRect.x + viewBoxRect.width / 2) * scale + width / 2,
         -(viewBoxRect.y + viewBoxRect.height / 2) * scale + height / 2
     ];
-
     return {
         scale: viewBoxScale,
         position: viewBoxPosition
     };
 }
-
 /**
  * @param {string|XMLElement} xml
  * @param {Object} [opt]
@@ -26019,7 +22662,6 @@ function makeViewBoxTransform(viewBoxRect, width, height) {
  *     viewBoxTransform: the {scale, position} calculated by viewBox and viewport, is exists.
  * }
  */
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -26038,20 +22680,14 @@ function makeViewBoxTransform(viewBoxRect, width, height) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var storage = createHashMap();
-
 // For minimize the code size of common echarts package,
 // do not put too much logic in this module.
-
 var mapDataStorage = {
-
     // The format of record: see `echarts.registerMap`.
     // Compatible with previous `echarts.registerMap`.
     registerMap: function (mapName, rawGeoJson, rawSpecialAreas) {
-
         var records;
-
         if (isArray(rawGeoJson)) {
             records = rawGeoJson;
         }
@@ -26074,31 +22710,22 @@ var mapDataStorage = {
                 specialAreas: rawSpecialAreas
             }];
         }
-
         each$1(records, function (record) {
             var type = record.type;
             type === 'geoJson' && (type = record.type = 'geoJSON');
-
             var parse = parsers[type];
-
             if (__DEV__) {
                 assert$1(parse, 'Illegal map type: ' + type);
             }
-
             parse(record);
         });
-
         return storage.set(mapName, records);
     },
-
     retrieveMap: function (mapName) {
         return storage.get(mapName);
     }
-
 };
-
 var parsers = {
-
     geoJSON: function (record) {
         var source = record.source;
         record.geoJSON = !isString(source)
@@ -26107,7 +22734,6 @@ var parsers = {
             ? JSON.parse(source)
             : (new Function('return (' + source + ');'))();
     },
-
     // Only perform parse to XML object here, which might be time
     // consiming for large SVG.
     // Although convert XML to zrender element is also time consiming,
@@ -26117,9 +22743,7 @@ var parsers = {
     svg: function (record) {
         record.svgXML = parseXML(record.source);
     }
-
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -26143,18 +22767,13 @@ var each = each$1;
 var isFunction = isFunction$1;
 var isObject = isObject$1;
 var parseClassType = ComponentModel.parseClassType;
-
 var version = '4.2.1';
-
 var dependencies = {
     zrender: '4.0.6'
 };
-
 var TEST_FRAME_REMAIN_TIME = 1;
-
 var PRIORITY_PROCESSOR_FILTER = 1000;
 var PRIORITY_PROCESSOR_STATISTIC = 5000;
-
 var PRIORITY_VISUAL_LAYOUT = 1000;
 var PRIORITY_VISUAL_GLOBAL = 2000;
 var PRIORITY_VISUAL_CHART = 3000;
@@ -26162,7 +22781,6 @@ var PRIORITY_VISUAL_COMPONENT = 4000;
 // FIXME
 // necessary?
 var PRIORITY_VISUAL_BRUSH = 5000;
-
 var PRIORITY = {
     PROCESSOR: {
         FILTER: PRIORITY_PROCESSOR_FILTER,
@@ -26176,7 +22794,6 @@ var PRIORITY = {
         BRUSH: PRIORITY_VISUAL_BRUSH
     }
 };
-
 // Main process have three entries: `setOption`, `dispatchAction` and `resize`,
 // where they must not be invoked nestedly, except the only case: invoke
 // dispatchAction with updateMethod "none" in main process.
@@ -26185,8 +22802,6 @@ var PRIORITY = {
 var IN_MAIN_PROCESS = '__flagInMainProcess';
 var OPTION_UPDATED = '__optionUpdated';
 var ACTION_REG = /^[a-zA-Z0-9_]+$/;
-
-
 function createRegisterEventWithLowercaseName(method) {
     return function (eventName, handler, context) {
         // Event name is all lowercase
@@ -26194,7 +22809,6 @@ function createRegisterEventWithLowercaseName(method) {
         Eventful.prototype[method].call(this, eventName, handler, context);
     };
 }
-
 /**
  * @module echarts~MessageCenter
  */
@@ -26205,42 +22819,35 @@ MessageCenter.prototype.on = createRegisterEventWithLowercaseName('on');
 MessageCenter.prototype.off = createRegisterEventWithLowercaseName('off');
 MessageCenter.prototype.one = createRegisterEventWithLowercaseName('one');
 mixin(MessageCenter, Eventful);
-
 /**
  * @module echarts~ECharts
  */
 function ECharts(dom, theme$$1, opts) {
     opts = opts || {};
-
     // Get theme by name
     if (typeof theme$$1 === 'string') {
         theme$$1 = themeStorage[theme$$1];
     }
-
     /**
      * @type {string}
      */
     this.id;
-
     /**
      * Group id
      * @type {string}
      */
     this.group;
-
     /**
      * @type {HTMLElement}
      * @private
      */
     this._dom = dom;
-
     var defaultRenderer = 'canvas';
     if (__DEV__) {
         defaultRenderer = (
             typeof window === 'undefined' ? global : window
         ).__ECHARTS__DEFAULT__RENDERER__ || defaultRenderer;
     }
-
     /**
      * @type {module:zrender/ZRender}
      * @private
@@ -26251,14 +22858,12 @@ function ECharts(dom, theme$$1, opts) {
         width: opts.width,
         height: opts.height
     });
-
     /**
      * Expect 60 pfs.
      * @type {Function}
      * @private
      */
     this._throttledZrFlush = throttle(bind(zr.flush, zr), 17);
-
     var theme$$1 = clone(theme$$1);
     theme$$1 && backwardCompat(theme$$1, true);
     /**
@@ -26266,104 +22871,78 @@ function ECharts(dom, theme$$1, opts) {
      * @private
      */
     this._theme = theme$$1;
-
     /**
      * @type {Array.<module:echarts/view/Chart>}
      * @private
      */
     this._chartsViews = [];
-
     /**
      * @type {Object.<string, module:echarts/view/Chart>}
      * @private
      */
     this._chartsMap = {};
-
     /**
      * @type {Array.<module:echarts/view/Component>}
      * @private
      */
     this._componentsViews = [];
-
     /**
      * @type {Object.<string, module:echarts/view/Component>}
      * @private
      */
     this._componentsMap = {};
-
     /**
      * @type {module:echarts/CoordinateSystem}
      * @private
      */
     this._coordSysMgr = new CoordinateSystemManager();
-
     /**
      * @type {module:echarts/ExtensionAPI}
      * @private
      */
     var api = this._api = createExtensionAPI(this);
-
     // Sort on demand
     function prioritySortFunc(a, b) {
         return a.__prio - b.__prio;
     }
     sort(visualFuncs, prioritySortFunc);
     sort(dataProcessorFuncs, prioritySortFunc);
-
     /**
      * @type {module:echarts/stream/Scheduler}
      */
     this._scheduler = new Scheduler(this, api, dataProcessorFuncs, visualFuncs);
-
     Eventful.call(this, this._ecEventProcessor = new EventProcessor());
-
     /**
      * @type {module:echarts~MessageCenter}
      * @private
      */
     this._messageCenter = new MessageCenter();
-
     // Init mouse events
     this._initEvents();
-
     // In case some people write `window.onresize = chart.resize`
     this.resize = bind(this.resize, this);
-
     // Can't dispatch action during rendering procedure
     this._pendingActions = [];
-
     zr.animation.on('frame', this._onframe, this);
-
     bindRenderedEvent(zr, this);
-
     // ECharts instance can be used as value.
     setAsPrimitive(this);
 }
-
 var echartsProto = ECharts.prototype;
-
 echartsProto._onframe = function () {
     if (this._disposed) {
         return;
     }
-
     var scheduler = this._scheduler;
-
     // Lazy update
     if (this[OPTION_UPDATED]) {
         var silent = this[OPTION_UPDATED].silent;
-
         this[IN_MAIN_PROCESS] = true;
-
         prepare(this);
         updateMethods.update.call(this);
-
         this[IN_MAIN_PROCESS] = false;
-
         this[OPTION_UPDATED] = false;
-
         flushPendingActions.call(this, silent);
-
         triggerUpdatedEvent.call(this, silent);
     }
     // Avoid do both lazy update and progress in one frame.
@@ -26375,29 +22954,21 @@ echartsProto._onframe = function () {
         scheduler.unfinished = false;
         do {
             var startTime = +new Date();
-
             scheduler.performSeriesTasks(ecModel);
-
             // Currently dataProcessorFuncs do not check threshold.
             scheduler.performDataProcessorTasks(ecModel);
-
             updateStreamModes(this, ecModel);
-
             // Do not update coordinate system here. Because that coord system update in
             // each frame is not a good user experience. So we follow the rule that
             // the extent of the coordinate system is determin in the first frame (the
             // frame is executed immedietely after task reset.
             // this._coordSysMgr.update(ecModel, api);
-
             // console.log('--- ec frame visual ---', remainTime);
             scheduler.performVisualTasks(ecModel);
-
             renderSeries(this, this._model, api, 'remain');
-
             remainTime -= (+new Date() - startTime);
         }
         while (remainTime > 0 && scheduler.unfinished);
-
         // Call flush explicitly for trigger finished event.
         if (!scheduler.unfinished) {
             this._zr.flush();
@@ -26406,21 +22977,18 @@ echartsProto._onframe = function () {
         // because zr flushing is after onframe event.
     }
 };
-
 /**
  * @return {HTMLElement}
  */
 echartsProto.getDom = function () {
     return this._dom;
 };
-
 /**
  * @return {module:zrender~ZRender}
  */
 echartsProto.getZr = function () {
     return this._zr;
 };
-
 /**
  * Usage:
  * chart.setOption(option, notMerge, lazyUpdate);
@@ -26439,16 +23007,13 @@ echartsProto.setOption = function (option, notMerge, lazyUpdate) {
     if (__DEV__) {
         assert(!this[IN_MAIN_PROCESS], '`setOption` should not be called during main process.');
     }
-
     var silent;
     if (isObject(notMerge)) {
         lazyUpdate = notMerge.lazyUpdate;
         silent = notMerge.silent;
         notMerge = notMerge.notMerge;
     }
-
     this[IN_MAIN_PROCESS] = true;
-
     if (!this._model || notMerge) {
         var optionManager = new OptionManager(this._api);
         var theme$$1 = this._theme;
@@ -26456,72 +23021,59 @@ echartsProto.setOption = function (option, notMerge, lazyUpdate) {
         ecModel.scheduler = this._scheduler;
         ecModel.init(null, null, theme$$1, optionManager);
     }
-
     this._model.setOption(option, optionPreprocessorFuncs);
-
     if (lazyUpdate) {
         this[OPTION_UPDATED] = {silent: silent};
         this[IN_MAIN_PROCESS] = false;
     }
     else {
         prepare(this);
-
         updateMethods.update.call(this);
-
         // Ensure zr refresh sychronously, and then pixel in canvas can be
         // fetched after `setOption`.
         this._zr.flush();
-
         this[OPTION_UPDATED] = false;
         this[IN_MAIN_PROCESS] = false;
-
         flushPendingActions.call(this, silent);
         triggerUpdatedEvent.call(this, silent);
     }
 };
-
 /**
  * @DEPRECATED
  */
 echartsProto.setTheme = function () {
     console.error('ECharts#setTheme() is DEPRECATED in ECharts 3.0');
 };
-
 /**
  * @return {module:echarts/model/Global}
  */
 echartsProto.getModel = function () {
     return this._model;
 };
-
 /**
  * @return {Object}
  */
 echartsProto.getOption = function () {
     return this._model && this._model.getOption();
 };
-
 /**
  * @return {number}
  */
 echartsProto.getWidth = function () {
     return this._zr.getWidth();
 };
-
 /**
  * @return {number}
  */
 echartsProto.getHeight = function () {
     return this._zr.getHeight();
 };
-
 /**
  * @return {number}
  */
 echartsProto.getDevicePixelRatio = function () {
     return this._zr.painter.dpr || window.devicePixelRatio || 1;
 };
-
 /**
  * Get canvas which has all thing rendered
  * @param {Object} opts
@@ -26545,7 +23097,6 @@ echartsProto.getRenderedCanvas = function (opts) {
     // });
     return zr.painter.getRenderedCanvas(opts);
 };
-
 /**
  * Get svg data url
  * @return {string}
@@ -26554,17 +23105,14 @@ echartsProto.getSvgDataUrl = function () {
     if (!env$1.svgSupported) {
         return;
     }
-
     var zr = this._zr;
     var list = zr.storage.getDisplayList();
     // Stop animations
     each$1(list, function (el) {
         el.stopAnimation(true);
     });
-
     return zr.painter.pathToDataUrl();
 };
-
 /**
  * @return {string}
  * @param {Object} opts
@@ -26579,7 +23127,6 @@ echartsProto.getDataURL = function (opts) {
     var ecModel = this._model;
     var excludesComponentViews = [];
     var self = this;
-
     each(excludeComponents, function (componentType) {
         ecModel.eachComponent({
             mainType: componentType
@@ -26591,21 +23138,16 @@ echartsProto.getDataURL = function (opts) {
             }
         });
     });
-
     var url = this._zr.painter.getType() === 'svg'
         ? this.getSvgDataUrl()
         : this.getRenderedCanvas(opts).toDataURL(
             'image/' + (opts && opts.type || 'png')
         );
-
     each(excludesComponentViews, function (view) {
         view.group.ignore = false;
     });
-
     return url;
 };
-
-
 /**
  * @return {string}
  * @param {Object} opts
@@ -26628,7 +23170,6 @@ echartsProto.getConnectedDataURL = function (opts) {
         var bottom = -MAX_NUMBER;
         var canvasList = [];
         var dpr = (opts && opts.pixelRatio) || 1;
-
         each$1(instances, function (chart, id) {
             if (chart.group === groupId) {
                 var canvas = chart.getRenderedCanvas(
@@ -26646,7 +23187,6 @@ echartsProto.getConnectedDataURL = function (opts) {
                 });
             }
         });
-
         left *= dpr;
         top *= dpr;
         right *= dpr;
@@ -26657,7 +23197,6 @@ echartsProto.getConnectedDataURL = function (opts) {
         targetCanvas.width = width;
         targetCanvas.height = height;
         var zr = init$1(targetCanvas);
-
         each(canvasList, function (item) {
             var img = new ZImage({
                 style: {
@@ -26669,14 +23208,12 @@ echartsProto.getConnectedDataURL = function (opts) {
             zr.add(img);
         });
         zr.refreshImmediately();
-
         return targetCanvas.toDataURL('image/' + (opts && opts.type || 'png'));
     }
     else {
         return this.getDataURL(opts);
     }
 };
-
 /**
  * Convert from logical coordinate system to pixel coordinate system.
  * See CoordinateSystem#convertToPixel.
@@ -26696,7 +23233,6 @@ echartsProto.getConnectedDataURL = function (opts) {
  * @return {Array|number} result
  */
 echartsProto.convertToPixel = curry(doConvertPixel, 'convertToPixel');
-
 /**
  * Convert from pixel coordinate system to logical coordinate system.
  * See CoordinateSystem#convertFromPixel.
@@ -26716,14 +23252,11 @@ echartsProto.convertToPixel = curry(doConvertPixel, 'convertToPixel');
  * @return {Array|number} result
  */
 echartsProto.convertFromPixel = curry(doConvertPixel, 'convertFromPixel');
-
 function doConvertPixel(methodName, finder, value) {
     var ecModel = this._model;
     var coordSysList = this._coordSysMgr.getCoordinateSystems();
     var result;
-
     finder = parseFinder(ecModel, finder);
-
     for (var i = 0; i < coordSysList.length; i++) {
         var coordSys = coordSysList[i];
         if (coordSys[methodName]
@@ -26732,14 +23265,12 @@ function doConvertPixel(methodName, finder, value) {
             return result;
         }
     }
-
     if (__DEV__) {
         console.warn(
             'No coordinate system that supports ' + methodName + ' found by the given finder.'
         );
     }
 }
-
 /**
  * Is the specified coordinate systems or components contain the given pixel point.
  * @param {string|Object} finder
@@ -26760,9 +23291,7 @@ function doConvertPixel(methodName, finder, value) {
 echartsProto.containPixel = function (finder, value) {
     var ecModel = this._model;
     var result;
-
     finder = parseFinder(ecModel, finder);
-
     each$1(finder, function (models, key) {
         key.indexOf('Models') >= 0 && each$1(models, function (model) {
             var coordSys = model.coordinateSystem;
@@ -26790,10 +23319,8 @@ echartsProto.containPixel = function (finder, value) {
             }
         }, this);
     }, this);
-
     return !!result;
 };
-
 /**
  * Get visual from series or data.
  * @param {string|Object} finder
@@ -26811,30 +23338,23 @@ echartsProto.containPixel = function (finder, value) {
  */
 echartsProto.getVisual = function (finder, visualType) {
     var ecModel = this._model;
-
     finder = parseFinder(ecModel, finder, {defaultMainType: 'series'});
-
     var seriesModel = finder.seriesModel;
-
     if (__DEV__) {
         if (!seriesModel) {
             console.warn('There is no specified seires model');
         }
     }
-
     var data = seriesModel.getData();
-
     var dataIndexInside = finder.hasOwnProperty('dataIndexInside')
         ? finder.dataIndexInside
         : finder.hasOwnProperty('dataIndex')
         ? data.indexOfRawIndex(finder.dataIndex)
         : null;
-
     return dataIndexInside != null
         ? data.getItemVisual(dataIndexInside, visualType)
         : data.getVisual(visualType);
 };
-
 /**
  * Get view of corresponding component model
  * @param  {module:echarts/model/Component} componentModel
@@ -26843,7 +23363,6 @@ echartsProto.getVisual = function (finder, visualType) {
 echartsProto.getViewOfComponentModel = function (componentModel) {
     return this._componentsMap[componentModel.__viewId];
 };
-
 /**
  * Get view of corresponding series model
  * @param  {module:echarts/model/Series} seriesModel
@@ -26852,65 +23371,49 @@ echartsProto.getViewOfComponentModel = function (componentModel) {
 echartsProto.getViewOfSeriesModel = function (seriesModel) {
     return this._chartsMap[seriesModel.__viewId];
 };
-
 var updateMethods = {
-
     prepareAndUpdate: function (payload) {
         prepare(this);
         updateMethods.update.call(this, payload);
     },
-
     /**
      * @param {Object} payload
      * @private
      */
     update: function (payload) {
         // console.profile && console.profile('update');
-
         var ecModel = this._model;
         var api = this._api;
         var zr = this._zr;
         var coordSysMgr = this._coordSysMgr;
         var scheduler = this._scheduler;
-
         // update before setOption
         if (!ecModel) {
             return;
         }
-
         scheduler.restoreData(ecModel, payload);
-
         scheduler.performSeriesTasks(ecModel);
-
         // TODO
         // Save total ecModel here for undo/redo (after restoring data and before processing data).
         // Undo (restoration of total ecModel) can be carried out in 'action' or outside API call.
-
         // Create new coordinate system each update
         // In LineView may save the old coordinate system and use it to get the orignal point
         coordSysMgr.create(ecModel, api);
-
         scheduler.performDataProcessorTasks(ecModel, payload);
-
         // Current stream render is not supported in data process. So we can update
         // stream modes after data processing, where the filtered data is used to
         // deteming whether use progressive rendering.
         updateStreamModes(this, ecModel);
-
         // We update stream modes before coordinate system updated, then the modes info
         // can be fetched when coord sys updating (consider the barGrid extent fix). But
         // the drawback is the full coord info can not be fetched. Fortunately this full
         // coord is not requied in stream mode updater currently.
         coordSysMgr.update(ecModel, api);
-
         clearColorPalette(ecModel);
         scheduler.performVisualTasks(ecModel, payload);
-
         render(this, ecModel, api, payload);
-
         // Set background
         var backgroundColor = ecModel.get('backgroundColor') || 'transparent';
-
         // In IE8
         if (!env$1.canvasSupported) {
             var colorArr = parse(backgroundColor);
@@ -26922,12 +23425,9 @@ var updateMethods = {
         else {
             zr.setBackgroundColor(backgroundColor);
         }
-
         performPostUpdateFuncs(ecModel, api);
-
         // console.profile && console.profileEnd('update');
     },
-
     /**
      * @param {Object} payload
      * @private
@@ -26936,14 +23436,11 @@ var updateMethods = {
         var ecModel = this._model;
         var ecIns = this;
         var api = this._api;
-
         // update before setOption
         if (!ecModel) {
             return;
         }
-
         // ChartView.markUpdateMethod(payload, 'updateTransform');
-
         var componentDirtyList = [];
         ecModel.eachComponent(function (componentType, componentModel) {
             var componentView = ecIns.getViewOfComponentModel(componentModel);
@@ -26957,7 +23454,6 @@ var updateMethods = {
                 }
             }
         });
-
         var seriesDirtyMap = createHashMap();
         ecModel.eachSeries(function (seriesModel) {
             var chartView = ecIns._chartsMap[seriesModel.__viewId];
@@ -26969,118 +23465,85 @@ var updateMethods = {
                 seriesDirtyMap.set(seriesModel.uid, 1);
             }
         });
-
         clearColorPalette(ecModel);
         // Keep pipe to the exist pipeline because it depends on the render task of the full pipeline.
         // this._scheduler.performVisualTasks(ecModel, payload, 'layout', true);
         this._scheduler.performVisualTasks(
             ecModel, payload, {setDirty: true, dirtyMap: seriesDirtyMap}
         );
-
         // Currently, not call render of components. Geo render cost a lot.
         // renderComponents(ecIns, ecModel, api, payload, componentDirtyList);
         renderSeries(ecIns, ecModel, api, payload, seriesDirtyMap);
-
         performPostUpdateFuncs(ecModel, this._api);
     },
-
     /**
      * @param {Object} payload
      * @private
      */
     updateView: function (payload) {
         var ecModel = this._model;
-
         // update before setOption
         if (!ecModel) {
             return;
         }
-
         Chart.markUpdateMethod(payload, 'updateView');
-
         clearColorPalette(ecModel);
-
         // Keep pipe to the exist pipeline because it depends on the render task of the full pipeline.
         this._scheduler.performVisualTasks(ecModel, payload, {setDirty: true});
-
         render(this, this._model, this._api, payload);
-
         performPostUpdateFuncs(ecModel, this._api);
     },
-
     /**
      * @param {Object} payload
      * @private
      */
     updateVisual: function (payload) {
         updateMethods.update.call(this, payload);
-
         // var ecModel = this._model;
-
         // // update before setOption
         // if (!ecModel) {
         //     return;
         // }
-
         // ChartView.markUpdateMethod(payload, 'updateVisual');
-
         // clearColorPalette(ecModel);
-
         // // Keep pipe to the exist pipeline because it depends on the render task of the full pipeline.
         // this._scheduler.performVisualTasks(ecModel, payload, {visualType: 'visual', setDirty: true});
-
         // render(this, this._model, this._api, payload);
-
         // performPostUpdateFuncs(ecModel, this._api);
     },
-
     /**
      * @param {Object} payload
      * @private
      */
     updateLayout: function (payload) {
         updateMethods.update.call(this, payload);
-
         // var ecModel = this._model;
-
         // // update before setOption
         // if (!ecModel) {
         //     return;
         // }
-
         // ChartView.markUpdateMethod(payload, 'updateLayout');
-
         // // Keep pipe to the exist pipeline because it depends on the render task of the full pipeline.
         // // this._scheduler.performVisualTasks(ecModel, payload, 'layout', true);
         // this._scheduler.performVisualTasks(ecModel, payload, {setDirty: true});
-
         // render(this, this._model, this._api, payload);
-
         // performPostUpdateFuncs(ecModel, this._api);
     }
 };
-
 function prepare(ecIns) {
     var ecModel = ecIns._model;
     var scheduler = ecIns._scheduler;
-
     scheduler.restorePipelines(ecModel);
-
     scheduler.prepareStageTasks();
-
     prepareView(ecIns, 'component', ecModel, scheduler);
-
     prepareView(ecIns, 'chart', ecModel, scheduler);
-
     scheduler.plan();
 }
-
 /**
  * @private
  */
 function updateDirectly(ecIns, method, payload, mainType, subType) {
     var ecModel = ecIns._model;
-
     // broadcast
     if (!mainType) {
         // FIXME
@@ -27089,20 +23552,16 @@ function updateDirectly(ecIns, method, payload, mainType, subType) {
         each(ecIns._componentsViews.concat(ecIns._chartsViews), callView);
         return;
     }
-
     var query = {};
     query[mainType + 'Id'] = payload[mainType + 'Id'];
     query[mainType + 'Index'] = payload[mainType + 'Index'];
     query[mainType + 'Name'] = payload[mainType + 'Name'];
-
     var condition = {mainType: mainType, query: query};
     subType && (condition.subType = subType); // subType may be '' by parseClassType;
-
     var excludeSeriesId = payload.excludeSeriesId;
     if (excludeSeriesId != null) {
         excludeSeriesId = createHashMap(normalizeToArray(excludeSeriesId));
     }
-
     // If dispatchAction before setOption, do nothing.
     ecModel && ecModel.eachComponent(condition, function (model) {
         if (!excludeSeriesId || excludeSeriesId.get(model.id) == null) {
@@ -27111,14 +23570,12 @@ function updateDirectly(ecIns, method, payload, mainType, subType) {
             ][model.__viewId]);
         }
     }, ecIns);
-
     function callView(view) {
         view && view.__alive && view[method] && view[method](
             view.__model, ecModel, ecIns._api, payload
         );
     }
 }
-
 /**
  * Resize the chart
  * @param {Object} opts
@@ -27130,34 +23587,22 @@ echartsProto.resize = function (opts) {
     if (__DEV__) {
         assert(!this[IN_MAIN_PROCESS], '`resize` should not be called during main process.');
     }
-
     this._zr.resize(opts);
-
     var ecModel = this._model;
-
     // Resize loading effect
     this._loadingFX && this._loadingFX.resize();
-
     if (!ecModel) {
         return;
     }
-
     var optionChanged = ecModel.resetOption('media');
-
     var silent = opts && opts.silent;
-
     this[IN_MAIN_PROCESS] = true;
-
     optionChanged && prepare(this);
     updateMethods.update.call(this);
-
     this[IN_MAIN_PROCESS] = false;
-
     flushPendingActions.call(this, silent);
-
     triggerUpdatedEvent.call(this, silent);
 };
-
 function updateStreamModes(ecIns, ecModel) {
     var chartsMap = ecIns._chartsMap;
     var scheduler = ecIns._scheduler;
@@ -27165,7 +23610,6 @@ function updateStreamModes(ecIns, ecModel) {
         scheduler.updateStreamModes(seriesModel, chartsMap[seriesModel.__viewId]);
     });
 }
-
 /**
  * Show loading effect
  * @param  {string} [name='default']
@@ -27177,7 +23621,6 @@ echartsProto.showLoading = function (name, cfg) {
         name = '';
     }
     name = name || 'default';
-
     this.hideLoading();
     if (!loadingEffects[name]) {
         if (__DEV__) {
@@ -27188,10 +23631,8 @@ echartsProto.showLoading = function (name, cfg) {
     var el = loadingEffects[name](this._api, cfg);
     var zr = this._zr;
     this._loadingFX = el;
-
     zr.add(el);
 };
-
 /**
  * Hide loading effect
  */
@@ -27199,7 +23640,6 @@ echartsProto.hideLoading = function () {
     this._loadingFX && this._zr.remove(this._loadingFX);
     this._loadingFX = null;
 };
-
 /**
  * @param {Object} eventObj
  * @return {Object}
@@ -27209,7 +23649,6 @@ echartsProto.makeActionFromEvent = function (eventObj) {
     payload.type = eventActionMap[eventObj.type];
     return payload;
 };
-
 /**
  * @pubilc
  * @param {Object} payload
@@ -27226,24 +23665,19 @@ echartsProto.dispatchAction = function (payload, opt) {
     if (!isObject(opt)) {
         opt = {silent: !!opt};
     }
-
     if (!actions[payload.type]) {
         return;
     }
-
     // Avoid dispatch action before setOption. Especially in `connect`.
     if (!this._model) {
         return;
     }
-
     // May dispatchAction in rendering procedure
     if (this[IN_MAIN_PROCESS]) {
         this._pendingActions.push(payload);
         return;
     }
-
     doDispatchAction.call(this, payload, opt.silent);
-
     if (opt.flush) {
         this._zr.flush(true);
     }
@@ -27255,24 +23689,18 @@ echartsProto.dispatchAction = function (payload, opt) {
         // screen, which impacts performance if do not throttle them.
         this._throttledZrFlush();
     }
-
     flushPendingActions.call(this, opt.silent);
-
     triggerUpdatedEvent.call(this, opt.silent);
 };
-
 function doDispatchAction(payload, silent) {
     var payloadType = payload.type;
     var escapeConnect = payload.escapeConnect;
     var actionWrap = actions[payloadType];
     var actionInfo = actionWrap.actionInfo;
-
     var cptType = (actionInfo.update || 'update').split(':');
     var updateMethod = cptType.pop();
     cptType = cptType[0] != null && parseClassType(cptType[0]);
-
     this[IN_MAIN_PROCESS] = true;
-
     var payloads = [payload];
     var batched = false;
     // Batch action
@@ -27284,11 +23712,9 @@ function doDispatchAction(payload, silent) {
             return item;
         });
     }
-
     var eventObjBatch = [];
     var eventObj;
     var isHighDown = payloadType === 'highlight' || payloadType === 'downplay';
-
     each(payloads, function (batchItem) {
         // Action can specify the event by return it.
         eventObj = actionWrap.action(batchItem, this._model, this._api);
@@ -27297,7 +23723,6 @@ function doDispatchAction(payload, silent) {
         // Convert type to eventType
         eventObj.type = actionInfo.event || eventObj.type;
         eventObjBatch.push(eventObj);
-
         // light update does not perform data process, layout and visual.
         if (isHighDown) {
             // method, payload, mainType, subType
@@ -27307,7 +23732,6 @@ function doDispatchAction(payload, silent) {
             updateDirectly(this, updateMethod, batchItem, cptType.main, cptType.sub);
         }
     }, this);
-
     if (updateMethod !== 'none' && !isHighDown && !cptType) {
         // Still dirty
         if (this[OPTION_UPDATED]) {
@@ -27320,7 +23744,6 @@ function doDispatchAction(payload, silent) {
             updateMethods[updateMethod].call(this, payload);
         }
     }
-
     // Follow the rule of action batch
     if (batched) {
         eventObj = {
@@ -27332,12 +23755,9 @@ function doDispatchAction(payload, silent) {
     else {
         eventObj = eventObjBatch[0];
     }
-
     this[IN_MAIN_PROCESS] = false;
-
     !silent && this._messageCenter.trigger(eventObj.type, eventObj);
 }
-
 function flushPendingActions(silent) {
     var pendingActions = this._pendingActions;
     while (pendingActions.length) {
@@ -27345,11 +23765,9 @@ function flushPendingActions(silent) {
         doDispatchAction.call(this, payload, silent);
     }
 }
-
 function triggerUpdatedEvent(silent) {
     !silent && this.trigger('updated');
 }
-
 /**
  * Event `rendered` is triggered when zr
  * rendered. It is useful for realtime
@@ -27364,9 +23782,7 @@ function triggerUpdatedEvent(silent) {
  */
 function bindRenderedEvent(zr, ecIns) {
     zr.on('rendered', function () {
-
         ecIns.trigger('rendered');
-
         // The `finished` event should not be triggered repeatly,
         // so it should only be triggered when rendering indeed happend
         // in zrender. (Consider the case that dipatchAction is keep
@@ -27384,7 +23800,6 @@ function bindRenderedEvent(zr, ecIns) {
         }
     });
 }
-
 /**
  * @param {Object} params
  * @param {number} params.seriesIndex
@@ -27394,13 +23809,10 @@ echartsProto.appendData = function (params) {
     var seriesIndex = params.seriesIndex;
     var ecModel = this.getModel();
     var seriesModel = ecModel.getSeriesByIndex(seriesIndex);
-
     if (__DEV__) {
         assert(params.data && seriesModel);
     }
-
     seriesModel.appendData(params);
-
     // Note: `appendData` does not support that update extent of coordinate
     // system, util some scenario require that. In the expected usage of
     // `appendData`, the initial extent of coordinate system should better
@@ -27408,10 +23820,8 @@ echartsProto.appendData = function (params) {
     // the extent changed while `appendData`, the location of the painted
     // graphic elements have to be changed, which make the usage of
     // `appendData` meaningless.
-
     this._scheduler.unfinished = true;
 };
-
 /**
  * Register event
  * @method
@@ -27419,7 +23829,6 @@ echartsProto.appendData = function (params) {
 echartsProto.on = createRegisterEventWithLowercaseName('on');
 echartsProto.off = createRegisterEventWithLowercaseName('off');
 echartsProto.one = createRegisterEventWithLowercaseName('one');
-
 /**
  * Prepare view instances of charts and components
  * @param  {module:echarts/model/Global} ecModel
@@ -27431,17 +23840,14 @@ function prepareView(ecIns, type, ecModel, scheduler) {
     var viewMap = isComponent ? ecIns._componentsMap : ecIns._chartsMap;
     var zr = ecIns._zr;
     var api = ecIns._api;
-
     for (var i = 0; i < viewList.length; i++) {
         viewList[i].__alive = false;
     }
-
     isComponent
         ? ecModel.eachComponent(function (componentType, model) {
             componentType !== 'series' && doPrepare(model);
         })
         : ecModel.eachSeries(doPrepare);
-
     function doPrepare(model) {
         // Consider: id same and type changed.
         var viewId = '_ec_' + model.id + '_' + model.type;
@@ -27451,18 +23857,15 @@ function prepareView(ecIns, type, ecModel, scheduler) {
             var Clazz = isComponent
                 ? Component.getClass(classType.main, classType.sub)
                 : Chart.getClass(classType.sub);
-
             if (__DEV__) {
                 assert(Clazz, classType.sub + ' does not exist.');
             }
-
             view = new Clazz();
             view.init(ecModel, api);
             viewMap[viewId] = view;
             viewList.push(view);
             zr.add(view.group);
         }
-
         model.__viewId = view.__id = viewId;
         view.__alive = true;
         view.__model = model;
@@ -27472,7 +23875,6 @@ function prepareView(ecIns, type, ecModel, scheduler) {
         };
         !isComponent && scheduler.prepareView(view, model, ecModel, api);
     }
-
     for (var i = 0; i < viewList.length;) {
         var view = viewList[i];
         if (!view.__alive) {
@@ -27488,7 +23890,6 @@ function prepareView(ecIns, type, ecModel, scheduler) {
         }
     }
 }
-
 // /**
 //  * Encode visual infomation from data after data processing
 //  *
@@ -27511,24 +23912,18 @@ function prepareView(ecIns, type, ecModel, scheduler) {
 //         }
 //     });
 // }
-
 function clearColorPalette(ecModel) {
     ecModel.clearColorPalette();
     ecModel.eachSeries(function (seriesModel) {
         seriesModel.clearColorPalette();
     });
 }
-
 function render(ecIns, ecModel, api, payload) {
-
     renderComponents(ecIns, ecModel, api, payload);
-
     each(ecIns._chartsViews, function (chart) {
         chart.__alive = false;
     });
-
     renderSeries(ecIns, ecModel, api, payload);
-
     // Remove groups of unrendered charts
     each(ecIns._chartsViews, function (chart) {
         if (!chart.__alive) {
@@ -27536,16 +23931,13 @@ function render(ecIns, ecModel, api, payload) {
         }
     });
 }
-
 function renderComponents(ecIns, ecModel, api, payload, dirtyList) {
     each(dirtyList || ecIns._componentsViews, function (componentView) {
         var componentModel = componentView.__model;
         componentView.render(componentModel, ecModel, api, payload);
-
         updateZ(componentModel, componentView);
     });
 }
-
 /**
  * Render each chart and component
  * @private
@@ -27557,43 +23949,31 @@ function renderSeries(ecIns, ecModel, api, payload, dirtyMap) {
     ecModel.eachSeries(function (seriesModel) {
         var chartView = ecIns._chartsMap[seriesModel.__viewId];
         chartView.__alive = true;
-
         var renderTask = chartView.renderTask;
         scheduler.updatePayload(renderTask, payload);
-
         if (dirtyMap && dirtyMap.get(seriesModel.uid)) {
             renderTask.dirty();
         }
-
         unfinished |= renderTask.perform(scheduler.getPerformArgs(renderTask));
-
         chartView.group.silent = !!seriesModel.get('silent');
-
         updateZ(seriesModel, chartView);
-
         updateBlend(seriesModel, chartView);
     });
     scheduler.unfinished |= unfinished;
-
     // If use hover layer
     updateHoverLayerStatus(ecIns._zr, ecModel);
-
     // Add aria
     aria(ecIns._zr.dom, ecModel);
 }
-
 function performPostUpdateFuncs(ecModel, api) {
     each(postUpdateFuncs, function (func) {
         func(ecModel, api);
     });
 }
-
-
 var MOUSE_EVENT_NAMES = [
     'click', 'dblclick', 'mouseover', 'mouseout', 'mousemove',
     'mousedown', 'mouseup', 'globalout', 'contextmenu'
 ];
-
 /**
  * @private
  */
@@ -27604,7 +23984,6 @@ echartsProto._initEvents = function () {
             var el = e.target;
             var params;
             var isGlobalOut = eveName === 'globalout';
-
             // no e.target when 'globalout'.
             if (isGlobalOut) {
                 params = {};
@@ -27617,7 +23996,6 @@ echartsProto._initEvents = function () {
             else if (el && el.eventData) {
                 params = extend({}, el.eventData);
             }
-
             // Contract: if params prepared in mouse event,
             // these properties must be specified:
             // {
@@ -27625,7 +24003,6 @@ echartsProto._initEvents = function () {
             //    componentIndex: number
             // }
             // Otherwise event query can not work.
-
             if (params) {
                 var componentType = params.componentType;
                 var componentIndex = params.componentIndex;
@@ -27646,7 +24023,6 @@ echartsProto._initEvents = function () {
                 var view = model && this[
                     model.mainType === 'series' ? '_chartsMap' : '_componentsMap'
                 ][model.__viewId];
-
                 if (__DEV__) {
                     // `event.componentType` and `event[componentTpype + 'Index']` must not
                     // be missed, otherwise there is no way to distinguish source component.
@@ -27655,17 +24031,14 @@ echartsProto._initEvents = function () {
                         console.warn('model or view can not be found by params');
                     }
                 }
-
                 params.event = e;
                 params.type = eveName;
-
                 this._ecEventProcessor.eventInfo = {
                     targetEl: el,
                     packedEvent: params,
                     model: model,
                     view: view
                 };
-
                 this.trigger(eveName, params);
             }
         };
@@ -27677,28 +24050,24 @@ echartsProto._initEvents = function () {
         handler.zrEventfulCallAtLast = true;
         this._zr.on(eveName, handler, this);
     }, this);
-
     each(eventActionMap, function (actionType, eventType) {
         this._messageCenter.on(eventType, function (event) {
             this.trigger(eventType, event);
         }, this);
     }, this);
 };
-
 /**
  * @return {boolean}
  */
 echartsProto.isDisposed = function () {
     return this._disposed;
 };
-
 /**
  * Clear
  */
 echartsProto.clear = function () {
     this.setOption({ series: [] }, true);
 };
-
 /**
  * Dispose instance
  */
@@ -27710,27 +24079,20 @@ echartsProto.dispose = function () {
         return;
     }
     this._disposed = true;
-
     setAttribute(this.getDom(), DOM_ATTRIBUTE_KEY, '');
-
     var api = this._api;
     var ecModel = this._model;
-
     each(this._componentsViews, function (component) {
         component.dispose(ecModel, api);
     });
     each(this._chartsViews, function (chart) {
         chart.dispose(ecModel, api);
     });
-
     // Dispose after all views disposed
     this._zr.dispose();
-
     delete instances[this.id];
 };
-
 mixin(ECharts, Eventful);
-
 function updateHoverLayerStatus(zr, ecModel) {
     var storage = zr.storage;
     var elCount = 0;
@@ -27748,7 +24110,6 @@ function updateHoverLayerStatus(zr, ecModel) {
         });
     }
 }
-
 /**
  * Update chart progressive and blend.
  * @param {module:echarts/model/Series|module:echarts/model/Component} model
@@ -27776,7 +24137,6 @@ function updateBlend(seriesModel, chartView) {
         }
     });
 }
-
 /**
  * @param {module:echarts/model/Series|module:echarts/model/Component} model
  * @param {module:echarts/view/Component|module:echarts/view/Chart} view
@@ -27792,7 +24152,6 @@ function updateZ(model, view) {
         }
     });
 }
-
 function createExtensionAPI(ecInstance) {
     var coordSysMgr = ecInstance._coordSysMgr;
     return extend(new ExtensionAPI(ecInstance), {
@@ -27811,8 +24170,6 @@ function createExtensionAPI(ecInstance) {
         }
     });
 }
-
-
 /**
  * @class
  * Usage of query:
@@ -27837,12 +24194,10 @@ function EventProcessor() {
 }
 EventProcessor.prototype = {
     constructor: EventProcessor,
-
     normalizeQuery: function (query) {
         var cptQuery = {};
         var dataQuery = {};
         var otherQuery = {};
-
         // `query` is `mainType` or `mainType.subType` of component.
         if (isString(query)) {
             var condCptType = parseClassType(query);
@@ -27880,35 +24235,28 @@ EventProcessor.prototype = {
                 }
             });
         }
-
         return {
             cptQuery: cptQuery,
             dataQuery: dataQuery,
             otherQuery: otherQuery
         };
     },
-
     filter: function (eventType, query, args) {
         // They should be assigned before each trigger call.
         var eventInfo = this.eventInfo;
-
         if (!eventInfo) {
             return true;
         }
-
         var targetEl = eventInfo.targetEl;
         var packedEvent = eventInfo.packedEvent;
         var model = eventInfo.model;
         var view = eventInfo.view;
-
         // For event like 'globalout'.
         if (!model || !view) {
             return true;
         }
-
         var cptQuery = query.cptQuery;
         var dataQuery = query.dataQuery;
-
         return check(cptQuery, model, 'mainType')
             && check(cptQuery, model, 'subType')
             && check(cptQuery, model, 'index', 'componentIndex')
@@ -27920,56 +24268,46 @@ EventProcessor.prototype = {
             && (!view.filterForExposedEvent || view.filterForExposedEvent(
                 eventType, query.otherQuery, targetEl, packedEvent
             ));
-
         function check(query, host, prop, propOnHost) {
             return query[prop] == null || host[propOnHost || prop] === query[prop];
         }
     },
-
     afterTrigger: function () {
         // Make sure the eventInfo wont be used in next trigger.
         this.eventInfo = null;
     }
 };
-
-
 /**
  * @type {Object} key: actionType.
  * @inner
  */
 var actions = {};
-
 /**
  * Map eventType to actionType
  * @type {Object}
  */
 var eventActionMap = {};
-
 /**
  * Data processor functions of each stage
  * @type {Array.<Object.<string, Function>>}
  * @inner
  */
 var dataProcessorFuncs = [];
-
 /**
  * @type {Array.<Function>}
  * @inner
  */
 var optionPreprocessorFuncs = [];
-
 /**
  * @type {Array.<Function>}
  * @inner
  */
 var postUpdateFuncs = [];
-
 /**
  * Visual encoding functions of each stage
  * @type {Array.<Object.<string, Function>>}
  */
 var visualFuncs = [];
-
 /**
  * Theme storage
  * @type {Object.<key, Object>}
@@ -27979,43 +24317,35 @@ var themeStorage = {};
  * Loading effects
  */
 var loadingEffects = {};
-
 var instances = {};
 var connectedGroups = {};
-
 var idBase = new Date() - 0;
 var groupIdBase = new Date() - 0;
 var DOM_ATTRIBUTE_KEY = '_echarts_instance_';
-
 function enableConnect(chart) {
     var STATUS_PENDING = 0;
     var STATUS_UPDATING = 1;
     var STATUS_UPDATED = 2;
     var STATUS_KEY = '__connectUpdateStatus';
-
     function updateConnectedChartsStatus(charts, status) {
         for (var i = 0; i < charts.length; i++) {
             var otherChart = charts[i];
             otherChart[STATUS_KEY] = status;
         }
     }
-
     each(eventActionMap, function (actionType, eventType) {
         chart._messageCenter.on(eventType, function (event) {
             if (connectedGroups[chart.group] && chart[STATUS_KEY] !== STATUS_PENDING) {
                 if (event && event.escapeConnect) {
                     return;
                 }
-
                 var action = chart.makeActionFromEvent(event);
                 var otherCharts = [];
-
                 each(instances, function (otherChart) {
                     if (otherChart !== chart && otherChart.group === chart.group) {
                         otherCharts.push(otherChart);
                     }
                 });
-
                 updateConnectedChartsStatus(otherCharts, STATUS_PENDING);
                 each(otherCharts, function (otherChart) {
                     if (otherChart[STATUS_KEY] !== STATUS_UPDATING) {
@@ -28027,7 +24357,6 @@ function enableConnect(chart) {
         });
     });
 }
-
 /**
  * @param {HTMLElement} dom
  * @param {Object} [theme]
@@ -28050,12 +24379,10 @@ function init(dom, theme$$1, opts) {
                 + dependencies.zrender + '+'
             );
         }
-
         if (!dom) {
             throw new Error('Initialize failed: invalid dom.');
         }
     }
-
     var existInstance = getInstanceByDom(dom);
     if (existInstance) {
         if (__DEV__) {
@@ -28063,7 +24390,6 @@ function init(dom, theme$$1, opts) {
         }
         return existInstance;
     }
-
     if (__DEV__) {
         if (isDom(dom)
             && dom.nodeName.toUpperCase() !== 'CANVAS'
@@ -28075,18 +24401,13 @@ function init(dom, theme$$1, opts) {
             console.warn('Can\'t get dom width or height');
         }
     }
-
     var chart = new ECharts(dom, theme$$1, opts);
     chart.id = 'ec_' + idBase++;
     instances[chart.id] = chart;
-
     setAttribute(dom, DOM_ATTRIBUTE_KEY, chart.id);
-
     enableConnect(chart);
-
     return chart;
 }
-
 /**
  * @return {string|Array.<module:echarts~ECharts>} groupId
  */
@@ -28109,7 +24430,6 @@ function connect(groupId) {
     connectedGroups[groupId] = true;
     return groupId;
 }
-
 /**
  * @DEPRECATED
  * @return {string} groupId
@@ -28117,12 +24437,10 @@ function connect(groupId) {
 function disConnect(groupId) {
     connectedGroups[groupId] = false;
 }
-
 /**
  * @return {string} groupId
  */
 var disconnect = disConnect;
-
 /**
  * Dispose a chart instance
  * @param  {module:echarts~ECharts|HTMLDomElement|string} chart
@@ -28139,7 +24457,6 @@ function dispose(chart) {
         chart.dispose();
     }
 }
-
 /**
  * @param  {HTMLElement} dom
  * @return {echarts~ECharts}
@@ -28147,7 +24464,6 @@ function dispose(chart) {
 function getInstanceByDom(dom) {
     return instances[getAttribute(dom, DOM_ATTRIBUTE_KEY)];
 }
-
 /**
  * @param {string} key
  * @return {echarts~ECharts}
@@ -28155,14 +24471,12 @@ function getInstanceByDom(dom) {
 function getInstanceById(key) {
     return instances[key];
 }
-
 /**
  * Register theme
  */
 function registerTheme(name, theme$$1) {
     themeStorage[name] = theme$$1;
 }
-
 /**
  * Register option preprocessor
  * @param {Function} preprocessorFunc
@@ -28170,7 +24484,6 @@ function registerTheme(name, theme$$1) {
 function registerPreprocessor(preprocessorFunc) {
     optionPreprocessorFuncs.push(preprocessorFunc);
 }
-
 /**
  * @param {number} [priority=1000]
  * @param {Object|Function} processor
@@ -28178,7 +24491,6 @@ function registerPreprocessor(preprocessorFunc) {
 function registerProcessor(priority, processor) {
     normalizeRegister(dataProcessorFuncs, priority, processor, PRIORITY_PROCESSOR_FILTER);
 }
-
 /**
  * Register postUpdater
  * @param {Function} postUpdateFunc
@@ -28186,7 +24498,6 @@ function registerProcessor(priority, processor) {
 function registerPostUpdate(postUpdateFunc) {
     postUpdateFuncs.push(postUpdateFunc);
 }
-
 /**
  * Usage:
  * registerAction('someAction', 'someEvent', function () { ... });
@@ -28213,20 +24524,16 @@ function registerAction(actionInfo, eventName, action) {
         : ([actionInfo, actionInfo = {
             event: eventName
         }][0]);
-
     // Event name is all lowercase
     actionInfo.event = (actionInfo.event || actionType).toLowerCase();
     eventName = actionInfo.event;
-
     // Validate action type and event name.
     assert(ACTION_REG.test(actionType) && ACTION_REG.test(eventName));
-
     if (!actions[actionType]) {
         actions[actionType] = {action: action, actionInfo: actionInfo};
     }
     eventActionMap[eventName] = actionType;
 }
-
 /**
  * @param {string} type
  * @param {*} CoordinateSystem
@@ -28234,7 +24541,6 @@ function registerAction(actionInfo, eventName, action) {
 function registerCoordinateSystem(type, CoordinateSystem$$1) {
     CoordinateSystemManager.register(type, CoordinateSystem$$1);
 }
-
 /**
  * Get dimensions of specified coordinate system.
  * @param {string} type
@@ -28248,7 +24554,6 @@ function getCoordinateSystemDimensions(type) {
                 : coordSysCreator.dimensions.slice();
     }
 }
-
 /**
  * Layout is a special stage of visual encoding
  * Most visual encoding like color are common for different chart
@@ -28260,7 +24565,6 @@ function getCoordinateSystemDimensions(type) {
 function registerLayout(priority, layoutTask) {
     normalizeRegister(visualFuncs, priority, layoutTask, PRIORITY_VISUAL_LAYOUT, 'layout');
 }
-
 /**
  * @param {number} [priority=3000]
  * @param {module:echarts/stream/Task} visualTask
@@ -28268,7 +24572,6 @@ function registerLayout(priority, layoutTask) {
 function registerVisual(priority, visualTask) {
     normalizeRegister(visualFuncs, priority, visualTask, PRIORITY_VISUAL_CHART, 'visual');
 }
-
 /**
  * @param {Object|Function} fn: {seriesType, createOnAllSeries, performRawSeries, reset}
  */
@@ -28277,7 +24580,6 @@ function normalizeRegister(targetList, priority, fn, defaultPriority, visualType
         fn = priority;
         priority = defaultPriority;
     }
-
     if (__DEV__) {
         if (isNaN(priority) || priority == null) {
             throw new Error('Illegal priority');
@@ -28287,23 +24589,18 @@ function normalizeRegister(targetList, priority, fn, defaultPriority, visualType
             assert(wrap.__raw !== fn);
         });
     }
-
     var stageHandler = Scheduler.wrapStageHandler(fn, visualType);
-
     stageHandler.__prio = priority;
     stageHandler.__raw = fn;
     targetList.push(stageHandler);
-
     return stageHandler;
 }
-
 /**
  * @param {string} name
  */
 function registerLoading(name, loadingFx) {
     loadingEffects[name] = loadingFx;
 }
-
 /**
  * @param {Object} opts
  * @param {string} [superClass]
@@ -28316,7 +24613,6 @@ function extendComponentModel(opts/*, superClass*/) {
     // }
     return ComponentModel.extend(opts);
 }
-
 /**
  * @param {Object} opts
  * @param {string} [superClass]
@@ -28329,7 +24625,6 @@ function extendComponentView(opts/*, superClass*/) {
     // }
     return Component.extend(opts);
 }
-
 /**
  * @param {Object} opts
  * @param {string} [superClass]
@@ -28343,7 +24638,6 @@ function extendSeriesModel(opts/*, superClass*/) {
     // }
     return SeriesModel.extend(opts);
 }
-
 /**
  * @param {Object} opts
  * @param {string} [superClass]
@@ -28357,7 +24651,6 @@ function extendChartView(opts/*, superClass*/) {
     // }
     return Chart.extend(opts);
 }
-
 /**
  * ZRender need a canvas context to do measureText.
  * But in node environment canvas may be created by node-canvas.
@@ -28377,7 +24670,6 @@ function extendChartView(opts/*, superClass*/) {
 function setCanvasCreator(creator) {
     $override('createCanvas', creator);
 }
-
 /**
  * @param {string} mapName
  * @param {Array.<Object>|Object|string} geoJson
@@ -28407,7 +24699,6 @@ function setCanvasCreator(creator) {
 function registerMap(mapName, geoJson, specialAreas) {
     mapDataStorage.registerMap(mapName, geoJson, specialAreas);
 }
-
 /**
  * @param {string} mapName
  * @return {Object}
@@ -28420,34 +24711,27 @@ function getMap(mapName) {
         specialAreas: records[0].specialAreas
     };
 }
-
 registerVisual(PRIORITY_VISUAL_GLOBAL, seriesColor);
 registerPreprocessor(backwardCompat);
 registerProcessor(PRIORITY_PROCESSOR_STATISTIC, dataStack);
 registerLoading('default', loadingDefault);
-
 // Default actions
-
 registerAction({
     type: 'highlight',
     event: 'highlight',
     update: 'highlight'
 }, noop);
-
 registerAction({
     type: 'downplay',
     event: 'downplay',
     update: 'downplay'
 }, noop);
-
 // Default theme
 registerTheme('light', lightTheme);
 registerTheme('dark', theme);
-
 // For backward compatibility, where the namespace `dataTool` will
 // be mounted on `echarts` is the extension `dataTool` is imported.
 var dataTool = {};
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -28466,12 +24750,9 @@ var dataTool = {};
 * specific language governing permissions and limitations
 * under the License.
 */
-
-
 function defaultKeyGetter(item) {
     return item;
 }
-
 /**
  * @param {Array} oldArr
  * @param {Array} newArr
@@ -28482,17 +24763,12 @@ function defaultKeyGetter(item) {
 function DataDiffer(oldArr, newArr, oldKeyGetter, newKeyGetter, context) {
     this._old = oldArr;
     this._new = newArr;
-
     this._oldKeyGetter = oldKeyGetter || defaultKeyGetter;
     this._newKeyGetter = newKeyGetter || defaultKeyGetter;
-
     this.context = context;
 }
-
 DataDiffer.prototype = {
-
     constructor: DataDiffer,
-
     /**
      * Callback function when add a data
      */
@@ -28500,7 +24776,6 @@ DataDiffer.prototype = {
         this._add = func;
         return this;
     },
-
     /**
      * Callback function when update a data
      */
@@ -28508,7 +24783,6 @@ DataDiffer.prototype = {
         this._update = func;
         return this;
     },
-
     /**
      * Callback function when remove a data
      */
@@ -28516,27 +24790,22 @@ DataDiffer.prototype = {
         this._remove = func;
         return this;
     },
-
     execute: function () {
         var oldArr = this._old;
         var newArr = this._new;
-
         var oldDataIndexMap = {};
         var newDataIndexMap = {};
         var oldDataKeyArr = [];
         var newDataKeyArr = [];
         var i;
-
         initIndexMap(oldArr, oldDataIndexMap, oldDataKeyArr, '_oldKeyGetter', this);
         initIndexMap(newArr, newDataIndexMap, newDataKeyArr, '_newKeyGetter', this);
-
         // Travel by inverted order to make sure order consistency
         // when duplicate keys exists (consider newDataIndex.pop() below).
         // For performance consideration, these code below do not look neat.
         for (i = 0; i < oldArr.length; i++) {
             var key = oldDataKeyArr[i];
             var idx = newDataIndexMap[key];
-
             // idx can never be empty array here. see 'set null' logic below.
             if (idx != null) {
                 // Consider there is duplicate key (for example, use dataItem.name as key).
@@ -28555,7 +24824,6 @@ DataDiffer.prototype = {
                 this._remove && this._remove(i);
             }
         }
-
         for (var i = 0; i < newDataKeyArr.length; i++) {
             var key = newDataKeyArr[i];
             if (newDataIndexMap.hasOwnProperty(key)) {
@@ -28576,7 +24844,6 @@ DataDiffer.prototype = {
         }
     }
 };
-
 function initIndexMap(arr, map, keyArr, keyGetterName, dataDiffer) {
     for (var i = 0; i < arr.length; i++) {
         // Add prefix to avoid conflict with Object.prototype.
@@ -28594,7 +24861,6 @@ function initIndexMap(arr, map, keyArr, keyGetterName, dataDiffer) {
         }
     }
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -28613,21 +24879,17 @@ function initIndexMap(arr, map, keyArr, keyGetterName, dataDiffer) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var OTHER_DIMENSIONS = createHashMap([
     'tooltip', 'label', 'itemName', 'itemId', 'seriesName'
 ]);
-
 function summarizeDimensions(data) {
     var summary = {};
     var encode = summary.encode = {};
     var notExtraCoordDimMap = createHashMap();
     var defaultedLabel = [];
     var defaultedTooltip = [];
-
     each$1(data.dimensions, function (dimName) {
         var dimItem = data.getDimensionInfo(dimName);
-
         var coordDim = dimItem.coordDim;
         if (coordDim) {
             if (__DEV__) {
@@ -28638,10 +24900,8 @@ function summarizeDimensions(data) {
                 coordDimArr = encode[coordDim] = [];
             }
             coordDimArr[dimItem.coordDimIndex] = dimName;
-
             if (!dimItem.isExtraCoord) {
                 notExtraCoordDimMap.set(coordDim, 1);
-
                 // Use the last coord dim (and label friendly) as default label,
                 // because when dataset is used, it is hard to guess which dimension
                 // can be value dimension. If both show x, y on label is not look good,
@@ -28654,23 +24914,19 @@ function summarizeDimensions(data) {
                 defaultedTooltip.push(dimName);
             }
         }
-
         OTHER_DIMENSIONS.each(function (v, otherDim) {
             var otherDimArr = encode[otherDim];
             if (!encode.hasOwnProperty(otherDim)) {
                 otherDimArr = encode[otherDim] = [];
             }
-
             var dimIndex = dimItem.otherDims[otherDim];
             if (dimIndex != null && dimIndex !== false) {
                 otherDimArr[dimIndex] = dimItem.name;
             }
         });
     });
-
     var dataDimsOnCoord = [];
     var encodeFirstDimNotExtra = {};
-
     notExtraCoordDimMap.each(function (v, coordDim) {
         var dimArr = encode[coordDim];
         // ??? FIXME extra coord should not be set in dataDimsOnCoord.
@@ -28681,17 +24937,14 @@ function summarizeDimensions(data) {
         // dim canot on more than one coordDim.
         dataDimsOnCoord = dataDimsOnCoord.concat(dimArr);
     });
-
     summary.dataDimsOnCoord = dataDimsOnCoord;
     summary.encodeFirstDimNotExtra = encodeFirstDimNotExtra;
-
     var encodeLabel = encode.label;
     // FIXME `encode.label` is not recommanded, because formatter can not be set
     // in this way. Use label.formatter instead. May be remove this approach someday.
     if (encodeLabel && encodeLabel.length) {
         defaultedLabel = encodeLabel.slice();
     }
-
     var encodeTooltip = encode.tooltip;
     if (encodeTooltip && encodeTooltip.length) {
         defaultedTooltip = encodeTooltip.slice();
@@ -28699,13 +24952,10 @@ function summarizeDimensions(data) {
     else if (!defaultedTooltip.length) {
         defaultedTooltip = defaultedLabel.slice();
     }
-
     encode.defaultedLabel = defaultedLabel;
     encode.defaultedTooltip = defaultedTooltip;
-
     return summary;
 }
-
 function getDimensionTypeByAxis(axisType) {
     return axisType === 'category'
         ? 'ordinal'
@@ -28713,13 +24963,11 @@ function getDimensionTypeByAxis(axisType) {
         ? 'time'
         : 'float';
 }
-
 function mayLabelDimType(dimType) {
     // In most cases, ordinal and time do not suitable for label.
     // Ordinal info can be displayed on axis. Time is too long.
     return !(dimType === 'ordinal' || dimType === 'time');
 }
-
 // function findTheLastDimMayLabel(data) {
 //     // Get last value dim
 //     var dimensions = data.dimensions.slice();
@@ -28732,7 +24980,6 @@ function mayLabelDimType(dimType) {
 //     )) {} // jshint ignore:line
 //     return valueDim;
 // }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -28751,23 +24998,17 @@ function mayLabelDimType(dimType) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /* global Float64Array, Int32Array, Uint32Array, Uint16Array */
-
 /**
  * List for data storage
  * @module echarts/data/List
  */
-
 var isObject$4 = isObject$1;
-
 var UNDEFINED = 'undefined';
 var INDEX_NOT_FOUND = -1;
-
 // Use prefix to avoid index to be the same as otherIdList[idx],
 // which will cause weird udpate animation.
 var ID_PREFIX = 'e\0\0';
-
 var dataCtors = {
     'float': typeof Float64Array === UNDEFINED
         ? Array : Float64Array,
@@ -28778,24 +25019,20 @@ var dataCtors = {
     'number': Array,
     'time': Array
 };
-
 // Caution: MUST not use `new CtorUint32Array(arr, 0, len)`, because the Ctor of array is
 // different from the Ctor of typed array.
 var CtorUint32Array = typeof Uint32Array === UNDEFINED ? Array : Uint32Array;
 var CtorInt32Array = typeof Int32Array === UNDEFINED ? Array : Int32Array;
 var CtorUint16Array = typeof Uint16Array === UNDEFINED ? Array : Uint16Array;
-
 function getIndicesCtor(list) {
     // The possible max value in this._indicies is always this._rawCount despite of filtering.
     return list._rawCount > 65535 ? CtorUint32Array : CtorUint16Array;
 }
-
 function cloneChunk(originalChunk) {
     var Ctor = originalChunk.constructor;
     // Only shallow clone is enough when Array.
     return Ctor === Array ? originalChunk.slice() : new Ctor(originalChunk);
 }
-
 var TRANSFERABLE_PROPERTIES = [
     'hasItemOption', '_nameList', '_idList', '_invertedIndicesMap',
     '_rawData', '_chunkSize', '_chunkCount', '_dimValueGetter',
@@ -28804,27 +25041,18 @@ var TRANSFERABLE_PROPERTIES = [
 var CLONE_PROPERTIES = [
     '_extent', '_approximateExtent', '_rawExtent'
 ];
-
 function transferProperties(target, source) {
     each$1(TRANSFERABLE_PROPERTIES.concat(source.__wrappedMethods || []), function (propName) {
         if (source.hasOwnProperty(propName)) {
             target[propName] = source[propName];
         }
     });
-
     target.__wrappedMethods = source.__wrappedMethods;
-
     each$1(CLONE_PROPERTIES, function (propName) {
         target[propName] = clone(source[propName]);
     });
-
     target._calculationInfo = extend(source._calculationInfo);
 }
-
-
-
-
-
 /**
  * @constructor
  * @alias module:echarts/data/List
@@ -28839,61 +25067,48 @@ function transferProperties(target, source) {
  * @param {module:echarts/model/Model} hostModel
  */
 var List = function (dimensions, hostModel) {
-
     dimensions = dimensions || ['x', 'y'];
-
     var dimensionInfos = {};
     var dimensionNames = [];
     var invertedIndicesMap = {};
-
     for (var i = 0; i < dimensions.length; i++) {
         // Use the original dimensions[i], where other flag props may exists.
         var dimensionInfo = dimensions[i];
-
         if (isString(dimensionInfo)) {
             dimensionInfo = {name: dimensionInfo};
         }
-
         var dimensionName = dimensionInfo.name;
         dimensionInfo.type = dimensionInfo.type || 'float';
         if (!dimensionInfo.coordDim) {
             dimensionInfo.coordDim = dimensionName;
             dimensionInfo.coordDimIndex = 0;
         }
-
         dimensionInfo.otherDims = dimensionInfo.otherDims || {};
         dimensionNames.push(dimensionName);
         dimensionInfos[dimensionName] = dimensionInfo;
-
         dimensionInfo.index = i;
-
         if (dimensionInfo.createInvertedIndices) {
             invertedIndicesMap[dimensionName] = [];
         }
     }
-
     /**
      * @readOnly
      * @type {Array.<string>}
      */
     this.dimensions = dimensionNames;
-
     /**
      * Infomation of each data dimension, like data type.
      * @type {Object}
      */
     this._dimensionInfos = dimensionInfos;
-
     /**
      * @type {module:echarts/model/Model}
      */
     this.hostModel = hostModel;
-
     /**
      * @type {module:echarts/model/Model}
      */
     this.dataType;
-
     /**
      * Indices stores the indices of data subset after filtered.
      * This data subset will be used in chart.
@@ -28901,17 +25116,14 @@ var List = function (dimensions, hostModel) {
      * @readOnly
      */
     this._indices = null;
-
     this._count = 0;
     this._rawCount = 0;
-
     /**
      * Data storage
      * @type {Object.<key, Array.<TypedArray|Array>>}
      * @private
      */
     this._storage = {};
-
     /**
      * @type {Array.<string>}
      */
@@ -28920,75 +25132,64 @@ var List = function (dimensions, hostModel) {
      * @type {Array.<string>}
      */
     this._idList = [];
-
     /**
      * Models of data option is stored sparse for optimizing memory cost
      * @type {Array.<module:echarts/model/Model>}
      * @private
      */
     this._optionModels = [];
-
     /**
      * Global visual properties after visual coding
      * @type {Object}
      * @private
      */
     this._visual = {};
-
     /**
      * Globel layout properties.
      * @type {Object}
      * @private
      */
     this._layout = {};
-
     /**
      * Item visual properties after visual coding
      * @type {Array.<Object>}
      * @private
      */
     this._itemVisuals = [];
-
     /**
      * Key: visual type, Value: boolean
      * @type {Object}
      * @readOnly
      */
     this.hasItemVisual = {};
-
     /**
      * Item layout properties after layout
      * @type {Array.<Object>}
      * @private
      */
     this._itemLayouts = [];
-
     /**
      * Graphic elemnents
      * @type {Array.<module:zrender/Element>}
      * @private
      */
     this._graphicEls = [];
-
     /**
      * Max size of each chunk.
      * @type {number}
      * @private
      */
     this._chunkSize = 1e5;
-
     /**
      * @type {number}
      * @private
      */
     this._chunkCount = 0;
-
     /**
      * @type {Array.<Array|Object>}
      * @private
      */
     this._rawData;
-
     /**
      * Raw extent will not be cloned, but only transfered.
      * It will not be calculated util needed.
@@ -28998,13 +25199,11 @@ var List = function (dimensions, hostModel) {
      * @private
      */
     this._rawExtent = {};
-
     /**
      * @type {Object}
      * @private
      */
     this._extent = {};
-
     /**
      * key: dim
      * value: extent
@@ -29012,37 +25211,30 @@ var List = function (dimensions, hostModel) {
      * @private
      */
     this._approximateExtent = {};
-
     /**
      * Cache summary info for fast visit. See "dimensionHelper".
      * @type {Object}
      * @private
      */
     this._dimensionsSummary = summarizeDimensions(this);
-
     /**
      * @type {Object.<Array|TypedArray>}
      * @private
      */
     this._invertedIndicesMap = invertedIndicesMap;
-
     /**
      * @type {Object}
      * @private
      */
     this._calculationInfo = {};
 };
-
 var listProto = List.prototype;
-
 listProto.type = 'list';
-
 /**
  * If each data item has it's own option
  * @type {boolean}
  */
 listProto.hasItemOption = true;
-
 /**
  * Get dimension name
  * @param {string|number} dim
@@ -29056,7 +25248,6 @@ listProto.getDimension = function (dim) {
     }
     return dim;
 };
-
 /**
  * Get type and calculation info of particular dimension
  * @param {string|number} dim
@@ -29067,14 +25258,12 @@ listProto.getDimensionInfo = function (dim) {
     // Do not clone, because there may be categories in dimInfo.
     return this._dimensionInfos[this.getDimension(dim)];
 };
-
 /**
  * @return {Array.<string>} concrete dimension name list on coord.
  */
 listProto.getDimensionsOnCoord = function () {
     return this._dimensionsSummary.dataDimsOnCoord.slice();
 };
-
 /**
  * @param {string} coordDim
  * @param {number} [idx] A coordDim may map to more than one data dim.
@@ -29086,18 +25275,15 @@ listProto.getDimensionsOnCoord = function () {
  */
 listProto.mapDimension = function (coordDim, idx) {
     var dimensionsSummary = this._dimensionsSummary;
-
     if (idx == null) {
         return dimensionsSummary.encodeFirstDimNotExtra[coordDim];
     }
-
     var dims = dimensionsSummary.encode[coordDim];
     return idx === true
         // always return array if idx is `true`
         ? (dims || []).slice()
         : (dims && dims[idx]);
 };
-
 /**
  * Initialize from data
  * @param {Array.<Object|number|Array>} data source or data or data provider.
@@ -29109,34 +25295,25 @@ listProto.mapDimension = function (coordDim, idx) {
  * @param {Function} [dimValueGetter] (dataItem, dimName, dataIndex, dimIndex) => number
  */
 listProto.initData = function (data, nameList, dimValueGetter) {
-
     var notProvider = Source.isInstance(data) || isArrayLike(data);
     if (notProvider) {
         data = new DefaultDataProvider(data, this.dimensions.length);
     }
-
     if (__DEV__) {
         if (!notProvider && (typeof data.getItem !== 'function' || typeof data.count !== 'function')) {
             throw new Error('Inavlid data provider.');
         }
     }
-
     this._rawData = data;
-
     // Clear
     this._storage = {};
     this._indices = null;
-
     this._nameList = nameList || [];
-
     this._idList = [];
-
     this._nameRepeatCount = {};
-
     if (!dimValueGetter) {
         this.hasItemOption = false;
     }
-
     /**
      * @readOnly
      */
@@ -29147,22 +25324,17 @@ listProto.initData = function (data, nameList, dimValueGetter) {
     this._dimValueGetter = dimValueGetter = dimValueGetter
         || this.defaultDimValueGetter;
     this._dimValueGetterArrayRows = defaultDimValueGetters.arrayRows;
-
     // Reset raw extent.
     this._rawExtent = {};
-
     this._initDataFromProvider(0, data.count());
-
     // If data has no item option.
     if (data.pure) {
         this.hasItemOption = false;
     }
 };
-
 listProto.getProvider = function () {
     return this._rawData;
 };
-
 /**
  * Caution: Can be only called on raw data (before `this._indices` created).
  */
@@ -29170,7 +25342,6 @@ listProto.appendData = function (data) {
     if (__DEV__) {
         assert$1(!this._indices, 'appendData can only be called on raw data.');
     }
-
     var rawData = this._rawData;
     var start = this.count();
     rawData.appendData(data);
@@ -29180,7 +25351,6 @@ listProto.appendData = function (data) {
     }
     this._initDataFromProvider(start, end);
 };
-
 /**
  * Caution: Can be only called on raw data (before `this._indices` created).
  * This method does not modify `rawData` (`dataProvider`), but only
@@ -29203,11 +25373,9 @@ listProto.appendValues = function (values, names) {
     var dimensions = this.dimensions;
     var dimLen = dimensions.length;
     var rawExtent = this._rawExtent;
-
     var start = this.count();
     var end = start + Math.max(values.length, names ? names.length : 0);
     var originalChunkCount = this._chunkCount;
-
     for (var i = 0; i < dimLen; i++) {
         var dim = dimensions[i];
         if (!rawExtent[dim]) {
@@ -29219,13 +25387,11 @@ listProto.appendValues = function (values, names) {
         prepareChunks(storage, this._dimensionInfos[dim], chunkSize, originalChunkCount, end);
         this._chunkCount = storage[dim].length;
     }
-
     var emptyDataItem = new Array(dimLen);
     for (var idx = start; idx < end; idx++) {
         var sourceIdx = idx - start;
         var chunkIndex = Math.floor(idx / chunkSize);
         var chunkOffset = idx % chunkSize;
-
         // Store the data by dimensions
         for (var k = 0; k < dimLen; k++) {
             var dim = dimensions[k];
@@ -29233,31 +25399,24 @@ listProto.appendValues = function (values, names) {
                 values[sourceIdx] || emptyDataItem, dim, sourceIdx, k
             );
             storage[dim][chunkIndex][chunkOffset] = val;
-
             var dimRawExtent = rawExtent[dim];
             val < dimRawExtent[0] && (dimRawExtent[0] = val);
             val > dimRawExtent[1] && (dimRawExtent[1] = val);
         }
-
         if (names) {
             this._nameList[idx] = names[sourceIdx];
         }
     }
-
     this._rawCount = this._count = end;
-
     // Reset data extent
     this._extent = {};
-
     prepareInvertedIndex(this);
 };
-
 listProto._initDataFromProvider = function (start, end) {
     // Optimize.
     if (start >= end) {
         return;
     }
-
     var chunkSize = this._chunkSize;
     var rawData = this._rawData;
     var storage = this._storage;
@@ -29269,14 +25428,12 @@ listProto._initDataFromProvider = function (start, end) {
     var rawExtent = this._rawExtent;
     var nameRepeatCount = this._nameRepeatCount = {};
     var nameDimIdx;
-
     var originalChunkCount = this._chunkCount;
     for (var i = 0; i < dimLen; i++) {
         var dim = dimensions[i];
         if (!rawExtent[dim]) {
             rawExtent[dim] = getInitialExtent();
         }
-
         var dimInfo = dimensionInfoMap[dim];
         if (dimInfo.otherDims.itemName === 0) {
             nameDimIdx = this._nameDimIdx = i;
@@ -29284,16 +25441,12 @@ listProto._initDataFromProvider = function (start, end) {
         if (dimInfo.otherDims.itemId === 0) {
             this._idDimIdx = i;
         }
-
         if (!storage[dim]) {
             storage[dim] = [];
         }
-
         prepareChunks(storage, dimInfo, chunkSize, originalChunkCount, end);
-
         this._chunkCount = storage[dim].length;
     }
-
     var dataItem = new Array(dimLen);
     for (var idx = start; idx < end; idx++) {
         // NOTICE: Try not to write things into dataItem
@@ -29306,7 +25459,6 @@ listProto._initDataFromProvider = function (start, end) {
         // Use a tempValue to normalize the value to be a (x, y) value
         var chunkIndex = Math.floor(idx / chunkSize);
         var chunkOffset = idx % chunkSize;
-
         // Store the data by dimensions
         for (var k = 0; k < dimLen; k++) {
             var dim = dimensions[k];
@@ -29314,17 +25466,14 @@ listProto._initDataFromProvider = function (start, end) {
             // PENDING NULL is empty or zero
             var val = this._dimValueGetter(dataItem, dim, idx, k);
             dimStorage[chunkOffset] = val;
-
             var dimRawExtent = rawExtent[dim];
             val < dimRawExtent[0] && (dimRawExtent[0] = val);
             val > dimRawExtent[1] && (dimRawExtent[1] = val);
         }
-
         // ??? FIXME not check by pure but sourceFormat?
         // TODO refactor these logic.
         if (!rawData.pure) {
             var name = nameList[idx];
-
             if (dataItem && name == null) {
                 // If dataItem is {name: ...}, it has highest priority.
                 // That is appropriate for many common cases.
@@ -29345,11 +25494,9 @@ listProto._initDataFromProvider = function (start, end) {
                     }
                 }
             }
-
             // Try using the id in option
             // id or name is used on dynamical data, mapping old and new items.
             var id = dataItem == null ? null : dataItem.id;
-
             if (id == null && name != null) {
                 // Use name as id and add counter to avoid same name
                 nameRepeatCount[name] = nameRepeatCount[name] || 0;
@@ -29362,20 +25509,15 @@ listProto._initDataFromProvider = function (start, end) {
             id != null && (idList[idx] = id);
         }
     }
-
     if (!rawData.persistent && rawData.clean) {
         // Clean unused data if data source is typed array.
         rawData.clean();
     }
-
     this._rawCount = this._count = end;
-
     // Reset data extent
     this._extent = {};
-
     prepareInvertedIndex(this);
 };
-
 function prepareChunks(storage, dimInfo, chunkSize, chunkCount, end) {
     var DataCtor = dataCtors[dimInfo.type];
     var lastChunkIndex = chunkCount - 1;
@@ -29390,18 +25532,15 @@ function prepareChunks(storage, dimInfo, chunkSize, chunkCount, end) {
         }
         storage[dim][lastChunkIndex] = newStore;
     }
-
     // Create new chunks.
     for (var k = chunkCount * chunkSize; k < end; k += chunkSize) {
         storage[dim].push(new DataCtor(Math.min(end - k, chunkSize)));
     }
 }
-
 function prepareInvertedIndex(list) {
     var invertedIndicesMap = list._invertedIndicesMap;
     each$1(invertedIndicesMap, function (invertedIndices, dim) {
         var dimInfo = list._dimensionInfos[dim];
-
         // Currently, only dimensions that has ordinalMeta can create inverted indices.
         var ordinalMeta = dimInfo.ordinalMeta;
         if (ordinalMeta) {
@@ -29420,7 +25559,6 @@ function prepareInvertedIndex(list) {
         }
     });
 }
-
 function getRawValueFromStore(list, dimIndex, rawIndex) {
     var val;
     if (dimIndex != null) {
@@ -29439,17 +25577,14 @@ function getRawValueFromStore(list, dimIndex, rawIndex) {
     }
     return val;
 }
-
 /**
  * @return {number}
  */
 listProto.count = function () {
     return this._count;
 };
-
 listProto.getIndices = function () {
     var newIndices;
-
     var indices = this._indices;
     if (indices) {
         var Ctor = indices.constructor;
@@ -29472,10 +25607,8 @@ listProto.getIndices = function () {
             newIndices[i] = i;
         }
     }
-
     return newIndices;
 };
-
 /**
  * Get value. Return NaN if idx is out of range.
  * @param {string} dim Dim must be concrete name.
@@ -29492,12 +25625,9 @@ listProto.get = function (dim, idx /*, stack */) {
         // TODO Warn ?
         return NaN;
     }
-
     idx = this.getRawIndex(idx);
-
     var chunkIndex = Math.floor(idx / this._chunkSize);
     var chunkOffset = idx % this._chunkSize;
-
     var chunkStore = storage[dim][chunkIndex];
     var value = chunkStore[chunkOffset];
     // FIXME ordinal data type is not stackable
@@ -29518,10 +25648,8 @@ listProto.get = function (dim, idx /*, stack */) {
     //         }
     //     }
     // }
-
     return value;
 };
-
 /**
  * @param {string} dim concrete dim
  * @param {number} rawIndex
@@ -29536,13 +25664,11 @@ listProto.getByRawIndex = function (dim, rawIdx) {
         // TODO Warn ?
         return NaN;
     }
-
     var chunkIndex = Math.floor(rawIdx / this._chunkSize);
     var chunkOffset = rawIdx % this._chunkSize;
     var chunkStore = dimStore[chunkIndex];
     return chunkStore[chunkOffset];
 };
-
 /**
  * FIXME Use `get` on chrome maybe slow(in filterSelf and selectRange).
  * Hack a much simpler _getFast
@@ -29554,7 +25680,6 @@ listProto._getFast = function (dim, rawIdx) {
     var chunkStore = this._storage[dim][chunkIndex];
     return chunkStore[chunkOffset];
 };
-
 /**
  * Get value for multi dimensions.
  * @param {Array.<string>} [dimensions] If ignored, using all dimensions.
@@ -29563,20 +25688,16 @@ listProto._getFast = function (dim, rawIdx) {
  */
 listProto.getValues = function (dimensions, idx /*, stack */) {
     var values = [];
-
     if (!isArray(dimensions)) {
         // stack = idx;
         idx = dimensions;
         dimensions = this.dimensions;
     }
-
     for (var i = 0, len = dimensions.length; i < len; i++) {
         values.push(this.get(dimensions[i], idx /*, stack */));
     }
-
     return values;
 };
-
 /**
  * If value is NaN. Inlcuding '-'
  * Only check the coord dimensions.
@@ -29599,7 +25720,6 @@ listProto.hasValue = function (idx) {
     }
     return true;
 };
-
 /**
  * Get extent of data in one dimension
  * @param {string} dim
@@ -29610,24 +25730,19 @@ listProto.getDataExtent = function (dim /*, stack */) {
     dim = this.getDimension(dim);
     var dimData = this._storage[dim];
     var initialExtent = getInitialExtent();
-
     // stack = !!((stack || false) && this.getCalculationInfo(dim));
-
     if (!dimData) {
         return initialExtent;
     }
-
     // Make more strict checkings to ensure hitting cache.
     var currEnd = this.count();
     // var cacheName = [dim, !!stack].join('_');
     // var cacheName = dim;
-
     // Consider the most cases when using data zoom, `getDataExtent`
     // happened before filtering. We cache raw extent, which is not
     // necessary to be cleared and recalculated when restore data.
     var useRaw = !this._indices; // && !stack;
     var dimExtent;
-
     if (useRaw) {
         return this._rawExtent[dim].slice();
     }
@@ -29636,24 +25751,18 @@ listProto.getDataExtent = function (dim /*, stack */) {
         return dimExtent.slice();
     }
     dimExtent = initialExtent;
-
     var min = dimExtent[0];
     var max = dimExtent[1];
-
     for (var i = 0; i < currEnd; i++) {
         // var value = stack ? this.get(dim, i, true) : this._getFast(dim, this.getRawIndex(i));
         var value = this._getFast(dim, this.getRawIndex(i));
         value < min && (min = value);
         value > max && (max = value);
     }
-
     dimExtent = [min, max];
-
     this._extent[dim] = dimExtent;
-
     return dimExtent;
 };
-
 /**
  * Optimize for the scenario that data is filtered by a given extent.
  * Consider that if data amount is more than hundreds of thousand,
@@ -29664,12 +25773,10 @@ listProto.getApproximateExtent = function (dim /*, stack */) {
     dim = this.getDimension(dim);
     return this._approximateExtent[dim] || this.getDataExtent(dim /*, stack */);
 };
-
 listProto.setApproximateExtent = function (extent, dim /*, stack */) {
     dim = this.getDimension(dim);
     this._approximateExtent[dim] = extent.slice();
 };
-
 /**
  * @param {string} key
  * @return {*}
@@ -29677,7 +25784,6 @@ listProto.setApproximateExtent = function (extent, dim /*, stack */) {
 listProto.getCalculationInfo = function (key) {
     return this._calculationInfo[key];
 };
-
 /**
  * @param {string|Object} key or k-v object
  * @param {*} [value]
@@ -29687,7 +25793,6 @@ listProto.setCalculationInfo = function (key, value) {
         ? extend(this._calculationInfo, key)
         : (this._calculationInfo[key] = value);
 };
-
 /**
  * Get sum of data in one dimension
  * @param {string} dim
@@ -29705,7 +25810,6 @@ listProto.getSum = function (dim /*, stack */) {
     }
     return sum;
 };
-
 /**
  * Get median of data in one dimension
  * @param {string} dim
@@ -29718,10 +25822,8 @@ listProto.getMedian = function (dim /*, stack */) {
             dimDataArray.push(val);
         }
     });
-
     // TODO
     // Use quick select?
-
     // immutability & sort
     var sortedDimDataArray = [].concat(dimDataArray).sort(function (a, b) {
         return a - b;
@@ -29734,7 +25836,6 @@ listProto.getMedian = function (dim /*, stack */) {
         ? sortedDimDataArray[(len - 1) / 2]
         : (sortedDimDataArray[len / 2] + sortedDimDataArray[len / 2 - 1]) / 2;
 };
-
 // /**
 //  * Retreive the index with given value
 //  * @param {string} dim Concrete dimension.
@@ -29759,7 +25860,6 @@ listProto.getMedian = function (dim /*, stack */) {
 //     }
 //     return -1;
 // };
-
 /**
  * Only support the dimension which inverted index created.
  * Do not support other cases until required.
@@ -29780,7 +25880,6 @@ listProto.rawIndexOf = function (dim, value) {
     }
     return rawIndex;
 };
-
 /**
  * Retreive the index with given name
  * @param {number} idx
@@ -29793,10 +25892,8 @@ listProto.indexOfName = function (name) {
             return i;
         }
     }
-
     return -1;
 };
-
 /**
  * Retreive the index with given raw data index
  * @param {number} idx
@@ -29807,20 +25904,16 @@ listProto.indexOfRawIndex = function (rawIndex) {
     if (!this._indices) {
         return rawIndex;
     }
-
     if (rawIndex >= this._rawCount || rawIndex < 0) {
         return -1;
     }
-
     // Indices are ascending
     var indices = this._indices;
-
     // If rawIndex === dataIndex
     var rawDataIndex = indices[rawIndex];
     if (rawDataIndex != null && rawDataIndex < this._count && rawDataIndex === rawIndex) {
         return rawIndex;
     }
-
     var left = 0;
     var right = this._count - 1;
     while (left <= right) {
@@ -29837,7 +25930,6 @@ listProto.indexOfRawIndex = function (rawIndex) {
     }
     return -1;
 };
-
 /**
  * Retreive the index of nearest value
  * @param {string} dim
@@ -29849,15 +25941,12 @@ listProto.indicesOfNearest = function (dim, value, maxDistance) {
     var storage = this._storage;
     var dimData = storage[dim];
     var nearestIndices = [];
-
     if (!dimData) {
         return nearestIndices;
     }
-
     if (maxDistance == null) {
         maxDistance = Infinity;
     }
-
     var minDist = Number.MAX_VALUE;
     var minDiff = -1;
     for (var i = 0, len = this.count(); i < len; i++) {
@@ -29877,25 +25966,21 @@ listProto.indicesOfNearest = function (dim, value, maxDistance) {
     }
     return nearestIndices;
 };
-
 /**
  * Get raw data index
  * @param {number} idx
  * @return {number}
  */
 listProto.getRawIndex = getRawIndexWithoutIndices;
-
 function getRawIndexWithoutIndices(idx) {
     return idx;
 }
-
 function getRawIndexWithIndices(idx) {
     if (idx < this._count && idx >= 0) {
         return this._indices[idx];
     }
     return -1;
 }
-
 /**
  * Get raw data item
  * @param {number} idx
@@ -29914,7 +25999,6 @@ listProto.getRawDataItem = function (idx) {
         return this._rawData.getItem(this.getRawIndex(idx));
     }
 };
-
 /**
  * @param {number} idx
  * @param {boolean} [notDefaultIdx=false]
@@ -29926,7 +26010,6 @@ listProto.getName = function (idx) {
         || getRawValueFromStore(this, this._nameDimIdx, rawIndex)
         || '';
 };
-
 /**
  * @param {number} idx
  * @param {boolean} [notDefaultIdx=false]
@@ -29935,7 +26018,6 @@ listProto.getName = function (idx) {
 listProto.getId = function (idx) {
     return getId(this, this.getRawIndex(idx));
 };
-
 function getId(list, rawIndex) {
     var id = list._idList[rawIndex];
     if (id == null) {
@@ -29947,14 +26029,12 @@ function getId(list, rawIndex) {
     }
     return id;
 }
-
 function normalizeDimensions(dimensions) {
     if (!isArray(dimensions)) {
         dimensions = [dimensions];
     }
     return dimensions;
 }
-
 function validateDimensions(list, dims) {
     for (var i = 0; i < dims.length; i++) {
         // stroage may be empty when no data, so use
@@ -29964,7 +26044,6 @@ function validateDimensions(list, dims) {
         }
     }
 }
-
 /**
  * Data iteration
  * @param {string|Array.<string>}
@@ -29978,29 +26057,22 @@ function validateDimensions(list, dims) {
  */
 listProto.each = function (dims, cb, context, contextCompat) {
     'use strict';
-
     if (!this._count) {
         return;
     }
-
     if (typeof dims === 'function') {
         contextCompat = context;
         context = cb;
         cb = dims;
         dims = [];
     }
-
     // contextCompat just for compat echarts3
     context = context || contextCompat || this;
-
     dims = map(normalizeDimensions(dims), this.getDimension, this);
-
     if (__DEV__) {
         validateDimensions(this, dims);
     }
-
     var dimSize = dims.length;
-
     for (var i = 0; i < this.count(); i++) {
         // Simple optimization
         switch (dimSize) {
@@ -30025,7 +26097,6 @@ listProto.each = function (dims, cb, context, contextCompat) {
         }
     }
 };
-
 /**
  * Data filter
  * @param {string|Array.<string>}
@@ -30034,39 +26105,30 @@ listProto.each = function (dims, cb, context, contextCompat) {
  */
 listProto.filterSelf = function (dimensions, cb, context, contextCompat) {
     'use strict';
-
     if (!this._count) {
         return;
     }
-
     if (typeof dimensions === 'function') {
         contextCompat = context;
         context = cb;
         cb = dimensions;
         dimensions = [];
     }
-
     // contextCompat just for compat echarts3
     context = context || contextCompat || this;
-
     dimensions = map(
         normalizeDimensions(dimensions), this.getDimension, this
     );
-
     if (__DEV__) {
         validateDimensions(this, dimensions);
     }
-
-
     var count = this.count();
     var Ctor = getIndicesCtor(this);
     var newIndices = new Ctor(count);
     var value = [];
     var dimSize = dimensions.length;
-
     var offset = 0;
     var dim0 = dimensions[0];
-
     for (var i = 0; i < count; i++) {
         var keep;
         var rawIdx = this.getRawIndex(i);
@@ -30089,7 +26151,6 @@ listProto.filterSelf = function (dimensions, cb, context, contextCompat) {
             newIndices[offset++] = rawIdx;
         }
     }
-
     // Set indices after filtered.
     if (offset < count) {
         this._indices = newIndices;
@@ -30097,49 +26158,38 @@ listProto.filterSelf = function (dimensions, cb, context, contextCompat) {
     this._count = offset;
     // Reset data extent
     this._extent = {};
-
     this.getRawIndex = this._indices ? getRawIndexWithIndices : getRawIndexWithoutIndices;
-
     return this;
 };
-
 /**
  * Select data in range. (For optimization of filter)
  * (Manually inline code, support 5 million data filtering in data zoom.)
  */
 listProto.selectRange = function (range) {
     'use strict';
-
     if (!this._count) {
         return;
     }
-
     var dimensions = [];
     for (var dim in range) {
         if (range.hasOwnProperty(dim)) {
             dimensions.push(dim);
         }
     }
-
     if (__DEV__) {
         validateDimensions(this, dimensions);
     }
-
     var dimSize = dimensions.length;
     if (!dimSize) {
         return;
     }
-
     var originalCount = this.count();
     var Ctor = getIndicesCtor(this);
     var newIndices = new Ctor(originalCount);
-
     var offset = 0;
     var dim0 = dimensions[0];
-
     var min = range[dim0][0];
     var max = range[dim0][1];
-
     var quickFinished = false;
     if (!this._indices) {
         // Extreme optimization for common case. About 2x faster in chrome.
@@ -30225,7 +26275,6 @@ listProto.selectRange = function (range) {
             }
         }
     }
-
     // Set indices after filtered.
     if (offset < originalCount) {
         this._indices = newIndices;
@@ -30233,12 +26282,9 @@ listProto.selectRange = function (range) {
     this._count = offset;
     // Reset data extent
     this._extent = {};
-
     this.getRawIndex = this._indices ? getRawIndexWithIndices : getRawIndexWithoutIndices;
-
     return this;
 };
-
 /**
  * Data mapping to a plain array
  * @param {string|Array.<string>} [dimensions]
@@ -30248,24 +26294,20 @@ listProto.selectRange = function (range) {
  */
 listProto.mapArray = function (dimensions, cb, context, contextCompat) {
     'use strict';
-
     if (typeof dimensions === 'function') {
         contextCompat = context;
         context = cb;
         cb = dimensions;
         dimensions = [];
     }
-
     // contextCompat just for compat echarts3
     context = context || contextCompat || this;
-
     var result = [];
     this.each(dimensions, function () {
         result.push(cb && cb.apply(this, arguments));
     }, context);
     return result;
 };
-
 // Data in excludeDimensions is copied, otherwise transfered.
 function cloneListForMapAndSample(original, excludeDimensions) {
     var allDimensions = original.dimensions;
@@ -30275,10 +26317,8 @@ function cloneListForMapAndSample(original, excludeDimensions) {
     );
     // FIXME If needs stackedOn, value may already been stacked
     transferProperties(list, original);
-
     var storage = list._storage = {};
     var originalStorage = original._storage;
-
     // Init storage
     for (var i = 0; i < allDimensions.length; i++) {
         var dim = allDimensions[i];
@@ -30298,7 +26338,6 @@ function cloneListForMapAndSample(original, excludeDimensions) {
     }
     return list;
 }
-
 function cloneDimStore(originalDimStore) {
     var newDimStore = new Array(originalDimStore.length);
     for (var j = 0; j < originalDimStore.length; j++) {
@@ -30306,11 +26345,9 @@ function cloneDimStore(originalDimStore) {
     }
     return newDimStore;
 }
-
 function getInitialExtent() {
     return [Infinity, -Infinity];
 }
-
 /**
  * Data mapping to a new List with given dimensions
  * @param {string|Array.<string>} dimensions
@@ -30320,40 +26357,31 @@ function getInitialExtent() {
  */
 listProto.map = function (dimensions, cb, context, contextCompat) {
     'use strict';
-
     // contextCompat just for compat echarts3
     context = context || contextCompat || this;
-
     dimensions = map(
         normalizeDimensions(dimensions), this.getDimension, this
     );
-
     if (__DEV__) {
         validateDimensions(this, dimensions);
     }
-
     var list = cloneListForMapAndSample(this, dimensions);
-
     // Following properties are all immutable.
     // So we can reference to the same value
     list._indices = this._indices;
     list.getRawIndex = list._indices ? getRawIndexWithIndices : getRawIndexWithoutIndices;
-
     var storage = list._storage;
-
     var tmpRetValue = [];
     var chunkSize = this._chunkSize;
     var dimSize = dimensions.length;
     var dataCount = this.count();
     var values = [];
     var rawExtent = list._rawExtent;
-
     for (var dataIndex = 0; dataIndex < dataCount; dataIndex++) {
         for (var dimIndex = 0; dimIndex < dimSize; dimIndex++) {
             values[dimIndex] = this.get(dimensions[dimIndex], dataIndex /*, stack */);
         }
         values[dimSize] = dataIndex;
-
         var retValue = cb && cb.apply(context, values);
         if (retValue != null) {
             // a number or string (in oridinal dimension)?
@@ -30361,21 +26389,17 @@ listProto.map = function (dimensions, cb, context, contextCompat) {
                 tmpRetValue[0] = retValue;
                 retValue = tmpRetValue;
             }
-
             var rawIndex = this.getRawIndex(dataIndex);
             var chunkIndex = Math.floor(rawIndex / chunkSize);
             var chunkOffset = rawIndex % chunkSize;
-
             for (var i = 0; i < retValue.length; i++) {
                 var dim = dimensions[i];
                 var val = retValue[i];
                 var rawExtentOnDim = rawExtent[dim];
-
                 var dimStore = storage[dim];
                 if (dimStore) {
                     dimStore[chunkIndex][chunkOffset] = val;
                 }
-
                 if (val < rawExtentOnDim[0]) {
                     rawExtentOnDim[0] = val;
                 }
@@ -30385,10 +26409,8 @@ listProto.map = function (dimensions, cb, context, contextCompat) {
             }
         }
     }
-
     return list;
 };
-
 /**
  * Large data down sampling on given dimension
  * @param {string} dimension
@@ -30399,17 +26421,13 @@ listProto.map = function (dimensions, cb, context, contextCompat) {
 listProto.downSample = function (dimension, rate, sampleValue, sampleIndex) {
     var list = cloneListForMapAndSample(this, [dimension]);
     var targetStorage = list._storage;
-
     var frameValues = [];
     var frameSize = Math.floor(1 / rate);
-
     var dimStore = targetStorage[dimension];
     var len = this.count();
     var chunkSize = this._chunkSize;
     var rawExtentOnDim = list._rawExtent[dimension];
-
     var newIndices = new (getIndicesCtor(this))(len);
-
     var offset = 0;
     for (var i = 0; i < len; i += frameSize) {
         // Last frame
@@ -30431,25 +26449,19 @@ listProto.downSample = function (dimension, rate, sampleValue, sampleIndex) {
         var sampleChunkOffset = sampleFrameIdx % chunkSize;
         // Only write value on the filtered data
         dimStore[sampleChunkIndex][sampleChunkOffset] = value;
-
         if (value < rawExtentOnDim[0]) {
             rawExtentOnDim[0] = value;
         }
         if (value > rawExtentOnDim[1]) {
             rawExtentOnDim[1] = value;
         }
-
         newIndices[offset++] = sampleFrameIdx;
     }
-
     list._count = offset;
     list._indices = newIndices;
-
     list.getRawIndex = getRawIndexWithIndices;
-
     return list;
 };
-
 /**
  * Get model of one data item.
  *
@@ -30460,7 +26472,6 @@ listProto.getItemModel = function (idx) {
     var hostModel = this.hostModel;
     return new Model(this.getRawDataItem(idx), hostModel, hostModel && hostModel.ecModel);
 };
-
 /**
  * Create a data differ
  * @param {module:echarts/data/List} otherList
@@ -30468,7 +26479,6 @@ listProto.getItemModel = function (idx) {
  */
 listProto.diff = function (otherList) {
     var thisList = this;
-
     return new DataDiffer(
         otherList ? otherList.getIndices() : [],
         this.getIndices(),
@@ -30488,7 +26498,6 @@ listProto.getVisual = function (key) {
     var visual = this._visual;
     return visual && visual[key];
 };
-
 /**
  * Set visual property
  * @param {string|Object} key
@@ -30512,7 +26521,6 @@ listProto.setVisual = function (key, val) {
     this._visual = this._visual || {};
     this._visual[key] = val;
 };
-
 /**
  * Set layout property.
  * @param {string|Object} key
@@ -30529,7 +26537,6 @@ listProto.setLayout = function (key, val) {
     }
     this._layout[key] = val;
 };
-
 /**
  * Get layout property.
  * @param  {string} key.
@@ -30538,7 +26545,6 @@ listProto.setLayout = function (key, val) {
 listProto.getLayout = function (key) {
     return this._layout[key];
 };
-
 /**
  * Get layout of single data item
  * @param {number} idx
@@ -30546,7 +26552,6 @@ listProto.getLayout = function (key) {
 listProto.getItemLayout = function (idx) {
     return this._itemLayouts[idx];
 };
-
 /**
  * Set layout of single data item
  * @param {number} idx
@@ -30558,14 +26563,12 @@ listProto.setItemLayout = function (idx, layout, merge$$1) {
         ? extend(this._itemLayouts[idx] || {}, layout)
         : layout;
 };
-
 /**
  * Clear all layout of single data item
  */
 listProto.clearItemLayouts = function () {
     this._itemLayouts.length = 0;
 };
-
 /**
  * Get visual property of single data item
  * @param {number} idx
@@ -30581,7 +26584,6 @@ listProto.getItemVisual = function (idx, key, ignoreParent) {
     }
     return val;
 };
-
 /**
  * Set visual property of single data item
  *
@@ -30599,7 +26601,6 @@ listProto.setItemVisual = function (idx, key, value) {
     var itemVisual = this._itemVisuals[idx] || {};
     var hasItemVisual = this.hasItemVisual;
     this._itemVisuals[idx] = itemVisual;
-
     if (isObject$4(key)) {
         for (var name in key) {
             if (key.hasOwnProperty(name)) {
@@ -30612,7 +26613,6 @@ listProto.setItemVisual = function (idx, key, value) {
     itemVisual[key] = value;
     hasItemVisual[key] = true;
 };
-
 /**
  * Clear itemVisuals and list visual.
  */
@@ -30621,7 +26621,6 @@ listProto.clearAllVisual = function () {
     this._itemVisuals = [];
     this.hasItemVisual = {};
 };
-
 var setItemDataAndSeriesIndex = function (child) {
     child.seriesIndex = this.seriesIndex;
     child.dataIndex = this.dataIndex;
@@ -30634,7 +26633,6 @@ var setItemDataAndSeriesIndex = function (child) {
  */
 listProto.setItemGraphicEl = function (idx, el) {
     var hostModel = this.hostModel;
-
     if (el) {
         // Add data index and series index for indexing the data by element
         // Useful in tooltip
@@ -30645,10 +26643,8 @@ listProto.setItemGraphicEl = function (idx, el) {
             el.traverse(setItemDataAndSeriesIndex, el);
         }
     }
-
     this._graphicEls[idx] = el;
 };
-
 /**
  * @param {number} idx
  * @return {module:zrender/Element}
@@ -30656,7 +26652,6 @@ listProto.setItemGraphicEl = function (idx, el) {
 listProto.getItemGraphicEl = function (idx) {
     return this._graphicEls[idx];
 };
-
 /**
  * @param {Function} cb
  * @param {*} context
@@ -30668,7 +26663,6 @@ listProto.eachItemGraphicEl = function (cb, context) {
         }
     });
 };
-
 /**
  * Shallow clone a new list except visual and layout properties, and graph elements.
  * New list only change the indices.
@@ -30678,12 +26672,9 @@ listProto.cloneShallow = function (list) {
         var dimensionInfoList = map(this.dimensions, this.getDimensionInfo, this);
         list = new List(dimensionInfoList, this.hostModel);
     }
-
     // FIXME
     list._storage = this._storage;
-
     transferProperties(list, this);
-
     // Clone will not change the data extent and indices
     if (this._indices) {
         var Ctor = this._indices.constructor;
@@ -30693,10 +26684,8 @@ listProto.cloneShallow = function (list) {
         list._indices = null;
     }
     list.getRawIndex = list._indices ? getRawIndexWithIndices : getRawIndexWithoutIndices;
-
     return list;
 };
-
 /**
  * Wrap some method to add more feature
  * @param {string} methodName
@@ -30714,13 +26703,11 @@ listProto.wrapMethod = function (methodName, injectFunction) {
         return injectFunction.apply(this, [res].concat(slice(arguments)));
     };
 };
-
 // Methods that create a new list based on this list should be listed here.
 // Notice that those method should `RETURN` the new list.
 listProto.TRANSFERABLE_METHODS = ['cloneShallow', 'downSample', 'map'];
 // Methods that change indices of this list should be listed here.
 listProto.CHANGABLE_METHODS = ['filterSelf', 'selectRange'];
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -30739,12 +26726,10 @@ listProto.CHANGABLE_METHODS = ['filterSelf', 'selectRange'];
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @deprecated
  * Use `echarts/data/helper/createDimensions` instead.
  */
-
 /**
  * @see {module:echarts/test/ut/spec/data/completeDimensions}
  *
@@ -30796,7 +26781,6 @@ function completeDimensions(sysDims, source, opt) {
     if (!Source.isInstance(source)) {
         source = Source.seriesDataToSource(source);
     }
-
     opt = opt || {};
     sysDims = (sysDims || []).slice();
     var dimsDef = (opt.dimsDef || []).slice();
@@ -30805,9 +26789,7 @@ function completeDimensions(sysDims, source, opt) {
     var coordDimNameMap = createHashMap();
     // var valueCandidate;
     var result = [];
-
     var dimCount = getDimCount(source, sysDims, dimsDef, opt.dimCount);
-
     // Apply user defined dims (`name` and `type`) and init result.
     for (var i = 0; i < dimCount; i++) {
         var dimDefItem = dimsDef[i] = extend(
@@ -30826,11 +26808,9 @@ function completeDimensions(sysDims, source, opt) {
         dimDefItem.type != null && (resultItem.type = dimDefItem.type);
         dimDefItem.displayName != null && (resultItem.displayName = dimDefItem.displayName);
     }
-
     // Set `coordDim` and `coordDimIndex` by `encodeDef` and normalize `encodeDef`.
     encodeDef.each(function (dataDims, coordDim) {
         dataDims = normalizeToArray(dataDims).slice();
-
         // Note: It is allowed that `dataDims.length` is `0`, e.g., options is
         // `{encode: {x: -1, y: 1}}`. Should not filter anything in
         // this case.
@@ -30838,7 +26818,6 @@ function completeDimensions(sysDims, source, opt) {
             encodeDef.set(coordDim, false);
             return;
         }
-
         var validDataDims = encodeDef.set(coordDim, []);
         each$1(dataDims, function (resultDimIdx, idx) {
             // The input resultDimIdx can be dim name or index.
@@ -30849,7 +26828,6 @@ function completeDimensions(sysDims, source, opt) {
             }
         });
     });
-
     // Apply templetes and default order from `sysDims`.
     var availDimIdx = 0;
     each$1(sysDims, function (sysDimItem, sysDimIndex) {
@@ -30873,16 +26851,12 @@ function completeDimensions(sysDims, source, opt) {
             sysDimItem.name = sysDimItem.coordDim = sysDimItem.coordDimIndex
                 = sysDimItem.dimsDef = sysDimItem.otherDims = null;
         }
-
         var dataDims = encodeDef.get(coordDim);
-
         // negative resultDimIdx means no need to mapping.
         if (dataDims === false) {
             return;
         }
-
         var dataDims = normalizeToArray(dataDims);
-
         // dimensions provides default dim sequences.
         if (!dataDims.length) {
             for (var i = 0; i < (sysDimItemDimsDef && sysDimItemDimsDef.length || 1); i++) {
@@ -30892,7 +26866,6 @@ function completeDimensions(sysDims, source, opt) {
                 availDimIdx < result.length && dataDims.push(availDimIdx++);
             }
         }
-
         // Apply templates.
         each$1(dataDims, function (resultDimIdx, coordDimIndex) {
             var resultItem = result[resultDimIdx];
@@ -30907,7 +26880,6 @@ function completeDimensions(sysDims, source, opt) {
             sysDimItemOtherDims && defaults(resultItem.otherDims, sysDimItemOtherDims);
         });
     });
-
     function applyDim(resultItem, coordDim, coordDimIndex) {
         if (OTHER_DIMENSIONS.get(coordDim) != null) {
             resultItem.otherDims[coordDim] = coordDimIndex;
@@ -30918,19 +26890,16 @@ function completeDimensions(sysDims, source, opt) {
             coordDimNameMap.set(coordDim, true);
         }
     }
-
     // Make sure the first extra dim is 'value'.
     var generateCoord = opt.generateCoord;
     var generateCoordCount = opt.generateCoordCount;
     var fromZero = generateCoordCount != null;
     generateCoordCount = generateCoord ? (generateCoordCount || 1) : 0;
     var extra = generateCoord || 'value';
-
     // Set dim `name` and other `coordDim` and other props.
     for (var resultDimIdx = 0; resultDimIdx < dimCount; resultDimIdx++) {
         var resultItem = result[resultDimIdx] = result[resultDimIdx] || {};
         var coordDim = resultItem.coordDim;
-
         if (coordDim == null) {
             resultItem.coordDim = genName(
                 extra, coordDimNameMap, fromZero
@@ -30941,20 +26910,16 @@ function completeDimensions(sysDims, source, opt) {
             }
             generateCoordCount--;
         }
-
         resultItem.name == null && (resultItem.name = genName(
             resultItem.coordDim,
             dataDimNameMap
         ));
-
         if (resultItem.type == null && guessOrdinal(source, resultDimIdx, resultItem.name)) {
             resultItem.type = 'ordinal';
         }
     }
-
     return result;
 }
-
 // ??? TODO
 // Originally detect dimCount by data[0]. Should we
 // optimize it to only by sysDims and dimensions and encode.
@@ -30980,7 +26945,6 @@ function getDimCount(source, sysDims, dimsDef, optDimCount) {
     });
     return dimCount;
 }
-
 function genName(name, map$$1, fromZero) {
     if (fromZero || map$$1.get(name) != null) {
         var i = 0;
@@ -30992,7 +26956,6 @@ function genName(name, map$$1, fromZero) {
     map$$1.set(name, true);
     return name;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -31011,7 +26974,6 @@ function genName(name, map$$1, fromZero) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Substitute `completeDimensions`.
  * `completeDimensions` is to be deprecated.
@@ -31037,7 +26999,6 @@ var createDimensions = function (source, opt) {
         generateCoordCount: opt.generateCoordCount
     });
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -31056,7 +27017,6 @@ var createDimensions = function (source, opt) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Note that it is too complicated to support 3d stack by value
  * (have to create two-dimension inverted index), so in 3d case
@@ -31081,19 +27041,16 @@ function enableDataStack(seriesModel, dimensionInfoList, opt) {
     opt = opt || {};
     var byIndex = opt.byIndex;
     var stackedCoordDimension = opt.stackedCoordDimension;
-
     // Compatibal: when `stack` is set as '', do not stack.
     var mayStack = !!(seriesModel && seriesModel.get('stack'));
     var stackedByDimInfo;
     var stackedDimInfo;
     var stackResultDimension;
     var stackedOverDimension;
-
     each$1(dimensionInfoList, function (dimensionInfo, index) {
         if (isString(dimensionInfo)) {
             dimensionInfoList[index] = dimensionInfo = {name: dimensionInfo};
         }
-
         if (mayStack && !dimensionInfo.isExtraCoord) {
             // Find the first ordinal dimension as the stackedByDimInfo.
             if (!byIndex && !stackedByDimInfo && dimensionInfo.ordinalMeta) {
@@ -31109,13 +27066,11 @@ function enableDataStack(seriesModel, dimensionInfoList, opt) {
             }
         }
     });
-
     if (stackedDimInfo && !byIndex && !stackedByDimInfo) {
         // Compatible with previous design, value axis (time axis) only stack by index.
         // It may make sense if the user provides elaborately constructed data.
         byIndex = true;
     }
-
     // Add stack dimension, they can be both calculated by coordinate system in `unionExtent`.
     // That put stack logic in List is for using conveniently in echarts extensions, but it
     // might not be a good way.
@@ -31123,22 +27078,18 @@ function enableDataStack(seriesModel, dimensionInfoList, opt) {
         // Use a weird name that not duplicated with other names.
         stackResultDimension = '__\0ecstackresult';
         stackedOverDimension = '__\0ecstackedover';
-
         // Create inverted index to fast query index by value.
         if (stackedByDimInfo) {
             stackedByDimInfo.createInvertedIndices = true;
         }
-
         var stackedDimCoordDim = stackedDimInfo.coordDim;
         var stackedDimType = stackedDimInfo.type;
         var stackedDimCoordIndex = 0;
-
         each$1(dimensionInfoList, function (dimensionInfo) {
             if (dimensionInfo.coordDim === stackedDimCoordDim) {
                 stackedDimCoordIndex++;
             }
         });
-
         dimensionInfoList.push({
             name: stackResultDimension,
             coordDim: stackedDimCoordDim,
@@ -31147,9 +27098,7 @@ function enableDataStack(seriesModel, dimensionInfoList, opt) {
             isExtraCoord: true,
             isCalculationCoord: true
         });
-
         stackedDimCoordIndex++;
-
         dimensionInfoList.push({
             name: stackedOverDimension,
             // This dimension contains stack base (generally, 0), so do not set it as
@@ -31161,7 +27110,6 @@ function enableDataStack(seriesModel, dimensionInfoList, opt) {
             isCalculationCoord: true
         });
     }
-
     return {
         stackedDimension: stackedDimInfo && stackedDimInfo.name,
         stackedByDimension: stackedByDimInfo && stackedByDimInfo.name,
@@ -31170,7 +27118,6 @@ function enableDataStack(seriesModel, dimensionInfoList, opt) {
         stackResultDimension: stackResultDimension
     };
 }
-
 /**
  * @param {module:echarts/data/List} data
  * @param {string} stackedDim
@@ -31185,7 +27132,6 @@ function isDimensionStacked(data, stackedDim /*, stackedByDim*/) {
         //         : data.getCalculationInfo('isStackedByIndex')
         // );
 }
-
 /**
  * @param {module:echarts/data/List} data
  * @param {string} targetDim
@@ -31198,7 +27144,6 @@ function getStackedDimension(data, targetDim) {
         ? data.getCalculationInfo('stackResultDimension')
         : targetDim;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -31217,7 +27162,6 @@ function getStackedDimension(data, targetDim) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @param {module:echarts/data/Source|Array} source Or raw data.
  * @param {module:echarts/model/Series} seriesModel
@@ -31226,18 +27170,13 @@ function getStackedDimension(data, targetDim) {
  */
 function createListFromArray(source, seriesModel, opt) {
     opt = opt || {};
-
     if (!Source.isInstance(source)) {
         source = Source.seriesDataToSource(source);
     }
-
     var coordSysName = seriesModel.get('coordinateSystem');
     var registeredCoordSys = CoordinateSystemManager.get(coordSysName);
-
     var coordSysDefine = getCoordSysDefineBySeries(seriesModel);
-
     var coordSysDimDefs;
-
     if (coordSysDefine) {
         coordSysDimDefs = map(coordSysDefine.coordSysDims, function (dim) {
             var dimInfo = {name: dim};
@@ -31250,7 +27189,6 @@ function createListFromArray(source, seriesModel, opt) {
             return dimInfo;
         });
     }
-
     if (!coordSysDimDefs) {
         // Get dimensions from registered coordinate system
         coordSysDimDefs = (registeredCoordSys && (
@@ -31259,12 +27197,10 @@ function createListFromArray(source, seriesModel, opt) {
                 : registeredCoordSys.dimensions.slice()
         )) || ['x', 'y'];
     }
-
     var dimInfoList = createDimensions(source, {
         coordDimensions: coordSysDimDefs,
         generateCoord: opt.generateCoord
     });
-
     var firstCategoryDimIndex;
     var hasNameEncode;
     coordSysDefine && each$1(dimInfoList, function (dimInfo, dimIndex) {
@@ -31283,13 +27219,9 @@ function createListFromArray(source, seriesModel, opt) {
     if (!hasNameEncode && firstCategoryDimIndex != null) {
         dimInfoList[firstCategoryDimIndex].otherDims.itemName = 0;
     }
-
     var stackCalculationInfo = enableDataStack(seriesModel, dimInfoList);
-
     var list = new List(dimInfoList, seriesModel);
-
     list.setCalculationInfo(stackCalculationInfo);
-
     var dimValueGetter = (firstCategoryDimIndex != null && isNeedCompleteOrdinalData(source))
         ? function (itemOpt, dimName, dataIndex, dimIndex) {
             // Use dataIndex as ordinal value in categoryAxis
@@ -31298,13 +27230,10 @@ function createListFromArray(source, seriesModel, opt) {
                 : this.defaultDimValueGetter(itemOpt, dimName, dataIndex, dimIndex);
         }
         : null;
-
     list.hasItemOption = false;
     list.initData(source, null, dimValueGetter);
-
     return list;
 }
-
 function isNeedCompleteOrdinalData(source) {
     if (source.sourceFormat === SOURCE_FORMAT_ORIGINAL) {
         var sampleItem = firstDataNotNull(source.data || []);
@@ -31312,7 +27241,6 @@ function isNeedCompleteOrdinalData(source) {
             && !isArray(getDataItemValue(sampleItem));
     }
 }
-
 function firstDataNotNull(data) {
     var i = 0;
     while (i < data.length && data[i] == null) {
@@ -31320,7 +27248,6 @@ function firstDataNotNull(data) {
     }
     return data[i];
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -31339,13 +27266,9 @@ function firstDataNotNull(data) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 SeriesModel.extend({
-
     type: 'series.line',
-
     dependencies: ['grid', 'polar'],
-
     getInitialData: function (option, ecModel) {
         if (__DEV__) {
             var coordSys = option.coordinateSystem;
@@ -31355,30 +27278,24 @@ SeriesModel.extend({
         }
         return createListFromArray(this.getSource(), this);
     },
-
     defaultOption: {
         zlevel: 0,
         z: 2,
         coordinateSystem: 'cartesian2d',
         legendHoverLink: true,
-
         hoverAnimation: true,
         // stack: null
         // xAxisIndex: 0,
         // yAxisIndex: 0,
-
         // polarIndex: 0,
-
         // If clip the overflow value
         clipOverflow: true,
         // cursor: null,
-
         label: {
             position: 'top'
         },
         // itemStyle: {
         // },
-
         lineStyle: {
             width: 2,
             type: 'solid'
@@ -31392,35 +27309,28 @@ SeriesModel.extend({
         // },
         // false, 'start', 'end', 'middle'
         step: false,
-
         // Disabled if step is true
         smooth: false,
         smoothMonotone: null,
         symbol: 'emptyCircle',
         symbolSize: 4,
         symbolRotate: null,
-
         showSymbol: true,
         // `false`: follow the label interval strategy.
         // `true`: show all symbols.
         // `'auto'`: If possible, show all symbols, otherwise
         //           follow the label interval strategy.
         showAllSymbol: 'auto',
-
         // Whether to connect break point.
         connectNulls: false,
-
         // Sampling for large data. Can be: 'average', 'max', 'min', 'sum'.
         sampling: 'none',
-
         animationEasing: 'linear',
-
         // Disable progressive
         progressive: 0,
         hoverLayerThreshold: Infinity
     }
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -31439,9 +27349,7 @@ SeriesModel.extend({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // Symbol factory
-
 /**
  * Triangle shape
  * @inner
@@ -31465,7 +27373,6 @@ var Triangle = extendShape({
         path.closePath();
     }
 });
-
 /**
  * Diamond shape
  * @inner
@@ -31490,7 +27397,6 @@ var Diamond = extendShape({
         path.closePath();
     }
 });
-
 /**
  * Pin shape
  * @inner
@@ -31504,7 +27410,6 @@ var Pin = extendShape({
         width: 0,
         height: 0
     },
-
     buildPath: function (path, shape) {
         var x = shape.x;
         var y = shape.y;
@@ -31512,22 +27417,17 @@ var Pin = extendShape({
         // Height must be larger than width
         var h = Math.max(w, shape.height);
         var r = w / 2;
-
         // Dist on y with tangent point and circle center
         var dy = r * r / (h - r);
         var cy = y - h + r + dy;
         var angle = Math.asin(dy / r);
         // Dist on x with tangent point and circle center
         var dx = Math.cos(angle) * r;
-
         var tanX = Math.sin(angle);
         var tanY = Math.cos(angle);
-
         var cpLen = r * 0.6;
         var cpLen2 = r * 0.7;
-
         path.moveTo(x - dx, cy + dy);
-
         path.arc(
             x, cy, r,
             Math.PI - angle,
@@ -31546,22 +27446,18 @@ var Pin = extendShape({
         path.closePath();
     }
 });
-
 /**
  * Arrow shape
  * @inner
  */
 var Arrow = extendShape({
-
     type: 'arrow',
-
     shape: {
         x: 0,
         y: 0,
         width: 0,
         height: 0
     },
-
     buildPath: function (ctx, shape) {
         var height = shape.height;
         var width = shape.width;
@@ -31576,34 +27472,22 @@ var Arrow = extendShape({
         ctx.closePath();
     }
 });
-
 /**
  * Map of path contructors
  * @type {Object.<string, module:zrender/graphic/Path>}
  */
 var symbolCtors = {
-
     line: Line,
-
     rect: Rect,
-
     roundRect: Rect,
-
     square: Rect,
-
     circle: Circle,
-
     diamond: Diamond,
-
     pin: Pin,
-
     arrow: Arrow,
-
     triangle: Triangle
 };
-
 var symbolShapeMakers = {
-
     line: function (x, y, w, h, shape) {
         // FIXME
         shape.x1 = x;
@@ -31611,14 +27495,12 @@ var symbolShapeMakers = {
         shape.x2 = x + w;
         shape.y2 = y + h / 2;
     },
-
     rect: function (x, y, w, h, shape) {
         shape.x = x;
         shape.y = y;
         shape.width = w;
         shape.height = h;
     },
-
     roundRect: function (x, y, w, h, shape) {
         shape.x = x;
         shape.y = y;
@@ -31626,7 +27508,6 @@ var symbolShapeMakers = {
         shape.height = h;
         shape.r = Math.min(w, h) / 4;
     },
-
     square: function (x, y, w, h, shape) {
         var size = Math.min(w, h);
         shape.x = x;
@@ -31634,35 +27515,30 @@ var symbolShapeMakers = {
         shape.width = size;
         shape.height = size;
     },
-
     circle: function (x, y, w, h, shape) {
         // Put circle in the center of square
         shape.cx = x + w / 2;
         shape.cy = y + h / 2;
         shape.r = Math.min(w, h) / 2;
     },
-
     diamond: function (x, y, w, h, shape) {
         shape.cx = x + w / 2;
         shape.cy = y + h / 2;
         shape.width = w;
         shape.height = h;
     },
-
     pin: function (x, y, w, h, shape) {
         shape.x = x + w / 2;
         shape.y = y + h / 2;
         shape.width = w;
         shape.height = h;
     },
-
     arrow: function (x, y, w, h, shape) {
         shape.x = x + w / 2;
         shape.y = y + h / 2;
         shape.width = w;
         shape.height = h;
     },
-
     triangle: function (x, y, w, h, shape) {
         shape.cx = x + w / 2;
         shape.cy = y + h / 2;
@@ -31670,16 +27546,12 @@ var symbolShapeMakers = {
         shape.height = h;
     }
 };
-
 var symbolBuildProxies = {};
 each$1(symbolCtors, function (Ctor, name) {
     symbolBuildProxies[name] = new Ctor();
 });
-
 var SymbolClz$2 = extendShape({
-
     type: 'symbol',
-
     shape: {
         symbolType: '',
         x: 0,
@@ -31687,7 +27559,6 @@ var SymbolClz$2 = extendShape({
         width: 0,
         height: 0
     },
-
     beforeBrush: function () {
         var style = this.style;
         var shape = this.shape;
@@ -31698,7 +27569,6 @@ var SymbolClz$2 = extendShape({
             style.textVerticalAlign = 'middle';
         }
     },
-
     buildPath: function (ctx, shape, inBundle) {
         var symbolType = shape.symbolType;
         var proxySymbol = symbolBuildProxies[symbolType];
@@ -31715,7 +27585,6 @@ var SymbolClz$2 = extendShape({
         }
     }
 });
-
 // Provide setColor helper method to avoid determine if set the fill or stroke outside
 function symbolPathSetColor(color, innerColor) {
     if (this.type !== 'image') {
@@ -31736,7 +27605,6 @@ function symbolPathSetColor(color, innerColor) {
         this.dirty(false);
     }
 }
-
 /**
  * Create a symbol element with given symbol configuration: shape, x, y, width, height, color
  * @param {string} symbolType
@@ -31750,13 +27618,11 @@ function symbolPathSetColor(color, innerColor) {
  */
 function createSymbol(symbolType, x, y, w, h, color, keepAspect) {
     // TODO Support image object, DynamicImage.
-
     var isEmpty = symbolType.indexOf('empty') === 0;
     if (isEmpty) {
         symbolType = symbolType.substr(5, 1).toLowerCase() + symbolType.substr(6);
     }
     var symbolPath;
-
     if (symbolType.indexOf('image://') === 0) {
         symbolPath = makeImage(
             symbolType.slice(8),
@@ -31783,16 +27649,11 @@ function createSymbol(symbolType, x, y, w, h, color, keepAspect) {
             }
         });
     }
-
     symbolPath.__isEmptyBrush = isEmpty;
-
     symbolPath.setColor = symbolPathSetColor;
-
     symbolPath.setColor(color);
-
     return symbolPath;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -31811,7 +27672,6 @@ function createSymbol(symbolType, x, y, w, h, color, keepAspect) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @param {module:echarts/data/List} data
  * @param {number} dataIndex
@@ -31820,7 +27680,6 @@ function createSymbol(symbolType, x, y, w, h, color, keepAspect) {
 function getDefaultLabel(data, dataIndex) {
     var labelDims = data.mapDimension('defaultedLabel', true);
     var len = labelDims.length;
-
     // Simple optimization (in lots of cases, label dims length is 1)
     if (len === 1) {
         return retrieveRawValue(data, dataIndex, labelDims[0]);
@@ -31834,7 +27693,6 @@ function getDefaultLabel(data, dataIndex) {
         return vals.join(' ');
     }
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -31853,11 +27711,9 @@ function getDefaultLabel(data, dataIndex) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @module echarts/chart/helper/Symbol
  */
-
 /**
  * @constructor
  * @alias {module:echarts/chart/helper/Symbol}
@@ -31869,9 +27725,7 @@ function SymbolClz(data, idx, seriesScope) {
     Group.call(this);
     this.updateData(data, idx, seriesScope);
 }
-
 var symbolProto = SymbolClz.prototype;
-
 /**
  * @public
  * @static
@@ -31885,15 +27739,12 @@ var getSymbolSize = SymbolClz.getSymbolSize = function (data, idx) {
         ? symbolSize.slice()
         : [+symbolSize, +symbolSize];
 };
-
 function getScale(symbolSize) {
     return [symbolSize[0] / 2, symbolSize[1] / 2];
 }
-
 function driftSymbol(dx, dy) {
     this.parent.drift(dx, dy);
 }
-
 symbolProto._createSymbol = function (
     symbolType,
     data,
@@ -31903,9 +27754,7 @@ symbolProto._createSymbol = function (
 ) {
     // Remove paths created before
     this.removeAll();
-
     var color = data.getItemVisual(idx, 'color');
-
     // var symbolPath = createSymbol(
     //     symbolType, -0.5, -0.5, 1, 1, color
     // );
@@ -31915,7 +27764,6 @@ symbolProto._createSymbol = function (
     var symbolPath = createSymbol(
         symbolType, -1, -1, 2, 2, color, keepAspect
     );
-
     symbolPath.attr({
         z2: 100,
         culling: true,
@@ -31923,12 +27771,9 @@ symbolProto._createSymbol = function (
     });
     // Rewrite drift method
     symbolPath.drift = driftSymbol;
-
     this._symbolType = symbolType;
-
     this.add(symbolPath);
 };
-
 /**
  * Stop animation
  * @param {boolean} toLastFrame
@@ -31936,7 +27781,6 @@ symbolProto._createSymbol = function (
 symbolProto.stopSymbolAnimation = function (toLastFrame) {
     this.childAt(0).stopAnimation(toLastFrame);
 };
-
 /**
  * FIXME:
  * Caution: This method breaks the encapsulation of this module,
@@ -31949,7 +27793,6 @@ symbolProto.stopSymbolAnimation = function (toLastFrame) {
 symbolProto.getSymbolPath = function () {
     return this.childAt(0);
 };
-
 /**
  * Get scale(aka, current symbol size).
  * Including the change caused by animation
@@ -31957,21 +27800,18 @@ symbolProto.getSymbolPath = function () {
 symbolProto.getScale = function () {
     return this.childAt(0).scale;
 };
-
 /**
  * Highlight symbol
  */
 symbolProto.highlight = function () {
     this.childAt(0).trigger('emphasis');
 };
-
 /**
  * Downplay symbol
  */
 symbolProto.downplay = function () {
     this.childAt(0).trigger('normal');
 };
-
 /**
  * @param {number} zlevel
  * @param {number} z
@@ -31981,13 +27821,11 @@ symbolProto.setZ = function (zlevel, z) {
     symbolPath.zlevel = zlevel;
     symbolPath.z = z;
 };
-
 symbolProto.setDraggable = function (draggable) {
     var symbolPath = this.childAt(0);
     symbolPath.draggable = draggable;
     symbolPath.cursor = draggable ? 'move' : 'pointer';
 };
-
 /**
  * Update symbol properties
  * @param {module:echarts/data/List} data
@@ -32007,12 +27845,10 @@ symbolProto.setDraggable = function (draggable) {
  */
 symbolProto.updateData = function (data, idx, seriesScope) {
     this.silent = false;
-
     var symbolType = data.getItemVisual(idx, 'symbol') || 'circle';
     var seriesModel = data.hostModel;
     var symbolSize = getSymbolSize(data, idx);
     var isInit = symbolType !== this._symbolType;
-
     if (isInit) {
         var keepAspect = data.getItemVisual(idx, 'symbolKeepAspect');
         this._createSymbol(symbolType, data, idx, symbolSize, keepAspect);
@@ -32024,31 +27860,23 @@ symbolProto.updateData = function (data, idx, seriesScope) {
             scale: getScale(symbolSize)
         }, seriesModel, idx);
     }
-
     this._updateCommon(data, idx, symbolSize, seriesScope);
-
     if (isInit) {
         var symbolPath = this.childAt(0);
         var fadeIn = seriesScope && seriesScope.fadeIn;
-
         var target = {scale: symbolPath.scale.slice()};
         fadeIn && (target.style = {opacity: symbolPath.style.opacity});
-
         symbolPath.scale = [0, 0];
         fadeIn && (symbolPath.style.opacity = 0);
-
         initProps(symbolPath, target, seriesModel, idx);
     }
-
     this._seriesModel = seriesModel;
 };
-
 // Update common properties
 var normalStyleAccessPath = ['itemStyle'];
 var emphasisStyleAccessPath = ['emphasis', 'itemStyle'];
 var normalLabelAccessPath = ['label'];
 var emphasisLabelAccessPath = ['emphasis', 'label'];
-
 /**
  * @param {module:echarts/data/List} data
  * @param {number} idx
@@ -32059,14 +27887,12 @@ symbolProto._updateCommon = function (data, idx, symbolSize, seriesScope) {
     var symbolPath = this.childAt(0);
     var seriesModel = data.hostModel;
     var color = data.getItemVisual(idx, 'color');
-
     // Reset style
     if (symbolPath.type !== 'image') {
         symbolPath.useStyle({
             strokeNoScale: true
         });
     }
-
     var itemStyle = seriesScope && seriesScope.itemStyle;
     var hoverItemStyle = seriesScope && seriesScope.hoverItemStyle;
     var symbolRotate = seriesScope && seriesScope.symbolRotate;
@@ -32075,19 +27901,15 @@ symbolProto._updateCommon = function (data, idx, symbolSize, seriesScope) {
     var hoverLabelModel = seriesScope && seriesScope.hoverLabelModel;
     var hoverAnimation = seriesScope && seriesScope.hoverAnimation;
     var cursorStyle = seriesScope && seriesScope.cursorStyle;
-
     if (!seriesScope || data.hasItemOption) {
         var itemModel = (seriesScope && seriesScope.itemModel)
             ? seriesScope.itemModel : data.getItemModel(idx);
-
         // Color must be excluded.
         // Because symbol provide setColor individually to set fill and stroke
         itemStyle = itemModel.getModel(normalStyleAccessPath).getItemStyle(['color']);
         hoverItemStyle = itemModel.getModel(emphasisStyleAccessPath).getItemStyle();
-
         symbolRotate = itemModel.getShallow('symbolRotate');
         symbolOffset = itemModel.getShallow('symbolOffset');
-
         labelModel = itemModel.getModel(normalLabelAccessPath);
         hoverLabelModel = itemModel.getModel(emphasisLabelAccessPath);
         hoverAnimation = itemModel.getShallow('hoverAnimation');
@@ -32096,30 +27918,22 @@ symbolProto._updateCommon = function (data, idx, symbolSize, seriesScope) {
     else {
         hoverItemStyle = extend({}, hoverItemStyle);
     }
-
     var elStyle = symbolPath.style;
-
     symbolPath.attr('rotation', (symbolRotate || 0) * Math.PI / 180 || 0);
-
     if (symbolOffset) {
         symbolPath.attr('position', [
             parsePercent$1(symbolOffset[0], symbolSize[0]),
             parsePercent$1(symbolOffset[1], symbolSize[1])
         ]);
     }
-
     cursorStyle && symbolPath.attr('cursor', cursorStyle);
-
     // PENDING setColor before setStyle!!!
     symbolPath.setColor(color, seriesScope && seriesScope.symbolInnerColor);
-
     symbolPath.setStyle(itemStyle);
-
     var opacity = data.getItemVisual(idx, 'opacity');
     if (opacity != null) {
         elStyle.opacity = opacity;
     }
-
     var liftZ = data.getItemVisual(idx, 'liftZ');
     var z2Origin = symbolPath.__z2Origin;
     if (liftZ != null) {
@@ -32132,9 +27946,7 @@ symbolProto._updateCommon = function (data, idx, symbolSize, seriesScope) {
         symbolPath.z2 = z2Origin;
         symbolPath.__z2Origin = null;
     }
-
     var useNameLabel = seriesScope && seriesScope.useNameLabel;
-
     setLabelStyle(
         elStyle, hoverItemStyle, labelModel, hoverLabelModel,
         {
@@ -32145,25 +27957,19 @@ symbolProto._updateCommon = function (data, idx, symbolSize, seriesScope) {
             autoColor: color
         }
     );
-
     // Do not execute util needed.
     function getLabelDefaultText(idx, opt) {
         return useNameLabel ? data.getName(idx) : getDefaultLabel(data, idx);
     }
-
     symbolPath.off('mouseover')
         .off('mouseout')
         .off('emphasis')
         .off('normal');
-
     symbolPath.hoverStyle = hoverItemStyle;
-
     // FIXME
     // Do not use symbol.trigger('emphasis'), but use symbol.highlight() instead.
     setHoverStyle(symbolPath);
-
     symbolPath.__symbolOriginalScale = getScale(symbolSize);
-
     if (hoverAnimation && seriesModel.isAnimationEnabled()) {
         // Note: consider `off`, should use static function here.
         symbolPath.on('mouseover', onMouseOver)
@@ -32172,17 +27978,14 @@ symbolProto._updateCommon = function (data, idx, symbolSize, seriesScope) {
             .on('normal', onNormal);
     }
 };
-
 function onMouseOver() {
     // see comment in `graphic.isInEmphasis`
     !isInEmphasis(this) && onEmphasis.call(this);
 }
-
 function onMouseOut() {
     // see comment in `graphic.isInEmphasis`
     !isInEmphasis(this) && onNormal.call(this);
 }
-
 function onEmphasis() {
     // Do not support this hover animation util some scenario required.
     // Animation can only be supported in hover layer when using `el.incremetal`.
@@ -32198,7 +28001,6 @@ function onEmphasis() {
         ]
     }, 400, 'elasticOut');
 }
-
 function onNormal() {
     if (this.incremental || this.useHoverLayer) {
         return;
@@ -32207,8 +28009,6 @@ function onNormal() {
         scale: this.__symbolOriginalScale
     }, 400, 'elasticOut');
 }
-
-
 /**
  * @param {Function} cb
  * @param {Object} [opt]
@@ -32220,7 +28020,6 @@ symbolProto.fadeOut = function (cb, opt) {
     this.silent = symbolPath.silent = true;
     // Not show text when animating
     !(opt && opt.keepLabel) && (symbolPath.style.text = null);
-
     updateProps(
         symbolPath,
         {
@@ -32232,9 +28031,7 @@ symbolProto.fadeOut = function (cb, opt) {
         cb
     );
 };
-
 inherits(SymbolClz, Group);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -32253,11 +28050,9 @@ inherits(SymbolClz, Group);
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @module echarts/chart/helper/SymbolDraw
  */
-
 /**
  * @constructor
  * @alias module:echarts/chart/helper/SymbolDraw
@@ -32265,12 +28060,9 @@ inherits(SymbolClz, Group);
  */
 function SymbolDraw(symbolCtor) {
     this.group = new Group();
-
     this._symbolCtor = symbolCtor || SymbolClz;
 }
-
 var symbolDrawProto = SymbolDraw.prototype;
-
 function symbolNeedsDraw(data, point, idx, opt) {
     return point && !isNaN(point[0]) && !isNaN(point[1])
         && !(opt.isIgnore && opt.isIgnore(idx))
@@ -32280,7 +28072,6 @@ function symbolNeedsDraw(data, point, idx, opt) {
         && !(opt.clipShape && !opt.clipShape.contain(point[0], point[1]))
         && data.getItemVisual(idx, 'symbol') !== 'none';
 }
-
 /**
  * Update symbols draw by new data
  * @param {module:echarts/data/List} data
@@ -32290,20 +28081,16 @@ function symbolNeedsDraw(data, point, idx, opt) {
  */
 symbolDrawProto.updateData = function (data, opt) {
     opt = normalizeUpdateOpt(opt);
-
     var group = this.group;
     var seriesModel = data.hostModel;
     var oldData = this._data;
     var SymbolCtor = this._symbolCtor;
-
     var seriesScope = makeSeriesScope(data);
-
     // There is no oldLineData only when first rendering or switching from
     // stream mode to normal mode, where previous elements should be removed.
     if (!oldData) {
         group.removeAll();
     }
-
     data.diff(oldData)
         .add(function (newIdx) {
             var point = data.getItemLayout(newIdx);
@@ -32331,10 +28118,8 @@ symbolDrawProto.updateData = function (data, opt) {
                     position: point
                 }, seriesModel);
             }
-
             // Add back
             group.add(symbolEl);
-
             data.setItemGraphicEl(newIdx, symbolEl);
         })
         .remove(function (oldIdx) {
@@ -32344,14 +28129,11 @@ symbolDrawProto.updateData = function (data, opt) {
             });
         })
         .execute();
-
     this._data = data;
 };
-
 symbolDrawProto.isPersistent = function () {
     return true;
 };
-
 symbolDrawProto.updateLayout = function () {
     var data = this._data;
     if (data) {
@@ -32362,13 +28144,11 @@ symbolDrawProto.updateLayout = function () {
         });
     }
 };
-
 symbolDrawProto.incrementalPrepareUpdate = function (data) {
     this._seriesScope = makeSeriesScope(data);
     this._data = null;
     this.group.removeAll();
 };
-
 /**
  * Update symbols draw by new data
  * @param {module:echarts/data/List} data
@@ -32378,7 +28158,6 @@ symbolDrawProto.incrementalPrepareUpdate = function (data) {
  */
 symbolDrawProto.incrementalUpdate = function (taskParams, data, opt) {
     opt = normalizeUpdateOpt(opt);
-
     function updateIncrementalAndHover(el) {
         if (!el.isGroup) {
             el.incremental = el.useHoverLayer = true;
@@ -32395,14 +28174,12 @@ symbolDrawProto.incrementalUpdate = function (taskParams, data, opt) {
         }
     }
 };
-
 function normalizeUpdateOpt(opt) {
     if (opt != null && !isObject$1(opt)) {
         opt = {isIgnore: opt};
     }
     return opt || {};
 }
-
 symbolDrawProto.remove = function (enableAnimation) {
     var group = this.group;
     var data = this._data;
@@ -32418,7 +28195,6 @@ symbolDrawProto.remove = function (enableAnimation) {
         group.removeAll();
     }
 };
-
 function makeSeriesScope(data) {
     var seriesModel = data.hostModel;
     return {
@@ -32432,7 +28208,6 @@ function makeSeriesScope(data) {
         cursorStyle: seriesModel.get('cursor')
     };
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -32451,7 +28226,6 @@ function makeSeriesScope(data) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @param {Object} coordSys
  * @param {module:echarts/data/List} data
@@ -32461,17 +28235,14 @@ function prepareDataCoordInfo(coordSys, data, valueOrigin) {
     var baseAxis = coordSys.getBaseAxis();
     var valueAxis = coordSys.getOtherAxis(baseAxis);
     var valueStart = getValueStart(valueAxis, valueOrigin);
-
     var baseAxisDim = baseAxis.dim;
     var valueAxisDim = valueAxis.dim;
     var valueDim = data.mapDimension(valueAxisDim);
     var baseDim = data.mapDimension(baseAxisDim);
     var baseDataOffset = valueAxisDim === 'x' || valueAxisDim === 'radius' ? 1 : 0;
-
     var dims = map(coordSys.dimensions, function (coordDim) {
         return data.mapDimension(coordDim);
     });
-
     var stacked;
     var stackResultDim = data.getCalculationInfo('stackResultDimension');
     if (stacked |= isDimensionStacked(data, dims[0] /*, dims[1]*/)) { // jshint ignore:line
@@ -32480,7 +28251,6 @@ function prepareDataCoordInfo(coordSys, data, valueOrigin) {
     if (stacked |= isDimensionStacked(data, dims[1] /*, dims[0]*/)) { // jshint ignore:line
         dims[1] = stackResultDim;
     }
-
     return {
         dataDimsForPoint: dims,
         valueStart: valueStart,
@@ -32493,11 +28263,9 @@ function prepareDataCoordInfo(coordSys, data, valueOrigin) {
         stackedOverDimension: data.getCalculationInfo('stackedOverDimension')
     };
 }
-
 function getValueStart(valueAxis, valueOrigin) {
     var valueStart = 0;
     var extent = valueAxis.scale.getExtent();
-
     if (valueOrigin === 'start') {
         valueStart = extent[0];
     }
@@ -32516,10 +28284,8 @@ function getValueStart(valueAxis, valueOrigin) {
         }
         // If is one positive, and one negative, onZero shall be true
     }
-
     return valueStart;
 }
-
 function getStackedOnPoint(dataCoordInfo, coordSys, data, idx) {
     var value = NaN;
     if (dataCoordInfo.stacked) {
@@ -32528,15 +28294,12 @@ function getStackedOnPoint(dataCoordInfo, coordSys, data, idx) {
     if (isNaN(value)) {
         value = dataCoordInfo.valueStart;
     }
-
     var baseDataOffset = dataCoordInfo.baseDataOffset;
     var stackedData = [];
     stackedData[baseDataOffset] = data.get(dataCoordInfo.baseDim, idx);
     stackedData[1 - baseDataOffset] = value;
-
     return coordSys.dataToPoint(stackedData);
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -32555,15 +28318,12 @@ function getStackedOnPoint(dataCoordInfo, coordSys, data, idx) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // var arrayDiff = require('zrender/src/core/arrayDiff');
 // 'zrender/src/core/arrayDiff' has been used before, but it did
 // not do well in performance when roam with fixed dataZoom window.
-
 // function convertToIntId(newIdList, oldIdList) {
 //     // Generate int id instead of string id.
 //     // Compare string maybe slow in score function of arrDiff
-
 //     // Assume id in idList are all unique
 //     var idIndicesMap = {};
 //     var idx = 0;
@@ -32582,10 +28342,8 @@ function getStackedOnPoint(dataCoordInfo, coordSys, data, idx) {
 //         }
 //     }
 // }
-
 function diffData(oldData, newData) {
     var diffResult = [];
-
     newData.diff(oldData)
         .add(function (idx) {
             diffResult.push({cmd: '+', idx: idx});
@@ -32597,10 +28355,8 @@ function diffData(oldData, newData) {
             diffResult.push({cmd: '-', idx: idx});
         })
         .execute();
-
     return diffResult;
 }
-
 var lineAnimationDiff = function (
     oldData, newData,
     oldStackedOnPoints, newStackedOnPoints,
@@ -32608,32 +28364,24 @@ var lineAnimationDiff = function (
     oldValueOrigin, newValueOrigin
 ) {
     var diff = diffData(oldData, newData);
-
     // var newIdList = newData.mapArray(newData.getId);
     // var oldIdList = oldData.mapArray(oldData.getId);
-
     // convertToIntId(newIdList, oldIdList);
-
     // // FIXME One data ?
     // diff = arrayDiff(oldIdList, newIdList);
-
     var currPoints = [];
     var nextPoints = [];
     // Points for stacking base line
     var currStackedPoints = [];
     var nextStackedPoints = [];
-
     var status = [];
     var sortedIndices = [];
     var rawIndices = [];
-
     var newDataOldCoordInfo = prepareDataCoordInfo(oldCoordSys, newData, oldValueOrigin);
     var oldDataNewCoordInfo = prepareDataCoordInfo(newCoordSys, oldData, newValueOrigin);
-
     for (var i = 0; i < diff.length; i++) {
         var diffItem = diff[i];
         var pointAdded = true;
-
         // FIXME, animation is not so perfect when dataZoom window moves fast
         // Which is in case remvoing or add more than one data in the tail or head
         switch (diffItem.cmd) {
@@ -32646,10 +28394,8 @@ var lineAnimationDiff = function (
                 }
                 currPoints.push(currentPt);
                 nextPoints.push(nextPt);
-
                 currStackedPoints.push(oldStackedOnPoints[diffItem.idx]);
                 nextStackedPoints.push(newStackedOnPoints[diffItem.idx1]);
-
                 rawIndices.push(newData.getRawIndex(diffItem.idx1));
                 break;
             case '+':
@@ -32660,14 +28406,11 @@ var lineAnimationDiff = function (
                         newData.get(newDataOldCoordInfo.dataDimsForPoint[1], idx)
                     ])
                 );
-
                 nextPoints.push(newData.getItemLayout(idx).slice());
-
                 currStackedPoints.push(
                     getStackedOnPoint(newDataOldCoordInfo, oldCoordSys, newData, idx)
                 );
                 nextStackedPoints.push(newStackedOnPoints[idx]);
-
                 rawIndices.push(newData.getRawIndex(idx));
                 break;
             case '-':
@@ -32681,61 +28424,48 @@ var lineAnimationDiff = function (
                         oldData.get(oldDataNewCoordInfo.dataDimsForPoint[0], idx),
                         oldData.get(oldDataNewCoordInfo.dataDimsForPoint[1], idx)
                     ]));
-
                     currStackedPoints.push(oldStackedOnPoints[idx]);
                     nextStackedPoints.push(
                         getStackedOnPoint(oldDataNewCoordInfo, newCoordSys, oldData, idx)
                     );
-
                     rawIndices.push(rawIndex);
                 }
                 else {
                     pointAdded = false;
                 }
         }
-
         // Original indices
         if (pointAdded) {
             status.push(diffItem);
             sortedIndices.push(sortedIndices.length);
         }
     }
-
     // Diff result may be crossed if all items are changed
     // Sort by data index
     sortedIndices.sort(function (a, b) {
         return rawIndices[a] - rawIndices[b];
     });
-
     var sortedCurrPoints = [];
     var sortedNextPoints = [];
-
     var sortedCurrStackedPoints = [];
     var sortedNextStackedPoints = [];
-
     var sortedStatus = [];
     for (var i = 0; i < sortedIndices.length; i++) {
         var idx = sortedIndices[i];
         sortedCurrPoints[i] = currPoints[idx];
         sortedNextPoints[i] = nextPoints[idx];
-
         sortedCurrStackedPoints[i] = currStackedPoints[idx];
         sortedNextStackedPoints[i] = nextStackedPoints[idx];
-
         sortedStatus[i] = status[idx];
     }
-
     return {
         current: sortedCurrPoints,
         next: sortedNextPoints,
-
         stackedOnCurrent: sortedCurrStackedPoints,
         stackedOnNext: sortedNextStackedPoints,
-
         status: sortedStatus
     };
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -32754,24 +28484,18 @@ var lineAnimationDiff = function (
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // Poly path support NaN point
-
 var vec2Min = min;
 var vec2Max = max;
-
 var scaleAndAdd$1 = scaleAndAdd;
 var v2Copy = copy;
-
 // Temporary variable
 var v = [];
 var cp0 = [];
 var cp1 = [];
-
 function isPointNull(p) {
     return isNaN(p[0]) || isNaN(p[1]);
 }
-
 function drawSegment(
     ctx, points, start, segLen, allLen,
     dir, smoothMin, smoothMax, smooth, smoothMonotone, connectNulls
@@ -32802,7 +28526,6 @@ function drawSegment(
         return drawMono.apply(this, arguments);
     }
 }
-
 /**
  * Check if points is in monotone.
  *
@@ -32818,7 +28541,6 @@ function drawSegment(
 //     if (points.length <= 1) {
 //         return true;
 //     }
-
 //     var dim = smoothMonotone === 'x' ? 0 : 1;
 //     var last = points[0][dim];
 //     var lastDiff = 0;
@@ -32837,7 +28559,6 @@ function drawSegment(
 //     }
 //     return true;
 // }
-
 /**
  * Draw smoothed line in monotone, in which only vertical or horizontal bezier
  * control points will be used. This should be used when points are monotone
@@ -32861,7 +28582,6 @@ function drawMono(
             }
             break;
         }
-
         if (idx === start) {
             ctx[dir > 0 ? 'moveTo' : 'lineTo'](p[0], p[1]);
         }
@@ -32869,16 +28589,12 @@ function drawMono(
             if (smooth > 0) {
                 var prevP = points[prevIdx];
                 var dim = smoothMonotone === 'y' ? 1 : 0;
-
                 // Length of control point to p, either in x or y, but not both
                 var ctrlLen = (p[dim] - prevP[dim]) * smooth;
-
                 v2Copy(cp0, prevP);
                 cp0[dim] = prevP[dim] + ctrlLen;
-
                 v2Copy(cp1, p);
                 cp1[dim] = p[dim] - ctrlLen;
-
                 ctx.bezierCurveTo(
                     cp0[0], cp0[1],
                     cp1[0], cp1[1],
@@ -32889,14 +28605,11 @@ function drawMono(
                 ctx.lineTo(p[0], p[1]);
             }
         }
-
         prevIdx = idx;
         idx += dir;
     }
-
     return k;
 }
-
 /**
  * Draw smoothed line in non-monotone, in may cause undesired curve in extreme
  * situations. This should be used when points are non-monotone neither in x or
@@ -32920,7 +28633,6 @@ function drawNonMono(
             }
             break;
         }
-
         if (idx === start) {
             ctx[dir > 0 ? 'moveTo' : 'lineTo'](p[0], p[1]);
             v2Copy(cp0, p);
@@ -32936,7 +28648,6 @@ function drawNonMono(
                         nextP = points[nextIdx];
                     }
                 }
-
                 var ratioNextSeg = 0.5;
                 var prevP = points[prevIdx];
                 var nextP = points[nextIdx];
@@ -32949,9 +28660,7 @@ function drawNonMono(
                     if (isPointNull(nextP) && !connectNulls) {
                         nextP = p;
                     }
-
                     sub(v, nextP, prevP);
-
                     var lenPrevSeg;
                     var lenNextSeg;
                     if (smoothMonotone === 'x' || smoothMonotone === 'y') {
@@ -32963,10 +28672,8 @@ function drawNonMono(
                         lenPrevSeg = dist(p, prevP);
                         lenNextSeg = dist(p, nextP);
                     }
-
                     // Use ratio of seg length
                     ratioNextSeg = lenNextSeg / (lenNextSeg + lenPrevSeg);
-
                     scaleAndAdd$1(cp1, p, v, -smooth * (1 - ratioNextSeg));
                 }
                 // Smooth constraint
@@ -32974,7 +28681,6 @@ function drawNonMono(
                 vec2Max(cp0, cp0, smoothMin);
                 vec2Min(cp1, cp1, smoothMax);
                 vec2Max(cp1, cp1, smoothMin);
-
                 ctx.bezierCurveTo(
                     cp0[0], cp0[1],
                     cp1[0], cp1[1],
@@ -32987,14 +28693,11 @@ function drawNonMono(
                 ctx.lineTo(p[0], p[1]);
             }
         }
-
         prevIdx = idx;
         idx += dir;
     }
-
     return k;
 }
-
 function getBoundingBox(points, smoothConstraint) {
     var ptMin = [Infinity, Infinity];
     var ptMax = [-Infinity, -Infinity];
@@ -33020,39 +28723,25 @@ function getBoundingBox(points, smoothConstraint) {
         max: smoothConstraint ? ptMax : ptMin
     };
 }
-
 var Polyline$1 = Path.extend({
-
     type: 'ec-polyline',
-
     shape: {
         points: [],
-
         smooth: 0,
-
         smoothConstraint: true,
-
         smoothMonotone: null,
-
         connectNulls: false
     },
-
     style: {
         fill: null,
-
         stroke: '#000'
     },
-
     brush: fixClipWithShadow(Path.prototype.brush),
-
     buildPath: function (ctx, shape) {
         var points = shape.points;
-
         var i = 0;
         var len$$1 = points.length;
-
         var result = getBoundingBox(points, shape.smoothConstraint);
-
         if (shape.connectNulls) {
             // Must remove first and last null values avoid draw error in polygon
             for (; len$$1 > 0; len$$1--) {
@@ -33075,40 +28764,27 @@ var Polyline$1 = Path.extend({
         }
     }
 });
-
 var Polygon$1 = Path.extend({
-
     type: 'ec-polygon',
-
     shape: {
         points: [],
-
         // Offset between stacked base points and points
         stackedOnPoints: [],
-
         smooth: 0,
-
         stackedOnSmooth: 0,
-
         smoothConstraint: true,
-
         smoothMonotone: null,
-
         connectNulls: false
     },
-
     brush: fixClipWithShadow(Path.prototype.brush),
-
     buildPath: function (ctx, shape) {
         var points = shape.points;
         var stackedOnPoints = shape.stackedOnPoints;
-
         var i = 0;
         var len$$1 = points.length;
         var smoothMonotone = shape.smoothMonotone;
         var bbox = getBoundingBox(points, shape.smoothConstraint);
         var stackedOnBBox = getBoundingBox(stackedOnPoints, shape.smoothConstraint);
-
         if (shape.connectNulls) {
             // Must remove first and last null values avoid draw error in polygon
             for (; len$$1 > 0; len$$1--) {
@@ -33134,12 +28810,10 @@ var Polygon$1 = Path.extend({
                 smoothMonotone, shape.connectNulls
             );
             i += k + 1;
-
             ctx.closePath();
         }
     }
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -33158,9 +28832,7 @@ var Polygon$1 = Path.extend({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // FIXME step not support polar
-
 function isPointsSame(points1, points2) {
     if (points1.length !== points2.length) {
         return;
@@ -33174,11 +28846,9 @@ function isPointsSame(points1, points2) {
     }
     return true;
 }
-
 function getSmooth(smooth) {
     return typeof (smooth) === 'number' ? smooth : (smooth ? 0.5 : 0);
 }
-
 function getAxisExtentWithGap(axis) {
     var extent = axis.getGlobalExtent();
     if (axis.onBand) {
@@ -33190,7 +28860,6 @@ function getAxisExtentWithGap(axis) {
     }
     return extent;
 }
-
 /**
  * @param {module:echarts/coord/cartesian/Cartesian2D|module:echarts/coord/polar/Polar} coordSys
  * @param {module:echarts/data/List} data
@@ -33201,25 +28870,20 @@ function getStackedOnPoints(coordSys, data, dataCoordInfo) {
     if (!dataCoordInfo.valueDim) {
         return [];
     }
-
     var points = [];
     for (var idx = 0, len = data.count(); idx < len; idx++) {
         points.push(getStackedOnPoint(dataCoordInfo, coordSys, data, idx));
     }
-
     return points;
 }
-
 function createGridClipShape(cartesian, hasAnimation, forSymbol, seriesModel) {
     var xExtent = getAxisExtentWithGap(cartesian.getAxis('x'));
     var yExtent = getAxisExtentWithGap(cartesian.getAxis('y'));
     var isHorizontal = cartesian.getBaseAxis().isHorizontal();
-
     var x = Math.min(xExtent[0], xExtent[1]);
     var y = Math.min(yExtent[0], yExtent[1]);
     var width = Math.max(xExtent[0], xExtent[1]) - x;
     var height = Math.max(yExtent[0], yExtent[1]) - y;
-
     // Avoid float number rounding error for symbol on the edge of axis extent.
     // See #7913 and `test/dataZoom-clip.html`.
     if (forSymbol) {
@@ -33241,7 +28905,6 @@ function createGridClipShape(cartesian, hasAnimation, forSymbol, seriesModel) {
             width += expandSize * 2;
         }
     }
-
     var clipPath = new Rect({
         shape: {
             x: x,
@@ -33250,7 +28913,6 @@ function createGridClipShape(cartesian, hasAnimation, forSymbol, seriesModel) {
             height: height
         }
     });
-
     if (hasAnimation) {
         clipPath.shape[isHorizontal ? 'width' : 'height'] = 0;
         initProps(clipPath, {
@@ -33260,26 +28922,20 @@ function createGridClipShape(cartesian, hasAnimation, forSymbol, seriesModel) {
             }
         }, seriesModel);
     }
-
     return clipPath;
 }
-
 function createPolarClipShape(polar, hasAnimation, forSymbol, seriesModel) {
     var angleAxis = polar.getAngleAxis();
     var radiusAxis = polar.getRadiusAxis();
-
     var radiusExtent = radiusAxis.getExtent().slice();
     radiusExtent[0] > radiusExtent[1] && radiusExtent.reverse();
     var angleExtent = angleAxis.getExtent();
-
     var RADIAN = Math.PI / 180;
-
     // Avoid float number rounding error for symbol on the edge of axis extent.
     if (forSymbol) {
         radiusExtent[0] -= 0.5;
         radiusExtent[1] += 0.5;
     }
-
     var clipPath = new Sector({
         shape: {
             cx: round$2(polar.cx, 1),
@@ -33291,7 +28947,6 @@ function createPolarClipShape(polar, hasAnimation, forSymbol, seriesModel) {
             clockwise: angleAxis.inverse
         }
     });
-
     if (hasAnimation) {
         clipPath.shape.endAngle = -angleExtent[0] * RADIAN;
         initProps(clipPath, {
@@ -33300,26 +28955,21 @@ function createPolarClipShape(polar, hasAnimation, forSymbol, seriesModel) {
             }
         }, seriesModel);
     }
-
     return clipPath;
 }
-
 function createClipShape(coordSys, hasAnimation, forSymbol, seriesModel) {
     return coordSys.type === 'polar'
         ? createPolarClipShape(coordSys, hasAnimation, forSymbol, seriesModel)
         : createGridClipShape(coordSys, hasAnimation, forSymbol, seriesModel);
 }
-
 function turnPointsIntoStep(points, coordSys, stepTurnAt) {
     var baseAxis = coordSys.getBaseAxis();
     var baseIndex = baseAxis.dim === 'x' || baseAxis.dim === 'radius' ? 0 : 1;
-
     var stepPoints = [];
     for (var i = 0; i < points.length - 1; i++) {
         var nextPt = points[i + 1];
         var pt = points[i];
         stepPoints.push(pt);
-
         var stepPt = [];
         switch (stepTurnAt) {
             case 'end':
@@ -33349,24 +28999,20 @@ function turnPointsIntoStep(points, coordSys, stepTurnAt) {
     points[i] && stepPoints.push(points[i]);
     return stepPoints;
 }
-
 function getVisualGradient(data, coordSys) {
     var visualMetaList = data.getVisual('visualMeta');
     if (!visualMetaList || !visualMetaList.length || !data.count()) {
         // When data.count() is 0, gradient range can not be calculated.
         return;
     }
-
     if (coordSys.type !== 'cartesian2d') {
         if (__DEV__) {
             console.warn('Visual map on line style is only supported on cartesian2d.');
         }
         return;
     }
-
     var coordDim;
     var visualMeta;
-
     for (var i = visualMetaList.length - 1; i >= 0; i--) {
         var dimIndex = visualMetaList[i].dimension;
         var dimName = data.dimensions[dimIndex];
@@ -33378,23 +29024,19 @@ function getVisualGradient(data, coordSys) {
             break;
         }
     }
-
     if (!visualMeta) {
         if (__DEV__) {
             console.warn('Visual map on line style only support x or y dimension.');
         }
         return;
     }
-
     // If the area to be rendered is bigger than area defined by LinearGradient,
     // the canvas spec prescribes that the color of the first stop and the last
     // stop should be used. But if two stops are added at offset 0, in effect
     // browsers use the color of the second stop to render area outside
     // LinearGradient. So we can only infinitesimally extend area defined in
     // LinearGradient to render `outerColors`.
-
     var axis = coordSys.getAxis(coordDim);
-
     // dataToCoor mapping may not be linear, but must be monotonic.
     var colorStops = map(visualMeta.stops, function (stop) {
         return {
@@ -33404,21 +29046,17 @@ function getVisualGradient(data, coordSys) {
     });
     var stopLen = colorStops.length;
     var outerColors = visualMeta.outerColors.slice();
-
     if (stopLen && colorStops[0].coord > colorStops[stopLen - 1].coord) {
         colorStops.reverse();
         outerColors.reverse();
     }
-
     var tinyExtent = 10; // Arbitrary value: 10px
     var minCoord = colorStops[0].coord - tinyExtent;
     var maxCoord = colorStops[stopLen - 1].coord + tinyExtent;
     var coordSpan = maxCoord - minCoord;
-
     if (coordSpan < 1e-3) {
         return 'transparent';
     }
-
     each$1(colorStops, function (stop) {
         stop.offset = (stop.coord - minCoord) / coordSpan;
     });
@@ -33430,32 +29068,25 @@ function getVisualGradient(data, coordSys) {
         offset: stopLen ? colorStops[0].offset : 0.5,
         color: outerColors[0] || 'transparent'
     });
-
     // zrUtil.each(colorStops, function (colorStop) {
     //     // Make sure each offset has rounded px to avoid not sharp edge
     //     colorStop.offset = (Math.round(colorStop.offset * (end - start) + start) - start) / (end - start);
     // });
-
     var gradient = new LinearGradient(0, 0, 0, 0, colorStops, true);
     gradient[coordDim] = minCoord;
     gradient[coordDim + '2'] = maxCoord;
-
     return gradient;
 }
-
 function getIsIgnoreFunc(seriesModel, data, coordSys) {
     var showAllSymbol = seriesModel.get('showAllSymbol');
     var isAuto = showAllSymbol === 'auto';
-
     if (showAllSymbol && !isAuto) {
         return;
     }
-
     var categoryAxis = coordSys.getAxesByScale('ordinal')[0];
     if (!categoryAxis) {
         return;
     }
-
     // Note that category label interval strategy might bring some weird effect
     // in some scenario: users may wonder why some of the symbols are not
     // displayed. So we show all symbols as possible as we can.
@@ -33465,20 +29096,16 @@ function getIsIgnoreFunc(seriesModel, data, coordSys) {
     ) {
         return;
     }
-
     // Otherwise follow the label interval strategy on category axis.
     var categoryDataDim = data.mapDimension(categoryAxis.dim);
     var labelMap = {};
-
     each$1(categoryAxis.getViewLabels(), function (labelItem) {
         labelMap[labelItem.tickValue] = 1;
     });
-
     return function (dataIndex) {
         return !labelMap.hasOwnProperty(data.get(categoryDataDim, dataIndex));
     };
 }
-
 function canShowAllSymbolForCategory(categoryAxis, data) {
     // In mose cases, line is monotonous on category axis, and the label size
     // is close with each other. So we check the symbol size and some of the
@@ -33487,7 +29114,6 @@ function canShowAllSymbolForCategory(categoryAxis, data) {
     var axisExtent = categoryAxis.getExtent();
     var availSize = Math.abs(axisExtent[1] - axisExtent[0]) / categoryAxis.scale.count();
     isNaN(availSize) && (availSize = 0); // 0/0 is NaN.
-
     // Sampling some points, max 5.
     var dataLen = data.count();
     var step = Math.max(1, Math.round(dataLen / 5));
@@ -33502,56 +29128,38 @@ function canShowAllSymbolForCategory(categoryAxis, data) {
             return false;
         }
     }
-
     return true;
 }
-
 Chart.extend({
-
     type: 'line',
-
     init: function () {
         var lineGroup = new Group();
-
         var symbolDraw = new SymbolDraw();
         this.group.add(symbolDraw.group);
-
         this._symbolDraw = symbolDraw;
         this._lineGroup = lineGroup;
     },
-
     render: function (seriesModel, ecModel, api) {
         var coordSys = seriesModel.coordinateSystem;
         var group = this.group;
         var data = seriesModel.getData();
         var lineStyleModel = seriesModel.getModel('lineStyle');
         var areaStyleModel = seriesModel.getModel('areaStyle');
-
         var points = data.mapArray(data.getItemLayout);
-
         var isCoordSysPolar = coordSys.type === 'polar';
         var prevCoordSys = this._coordSys;
-
         var symbolDraw = this._symbolDraw;
         var polyline = this._polyline;
         var polygon = this._polygon;
-
         var lineGroup = this._lineGroup;
-
         var hasAnimation = seriesModel.get('animation');
-
         var isAreaChart = !areaStyleModel.isEmpty();
-
         var valueOrigin = areaStyleModel.get('origin');
         var dataCoordInfo = prepareDataCoordInfo(coordSys, data, valueOrigin);
-
         var stackedOnPoints = getStackedOnPoints(coordSys, data, dataCoordInfo);
-
         var showSymbol = seriesModel.get('showSymbol');
-
         var isIgnoreFunc = showSymbol && !isCoordSysPolar
             && getIsIgnoreFunc(seriesModel, data, coordSys);
-
         // Remove temporary symbols
         var oldData = this._data;
         oldData && oldData.eachItemGraphicEl(function (el, idx) {
@@ -33560,14 +29168,11 @@ Chart.extend({
                 oldData.setItemGraphicEl(idx, null);
             }
         });
-
         // Remove previous created symbols if showSymbol changed to false
         if (!showSymbol) {
             symbolDraw.remove();
         }
-
         group.add(lineGroup);
-
         // FIXME step not support polar
         var step = !isCoordSysPolar && seriesModel.get('step');
         // Initialization animation or coordinate system changed
@@ -33578,13 +29183,11 @@ Chart.extend({
                 isIgnore: isIgnoreFunc,
                 clipShape: createClipShape(coordSys, false, true, seriesModel)
             });
-
             if (step) {
                 // TODO If stacked series is not step
                 points = turnPointsIntoStep(points, coordSys, step);
                 stackedOnPoints = turnPointsIntoStep(stackedOnPoints, coordSys, step);
             }
-
             polyline = this._newPolyline(points, coordSys, hasAnimation);
             if (isAreaChart) {
                 polygon = this._newPolygon(
@@ -33607,23 +29210,19 @@ Chart.extend({
                 lineGroup.remove(polygon);
                 polygon = this._polygon = null;
             }
-
             // Update clipPath
             lineGroup.setClipPath(createClipShape(coordSys, false, false, seriesModel));
-
             // Always update, or it is wrong in the case turning on legend
             // because points are not changed
             showSymbol && symbolDraw.updateData(data, {
                 isIgnore: isIgnoreFunc,
                 clipShape: createClipShape(coordSys, false, true, seriesModel)
             });
-
             // Stop symbol animation and sync with line points
             // FIXME performance?
             data.eachItemGraphicEl(function (el) {
                 el.stopAnimation(true);
             });
-
             // In the case data zoom triggerred refreshing frequently
             // Data may not change if line has a category axis. So it should animate nothing
             if (!isPointsSame(this._stackedOnPoints, stackedOnPoints)
@@ -33641,7 +29240,6 @@ Chart.extend({
                         points = turnPointsIntoStep(points, coordSys, step);
                         stackedOnPoints = turnPointsIntoStep(stackedOnPoints, coordSys, step);
                     }
-
                     polyline.setShape({
                         points: points
                     });
@@ -33652,9 +29250,7 @@ Chart.extend({
                 }
             }
         }
-
         var visualColor = getVisualGradient(data, coordSys) || data.getVisual('color');
-
         polyline.useStyle(defaults(
             // Use color in lineStyle first
             lineStyleModel.getLineStyle(),
@@ -33664,7 +29260,6 @@ Chart.extend({
                 lineJoin: 'bevel'
             }
         ));
-
         var smooth = seriesModel.get('smooth');
         smooth = getSmooth(seriesModel.get('smooth'));
         polyline.setShape({
@@ -33672,11 +29267,9 @@ Chart.extend({
             smoothMonotone: seriesModel.get('smoothMonotone'),
             connectNulls: seriesModel.get('connectNulls')
         });
-
         if (polygon) {
             var stackedOnSeries = data.getCalculationInfo('stackedOnSeries');
             var stackedOnSmooth = 0;
-
             polygon.useStyle(defaults(
                 areaStyleModel.getAreaStyle(),
                 {
@@ -33685,11 +29278,9 @@ Chart.extend({
                     lineJoin: 'bevel'
                 }
             ));
-
             if (stackedOnSeries) {
                 stackedOnSmooth = getSmooth(stackedOnSeries.get('smooth'));
             }
-
             polygon.setShape({
                 smooth: smooth,
                 stackedOnSmooth: stackedOnSmooth,
@@ -33697,7 +29288,6 @@ Chart.extend({
                 connectNulls: seriesModel.get('connectNulls')
             });
         }
-
         this._data = data;
         // Save the coordinate system for transition animation when data changed
         this._coordSys = coordSys;
@@ -33706,13 +29296,10 @@ Chart.extend({
         this._step = step;
         this._valueOrigin = valueOrigin;
     },
-
     dispose: function () {},
-
     highlight: function (seriesModel, ecModel, api, payload) {
         var data = seriesModel.getData();
         var dataIndex = queryDataIndex(data, payload);
-
         if (!(dataIndex instanceof Array) && dataIndex != null && dataIndex >= 0) {
             var symbol = data.getItemGraphicEl(dataIndex);
             if (!symbol) {
@@ -33731,10 +29318,8 @@ Chart.extend({
                 symbol.ignore = isNaN(pt[0]) || isNaN(pt[1]);
                 symbol.__temp = true;
                 data.setItemGraphicEl(dataIndex, symbol);
-
                 // Stop scale animation
                 symbol.stopSymbolAnimation(true);
-
                 this.group.add(symbol);
             }
             symbol.highlight();
@@ -33746,7 +29331,6 @@ Chart.extend({
             );
         }
     },
-
     downplay: function (seriesModel, ecModel, api, payload) {
         var data = seriesModel.getData();
         var dataIndex = queryDataIndex(data, payload);
@@ -33771,7 +29355,6 @@ Chart.extend({
             );
         }
     },
-
     /**
      * @param {module:zrender/container/Group} group
      * @param {Array.<Array.<number>>} points
@@ -33783,7 +29366,6 @@ Chart.extend({
         if (polyline) {
             this._lineGroup.remove(polyline);
         }
-
         polyline = new Polyline$1({
             shape: {
                 points: points
@@ -33791,14 +29373,10 @@ Chart.extend({
             silent: true,
             z2: 10
         });
-
         this._lineGroup.add(polyline);
-
         this._polyline = polyline;
-
         return polyline;
     },
-
     /**
      * @param {module:zrender/container/Group} group
      * @param {Array.<Array.<number>>} stackedOnPoints
@@ -33811,7 +29389,6 @@ Chart.extend({
         if (polygon) {
             this._lineGroup.remove(polygon);
         }
-
         polygon = new Polygon$1({
             shape: {
                 points: points,
@@ -33819,13 +29396,10 @@ Chart.extend({
             },
             silent: true
         });
-
         this._lineGroup.add(polygon);
-
         this._polygon = polygon;
         return polygon;
     },
-
     /**
      * @private
      */
@@ -33834,14 +29408,12 @@ Chart.extend({
         var polyline = this._polyline;
         var polygon = this._polygon;
         var seriesModel = data.hostModel;
-
         var diff = lineAnimationDiff(
             this._data, data,
             this._stackedOnPoints, stackedOnPoints,
             this._coordSys, coordSys,
             this._valueOrigin, valueOrigin
         );
-
         var current = diff.current;
         var stackedOnCurrent = diff.stackedOnCurrent;
         var next = diff.next;
@@ -33858,13 +29430,11 @@ Chart.extend({
         // points in `current` are update during animation.
         polyline.shape.__points = diff.current;
         polyline.shape.points = current;
-
         updateProps(polyline, {
             shape: {
                 points: next
             }
         }, seriesModel);
-
         if (polygon) {
             polygon.setShape({
                 points: current,
@@ -33877,10 +29447,8 @@ Chart.extend({
                 }
             }, seriesModel);
         }
-
         var updatedDataInfo = [];
         var diffStatus = diff.status;
-
         for (var i = 0; i < diffStatus.length; i++) {
             var cmd = diffStatus[i].cmd;
             if (cmd === '=') {
@@ -33893,7 +29461,6 @@ Chart.extend({
                 }
             }
         }
-
         if (polyline.animators && polyline.animators.length) {
             polyline.animators[0].during(function () {
                 for (var i = 0; i < updatedDataInfo.length; i++) {
@@ -33903,7 +29470,6 @@ Chart.extend({
             });
         }
     },
-
     remove: function (ecModel) {
         var group = this.group;
         var oldData = this._data;
@@ -33916,7 +29482,6 @@ Chart.extend({
                 oldData.setItemGraphicEl(idx, null);
             }
         });
-
         this._polyline
             = this._polygon
             = this._coordSys
@@ -33925,7 +29490,6 @@ Chart.extend({
             = this._data = null;
     }
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -33944,37 +29508,28 @@ Chart.extend({
 * specific language governing permissions and limitations
 * under the License.
 */
-
-
 var visualSymbol = function (seriesType, defaultSymbolType, legendSymbol) {
     // Encoding visual for all series include which is filtered for legend drawing
     return {
         seriesType: seriesType,
-
         // For legend.
         performRawSeries: true,
-
         reset: function (seriesModel, ecModel, api) {
             var data = seriesModel.getData();
-
             var symbolType = seriesModel.get('symbol') || defaultSymbolType;
             var symbolSize = seriesModel.get('symbolSize');
             var keepAspect = seriesModel.get('symbolKeepAspect');
-
             data.setVisual({
                 legendSymbol: legendSymbol || symbolType,
                 symbol: symbolType,
                 symbolSize: symbolSize,
                 symbolKeepAspect: keepAspect
             });
-
             // Only visible series has each data be visual encoded
             if (ecModel.isSeriesFiltered(seriesModel)) {
                 return;
             }
-
             var hasCallback = typeof symbolSize === 'function';
-
             function dataEach(data, idx) {
                 if (typeof symbolSize === 'function') {
                     var rawValue = seriesModel.getRawValue(idx);
@@ -33982,7 +29537,6 @@ var visualSymbol = function (seriesType, defaultSymbolType, legendSymbol) {
                     var params = seriesModel.getDataParams(idx);
                     data.setItemVisual(idx, 'symbolSize', symbolSize(rawValue, params));
                 }
-
                 if (data.hasItemOption) {
                     var itemModel = data.getItemModel(idx);
                     var itemSymbolType = itemModel.getShallow('symbol', true);
@@ -33990,7 +29544,6 @@ var visualSymbol = function (seriesType, defaultSymbolType, legendSymbol) {
                         true);
                     var itemSymbolKeepAspect
                         = itemModel.getShallow('symbolKeepAspect', true);
-
                     // If has item symbol
                     if (itemSymbolType != null) {
                         data.setItemVisual(idx, 'symbol', itemSymbolType);
@@ -34005,12 +29558,10 @@ var visualSymbol = function (seriesType, defaultSymbolType, legendSymbol) {
                     }
                 }
             }
-
             return { dataEach: (data.hasItemOption || hasCallback) ? dataEach : null };
         }
     };
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -34029,30 +29580,23 @@ var visualSymbol = function (seriesType, defaultSymbolType, legendSymbol) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /* global Float32Array */
-
 var layoutPoints = function (seriesType) {
     return {
         seriesType: seriesType,
-
         plan: createRenderPlanner(),
-
         reset: function (seriesModel) {
             var data = seriesModel.getData();
             var coordSys = seriesModel.coordinateSystem;
             var pipelineContext = seriesModel.pipelineContext;
             var isLargeRender = pipelineContext.large;
-
             if (!coordSys) {
                 return;
             }
-
             var dims = map(coordSys.dimensions, function (dim) {
                 return data.mapDimension(dim);
             }).slice(0, 2);
             var dimLen = dims.length;
-
             var stackResultDim = data.getCalculationInfo('stackResultDimension');
             if (isDimensionStacked(data, dims[0] /*, dims[1]*/)) {
                 dims[0] = stackResultDim;
@@ -34060,14 +29604,11 @@ var layoutPoints = function (seriesType) {
             if (isDimensionStacked(data, dims[1] /*, dims[0]*/)) {
                 dims[1] = stackResultDim;
             }
-
             function progress(params, data) {
                 var segCount = params.end - params.start;
                 var points = isLargeRender && new Float32Array(segCount * dimLen);
-
                 for (var i = params.start, offset = 0, tmpIn = [], tmpOut = []; i < params.end; i++) {
                     var point;
-
                     if (dimLen === 1) {
                         var x = data.get(dims[0], i);
                         point = !isNaN(x) && coordSys.dataToPoint(x, null, tmpOut);
@@ -34078,7 +29619,6 @@ var layoutPoints = function (seriesType) {
                         // Also {Array.<number>}, not undefined to avoid if...else... statement
                         point = !isNaN(x) && !isNaN(y) && coordSys.dataToPoint(tmpIn, null, tmpOut);
                     }
-
                     if (isLargeRender) {
                         points[offset++] = point ? point[0] : NaN;
                         points[offset++] = point ? point[1] : NaN;
@@ -34087,15 +29627,12 @@ var layoutPoints = function (seriesType) {
                         data.setItemLayout(i, (point && point.slice()) || [NaN, NaN]);
                     }
                 }
-
                 isLargeRender && data.setLayout('symbolPoints', points);
             }
-
             return dimLen && {progress: progress};
         }
     };
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -34114,8 +29651,6 @@ var layoutPoints = function (seriesType) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
-
 var samplers = {
     average: function (frame) {
         var sum = 0;
@@ -34159,18 +29694,13 @@ var samplers = {
         return frame[0];
     }
 };
-
 var indexSampler = function (frame, value) {
     return Math.round(frame.length / 2);
 };
-
 var dataSample = function (seriesType) {
     return {
-
         seriesType: seriesType,
-
         modifyOutputEnd: true,
-
         reset: function (seriesModel, ecModel, api) {
             var data = seriesModel.getData();
             var sampling = seriesModel.get('sampling');
@@ -34202,7 +29732,6 @@ var dataSample = function (seriesType) {
         }
     };
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -34221,35 +29750,29 @@ var dataSample = function (seriesType) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * // Scale class management
  * @module echarts/scale/Scale
  */
-
 /**
  * @param {Object} [setting]
  */
 function Scale(setting) {
     this._setting = setting || {};
-
     /**
      * Extent
      * @type {Array.<number>}
      * @protected
      */
     this._extent = [Infinity, -Infinity];
-
     /**
      * Step is calculated in adjustExtent
      * @type {Array.<number>}
      * @protected
      */
     this._interval = 0;
-
     this.init && this.init.apply(this, arguments);
 }
-
 /**
  * Parse input val to valid inner number.
  * @param {*} val
@@ -34262,16 +29785,13 @@ Scale.prototype.parse = function (val) {
     // Nevertheless, parse does not depend on extent generally.
     return val;
 };
-
 Scale.prototype.getSetting = function (name) {
     return this._setting[name];
 };
-
 Scale.prototype.contain = function (val) {
     var extent = this._extent;
     return val >= extent[0] && val <= extent[1];
 };
-
 /**
  * Normalize value to linear [0, 1], return 0.5 if extent span is 0
  * @param {number} val
@@ -34284,7 +29804,6 @@ Scale.prototype.normalize = function (val) {
     }
     return (val - extent[0]) / (extent[1] - extent[0]);
 };
-
 /**
  * Scale normalized value
  * @param {number} val
@@ -34294,7 +29813,6 @@ Scale.prototype.scale = function (val) {
     var extent = this._extent;
     return val * (extent[1] - extent[0]) + extent[0];
 };
-
 /**
  * Set extent from data
  * @param {Array.<number>} other
@@ -34306,7 +29824,6 @@ Scale.prototype.unionExtent = function (other) {
     // not setExtent because in log axis it may transformed to power
     // this.setExtent(extent[0], extent[1]);
 };
-
 /**
  * Set extent from data
  * @param {module:echarts/data/List} data
@@ -34315,7 +29832,6 @@ Scale.prototype.unionExtent = function (other) {
 Scale.prototype.unionExtentFromData = function (data, dim) {
     this.unionExtent(data.getApproximateExtent(dim));
 };
-
 /**
  * Get extent
  * @return {Array.<number>}
@@ -34323,7 +29839,6 @@ Scale.prototype.unionExtentFromData = function (data, dim) {
 Scale.prototype.getExtent = function () {
     return this._extent.slice();
 };
-
 /**
  * Set extent
  * @param {number} start
@@ -34338,7 +29853,6 @@ Scale.prototype.setExtent = function (start, end) {
         thisExtent[1] = end;
     }
 };
-
 /**
  * When axis extent depends on data and no data exists,
  * axis ticks should not be drawn, which is named 'blank'.
@@ -34346,7 +29860,6 @@ Scale.prototype.setExtent = function (start, end) {
 Scale.prototype.isBlank = function () {
     return this._isBlank;
 },
-
 /**
  * When axis extent depends on data and no data exists,
  * axis ticks should not be drawn, which is named 'blank'.
@@ -34354,20 +29867,16 @@ Scale.prototype.isBlank = function () {
 Scale.prototype.setBlank = function (isBlank) {
     this._isBlank = isBlank;
 };
-
 /**
  * @abstract
  * @param {*} tick
  * @return {string} label of the tick.
  */
 Scale.prototype.getLabel = null;
-
-
 enableClassExtend(Scale);
 enableClassManagement(Scale, {
     registerWhenExtend: true
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -34386,7 +29895,6 @@ enableClassManagement(Scale, {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @constructor
  * @param {Object} [opt]
@@ -34395,32 +29903,27 @@ enableClassManagement(Scale, {
  * @param {Object} [opt.deduplication=false]
  */
 function OrdinalMeta(opt) {
-
     /**
      * @readOnly
      * @type {Array.<string>}
      */
     this.categories = opt.categories || [];
-
     /**
      * @private
      * @type {boolean}
      */
     this._needCollect = opt.needCollect;
-
     /**
      * @private
      * @type {boolean}
      */
     this._deduplication = opt.deduplication;
-
     /**
      * @private
      * @type {boolean}
      */
     this._map;
 }
-
 /**
  * @param {module:echarts/model/Model} axisModel
  * @return {module:echarts/data/OrdinalMeta}
@@ -34429,7 +29932,6 @@ OrdinalMeta.createByAxisModel = function (axisModel) {
     var option = axisModel.option;
     var data = option.data;
     var categories = data && map(data, getName);
-
     return new OrdinalMeta({
         categories: categories,
         needCollect: !categories,
@@ -34437,9 +29939,7 @@ OrdinalMeta.createByAxisModel = function (axisModel) {
         deduplication: option.dedplication !== false
     });
 };
-
 var proto$1 = OrdinalMeta.prototype;
-
 /**
  * @param {string} category
  * @return {number} ordinal
@@ -34447,7 +29947,6 @@ var proto$1 = OrdinalMeta.prototype;
 proto$1.getOrdinal = function (category) {
     return getOrCreateMap(this).get(category);
 };
-
 /**
  * @param {*} category
  * @return {number} The ordinal. If not found, return NaN.
@@ -34455,7 +29954,6 @@ proto$1.getOrdinal = function (category) {
 proto$1.parseAndCollect = function (category) {
     var index;
     var needCollect = this._needCollect;
-
     // The value of category dim can be the index of the given category set.
     // This feature is only supported when !needCollect, because we should
     // consider a common case: a value is 2017, which is a number but is
@@ -34464,7 +29962,6 @@ proto$1.parseAndCollect = function (category) {
     if (typeof category !== 'string' && !needCollect) {
         return category;
     }
-
     // Optimize for the scenario:
     // category is ['2012-01-01', '2012-01-02', ...], where the input
     // data has been ensured not duplicate and is large data.
@@ -34478,10 +29975,8 @@ proto$1.parseAndCollect = function (category) {
         this.categories[index] = category;
         return index;
     }
-
     var map$$1 = getOrCreateMap(this);
     index = map$$1.get(category);
-
     if (index == null) {
         if (needCollect) {
             index = this.categories.length;
@@ -34492,17 +29987,14 @@ proto$1.parseAndCollect = function (category) {
             index = NaN;
         }
     }
-
     return index;
 };
-
 // Consider big data, do not create map until needed.
 function getOrCreateMap(ordinalMeta) {
     return ordinalMeta._map || (
         ordinalMeta._map = createHashMap(ordinalMeta.categories)
     );
 }
-
 function getName(obj) {
     if (isObject$1(obj) && obj.value != null) {
         return obj.value;
@@ -34511,7 +30003,6 @@ function getName(obj) {
         return obj + '';
     }
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -34530,22 +30021,16 @@ function getName(obj) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Linear continuous scale
  * @module echarts/coord/scale/Ordinal
  *
  * http://en.wikipedia.org/wiki/Level_of_measurement
  */
-
 // FIXME only one data
-
 var scaleProto = Scale.prototype;
-
 var OrdinalScale = Scale.extend({
-
     type: 'ordinal',
-
     /**
      * @param {module:echarts/data/OrdianlMeta|Array.<string>} ordinalMeta
      */
@@ -34558,20 +30043,17 @@ var OrdinalScale = Scale.extend({
         this._ordinalMeta = ordinalMeta;
         this._extent = extent || [0, ordinalMeta.categories.length - 1];
     },
-
     parse: function (val) {
         return typeof val === 'string'
             ? this._ordinalMeta.getOrdinal(val)
             // val might be float.
             : Math.round(val);
     },
-
     contain: function (rank) {
         rank = this.parse(rank);
         return scaleProto.contain.call(this, rank)
             && this._ordinalMeta.categories[rank] != null;
     },
-
     /**
      * Normalize given rank or name to linear [0, 1]
      * @param {number|string} [val]
@@ -34580,11 +30062,9 @@ var OrdinalScale = Scale.extend({
     normalize: function (val) {
         return scaleProto.normalize.call(this, this.parse(val));
     },
-
     scale: function (val) {
         return Math.round(scaleProto.scale.call(this, val));
     },
-
     /**
      * @return {Array}
      */
@@ -34592,15 +30072,12 @@ var OrdinalScale = Scale.extend({
         var ticks = [];
         var extent = this._extent;
         var rank = extent[0];
-
         while (rank <= extent[1]) {
             ticks.push(rank);
             rank++;
         }
-
         return ticks;
     },
-
     /**
      * Get item on rank n
      * @param {number} n
@@ -34612,36 +30089,30 @@ var OrdinalScale = Scale.extend({
             return this._ordinalMeta.categories[n];
         }
     },
-
     /**
      * @return {number}
      */
     count: function () {
         return this._extent[1] - this._extent[0] + 1;
     },
-
     /**
      * @override
      */
     unionExtentFromData: function (data, dim) {
         this.unionExtent(data.getApproximateExtent(dim));
     },
-
     getOrdinalMeta: function () {
         return this._ordinalMeta;
     },
-
     niceTicks: noop,
     niceExtent: noop
 });
-
 /**
  * @return {module:echarts/scale/Time}
  */
 OrdinalScale.create = function () {
     return new OrdinalScale();
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -34660,13 +30131,10 @@ OrdinalScale.create = function () {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * For testable.
  */
-
 var roundNumber$1 = round$2;
-
 /**
  * @param {Array.<number>} extent Both extent[0] and extent[1] should be valid number.
  *                                Should be extent[0] < extent[1].
@@ -34678,7 +30146,6 @@ var roundNumber$1 = round$2;
 function intervalScaleNiceTicks(extent, splitNumber, minInterval, maxInterval) {
     var result = {};
     var span = extent[1] - extent[0];
-
     var interval = result.interval = nice(span / splitNumber, true);
     if (minInterval != null && interval < minInterval) {
         interval = result.interval = minInterval;
@@ -34693,12 +30160,9 @@ function intervalScaleNiceTicks(extent, splitNumber, minInterval, maxInterval) {
         roundNumber$1(Math.ceil(extent[0] / interval) * interval, precision),
         roundNumber$1(Math.floor(extent[1] / interval) * interval, precision)
     ];
-
     fixExtent(niceTickExtent, extent);
-
     return result;
 }
-
 /**
  * @param {number} interval
  * @return {number} interval precision
@@ -34707,11 +30171,9 @@ function getIntervalPrecision(interval) {
     // Tow more digital for tick.
     return getPrecisionSafe(interval) + 2;
 }
-
 function clamp(niceTickExtent, idx, extent) {
     niceTickExtent[idx] = Math.max(Math.min(niceTickExtent[idx], extent[1]), extent[0]);
 }
-
 // In some cases (e.g., splitNumber is 1), niceTickExtent may be out of extent.
 function fixExtent(niceTickExtent, extent) {
     !isFinite(niceTickExtent[0]) && (niceTickExtent[0] = extent[0]);
@@ -34722,23 +30184,18 @@ function fixExtent(niceTickExtent, extent) {
         niceTickExtent[0] = niceTickExtent[1];
     }
 }
-
 function intervalScaleGetTicks(interval, extent, niceTickExtent, intervalPrecision) {
     var ticks = [];
-
     // If interval is 0, return [];
     if (!interval) {
         return ticks;
     }
-
     // Consider this case: using dataZoom toolbox, zoom and zoom.
     var safeLimit = 10000;
-
     if (extent[0] < niceTickExtent[0]) {
         ticks.push(extent[0]);
     }
     var tick = niceTickExtent[0];
-
     while (tick <= niceTickExtent[1]) {
         ticks.push(tick);
         // Avoid rounding error
@@ -34757,10 +30214,8 @@ function intervalScaleGetTicks(interval, extent, niceTickExtent, intervalPrecisi
     if (extent[1] > (ticks.length ? ticks[ticks.length - 1] : niceTickExtent[1])) {
         ticks.push(extent[1]);
     }
-
     return ticks;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -34779,27 +30234,19 @@ function intervalScaleGetTicks(interval, extent, niceTickExtent, intervalPrecisi
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Interval scale
  * @module echarts/scale/Interval
  */
-
-
 var roundNumber = round$2;
-
 /**
  * @alias module:echarts/coord/scale/Interval
  * @constructor
  */
 var IntervalScale = Scale.extend({
-
     type: 'interval',
-
     _interval: 0,
-
     _intervalPrecision: 2,
-
     setExtent: function (start, end) {
         var thisExtent = this._extent;
         //start,end may be a Number like '25',so...
@@ -34810,12 +30257,10 @@ var IntervalScale = Scale.extend({
             thisExtent[1] = parseFloat(end);
         }
     },
-
     unionExtent: function (other) {
         var extent = this._extent;
         other[0] < extent[0] && (extent[0] = other[0]);
         other[1] > extent[1] && (extent[1] = other[1]);
-
         // unionExtent may called by it's sub classes
         IntervalScale.prototype.setExtent.call(this, extent[0], extent[1]);
     },
@@ -34825,7 +30270,6 @@ var IntervalScale = Scale.extend({
     getInterval: function () {
         return this._interval;
     },
-
     /**
      * Set interval
      */
@@ -34834,10 +30278,8 @@ var IntervalScale = Scale.extend({
         // Dropped auto calculated niceExtent and use user setted extent
         // We assume user wan't to set both interval, min, max to get a better result
         this._niceExtent = this._extent.slice();
-
         this._intervalPrecision = getIntervalPrecision(interval);
     },
-
     /**
      * @return {Array.<number>}
      */
@@ -34846,7 +30288,6 @@ var IntervalScale = Scale.extend({
             this._interval, this._extent, this._niceExtent, this._intervalPrecision
         );
     },
-
     /**
      * @param {number} data
      * @param {Object} [opt]
@@ -34858,9 +30299,7 @@ var IntervalScale = Scale.extend({
         if (data == null) {
             return '';
         }
-
         var precision = opt && opt.precision;
-
         if (precision == null) {
             precision = getPrecisionSafe(data) || 0;
         }
@@ -34868,14 +30307,11 @@ var IntervalScale = Scale.extend({
             // Should be more precise then tick.
             precision = this._intervalPrecision;
         }
-
         // (1) If `precision` is set, 12.005 should be display as '12.00500'.
         // (2) Use roundNumber (toFixed) to avoid scientific notation like '3.5e-7'.
         data = roundNumber(data, precision, true);
-
         return addCommas(data);
     },
-
     /**
      * Update interval and extent of intervals for nice ticks
      *
@@ -34896,16 +30332,13 @@ var IntervalScale = Scale.extend({
             span = -span;
             extent.reverse();
         }
-
         var result = intervalScaleNiceTicks(
             extent, splitNumber, minInterval, maxInterval
         );
-
         this._intervalPrecision = result.intervalPrecision;
         this._interval = result.interval;
         this._niceExtent = result.niceTickExtent;
     },
-
     /**
      * Nice extent.
      * @param {Object} opt
@@ -34945,12 +30378,9 @@ var IntervalScale = Scale.extend({
             extent[0] = 0;
             extent[1] = 1;
         }
-
         this.niceTicks(opt.splitNumber, opt.minInterval, opt.maxInterval);
-
         // var extent = this._extent;
         var interval = this._interval;
-
         if (!opt.fixMin) {
             extent[0] = roundNumber(Math.floor(extent[0] / interval) * interval);
         }
@@ -34959,14 +30389,12 @@ var IntervalScale = Scale.extend({
         }
     }
 });
-
 /**
  * @return {module:echarts/scale/Time}
  */
 IntervalScale.create = function () {
     return new IntervalScale();
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -34985,22 +30413,16 @@ IntervalScale.create = function () {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /* global Float32Array */
-
 var STACK_PREFIX = '__ec_stack_';
 var LARGE_BAR_MIN_WIDTH = 0.5;
-
 var LargeArr = typeof Float32Array !== 'undefined' ? Float32Array : Array;
-
 function getSeriesStackId(seriesModel) {
     return seriesModel.get('stack') || STACK_PREFIX + seriesModel.seriesIndex;
 }
-
 function getAxisKey(axis) {
     return axis.dim + axis.index;
 }
-
 /**
  * @param {Object} opt
  * @param {module:echarts/coord/Axis} opt.axis Only support category axis currently.
@@ -35011,8 +30433,6 @@ function getAxisKey(axis) {
  * @param {number} [opt.barCategoryGap]
  * @return {Object} {width, offset, offsetCenter} If axis.type is not 'category', return undefined.
  */
-
-
 function prepareLayoutBarSeries(seriesType, ecModel) {
     var seriesModels = [];
     ecModel.eachSeriesByType(seriesType, function (seriesModel) {
@@ -35023,7 +30443,6 @@ function prepareLayoutBarSeries(seriesType, ecModel) {
     });
     return seriesModels;
 }
-
 function makeColumnLayout(barSeries) {
     var seriesInfoList = [];
     each$1(barSeries, function (seriesModel) {
@@ -35034,7 +30453,6 @@ function makeColumnLayout(barSeries) {
         var bandWidth = baseAxis.type === 'category'
             ? baseAxis.getBandWidth()
             : (Math.abs(axisExtent[1] - axisExtent[0]) / data.count());
-
         var barWidth = parsePercent$1(
             seriesModel.get('barWidth'), bandWidth
         );
@@ -35043,7 +30461,6 @@ function makeColumnLayout(barSeries) {
         );
         var barGap = seriesModel.get('barGap');
         var barCategoryGap = seriesModel.get('barCategoryGap');
-
         seriesInfoList.push({
             bandWidth: bandWidth,
             barWidth: barWidth,
@@ -35054,14 +30471,11 @@ function makeColumnLayout(barSeries) {
             stackId: getSeriesStackId(seriesModel)
         });
     });
-
     return doCalBarWidthAndOffset(seriesInfoList);
 }
-
 function doCalBarWidthAndOffset(seriesInfoList) {
     // Columns info on each category axis. Key is cartesian name
     var columnsMap = {};
-
     each$1(seriesInfoList, function (seriesInfo, idx) {
         var axisKey = seriesInfo.axisKey;
         var bandWidth = seriesInfo.bandWidth;
@@ -35075,9 +30489,7 @@ function doCalBarWidthAndOffset(seriesInfoList) {
         };
         var stacks = columnsOnAxis.stacks;
         columnsMap[axisKey] = columnsOnAxis;
-
         var stackId = seriesInfo.stackId;
-
         if (!stacks[stackId]) {
             columnsOnAxis.autoWidthCount++;
         }
@@ -35085,12 +30497,10 @@ function doCalBarWidthAndOffset(seriesInfoList) {
             width: 0,
             maxWidth: 0
         };
-
         // Caution: In a single coordinate system, these barGrid attributes
         // will be shared by series. Consider that they have default values,
         // only the attributes set on the last series will work.
         // Do not change this fact unless there will be a break change.
-
         // TODO
         var barWidth = seriesInfo.barWidth;
         if (barWidth && !stacks[stackId].width) {
@@ -35099,7 +30509,6 @@ function doCalBarWidthAndOffset(seriesInfoList) {
             barWidth = Math.min(columnsOnAxis.remainedWidth, barWidth);
             columnsOnAxis.remainedWidth -= barWidth;
         }
-
         var barMaxWidth = seriesInfo.barMaxWidth;
         barMaxWidth && (stacks[stackId].maxWidth = barMaxWidth);
         var barGap = seriesInfo.barGap;
@@ -35107,24 +30516,18 @@ function doCalBarWidthAndOffset(seriesInfoList) {
         var barCategoryGap = seriesInfo.barCategoryGap;
         (barCategoryGap != null) && (columnsOnAxis.categoryGap = barCategoryGap);
     });
-
     var result = {};
-
     each$1(columnsMap, function (columnsOnAxis, coordSysName) {
-
         result[coordSysName] = {};
-
         var stacks = columnsOnAxis.stacks;
         var bandWidth = columnsOnAxis.bandWidth;
         var categoryGap = parsePercent$1(columnsOnAxis.categoryGap, bandWidth);
         var barGapPercent = parsePercent$1(columnsOnAxis.gap, 1);
-
         var remainedWidth = columnsOnAxis.remainedWidth;
         var autoWidthCount = columnsOnAxis.autoWidthCount;
         var autoWidth = (remainedWidth - categoryGap)
             / (autoWidthCount + (autoWidthCount - 1) * barGapPercent);
         autoWidth = Math.max(autoWidth, 0);
-
         // Find if any auto calculated bar exceeded maxBarWidth
         each$1(stacks, function (column, stack) {
             var maxWidth = column.maxWidth;
@@ -35138,12 +30541,10 @@ function doCalBarWidthAndOffset(seriesInfoList) {
                 autoWidthCount--;
             }
         });
-
         // Recalculate width again
         autoWidth = (remainedWidth - categoryGap)
             / (autoWidthCount + (autoWidthCount - 1) * barGapPercent);
         autoWidth = Math.max(autoWidth, 0);
-
         var widthSum = 0;
         var lastColumn;
         each$1(stacks, function (column, idx) {
@@ -35156,21 +30557,17 @@ function doCalBarWidthAndOffset(seriesInfoList) {
         if (lastColumn) {
             widthSum -= lastColumn.width * barGapPercent;
         }
-
         var offset = -widthSum / 2;
         each$1(stacks, function (column, stackId) {
             result[coordSysName][stackId] = result[coordSysName][stackId] || {
                 offset: offset,
                 width: column.width
             };
-
             offset += column.width * (1 + barGapPercent);
         });
     });
-
     return result;
 }
-
 /**
  * @param {Object} barWidthAndOffset The result of makeColumnLayout
  * @param {module:echarts/coord/Axis} axis
@@ -35186,55 +30583,42 @@ function retrieveColumnLayout(barWidthAndOffset, axis, seriesModel) {
         return result;
     }
 }
-
 /**
  * @param {string} seriesType
  * @param {module:echarts/model/Global} ecModel
  */
 function layout(seriesType, ecModel) {
-
     var seriesModels = prepareLayoutBarSeries(seriesType, ecModel);
     var barWidthAndOffset = makeColumnLayout(seriesModels);
-
     var lastStackCoords = {};
     each$1(seriesModels, function (seriesModel) {
-
         var data = seriesModel.getData();
         var cartesian = seriesModel.coordinateSystem;
         var baseAxis = cartesian.getBaseAxis();
-
         var stackId = getSeriesStackId(seriesModel);
         var columnLayoutInfo = barWidthAndOffset[getAxisKey(baseAxis)][stackId];
         var columnOffset = columnLayoutInfo.offset;
         var columnWidth = columnLayoutInfo.width;
         var valueAxis = cartesian.getOtherAxis(baseAxis);
-
         var barMinHeight = seriesModel.get('barMinHeight') || 0;
-
         lastStackCoords[stackId] = lastStackCoords[stackId] || [];
         data.setLayout({
             offset: columnOffset,
             size: columnWidth
         });
-
         var valueDim = data.mapDimension(valueAxis.dim);
         var baseDim = data.mapDimension(baseAxis.dim);
         var stacked = isDimensionStacked(data, valueDim /*, baseDim*/);
         var isValueAxisH = valueAxis.isHorizontal();
-
         var valueAxisStart = getValueAxisStart(baseAxis, valueAxis, stacked);
-
         for (var idx = 0, len = data.count(); idx < len; idx++) {
             var value = data.get(valueDim, idx);
             var baseValue = data.get(baseDim, idx);
-
             if (isNaN(value)) {
                 continue;
             }
-
             var sign = value >= 0 ? 'p' : 'n';
             var baseCoord = valueAxisStart;
-
             // Because of the barMinHeight, we can not use the value in
             // stackResultDimension directly.
             if (stacked) {
@@ -35248,19 +30632,16 @@ function layout(seriesType, ecModel) {
                 // Should also consider #4243
                 baseCoord = lastStackCoords[stackId][baseValue][sign];
             }
-
             var x;
             var y;
             var width;
             var height;
-
             if (isValueAxisH) {
                 var coord = cartesian.dataToPoint([value, baseValue]);
                 x = baseCoord;
                 y = coord[1] + columnOffset;
                 width = coord[0] - valueAxisStart;
                 height = columnWidth;
-
                 if (Math.abs(width) < barMinHeight) {
                     width = (width < 0 ? -1 : 1) * barMinHeight;
                 }
@@ -35272,14 +30653,12 @@ function layout(seriesType, ecModel) {
                 y = baseCoord;
                 width = columnWidth;
                 height = coord[1] - valueAxisStart;
-
                 if (Math.abs(height) < barMinHeight) {
                     // Include zero to has a positive bar
                     height = (height <= 0 ? -1 : 1) * barMinHeight;
                 }
                 stacked && (lastStackCoords[stackId][baseValue][sign] += height);
             }
-
             data.setItemLayout(idx, {
                 x: x,
                 y: y,
@@ -35287,22 +30666,16 @@ function layout(seriesType, ecModel) {
                 height: height
             });
         }
-
     }, this);
 }
-
 // TODO: Do not support stack in large mode yet.
 var largeLayout = {
-
     seriesType: 'bar',
-
     plan: createRenderPlanner(),
-
     reset: function (seriesModel) {
         if (!isOnCartesian(seriesModel) || !isInLargeMode(seriesModel)) {
             return;
         }
-
         var data = seriesModel.getData();
         var cartesian = seriesModel.coordinateSystem;
         var baseAxis = cartesian.getBaseAxis();
@@ -35311,32 +30684,26 @@ var largeLayout = {
         var baseDim = data.mapDimension(baseAxis.dim);
         var valueAxisHorizontal = valueAxis.isHorizontal();
         var valueDimIdx = valueAxisHorizontal ? 0 : 1;
-
         var barWidth = retrieveColumnLayout(
             makeColumnLayout([seriesModel]), baseAxis, seriesModel
         ).width;
         if (!(barWidth > LARGE_BAR_MIN_WIDTH)) { // jshint ignore:line
             barWidth = LARGE_BAR_MIN_WIDTH;
         }
-
         return {progress: progress};
-
         function progress(params, data) {
             var largePoints = new LargeArr(params.count * 2);
             var dataIndex;
             var coord = [];
             var valuePair = [];
             var offset = 0;
-
             while ((dataIndex = params.next()) != null) {
                 valuePair[valueDimIdx] = data.get(valueDim, dataIndex);
                 valuePair[1 - valueDimIdx] = data.get(baseDim, dataIndex);
-
                 coord = cartesian.dataToPoint(valuePair, null, coord);
                 largePoints[offset++] = coord[0];
                 largePoints[offset++] = coord[1];
             }
-
             data.setLayout({
                 largePoints: largePoints,
                 barWidth: barWidth,
@@ -35346,15 +30713,12 @@ var largeLayout = {
         }
     }
 };
-
 function isOnCartesian(seriesModel) {
     return seriesModel.coordinateSystem && seriesModel.coordinateSystem.type === 'cartesian2d';
 }
-
 function isInLargeMode(seriesModel) {
     return seriesModel.pipelineContext && seriesModel.pipelineContext.large;
 }
-
 // See cases in `test/bar-start.html` and `#7412`, `#8747`.
 function getValueAxisStart(baseAxis, valueAxis, stacked) {
     var extent = valueAxis.getGlobalExtent();
@@ -35368,14 +30732,11 @@ function getValueAxisStart(baseAxis, valueAxis, stacked) {
         min = extent[0];
         max = extent[1];
     }
-
     var valueStart = valueAxis.toGlobalCoord(valueAxis.dataToCoord(0));
     valueStart < min && (valueStart = min);
     valueStart > max && (valueStart = max);
-
     return valueStart;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -35394,7 +30755,6 @@ function getValueAxisStart(baseAxis, valueAxis, stacked) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /*
 * A third-party license is embeded for some of the code in this file:
 * The "scaleLevels" was originally copied from "d3.js" with some
@@ -35404,8 +30764,6 @@ function getValueAxisStart(baseAxis, valueAxis, stacked) {
 * and consitions of the license of "d3.js" (BSD-3Clause, see
 * </licenses/LICENSE-d3>).
 */
-
-
 // [About UTC and local time zone]:
 // In most cases, `number.parseDate` will treat input data string as local time
 // (except time zone is specified in time string). And `format.formateTime` returns
@@ -35415,16 +30773,13 @@ function getValueAxisStart(baseAxis, valueAxis, stacked) {
 // in local time by default.
 // (2) By default, the input data string (e.g., '2011-01-02') should be displayed
 // as its original time, without any time difference.
-
 var intervalScaleProto = IntervalScale.prototype;
-
 var mathCeil = Math.ceil;
 var mathFloor = Math.floor;
 var ONE_SECOND = 1000;
 var ONE_MINUTE = ONE_SECOND * 60;
 var ONE_HOUR = ONE_MINUTE * 60;
 var ONE_DAY = ONE_HOUR * 24;
-
 // FIXME 公用？
 var bisect = function (a, x, lo, hi) {
     while (lo < hi) {
@@ -35438,25 +30793,20 @@ var bisect = function (a, x, lo, hi) {
     }
     return lo;
 };
-
 /**
  * @alias module:echarts/coord/scale/Time
  * @constructor
  */
 var TimeScale = IntervalScale.extend({
     type: 'time',
-
     /**
      * @override
      */
     getLabel: function (val) {
         var stepLvl = this._stepLvl;
-
         var date = new Date(val);
-
         return formatTime(stepLvl[0], date, this.getSetting('useUTC'));
     },
-
     /**
      * @override
      */
@@ -35474,12 +30824,9 @@ var TimeScale = IntervalScale.extend({
             extent[1] = +new Date(d.getFullYear(), d.getMonth(), d.getDate());
             extent[0] = extent[1] - ONE_DAY;
         }
-
         this.niceTicks(opt.splitNumber, opt.minInterval, opt.maxInterval);
-
         // var extent = this._extent;
         var interval = this._interval;
-
         if (!opt.fixMin) {
             extent[0] = round$2(mathFloor(extent[0] / interval) * interval);
         }
@@ -35487,67 +30834,54 @@ var TimeScale = IntervalScale.extend({
             extent[1] = round$2(mathCeil(extent[1] / interval) * interval);
         }
     },
-
     /**
      * @override
      */
     niceTicks: function (approxTickNum, minInterval, maxInterval) {
         approxTickNum = approxTickNum || 10;
-
         var extent = this._extent;
         var span = extent[1] - extent[0];
         var approxInterval = span / approxTickNum;
-
         if (minInterval != null && approxInterval < minInterval) {
             approxInterval = minInterval;
         }
         if (maxInterval != null && approxInterval > maxInterval) {
             approxInterval = maxInterval;
         }
-
         var scaleLevelsLen = scaleLevels.length;
         var idx = bisect(scaleLevels, approxInterval, 0, scaleLevelsLen);
-
         var level = scaleLevels[Math.min(idx, scaleLevelsLen - 1)];
         var interval = level[1];
         // Same with interval scale if span is much larger than 1 year
         if (level[0] === 'year') {
             var yearSpan = span / interval;
-
             // From "Nice Numbers for Graph Labels" of Graphic Gems
             // var niceYearSpan = numberUtil.nice(yearSpan, false);
             var yearStep = nice(yearSpan / approxTickNum, true);
-
             interval *= yearStep;
         }
-
         var timezoneOffset = this.getSetting('useUTC')
             ? 0 : (new Date(+extent[0] || +extent[1])).getTimezoneOffset() * 60 * 1000;
         var niceExtent = [
             Math.round(mathCeil((extent[0] - timezoneOffset) / interval) * interval + timezoneOffset),
             Math.round(mathFloor((extent[1] - timezoneOffset) / interval) * interval + timezoneOffset)
         ];
-
         fixExtent(niceExtent, extent);
-
         this._stepLvl = level;
         // Interval will be used in getTicks
         this._interval = interval;
         this._niceExtent = niceExtent;
     },
-
     parse: function (val) {
         // val might be float.
         return +parseDate(val);
     }
 });
-
 each$1(['contain', 'normalize'], function (methodName) {
     TimeScale.prototype[methodName] = function (val) {
         return intervalScaleProto[methodName].call(this, this.parse(val));
     };
 });
-
 /**
  * This implementation was originally copied from "d3.js"
  * <https://github.com/d3/d3/blob/b516d77fb8566b576088e73410437494717ada26/src/time/scale.js>
@@ -35592,7 +30926,6 @@ var scaleLevels = [
     ['month', ONE_DAY * 31 * 10],      // 10M
     ['year', ONE_DAY * 380]            // 1Y
 ];
-
 /**
  * @param {module:echarts/model/Model}
  * @return {module:echarts/scale/Time}
@@ -35600,7 +30933,6 @@ var scaleLevels = [
 TimeScale.create = function (model) {
     return new TimeScale({useUTC: model.ecModel.get('useUTC')});
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -35619,36 +30951,26 @@ TimeScale.create = function (model) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Log scale
  * @module echarts/scale/Log
  */
-
 // Use some method of IntervalScale
 var scaleProto$1 = Scale.prototype;
 var intervalScaleProto$1 = IntervalScale.prototype;
-
 var getPrecisionSafe$1 = getPrecisionSafe;
 var roundingErrorFix = round$2;
-
 var mathFloor$1 = Math.floor;
 var mathCeil$1 = Math.ceil;
 var mathPow$1 = Math.pow;
-
 var mathLog = Math.log;
-
 var LogScale = Scale.extend({
-
     type: 'log',
-
     base: 10,
-
     $constructor: function () {
         Scale.apply(this, arguments);
         this._originalScale = new IntervalScale();
     },
-
     /**
      * @return {Array.<number>}
      */
@@ -35656,10 +30978,8 @@ var LogScale = Scale.extend({
         var originalScale = this._originalScale;
         var extent = this._extent;
         var originalExtent = originalScale.getExtent();
-
         return map(intervalScaleProto$1.getTicks.call(this), function (val) {
             var powVal = round$2(mathPow$1(this.base, val));
-
             // Fix #4158
             powVal = (val === extent[0] && originalScale.__fixMin)
                 ? fixRoundingError(powVal, originalExtent[0])
@@ -35667,17 +30987,14 @@ var LogScale = Scale.extend({
             powVal = (val === extent[1] && originalScale.__fixMax)
                 ? fixRoundingError(powVal, originalExtent[1])
                 : powVal;
-
             return powVal;
         }, this);
     },
-
     /**
      * @param {number} val
      * @return {string}
      */
     getLabel: intervalScaleProto$1.getLabel,
-
     /**
      * @param  {number} val
      * @return {number}
@@ -35686,7 +31003,6 @@ var LogScale = Scale.extend({
         val = scaleProto$1.scale.call(this, val);
         return mathPow$1(this.base, val);
     },
-
     /**
      * @param {number} start
      * @param {number} end
@@ -35697,7 +31013,6 @@ var LogScale = Scale.extend({
         end = mathLog(end) / mathLog(base);
         intervalScaleProto$1.setExtent.call(this, start, end);
     },
-
     /**
      * @return {number} end
      */
@@ -35706,28 +31021,23 @@ var LogScale = Scale.extend({
         var extent = scaleProto$1.getExtent.call(this);
         extent[0] = mathPow$1(base, extent[0]);
         extent[1] = mathPow$1(base, extent[1]);
-
         // Fix #4158
         var originalScale = this._originalScale;
         var originalExtent = originalScale.getExtent();
         originalScale.__fixMin && (extent[0] = fixRoundingError(extent[0], originalExtent[0]));
         originalScale.__fixMax && (extent[1] = fixRoundingError(extent[1], originalExtent[1]));
-
         return extent;
     },
-
     /**
      * @param  {Array.<number>} extent
      */
     unionExtent: function (extent) {
         this._originalScale.unionExtent(extent);
-
         var base = this.base;
         extent[0] = mathLog(extent[0]) / mathLog(base);
         extent[1] = mathLog(extent[1]) / mathLog(base);
         scaleProto$1.unionExtent.call(this, extent);
     },
-
     /**
      * @override
      */
@@ -35736,7 +31046,6 @@ var LogScale = Scale.extend({
         // filter value that <= 0
         this.unionExtent(data.getApproximateExtent(dim));
     },
-
     /**
      * Update interval and extent of intervals for nice ticks
      * @param  {number} [approxTickNum = 10] Given approx tick number
@@ -35748,58 +31057,46 @@ var LogScale = Scale.extend({
         if (span === Infinity || span <= 0) {
             return;
         }
-
         var interval = quantity(span);
         var err = approxTickNum / span * interval;
-
         // Filter ticks to get closer to the desired count.
         if (err <= 0.5) {
             interval *= 10;
         }
-
         // Interval should be integer
         while (!isNaN(interval) && Math.abs(interval) < 1 && Math.abs(interval) > 0) {
             interval *= 10;
         }
-
         var niceExtent = [
             round$2(mathCeil$1(extent[0] / interval) * interval),
             round$2(mathFloor$1(extent[1] / interval) * interval)
         ];
-
         this._interval = interval;
         this._niceExtent = niceExtent;
     },
-
     /**
      * Nice extent.
      * @override
      */
     niceExtent: function (opt) {
         intervalScaleProto$1.niceExtent.call(this, opt);
-
         var originalScale = this._originalScale;
         originalScale.__fixMin = opt.fixMin;
         originalScale.__fixMax = opt.fixMax;
     }
-
 });
-
 each$1(['contain', 'normalize'], function (methodName) {
     LogScale.prototype[methodName] = function (val) {
         val = mathLog(val) / mathLog(this.base);
         return scaleProto$1[methodName].call(this, val);
     };
 });
-
 LogScale.create = function () {
     return new LogScale();
 };
-
 function fixRoundingError(val, originalVal) {
     return roundingErrorFix(val, getPrecisionSafe$1(originalVal));
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -35818,20 +31115,17 @@ function fixRoundingError(val, originalVal) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Get axis scale extent before niced.
  * Item of returned array can only be number (including Infinity and NaN).
  */
 function getScaleExtent(scale, model) {
     var scaleType = scale.type;
-
     var min = model.getMin();
     var max = model.getMax();
     var fixMin = min != null;
     var fixMax = max != null;
     var originalExtent = scale.getExtent();
-
     var axisDataLen;
     var boundaryGap;
     var span;
@@ -35857,7 +31151,6 @@ function getScaleExtent(scale, model) {
         span = (originalExtent[1] - originalExtent[0])
             || Math.abs(originalExtent[0]);
     }
-
     // Notice: When min/max is not set (that is, when there are null/undefined,
     // which is the most common case), these cases should be ensured:
     // (1) For 'ordinal', show all axis.data.
@@ -35867,12 +31160,10 @@ function getScaleExtent(scale, model) {
     //      + If `needCrossZero`, min/max should be zero, otherwise, min/max should
     //      be the result that originalExtent enlarged by boundaryGap.
     // (3) If no data, it should be ensured that `scale.setBlank` is set.
-
     // FIXME
     // (1) When min/max is 'dataMin' or 'dataMax', should boundaryGap be able to used?
     // (2) When `needCrossZero` and all data is positive/negative, should it be ensured
     // that the results processed by boundaryGap are positive/negative?
-
     if (min == null) {
         min = scaleType === 'ordinal'
             ? (axisDataLen ? 0 : NaN)
@@ -35883,7 +31174,6 @@ function getScaleExtent(scale, model) {
             ? (axisDataLen ? axisDataLen - 1 : NaN)
             : originalExtent[1] + boundaryGap[1] * span;
     }
-
     if (min === 'dataMin') {
         min = originalExtent[0];
     }
@@ -35893,7 +31183,6 @@ function getScaleExtent(scale, model) {
             max: originalExtent[1]
         });
     }
-
     if (max === 'dataMax') {
         max = originalExtent[1];
     }
@@ -35903,16 +31192,13 @@ function getScaleExtent(scale, model) {
             max: originalExtent[1]
         });
     }
-
     (min == null || !isFinite(min)) && (min = NaN);
     (max == null || !isFinite(max)) && (max = NaN);
-
     scale.setBlank(
         eqNaN(min)
         || eqNaN(max)
         || (scaleType === 'ordinal' && !scale.getOrdinalMeta().categories.length)
     );
-
     // Evaluate if axis needs cross zero
     if (model.getNeedCrossZero()) {
         // Axis is over zero and min is not set
@@ -35924,7 +31210,6 @@ function getScaleExtent(scale, model) {
             max = 0;
         }
     }
-
     // If bars are placed on a base axis of type time or interval account for axis boundary overflow and current axis
     // is base axis
     // FIXME
@@ -35938,37 +31223,29 @@ function getScaleExtent(scale, model) {
     if (ecModel && (scaleType === 'time' /*|| scaleType === 'interval' */)) {
         var barSeriesModels = prepareLayoutBarSeries('bar', ecModel);
         var isBaseAxisAndHasBarSeries;
-
         each$1(barSeriesModels, function (seriesModel) {
             isBaseAxisAndHasBarSeries |= seriesModel.getBaseAxis() === model.axis;
         });
-
         if (isBaseAxisAndHasBarSeries) {
             // Calculate placement of bars on axis
             var barWidthAndOffset = makeColumnLayout(barSeriesModels);
-
             // Adjust axis min and max to account for overflow
             var adjustedScale = adjustScaleForOverflow(min, max, model, barWidthAndOffset);
             min = adjustedScale.min;
             max = adjustedScale.max;
         }
     }
-
     return [min, max];
 }
-
 function adjustScaleForOverflow(min, max, model, barWidthAndOffset) {
-
     // Get Axis Length
     var axisExtent = model.axis.getExtent();
     var axisLength = axisExtent[1] - axisExtent[0];
-
     // Get bars on current base axis and calculate min and max overflow
     var barsOnCurrentAxis = retrieveColumnLayout(barWidthAndOffset, model.axis);
     if (barsOnCurrentAxis === undefined) {
         return {min: min, max: max};
     }
-
     var minOverflow = Infinity;
     each$1(barsOnCurrentAxis, function (item) {
         minOverflow = Math.min(item.offset, minOverflow);
@@ -35980,28 +31257,22 @@ function adjustScaleForOverflow(min, max, model, barWidthAndOffset) {
     minOverflow = Math.abs(minOverflow);
     maxOverflow = Math.abs(maxOverflow);
     var totalOverFlow = minOverflow + maxOverflow;
-
     // Calulate required buffer based on old range and overflow
     var oldRange = max - min;
     var oldRangePercentOfNew = (1 - (minOverflow + maxOverflow) / axisLength);
     var overflowBuffer = ((oldRange / oldRangePercentOfNew) - oldRange);
-
     max += overflowBuffer * (maxOverflow / totalOverFlow);
     min -= overflowBuffer * (minOverflow / totalOverFlow);
-
     return {min: min, max: max};
 }
-
 function niceScaleExtent(scale, model) {
     var extent = getScaleExtent(scale, model);
     var fixMin = model.getMin() != null;
     var fixMax = model.getMax() != null;
     var splitNumber = model.get('splitNumber');
-
     if (scale.type === 'log') {
         scale.base = model.get('logBase');
     }
-
     var scaleType = scale.type;
     scale.setExtent(extent[0], extent[1]);
     scale.niceExtent({
@@ -36013,7 +31284,6 @@ function niceScaleExtent(scale, model) {
         maxInterval: (scaleType === 'interval' || scaleType === 'time')
             ? model.get('maxInterval') : null
     });
-
     // If some one specified the min, max. And the default calculated interval
     // is not good enough. He can specify the interval. It is often appeared
     // in angle axis with angle 0 - 360. Interval calculated in interval scale is hard
@@ -36024,7 +31294,6 @@ function niceScaleExtent(scale, model) {
         scale.setInterval && scale.setInterval(interval);
     }
 }
-
 /**
  * @param {module:echarts/model/Model} model
  * @param {string} [axisType] Default retrieve from model.type
@@ -36050,7 +31319,6 @@ function createScaleByModel(model, axisType) {
         }
     }
 }
-
 /**
  * Check if the axis corss 0
  */
@@ -36060,7 +31328,6 @@ function ifAxisCrossZero(axis) {
     var max = dataExtent[1];
     return !((min > 0 && max > 0) || (min < 0 && max < 0));
 }
-
 /**
  * @param {module:echarts/coord/Axis} axis
  * @return {Function} Label formatter function.
@@ -36072,7 +31339,6 @@ function ifAxisCrossZero(axis) {
 function makeLabelFormatter(axis) {
     var labelFormatter = axis.getLabelModel().get('formatter');
     var categoryTickStart = axis.type === 'category' ? axis.scale.getExtent()[0] : null;
-
     if (typeof labelFormatter === 'string') {
         labelFormatter = (function (tpl) {
             return function (val) {
@@ -36105,14 +31371,12 @@ function makeLabelFormatter(axis) {
         };
     }
 }
-
 function getAxisRawValue(axis, value) {
     // In category axis with data zoom, tick is not the original
     // index of axis.data. So tick should not be exposed to user
     // in category axis.
     return axis.type === 'category' ? axis.scale.getLabel(value) : value;
 }
-
 /**
  * @param {module:echarts/coord/Axis} axis
  * @return {module:zrender/core/BoundingRect} Be null/undefined if no labels.
@@ -36120,17 +31384,13 @@ function getAxisRawValue(axis, value) {
 function estimateLabelUnionRect(axis) {
     var axisModel = axis.model;
     var scale = axis.scale;
-
     if (!axisModel.get('axisLabel.show') || scale.isBlank()) {
         return;
     }
-
     var isCategory = axis.type === 'category';
-
     var realNumberScaleTicks;
     var tickCount;
     var categoryScaleExtent = scale.getExtent();
-
     // Optimize for large category data, avoid call `getTicks()`.
     if (isCategory) {
         tickCount = scale.count();
@@ -36139,10 +31399,8 @@ function estimateLabelUnionRect(axis) {
         realNumberScaleTicks = scale.getTicks();
         tickCount = realNumberScaleTicks.length;
     }
-
     var axisLabelModel = axis.getLabelModel();
     var labelFormatter = makeLabelFormatter(axis);
-
     var rect;
     var step = 1;
     // Simple optimization for large amount of labels
@@ -36154,13 +31412,10 @@ function estimateLabelUnionRect(axis) {
         var label = labelFormatter(tickValue);
         var unrotatedSingleRect = axisLabelModel.getTextRect(label);
         var singleRect = rotateTextRect(unrotatedSingleRect, axisLabelModel.get('rotate') || 0);
-
         rect ? rect.union(singleRect) : (rect = singleRect);
     }
-
     return rect;
 }
-
 function rotateTextRect(textRect, rotate) {
     var rotateRadians = rotate * Math.PI / 180;
     var boundingBox = textRect.plain();
@@ -36169,10 +31424,8 @@ function rotateTextRect(textRect, rotate) {
     var afterWidth = beforeWidth * Math.cos(rotateRadians) + beforeHeight * Math.sin(rotateRadians);
     var afterHeight = beforeWidth * Math.sin(rotateRadians) + beforeHeight * Math.cos(rotateRadians);
     var rotatedRect = new BoundingRect(boundingBox.x, boundingBox.y, afterWidth, afterHeight);
-
     return rotatedRect;
 }
-
 /**
  * @param {module:echarts/src/model/Model} model axisLabelModel or axisTickModel
  * @return {number|String} Can be null|'auto'|number|function
@@ -36181,7 +31434,6 @@ function getOptionCategoryInterval(model) {
     var interval = model.get('interval');
     return interval == null ? 'auto' : interval;
 }
-
 /**
  * Set `categoryInterval` as 0 implicitly indicates that
  * show all labels reguardless of overlap.
@@ -36192,7 +31444,6 @@ function shouldShowAllLabels(axis) {
     return axis.type === 'category'
         && getOptionCategoryInterval(axis.getLabelModel()) === 0;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -36211,38 +31462,29 @@ function shouldShowAllLabels(axis) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Cartesian coordinate system
  * @module  echarts/coord/Cartesian
  *
  */
-
 function dimAxisMapper(dim) {
     return this._axes[dim];
 }
-
 /**
  * @alias module:echarts/coord/Cartesian
  * @constructor
  */
 var Cartesian = function (name) {
     this._axes = {};
-
     this._dimList = [];
-
     /**
      * @type {string}
      */
     this.name = name || '';
 };
-
 Cartesian.prototype = {
-
     constructor: Cartesian,
-
     type: 'cartesian',
-
     /**
      * Get axis
      * @param  {number|string} dim
@@ -36251,7 +31493,6 @@ Cartesian.prototype = {
     getAxis: function (dim) {
         return this._axes[dim];
     },
-
     /**
      * Get axes list
      * @return {Array.<module:echarts/coord/Cartesian~Axis>}
@@ -36259,7 +31500,6 @@ Cartesian.prototype = {
     getAxes: function () {
         return map(this._dimList, dimAxisMapper, this);
     },
-
     /**
      * Get axes list by given scale type
      */
@@ -36272,19 +31512,15 @@ Cartesian.prototype = {
             }
         );
     },
-
     /**
      * Add axis
      * @param {module:echarts/coord/Cartesian.Axis}
      */
     addAxis: function (axis) {
         var dim = axis.dim;
-
         this._axes[dim] = axis;
-
         this._dimList.push(dim);
     },
-
     /**
      * Convert data to coord in nd space
      * @param {Array.<number>|Object.<string, number>} val
@@ -36293,7 +31529,6 @@ Cartesian.prototype = {
     dataToCoord: function (val) {
         return this._dataCoordConvert(val, 'dataToCoord');
     },
-
     /**
      * Convert coord in nd space to data
      * @param  {Array.<number>|Object.<string, number>} val
@@ -36302,23 +31537,17 @@ Cartesian.prototype = {
     coordToData: function (val) {
         return this._dataCoordConvert(val, 'coordToData');
     },
-
     _dataCoordConvert: function (input, method) {
         var dimList = this._dimList;
-
         var output = input instanceof Array ? [] : {};
-
         for (var i = 0; i < dimList.length; i++) {
             var dim = dimList[i];
             var axis = this._axes[dim];
-
             output[dim] = axis[method](input[dim]);
         }
-
         return output;
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -36337,25 +31566,17 @@ Cartesian.prototype = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
-
 function Cartesian2D(name) {
-
     Cartesian.call(this, name);
 }
-
 Cartesian2D.prototype = {
-
     constructor: Cartesian2D,
-
     type: 'cartesian2d',
-
     /**
      * @type {Array.<string>}
      * @readOnly
      */
     dimensions: ['x', 'y'],
-
     /**
      * Base axis will be used on stacking.
      *
@@ -36366,7 +31587,6 @@ Cartesian2D.prototype = {
             || this.getAxesByScale('time')[0]
             || this.getAxis('x');
     },
-
     /**
      * If contain point
      * @param {Array.<number>} point
@@ -36378,7 +31598,6 @@ Cartesian2D.prototype = {
         return axisX.contain(axisX.toLocalCoord(point[0]))
             && axisY.contain(axisY.toLocalCoord(point[1]));
     },
-
     /**
      * If contain data
      * @param {Array.<number>} data
@@ -36388,7 +31607,6 @@ Cartesian2D.prototype = {
         return this.getAxis('x').containData(data[0])
             && this.getAxis('y').containData(data[1]);
     },
-
     /**
      * @param {Array.<number>} data
      * @param {Array.<number>} out
@@ -36402,7 +31620,6 @@ Cartesian2D.prototype = {
         out[1] = yAxis.toGlobalCoord(yAxis.dataToCoord(data[1]));
         return out;
     },
-
     /**
      * @param {Array.<number>} data
      * @param {Array.<number>} out
@@ -36424,10 +31641,8 @@ Cartesian2D.prototype = {
             Math.max(Math.min(yAxisExtent[0], yAxisExtent[1]), y),
             Math.max(yAxisExtent[0], yAxisExtent[1])
         );
-
         return out;
     },
-
     /**
      * @param {Array.<number>} point
      * @param {Array.<number>} out
@@ -36441,7 +31656,6 @@ Cartesian2D.prototype = {
         out[1] = yAxis.coordToData(yAxis.toLocalCoord(point[1]));
         return out;
     },
-
     /**
      * Get other axis
      * @param {module:echarts/coord/cartesian/Axis2D} axis
@@ -36449,11 +31663,8 @@ Cartesian2D.prototype = {
     getOtherAxis: function (axis) {
         return this.getAxis(axis.dim === 'x' ? 'y' : 'x');
     }
-
 };
-
 inherits(Cartesian2D, Cartesian);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -36472,9 +31683,7 @@ inherits(Cartesian2D, Cartesian);
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var inner$6 = makeInner();
-
 /**
  * @param {module:echats/coord/Axis} axis
  * @return {Object} {
@@ -36492,7 +31701,6 @@ function createAxisLabels(axis) {
         ? makeCategoryLabels(axis)
         : makeRealNumberLabels(axis);
 }
-
 /**
  * @param {module:echats/coord/Axis} axis
  * @param {module:echarts/model/Model} tickModel For example, can be axisTick, splitLine, splitArea.
@@ -36507,28 +31715,22 @@ function createAxisTicks(axis, tickModel) {
         ? makeCategoryTicks(axis, tickModel)
         : {ticks: axis.scale.getTicks()};
 }
-
 function makeCategoryLabels(axis) {
     var labelModel = axis.getLabelModel();
     var result = makeCategoryLabelsActually(axis, labelModel);
-
     return (!labelModel.get('show') || axis.scale.isBlank())
         ? {labels: [], labelCategoryInterval: result.labelCategoryInterval}
         : result;
 }
-
 function makeCategoryLabelsActually(axis, labelModel) {
     var labelsCache = getListCache(axis, 'labels');
     var optionLabelInterval = getOptionCategoryInterval(labelModel);
     var result = listCacheGet(labelsCache, optionLabelInterval);
-
     if (result) {
         return result;
     }
-
     var labels;
     var numericLabelInterval;
-
     if (isFunction$1(optionLabelInterval)) {
         labels = makeLabelsByCustomizedCategoryInterval(axis, optionLabelInterval);
     }
@@ -36537,31 +31739,25 @@ function makeCategoryLabelsActually(axis, labelModel) {
             ? makeAutoCategoryInterval(axis) : optionLabelInterval;
         labels = makeLabelsByNumericCategoryInterval(axis, numericLabelInterval);
     }
-
     // Cache to avoid calling interval function repeatly.
     return listCacheSet(labelsCache, optionLabelInterval, {
         labels: labels, labelCategoryInterval: numericLabelInterval
     });
 }
-
 function makeCategoryTicks(axis, tickModel) {
     var ticksCache = getListCache(axis, 'ticks');
     var optionTickInterval = getOptionCategoryInterval(tickModel);
     var result = listCacheGet(ticksCache, optionTickInterval);
-
     if (result) {
         return result;
     }
-
     var ticks;
     var tickCategoryInterval;
-
     // Optimize for the case that large category data and no label displayed,
     // we should not return all ticks.
     if (!tickModel.get('show') || axis.scale.isBlank()) {
         ticks = [];
     }
-
     if (isFunction$1(optionTickInterval)) {
         ticks = makeLabelsByCustomizedCategoryInterval(axis, optionTickInterval, true);
     }
@@ -36579,13 +31775,11 @@ function makeCategoryTicks(axis, tickModel) {
         tickCategoryInterval = optionTickInterval;
         ticks = makeLabelsByNumericCategoryInterval(axis, tickCategoryInterval, true);
     }
-
     // Cache to avoid calling interval function repeatly.
     return listCacheSet(ticksCache, optionTickInterval, {
         ticks: ticks, tickCategoryInterval: tickCategoryInterval
     });
 }
-
 function makeRealNumberLabels(axis) {
     var ticks = axis.scale.getTicks();
     var labelFormatter = makeLabelFormatter(axis);
@@ -36599,7 +31793,6 @@ function makeRealNumberLabels(axis) {
         })
     };
 }
-
 // Large category data calculation is performence sensitive, and ticks and label
 // probably be fetched by multiple times. So we cache the result.
 // axis is created each time during a ec process, so we do not need to clear cache.
@@ -36607,7 +31800,6 @@ function getListCache(axis, prop) {
     // Because key can be funciton, and cache size always be small, we use array cache.
     return inner$6(axis)[prop] || (inner$6(axis)[prop] = []);
 }
-
 function listCacheGet(cache, key) {
     for (var i = 0; i < cache.length; i++) {
         if (cache[i].key === key) {
@@ -36615,19 +31807,16 @@ function listCacheGet(cache, key) {
         }
     }
 }
-
 function listCacheSet(cache, key, value) {
     cache.push({key: key, value: value});
     return value;
 }
-
 function makeAutoCategoryInterval(axis) {
     var result = inner$6(axis).autoInterval;
     return result != null
         ? result
         : (inner$6(axis).autoInterval = axis.calculateCategoryInterval());
 }
-
 /**
  * Calculate interval for category axis ticks and labels.
  * To get precise result, at least one of `getRotate` and `isHorizontal`
@@ -36637,18 +31826,15 @@ function calculateCategoryInterval(axis) {
     var params = fetchAutoCategoryIntervalCalculationParams(axis);
     var labelFormatter = makeLabelFormatter(axis);
     var rotation = (params.axisRotate - params.labelRotate) / 180 * Math.PI;
-
     var ordinalScale = axis.scale;
     var ordinalExtent = ordinalScale.getExtent();
     // Providing this method is for optimization:
     // avoid generating a long array by `getTicks`
     // in large category data case.
     var tickCount = ordinalScale.count();
-
     if (ordinalExtent[1] - ordinalExtent[0] < 1) {
         return 0;
     }
-
     var step = 1;
     // Simple optimization. Empirical value: tick count should less than 40.
     if (tickCount > 40) {
@@ -36658,16 +31844,13 @@ function calculateCategoryInterval(axis) {
     var unitSpan = axis.dataToCoord(tickValue + 1) - axis.dataToCoord(tickValue);
     var unitW = Math.abs(unitSpan * Math.cos(rotation));
     var unitH = Math.abs(unitSpan * Math.sin(rotation));
-
     var maxW = 0;
     var maxH = 0;
-
     // Caution: Performance sensitive for large category data.
     // Consider dataZoom, we should make appropriate step to avoid O(n) loop.
     for (; tickValue <= ordinalExtent[1]; tickValue += step) {
         var width = 0;
         var height = 0;
-
         // Not precise, do not consider align and vertical align
         // and each distance from axis line yet.
         var rect = getBoundingRect(
@@ -36676,23 +31859,19 @@ function calculateCategoryInterval(axis) {
         // Magic number
         width = rect.width * 1.3;
         height = rect.height * 1.3;
-
         // Min size, void long loop.
         maxW = Math.max(maxW, width, 7);
         maxH = Math.max(maxH, height, 7);
     }
-
     var dw = maxW / unitW;
     var dh = maxH / unitH;
     // 0/0 is NaN, 1/0 is Infinity.
     isNaN(dw) && (dw = Infinity);
     isNaN(dh) && (dh = Infinity);
     var interval = Math.max(0, Math.floor(Math.min(dw, dh)));
-
     var cache = inner$6(axis.model);
     var lastAutoInterval = cache.lastAutoInterval;
     var lastTickCount = cache.lastTickCount;
-
     // Use cache to keep interval stable while moving zoom window,
     // otherwise the calculated interval might jitter when the zoom
     // window size is close to the interval-changing size.
@@ -36712,10 +31891,8 @@ function calculateCategoryInterval(axis) {
         cache.lastTickCount = tickCount;
         cache.lastAutoInterval = interval;
     }
-
     return interval;
 }
-
 function fetchAutoCategoryIntervalCalculationParams(axis) {
     var labelModel = axis.getLabelModel();
     return {
@@ -36728,20 +31905,16 @@ function fetchAutoCategoryIntervalCalculationParams(axis) {
         font: labelModel.getFont()
     };
 }
-
 function makeLabelsByNumericCategoryInterval(axis, categoryInterval, onlyTick) {
     var labelFormatter = makeLabelFormatter(axis);
     var ordinalScale = axis.scale;
     var ordinalExtent = ordinalScale.getExtent();
     var labelModel = axis.getLabelModel();
     var result = [];
-
     // TODO: axisType: ordinalTime, pick the tick from each month/day/year/...
-
     var step = Math.max((categoryInterval || 0) + 1, 1);
     var startTick = ordinalExtent[0];
     var tickCount = ordinalScale.count();
-
     // Calculate start tick based on zero if possible to keep label consistent
     // while zooming and moving while interval > 0. Otherwise the selection
     // of displayable ticks and symbols probably keep changing.
@@ -36749,7 +31922,6 @@ function makeLabelsByNumericCategoryInterval(axis, categoryInterval, onlyTick) {
     if (startTick !== 0 && step > 1 && tickCount / step > 2) {
         startTick = Math.round(Math.ceil(startTick / step) * step);
     }
-
     // (1) Only add min max label here but leave overlap checking
     // to render stage, which also ensure the returned list
     // suitable for splitLine and splitArea rendering.
@@ -36758,21 +31930,17 @@ function makeLabelsByNumericCategoryInterval(axis, categoryInterval, onlyTick) {
     var showAllLabel = shouldShowAllLabels(axis);
     var includeMinLabel = labelModel.get('showMinLabel') || showAllLabel;
     var includeMaxLabel = labelModel.get('showMaxLabel') || showAllLabel;
-
     if (includeMinLabel && startTick !== ordinalExtent[0]) {
         addItem(ordinalExtent[0]);
     }
-
     // Optimize: avoid generating large array by `ordinalScale.getTicks()`.
     var tickValue = startTick;
     for (; tickValue <= ordinalExtent[1]; tickValue += step) {
         addItem(tickValue);
     }
-
     if (includeMaxLabel && tickValue !== ordinalExtent[1]) {
         addItem(ordinalExtent[1]);
     }
-
     function addItem(tVal) {
         result.push(onlyTick
             ? tVal
@@ -36783,17 +31951,14 @@ function makeLabelsByNumericCategoryInterval(axis, categoryInterval, onlyTick) {
             }
         );
     }
-
     return result;
 }
-
 // When interval is function, the result `false` means ignore the tick.
 // It is time consuming for large category data.
 function makeLabelsByCustomizedCategoryInterval(axis, categoryInterval, onlyTick) {
     var ordinalScale = axis.scale;
     var labelFormatter = makeLabelFormatter(axis);
     var result = [];
-
     each$1(ordinalScale.getTicks(), function (tickValue) {
         var rawLabel = ordinalScale.getLabel(tickValue);
         if (categoryInterval(tickValue, rawLabel)) {
@@ -36807,10 +31972,8 @@ function makeLabelsByCustomizedCategoryInterval(axis, categoryInterval, onlyTick
             );
         }
     });
-
     return result;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -36829,49 +31992,39 @@ function makeLabelsByCustomizedCategoryInterval(axis, categoryInterval, onlyTick
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var NORMALIZED_EXTENT = [0, 1];
-
 /**
  * Base class of Axis.
  * @constructor
  */
 var Axis = function (dim, scale, extent) {
-
     /**
      * Axis dimension. Such as 'x', 'y', 'z', 'angle', 'radius'.
      * @type {string}
      */
     this.dim = dim;
-
     /**
      * Axis scale
      * @type {module:echarts/coord/scale/*}
      */
     this.scale = scale;
-
     /**
      * @type {Array.<number>}
      * @private
      */
     this._extent = extent || [0, 0];
-
     /**
      * @type {boolean}
      */
     this.inverse = false;
-
     /**
      * Usually true when axis has a ordinal scale
      * @type {boolean}
      */
     this.onBand = false;
 };
-
 Axis.prototype = {
-
     constructor: Axis,
-
     /**
      * If axis extent contain given coord
      * @param {number} coord
@@ -36883,7 +32036,6 @@ Axis.prototype = {
         var max = Math.max(extent[0], extent[1]);
         return coord >= min && coord <= max;
     },
-
     /**
      * If axis extent contain given data
      * @param {number} data
@@ -36892,7 +32044,6 @@ Axis.prototype = {
     containData: function (data) {
         return this.contain(this.dataToCoord(data));
     },
-
     /**
      * Get coord extent.
      * @return {Array.<number>}
@@ -36900,7 +32051,6 @@ Axis.prototype = {
     getExtent: function () {
         return this._extent.slice();
     },
-
     /**
      * Get precision used for formatting
      * @param {Array.<number>} [dataExtent]
@@ -36912,7 +32062,6 @@ Axis.prototype = {
             this._extent
         );
     },
-
     /**
      * Set coord extent
      * @param {number} start
@@ -36923,7 +32072,6 @@ Axis.prototype = {
         extent[0] = start;
         extent[1] = end;
     },
-
     /**
      * Convert data to coord. Data is the rank if it has an ordinal scale
      * @param {number} data
@@ -36934,15 +32082,12 @@ Axis.prototype = {
         var extent = this._extent;
         var scale = this.scale;
         data = scale.normalize(data);
-
         if (this.onBand && scale.type === 'ordinal') {
             extent = extent.slice();
             fixExtentWithBands(extent, scale.count());
         }
-
         return linearMap(data, NORMALIZED_EXTENT, extent, clamp);
     },
-
     /**
      * Convert coord to data. Data is the rank if it has an ordinal scale
      * @param {number} coord
@@ -36952,17 +32097,13 @@ Axis.prototype = {
     coordToData: function (coord, clamp) {
         var extent = this._extent;
         var scale = this.scale;
-
         if (this.onBand && scale.type === 'ordinal') {
             extent = extent.slice();
             fixExtentWithBands(extent, scale.count());
         }
-
         var t = linearMap(coord, extent, NORMALIZED_EXTENT, clamp);
-
         return this.scale.scale(t);
     },
-
     /**
      * Convert pixel point to data in axis
      * @param {Array.<number>} point
@@ -36972,7 +32113,6 @@ Axis.prototype = {
     pointToData: function (point, clamp) {
         // Should be implemented in derived class if necessary.
     },
-
     /**
      * Different from `zrUtil.map(axis.getTicks(), axis.dataToCoord, axis)`,
      * `axis.getTicksCoords` considers `onBand`, which is used by
@@ -36989,27 +32129,21 @@ Axis.prototype = {
      */
     getTicksCoords: function (opt) {
         opt = opt || {};
-
         var tickModel = opt.tickModel || this.getTickModel();
-
         var result = createAxisTicks(this, tickModel);
         var ticks = result.ticks;
-
         var ticksCoords = map(ticks, function (tickValue) {
             return {
                 coord: this.dataToCoord(tickValue),
                 tickValue: tickValue
             };
         }, this);
-
         var alignWithLabel = tickModel.get('alignWithLabel');
         fixOnBandTicksCoords(
             this, ticksCoords, result.tickCategoryInterval, alignWithLabel, opt.clamp
         );
-
         return ticksCoords;
     },
-
     /**
      * @return {Array.<Object>} [{
      *     formattedLabel: string,
@@ -37020,14 +32154,12 @@ Axis.prototype = {
     getViewLabels: function () {
         return createAxisLabels(this).labels;
     },
-
     /**
      * @return {module:echarts/coord/model/Model}
      */
     getLabelModel: function () {
         return this.model.getModel('axisLabel');
     },
-
     /**
      * Notice here we only get the default tick model. For splitLine
      * or splitArea, we should pass the splitLineModel or splitAreaModel
@@ -37039,7 +32171,6 @@ Axis.prototype = {
     getTickModel: function () {
         return this.model.getModel('axisTick');
     },
-
     /**
      * Get width of band
      * @return {number}
@@ -37047,28 +32178,22 @@ Axis.prototype = {
     getBandWidth: function () {
         var axisExtent = this._extent;
         var dataExtent = this.scale.getExtent();
-
         var len = dataExtent[1] - dataExtent[0] + (this.onBand ? 1 : 0);
         // Fix #2728, avoid NaN when only one data.
         len === 0 && (len = 1);
-
         var size = Math.abs(axisExtent[1] - axisExtent[0]);
-
         return Math.abs(size) / len;
     },
-
     /**
      * @abstract
      * @return {boolean} Is horizontal
      */
     isHorizontal: null,
-
     /**
      * @abstract
      * @return {number} Get axis rotate, by degree.
      */
     getRotate: null,
-
     /**
      * Only be called in category axis.
      * Can be overrided, consider other axes like in 3D.
@@ -37077,9 +32202,7 @@ Axis.prototype = {
     calculateCategoryInterval: function () {
         return calculateCategoryInterval(this);
     }
-
 };
-
 function fixExtentWithBands(extent, nTick) {
     var size = extent[1] - extent[0];
     var len = nTick;
@@ -37087,7 +32210,6 @@ function fixExtentWithBands(extent, nTick) {
     extent[0] += margin;
     extent[1] -= margin;
 }
-
 // If axis has labels [1, 2, 3, 4]. Bands on the axis are
 // |---1---|---2---|---3---|---4---|.
 // So the displayed ticks and splitLine/splitArea should between
@@ -37099,11 +32221,9 @@ function fixExtentWithBands(extent, nTick) {
 // case).
 function fixOnBandTicksCoords(axis, ticksCoords, tickCategoryInterval, alignWithLabel, clamp) {
     var ticksLen = ticksCoords.length;
-
     if (!axis.onBand || alignWithLabel || !ticksLen) {
         return;
     }
-
     var axisExtent = axis.getExtent();
     var last;
     if (ticksLen === 1) {
@@ -37123,9 +32243,7 @@ function fixOnBandTicksCoords(axis, ticksCoords, tickCategoryInterval, alignWith
         last = {coord: ticksCoords[ticksLen - 1].coord + shift};
         ticksCoords.push(last);
     }
-
     var inverse = axisExtent[0] > axisExtent[1];
-
     if (littleThan(ticksCoords[0].coord, axisExtent[0])) {
         clamp ? (ticksCoords[0].coord = axisExtent[0]) : ticksCoords.shift();
     }
@@ -37138,12 +32256,10 @@ function fixOnBandTicksCoords(axis, ticksCoords, tickCategoryInterval, alignWith
     if (clamp && littleThan(last.coord, axisExtent[1])) {
         ticksCoords.push({coord: axisExtent[1]});
     }
-
     function littleThan(a, b) {
         return inverse ? a > b : a < b;
     }
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -37162,7 +32278,6 @@ function fixOnBandTicksCoords(axis, ticksCoords, tickCategoryInterval, alignWith
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Extend axis 2d
  * @constructor module:echarts/coord/cartesian/Axis2D
@@ -37184,7 +32299,6 @@ var Axis2D = function (dim, scale, coordExtent, axisType, position) {
      * @type {string}
      */
     this.type = axisType || 'value';
-
     /**
      * Axis position
      *  - 'top'
@@ -37194,16 +32308,12 @@ var Axis2D = function (dim, scale, coordExtent, axisType, position) {
      */
     this.position = position || 'bottom';
 };
-
 Axis2D.prototype = {
-
     constructor: Axis2D,
-
     /**
      * Index of axis, can be used as key
      */
     index: 0,
-
     /**
      * Implemented in <module:echarts/coord/cartesian/Grid>.
      * @return {Array.<module:echarts/coord/cartesian/Axis2D>}
@@ -37211,18 +32321,15 @@ Axis2D.prototype = {
      *         If no axes, return an empty array.
      */
     getAxesOnZeroOf: null,
-
     /**
      * Axis model
      * @param {module:echarts/coord/cartesian/AxisModel}
      */
     model: null,
-
     isHorizontal: function () {
         var position = this.position;
         return position === 'top' || position === 'bottom';
     },
-
     /**
      * Each item cooresponds to this.getExtent(), which
      * means globalExtent[0] may greater than globalExtent[1],
@@ -37238,18 +32345,15 @@ Axis2D.prototype = {
         asc && ret[0] > ret[1] && ret.reverse();
         return ret;
     },
-
     getOtherAxis: function () {
         this.grid.getOtherAxis();
     },
-
     /**
      * @override
      */
     pointToData: function (point, clamp) {
         return this.coordToData(this.toLocalCoord(point[this.dim === 'x' ? 0 : 1]), clamp);
     },
-
     /**
      * Transform global coord to local coord,
      * i.e. var localCoord = axis.toLocalCoord(80);
@@ -37257,7 +32361,6 @@ Axis2D.prototype = {
      * @type {Function}
      */
     toLocalCoord: null,
-
     /**
      * Transform global coord to local coord,
      * i.e. var globalCoord = axis.toLocalCoord(40);
@@ -37265,11 +32368,8 @@ Axis2D.prototype = {
      * @type {Function}
      */
     toGlobalCoord: null
-
 };
-
 inherits(Axis2D, Axis);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -37288,14 +32388,12 @@ inherits(Axis2D, Axis);
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var defaultOption = {
     show: true,
     zlevel: 0,
     z: 0,
     // Inverse the axis.
     inverse: false,
-
     // Axis name displayed.
     name: '',
     // 'start' | 'middle' | 'end'
@@ -37311,18 +32409,14 @@ var defaultOption = {
     nameTextStyle: {},
     // The gap between axisName and axisLine.
     nameGap: 15,
-
     // Default `false` to support tooltip.
     silent: false,
     // Default `false` to avoid legacy user event listener fail.
     triggerEvent: false,
-
     tooltip: {
         show: false
     },
-
     axisPointer: {},
-
     axisLine: {
         show: true,
         onZero: true,
@@ -37374,9 +32468,7 @@ var defaultOption = {
         }
     }
 };
-
 var axisDefault = {};
-
 axisDefault.categoryAxis = merge({
     // The gap at both ends of the axis. For categoryAxis, boolean.
     boundaryGap: true,
@@ -37403,63 +32495,48 @@ axisDefault.categoryAxis = merge({
         interval: 'auto'
     }
 }, defaultOption);
-
 axisDefault.valueAxis = merge({
     // The gap at both ends of the axis. For value axis, [GAP, GAP], where
     // `GAP` can be an absolute pixel number (like `35`), or percent (like `'30%'`)
     boundaryGap: [0, 0],
-
     // TODO
     // min/max: [30, datamin, 60] or [20, datamin] or [datamin, 60]
-
     // Min value of the axis. can be:
     // + a number
     // + 'dataMin': use the min value in data.
     // + null/undefined: auto decide min value (consider pretty look and boundaryGap).
     // min: null,
-
     // Max value of the axis. can be:
     // + a number
     // + 'dataMax': use the max value in data.
     // + null/undefined: auto decide max value (consider pretty look and boundaryGap).
     // max: null,
-
     // Readonly prop, specifies start value of the range when using data zoom.
     // rangeStart: null
-
     // Readonly prop, specifies end value of the range when using data zoom.
     // rangeEnd: null
-
     // Optional value can be:
     // + `false`: always include value 0.
     // + `true`: the extent do not consider value 0.
     // scale: false,
-
     // AxisTick and axisLabel and splitLine are caculated based on splitNumber.
     splitNumber: 5
-
     // Interval specifies the span of the ticks is mandatorily.
     // interval: null
-
     // Specify min interval when auto calculate tick interval.
     // minInterval: null
-
     // Specify max interval when auto calculate tick interval.
     // maxInterval: null
-
 }, defaultOption);
-
 axisDefault.timeAxis = defaults({
     scale: true,
     min: 'dataMin',
     max: 'dataMax'
 }, axisDefault.valueAxis);
-
 axisDefault.logAxis = defaults({
     scale: true,
     logBase: 10
 }, axisDefault.valueAxis);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -37478,10 +32555,8 @@ axisDefault.logAxis = defaults({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // FIXME axisType is fixed ?
 var AXIS_TYPES = ['value', 'category', 'time', 'log'];
-
 /**
  * Generate sub axis model class
  * @param {string} axisName 'x' 'y' 'radius' 'angle' 'parallel'
@@ -37490,32 +32565,24 @@ var AXIS_TYPES = ['value', 'category', 'time', 'log'];
  * @param {Object} [extraDefaultOption]
  */
 var axisModelCreator = function (axisName, BaseAxisModelClass, axisTypeDefaulter, extraDefaultOption) {
-
     each$1(AXIS_TYPES, function (axisType) {
-
         BaseAxisModelClass.extend({
-
             /**
              * @readOnly
              */
             type: axisName + 'Axis.' + axisType,
-
             mergeDefaultAndTheme: function (option, ecModel) {
                 var layoutMode = this.layoutMode;
                 var inputPositionParams = layoutMode
                     ? getLayoutParams(option) : {};
-
                 var themeModel = ecModel.getTheme();
                 merge(option, themeModel.get(axisType + 'Axis'));
                 merge(option, this.getDefaultOption());
-
                 option.type = axisTypeDefaulter(axisName, option);
-
                 if (layoutMode) {
                     mergeLayoutParam(option, inputPositionParams, layoutMode);
                 }
             },
-
             /**
              * @override
              */
@@ -37525,7 +32592,6 @@ var axisModelCreator = function (axisName, BaseAxisModelClass, axisTypeDefaulter
                     this.__ordinalMeta = OrdinalMeta.createByAxisModel(this);
                 }
             },
-
             /**
              * Should not be called before all of 'getInitailData' finished.
              * Because categories are collected during initializing data.
@@ -37541,11 +32607,9 @@ var axisModelCreator = function (axisName, BaseAxisModelClass, axisTypeDefaulter
                     return this.__ordinalMeta.categories;
                 }
             },
-
             getOrdinalMeta: function () {
                 return this.__ordinalMeta;
             },
-
             defaultOption: mergeAll(
                 [
                     {},
@@ -37556,13 +32620,11 @@ var axisModelCreator = function (axisName, BaseAxisModelClass, axisTypeDefaulter
             )
         });
     });
-
     ComponentModel.registerSubTypeDefaulter(
         axisName + 'Axis',
         curry(axisTypeDefaulter, axisName)
     );
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -37581,11 +32643,8 @@ var axisModelCreator = function (axisName, BaseAxisModelClass, axisTypeDefaulter
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // import * as axisHelper from './axisHelper';
-
 var axisModelCommonMixin = {
-
     /**
      * @param {boolean} origin
      * @return {number|string} min value or 'dataMin' or null/undefined (means auto) or NaN
@@ -37594,7 +32653,6 @@ var axisModelCommonMixin = {
         var option = this.option;
         var min = (!origin && option.rangeStart != null)
             ? option.rangeStart : option.min;
-
         if (this.axis
             && min != null
             && min !== 'dataMin'
@@ -37605,7 +32663,6 @@ var axisModelCommonMixin = {
         }
         return min;
     },
-
     /**
      * @param {boolean} origin
      * @return {number|string} max value or 'dataMax' or null/undefined (means auto) or NaN
@@ -37614,7 +32671,6 @@ var axisModelCommonMixin = {
         var option = this.option;
         var max = (!origin && option.rangeEnd != null)
             ? option.rangeEnd : option.max;
-
         if (this.axis
             && max != null
             && max !== 'dataMax'
@@ -37625,7 +32681,6 @@ var axisModelCommonMixin = {
         }
         return max;
     },
-
     /**
      * @return {boolean}
      */
@@ -37634,13 +32689,11 @@ var axisModelCommonMixin = {
         return (option.rangeStart != null || option.rangeEnd != null)
             ? false : !option.scale;
     },
-
     /**
      * Should be implemented by each axis model if necessary.
      * @return {module:echarts/model/Component} coordinate system model
      */
     getCoordSysModel: noop,
-
     /**
      * @param {number} rangeStart Can only be finite number or null/undefined or NaN.
      * @param {number} rangeEnd Can only be finite number or null/undefined or NaN.
@@ -37649,7 +32702,6 @@ var axisModelCommonMixin = {
         this.option.rangeStart = rangeStart;
         this.option.rangeEnd = rangeEnd;
     },
-
     /**
      * Reset range
      */
@@ -37658,7 +32710,6 @@ var axisModelCommonMixin = {
         this.option.rangeStart = this.option.rangeEnd = null;
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -37677,16 +32728,12 @@ var axisModelCommonMixin = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var AxisModel = ComponentModel.extend({
-
     type: 'cartesian2dAxis',
-
     /**
      * @type {module:echarts/coord/cartesian/Axis2D}
      */
     axis: null,
-
     /**
      * @override
      */
@@ -37694,7 +32741,6 @@ var AxisModel = ComponentModel.extend({
         AxisModel.superApply(this, 'init', arguments);
         this.resetRange();
     },
-
     /**
      * @override
      */
@@ -37702,7 +32748,6 @@ var AxisModel = ComponentModel.extend({
         AxisModel.superApply(this, 'mergeOption', arguments);
         this.resetRange();
     },
-
     /**
      * @override
      */
@@ -37710,7 +32755,6 @@ var AxisModel = ComponentModel.extend({
         AxisModel.superApply(this, 'restoreData', arguments);
         this.resetRange();
     },
-
     /**
      * @override
      * @return {module:echarts/model/Component}
@@ -37722,27 +32766,20 @@ var AxisModel = ComponentModel.extend({
             id: this.option.gridId
         })[0];
     }
-
 });
-
 function getAxisType(axisDim, option) {
     // Default axis with data is category axis
     return option.type || (option.data ? 'category' : 'value');
 }
-
 merge(AxisModel.prototype, axisModelCommonMixin);
-
 var extraOption = {
     // gridIndex: 0,
     // gridId: '',
-
     // Offset is for multiple axis on the same position
     offset: 0
 };
-
 axisModelCreator('x', AxisModel, getAxisType, extraOption);
 axisModelCreator('y', AxisModel, getAxisType, extraOption);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -37761,23 +32798,16 @@ axisModelCreator('y', AxisModel, getAxisType, extraOption);
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // Grid 是在有直角坐标系的时候必须要存在的
 // 所以这里也要被 Cartesian2D 依赖
-
 ComponentModel.extend({
-
     type: 'grid',
-
     dependencies: ['xAxis', 'yAxis'],
-
     layoutMode: 'box',
-
     /**
      * @type {module:echarts/coord/cartesian/Grid}
      */
     coordinateSystem: null,
-
     defaultOption: {
         show: false,
         zlevel: 0,
@@ -37795,7 +32825,6 @@ ComponentModel.extend({
         borderColor: '#ccc'
     }
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -37814,13 +32843,11 @@ ComponentModel.extend({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Grid is a region which contains at most 4 cartesian systems
  *
  * TODO Default cartesian
  */
-
 // Depends on GridModel, AxisModel, which performs preprocess.
 /**
  * Check if the axis is used in the specified grid
@@ -37829,96 +32856,73 @@ ComponentModel.extend({
 function isAxisUsedInTheGrid(axisModel, gridModel, ecModel) {
     return axisModel.getCoordSysModel() === gridModel;
 }
-
 function Grid(gridModel, ecModel, api) {
     /**
      * @type {Object.<string, module:echarts/coord/cartesian/Cartesian2D>}
      * @private
      */
     this._coordsMap = {};
-
     /**
      * @type {Array.<module:echarts/coord/cartesian/Cartesian>}
      * @private
      */
     this._coordsList = [];
-
     /**
      * @type {Object.<string, module:echarts/coord/cartesian/Axis2D>}
      * @private
      */
     this._axesMap = {};
-
     /**
      * @type {Array.<module:echarts/coord/cartesian/Axis2D>}
      * @private
      */
     this._axesList = [];
-
     this._initCartesian(gridModel, ecModel, api);
-
     this.model = gridModel;
 }
-
 var gridProto = Grid.prototype;
-
 gridProto.type = 'grid';
-
 gridProto.axisPointerEnabled = true;
-
 gridProto.getRect = function () {
     return this._rect;
 };
-
 gridProto.update = function (ecModel, api) {
-
     var axesMap = this._axesMap;
-
     this._updateScale(ecModel, this.model);
-
     each$1(axesMap.x, function (xAxis) {
         niceScaleExtent(xAxis.scale, xAxis.model);
     });
     each$1(axesMap.y, function (yAxis) {
         niceScaleExtent(yAxis.scale, yAxis.model);
     });
-
     // Key: axisDim_axisIndex, value: boolean, whether onZero target.
     var onZeroRecords = {};
-
     each$1(axesMap.x, function (xAxis) {
         fixAxisOnZero(axesMap, 'y', xAxis, onZeroRecords);
     });
     each$1(axesMap.y, function (yAxis) {
         fixAxisOnZero(axesMap, 'x', yAxis, onZeroRecords);
     });
-
     // Resize again if containLabel is enabled
     // FIXME It may cause getting wrong grid size in data processing stage
     this.resize(this.model, api);
 };
-
 function fixAxisOnZero(axesMap, otherAxisDim, axis, onZeroRecords) {
-
     axis.getAxesOnZeroOf = function () {
         // TODO: onZero of multiple axes.
         return otherAxisOnZeroOf ? [otherAxisOnZeroOf] : [];
     };
-
     // onZero can not be enabled in these two situations:
     // 1. When any other axis is a category axis.
     // 2. When no axis is cross 0 point.
     var otherAxes = axesMap[otherAxisDim];
-
     var otherAxisOnZeroOf;
     var axisModel = axis.model;
     var onZero = axisModel.get('axisLine.onZero');
     var onZeroAxisIndex = axisModel.get('axisLine.onZeroAxisIndex');
-
     if (!onZero) {
         return;
     }
-
     // If target axis is specified.
     if (onZeroAxisIndex != null) {
         if (canOnZeroToAxis(otherAxes[onZeroAxisIndex])) {
@@ -37939,39 +32943,30 @@ function fixAxisOnZero(axesMap, otherAxisDim, axis, onZeroRecords) {
             }
         }
     }
-
     if (otherAxisOnZeroOf) {
         onZeroRecords[getOnZeroRecordKey(otherAxisOnZeroOf)] = true;
     }
-
     function getOnZeroRecordKey(axis) {
         return axis.dim + '_' + axis.index;
     }
 }
-
 function canOnZeroToAxis(axis) {
     return axis && axis.type !== 'category' && axis.type !== 'time' && ifAxisCrossZero(axis);
 }
-
 /**
  * Resize the grid
  * @param {module:echarts/coord/cartesian/GridModel} gridModel
  * @param {module:echarts/ExtensionAPI} api
  */
 gridProto.resize = function (gridModel, api, ignoreContainLabel) {
-
     var gridRect = getLayoutRect(
         gridModel.getBoxLayoutParams(), {
             width: api.getWidth(),
             height: api.getHeight()
         });
-
     this._rect = gridRect;
-
     var axesList = this._axesList;
-
     adjustAxes();
-
     // Minus label size
     if (!ignoreContainLabel && gridModel.get('containLabel')) {
         each$1(axesList, function (axis) {
@@ -37990,10 +32985,8 @@ gridProto.resize = function (gridModel, api, ignoreContainLabel) {
                 }
             }
         });
-
         adjustAxes();
     }
-
     function adjustAxes() {
         each$1(axesList, function (axis) {
             var isHorizontal = axis.isHorizontal();
@@ -38004,7 +32997,6 @@ gridProto.resize = function (gridModel, api, ignoreContainLabel) {
         });
     }
 };
-
 /**
  * @param {string} axisType
  * @param {number} [axisIndex]
@@ -38023,14 +33015,12 @@ gridProto.getAxis = function (axisType, axisIndex) {
         return axesMapOnDim[axisIndex];
     }
 };
-
 /**
  * @return {Array.<module:echarts/coord/Axis>}
  */
 gridProto.getAxes = function () {
     return this._axesList.slice();
 };
-
 /**
  * Usage:
  *      grid.getCartesian(xAxisIndex, yAxisIndex);
@@ -38046,7 +33036,6 @@ gridProto.getCartesian = function (xAxisIndex, yAxisIndex) {
         var key = 'x' + xAxisIndex + 'y' + yAxisIndex;
         return this._coordsMap[key];
     }
-
     if (isObject$1(xAxisIndex)) {
         yAxisIndex = xAxisIndex.yAxisIndex;
         xAxisIndex = xAxisIndex.xAxisIndex;
@@ -38060,39 +33049,33 @@ gridProto.getCartesian = function (xAxisIndex, yAxisIndex) {
         }
     }
 };
-
 gridProto.getCartesians = function () {
     return this._coordsList.slice();
 };
-
 /**
  * @implements
  * see {module:echarts/CoodinateSystem}
  */
 gridProto.convertToPixel = function (ecModel, finder, value) {
     var target = this._findConvertTarget(ecModel, finder);
-
     return target.cartesian
         ? target.cartesian.dataToPoint(value)
         : target.axis
         ? target.axis.toGlobalCoord(target.axis.dataToCoord(value))
         : null;
 };
-
 /**
  * @implements
  * see {module:echarts/CoodinateSystem}
  */
 gridProto.convertFromPixel = function (ecModel, finder, value) {
     var target = this._findConvertTarget(ecModel, finder);
-
     return target.cartesian
         ? target.cartesian.pointToData(value)
         : target.axis
         ? target.axis.coordToData(target.axis.toLocalCoord(value))
         : null;
 };
-
 /**
  * @inner
  */
@@ -38106,7 +33089,6 @@ gridProto._findConvertTarget = function (ecModel, finder) {
     var coordsList = this._coordsList;
     var cartesian;
     var axis;
-
     if (seriesModel) {
         cartesian = seriesModel.coordinateSystem;
         indexOf(coordsList, cartesian) < 0 && (cartesian = null);
@@ -38127,10 +33109,8 @@ gridProto._findConvertTarget = function (ecModel, finder) {
             cartesian = this._coordsList[0];
         }
     }
-
     return {cartesian: cartesian, axis: axis};
 };
-
 /**
  * @implements
  * see {module:echarts/CoodinateSystem}
@@ -38141,7 +33121,6 @@ gridProto.containPoint = function (point) {
         return coord.containPoint(point);
     }
 };
-
 /**
  * Initialize cartesian coordinate systems
  * @private
@@ -38153,7 +33132,6 @@ gridProto._initCartesian = function (gridModel, ecModel, api) {
         top: false,
         bottom: false
     };
-
     var axesMap = {
         x: {},
         y: {}
@@ -38162,43 +33140,34 @@ gridProto._initCartesian = function (gridModel, ecModel, api) {
         x: 0,
         y: 0
     };
-
     /// Create axis
     ecModel.eachComponent('xAxis', createAxisCreator('x'), this);
     ecModel.eachComponent('yAxis', createAxisCreator('y'), this);
-
     if (!axesCount.x || !axesCount.y) {
         // Roll back when there no either x or y axis
         this._axesMap = {};
         this._axesList = [];
         return;
     }
-
     this._axesMap = axesMap;
-
     /// Create cartesian2d
     each$1(axesMap.x, function (xAxis, xAxisIndex) {
         each$1(axesMap.y, function (yAxis, yAxisIndex) {
             var key = 'x' + xAxisIndex + 'y' + yAxisIndex;
             var cartesian = new Cartesian2D(key);
-
             cartesian.grid = this;
             cartesian.model = gridModel;
-
             this._coordsMap[key] = cartesian;
             this._coordsList.push(cartesian);
-
             cartesian.addAxis(xAxis);
             cartesian.addAxis(yAxis);
         }, this);
     }, this);
-
     function createAxisCreator(axisType) {
         return function (axisModel, idx) {
             if (!isAxisUsedInTheGrid(axisModel, gridModel, ecModel)) {
                 return;
             }
-
             var axisPosition = axisModel.get('position');
             if (axisType === 'x') {
                 // Fix position
@@ -38221,38 +33190,29 @@ gridProto._initCartesian = function (gridModel, ecModel, api) {
                 }
             }
             axisPositionUsed[axisPosition] = true;
-
             var axis = new Axis2D(
                 axisType, createScaleByModel(axisModel),
                 [0, 0],
                 axisModel.get('type'),
                 axisPosition
             );
-
             var isCategory = axis.type === 'category';
             axis.onBand = isCategory && axisModel.get('boundaryGap');
             axis.inverse = axisModel.get('inverse');
-
             // Inject axis into axisModel
             axisModel.axis = axis;
-
             // Inject axisModel into axis
             axis.model = axisModel;
-
             // Inject grid info axis
             axis.grid = this;
-
             // Index of axis, can be used as key
             axis.index = idx;
-
             this._axesList.push(axis);
-
             axesMap[axisType][idx] = axis;
             axesCount[axisType]++;
         };
     }
 };
-
 /**
  * Update cartesian properties from series
  * @param  {module:echarts/model/Option} option
@@ -38268,27 +33228,23 @@ gridProto._updateScale = function (ecModel, gridModel) {
             var axesModels = findAxesModels(seriesModel, ecModel);
             var xAxisModel = axesModels[0];
             var yAxisModel = axesModels[1];
-
             if (!isAxisUsedInTheGrid(xAxisModel, gridModel, ecModel)
                 || !isAxisUsedInTheGrid(yAxisModel, gridModel, ecModel)
             ) {
                 return;
             }
-
             var cartesian = this.getCartesian(
                 xAxisModel.componentIndex, yAxisModel.componentIndex
             );
             var data = seriesModel.getData();
             var xAxis = cartesian.getAxis('x');
             var yAxis = cartesian.getAxis('y');
-
             if (data.type === 'list') {
                 unionExtent(data, xAxis, seriesModel);
                 unionExtent(data, yAxis, seriesModel);
             }
         }
     }, this);
-
     function unionExtent(data, axis, seriesModel) {
         each$1(data.mapDimension(axis.dim, true), function (dim) {
             axis.scale.unionExtentFromData(
@@ -38300,7 +33256,6 @@ gridProto._updateScale = function (ecModel, gridModel) {
         });
     }
 };
-
 /**
  * @param {string} [dim] 'x' or 'y' or 'auto' or null/undefined
  * @return {Object} {baseAxes: [], otherAxes: []}
@@ -38308,7 +33263,6 @@ gridProto._updateScale = function (ecModel, gridModel) {
 gridProto.getTooltipAxes = function (dim) {
     var baseAxes = [];
     var otherAxes = [];
-
     each$1(this.getCartesians(), function (cartesian) {
         var baseAxis = (dim != null && dim !== 'auto')
             ? cartesian.getAxis(dim) : cartesian.getBaseAxis();
@@ -38316,17 +33270,14 @@ gridProto.getTooltipAxes = function (dim) {
         indexOf(baseAxes, baseAxis) < 0 && baseAxes.push(baseAxis);
         indexOf(otherAxes, otherAxis) < 0 && otherAxes.push(otherAxis);
     });
-
     return {baseAxes: baseAxes, otherAxes: otherAxes};
 };
-
 /**
  * @inner
  */
 function updateAxisTransform(axis, coordBase) {
     var axisExtent = axis.getExtent();
     var axisExtentSum = axisExtent[0] + axisExtent[1];
-
     // Fast transform
     axis.toGlobalCoord = axis.dim === 'x'
         ? function (coord) {
@@ -38343,7 +33294,6 @@ function updateAxisTransform(axis, coordBase) {
             return axisExtentSum - coord + coordBase;
         };
 }
-
 var axesTypes = ['xAxis', 'yAxis'];
 /**
  * @inner
@@ -38351,7 +33301,6 @@ var axesTypes = ['xAxis', 'yAxis'];
 function findAxesModels(seriesModel, ecModel) {
     return map(axesTypes, function (axisType) {
         var axisModel = seriesModel.getReferringComponents(axisType)[0];
-
         if (__DEV__) {
             if (!axisModel) {
                 throw new Error(axisType + ' "' + retrieve(
@@ -38364,14 +33313,12 @@ function findAxesModels(seriesModel, ecModel) {
         return axisModel;
     });
 }
-
 /**
  * @inner
  */
 function isCartesian2D(seriesModel) {
     return seriesModel.get('coordinateSystem') === 'cartesian2d';
 }
-
 Grid.create = function (ecModel, api) {
     var grids = [];
     ecModel.eachComponent('grid', function (gridModel, idx) {
@@ -38380,24 +33327,18 @@ Grid.create = function (ecModel, api) {
         // dataSampling requires axis extent, so resize
         // should be performed in create stage.
         grid.resize(gridModel, api, true);
-
         gridModel.coordinateSystem = grid;
-
         grids.push(grid);
     });
-
     // Inject the coordinateSystems into seriesModel
     ecModel.eachSeries(function (seriesModel) {
         if (!isCartesian2D(seriesModel)) {
             return;
         }
-
         var axesModels = findAxesModels(seriesModel, ecModel);
         var xAxisModel = axesModels[0];
         var yAxisModel = axesModels[1];
-
         var gridModel = xAxisModel.getCoordSysModel();
-
         if (__DEV__) {
             if (!gridModel) {
                 throw new Error(
@@ -38412,22 +33353,16 @@ Grid.create = function (ecModel, api) {
                 throw new Error('xAxis and yAxis must use the same grid');
             }
         }
-
         var grid = gridModel.coordinateSystem;
-
         seriesModel.coordinateSystem = grid.getCartesian(
             xAxisModel.componentIndex, yAxisModel.componentIndex
         );
     });
-
     return grids;
 };
-
 // For deciding which dimensions to use when creating list data
 Grid.dimensions = Grid.prototype.dimensions = Cartesian2D.prototype.dimensions;
-
 CoordinateSystemManager.register('cartesian2d', Grid);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -38446,9 +33381,7 @@ CoordinateSystemManager.register('cartesian2d', Grid);
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var PI$2 = Math.PI;
-
 function makeAxisEventDataBase(axisModel) {
     var eventData = {
         componentType: axisModel.mainType,
@@ -38457,7 +33390,6 @@ function makeAxisEventDataBase(axisModel) {
     eventData[axisModel.mainType + 'Index'] = axisModel.componentIndex;
     return eventData;
 }
-
 /**
  * A final axis is translated and rotated from a "standard axis".
  * So opt.position and opt.rotation is required.
@@ -38497,17 +33429,14 @@ function makeAxisEventDataBase(axisModel) {
  * @param {number} [opt.nameTruncateMaxWidth]
  */
 var AxisBuilder = function (axisModel, opt) {
-
     /**
      * @readOnly
      */
     this.opt = opt;
-
     /**
      * @readOnly
      */
     this.axisModel = axisModel;
-
     // Default value
     defaults(
         opt,
@@ -38519,60 +33448,44 @@ var AxisBuilder = function (axisModel, opt) {
             silent: true
         }
     );
-
     /**
      * @readOnly
      */
     this.group = new Group();
-
     // FIXME Not use a seperate text group?
     var dumbGroup = new Group({
         position: opt.position.slice(),
         rotation: opt.rotation
     });
-
     // this.group.add(dumbGroup);
     // this._dumbGroup = dumbGroup;
-
     dumbGroup.updateTransform();
     this._transform = dumbGroup.transform;
-
     this._dumbGroup = dumbGroup;
 };
-
 AxisBuilder.prototype = {
-
     constructor: AxisBuilder,
-
     hasBuilder: function (name) {
         return !!builders[name];
     },
-
     add: function (name) {
         builders[name].call(this);
     },
-
     getGroup: function () {
         return this.group;
     }
-
 };
-
 var builders = {
-
     /**
      * @private
      */
     axisLine: function () {
         var opt = this.opt;
         var axisModel = this.axisModel;
-
         if (!axisModel.get('axisLine.show')) {
             return;
         }
-
         var extent = this.axisModel.axis.getExtent();
-
         var matrix = this._transform;
         var pt1 = [extent[0], 0];
         var pt2 = [extent[1], 0];
@@ -38580,18 +33493,15 @@ var builders = {
             applyTransform(pt1, pt1, matrix);
             applyTransform(pt2, pt2, matrix);
         }
-
         var lineStyle = extend(
             {
                 lineCap: 'round'
             },
             axisModel.getModel('axisLine.lineStyle').getLineStyle()
         );
-
         this.group.add(new Line(subPixelOptimizeLine({
             // Id for animation
             anid: 'line',
-
             shape: {
                 x1: pt1[0],
                 y1: pt1[1],
@@ -38603,15 +33513,12 @@ var builders = {
             silent: true,
             z2: 1
         })));
-
         var arrows = axisModel.get('axisLine.symbol');
         var arrowSize = axisModel.get('axisLine.symbolSize');
-
         var arrowOffset = axisModel.get('axisLine.symbolOffset') || 0;
         if (typeof arrowOffset === 'number') {
             arrowOffset = [arrowOffset, arrowOffset];
         }
-
         if (arrows != null) {
             if (typeof arrows === 'string') {
                 // Use the same arrow for start and end point
@@ -38623,10 +33530,8 @@ var builders = {
                 // Use the same size for width and height
                 arrowSize = [arrowSize, arrowSize];
             }
-
             var symbolWidth = arrowSize[0];
             var symbolHeight = arrowSize[1];
-
             each$1([{
                 rotate: opt.rotation + Math.PI / 2,
                 offset: arrowOffset[0],
@@ -38647,14 +33552,12 @@ var builders = {
                         lineStyle.stroke,
                         true
                     );
-
                     // Calculate arrow position with offset
                     var r = point.r + point.offset;
                     var pos = [
                         pt1[0] + r * Math.cos(opt.rotation),
                         pt1[1] - r * Math.sin(opt.rotation)
                     ];
-
                     symbol.attr({
                         rotation: point.rotate,
                         position: pos,
@@ -38666,20 +33569,16 @@ var builders = {
             }, this);
         }
     },
-
     /**
      * @private
      */
     axisTickLabel: function () {
         var axisModel = this.axisModel;
         var opt = this.opt;
-
         var tickEls = buildAxisTick(this, axisModel, opt);
         var labelEls = buildAxisLabel(this, axisModel, opt);
-
         fixMinMaxLabelShow(axisModel, labelEls, tickEls);
     },
-
     /**
      * @private
      */
@@ -38687,16 +33586,13 @@ var builders = {
         var opt = this.opt;
         var axisModel = this.axisModel;
         var name = retrieve(opt.axisName, axisModel.get('name'));
-
         if (!name) {
             return;
         }
-
         var nameLocation = axisModel.get('nameLocation');
         var nameDirection = opt.nameDirection;
         var textStyleModel = axisModel.getModel('nameTextStyle');
         var gap = axisModel.get('nameGap') || 0;
-
         var extent = this.axisModel.axis.getExtent();
         var gapSignal = extent[0] > extent[1] ? -1 : 1;
         var pos = [
@@ -38708,16 +33604,12 @@ var builders = {
             // Reuse labelOffset.
             isNameLocationCenter(nameLocation) ? opt.labelOffset + nameDirection * gap : 0
         ];
-
         var labelLayout;
-
         var nameRotation = axisModel.get('nameRotate');
         if (nameRotation != null) {
             nameRotation = nameRotation * PI$2 / 180; // To radian.
         }
-
         var axisNameAvailableWidth;
-
         if (isNameLocationCenter(nameLocation)) {
             labelLayout = innerTextLayout(
                 opt.rotation,
@@ -38729,7 +33621,6 @@ var builders = {
             labelLayout = endTextLayout(
                 opt, nameLocation, nameRotation || 0, extent
             );
-
             axisNameAvailableWidth = opt.axisNameAvailableWidth;
             if (axisNameAvailableWidth != null) {
                 axisNameAvailableWidth = Math.abs(
@@ -38738,9 +33629,7 @@ var builders = {
                 !isFinite(axisNameAvailableWidth) && (axisNameAvailableWidth = null);
             }
         }
-
         var textFont = textStyleModel.getFont();
-
         var truncateOpt = axisModel.get('nameTruncate', true) || {};
         var ellipsis = truncateOpt.ellipsis;
         var maxWidth = retrieve(
@@ -38754,9 +33643,7 @@ var builders = {
                 {minChar: 2, placeholder: truncateOpt.placeholder}
             )
             : name;
-
         var tooltipOpt = axisModel.get('tooltip', true);
-
         var mainType = axisModel.mainType;
         var formatterParams = {
             componentType: mainType,
@@ -38764,14 +33651,11 @@ var builders = {
             $vars: ['name']
         };
         formatterParams[mainType + 'Index'] = axisModel.componentIndex;
-
         var textEl = new Text({
             // Id for animation
             anid: 'name',
-
             __fullText: name,
             __truncatedText: truncatedText,
-
             position: pos,
             rotation: labelLayout.rotation,
             silent: isSilent(axisModel),
@@ -38786,7 +33670,6 @@ var builders = {
                 }, tooltipOpt)
                 : null
         });
-
         setTextStyle(textEl.style, textStyleModel, {
             text: truncatedText,
             textFont: textFont,
@@ -38795,24 +33678,18 @@ var builders = {
             textAlign: labelLayout.textAlign,
             textVerticalAlign: labelLayout.textVerticalAlign
         });
-
         if (axisModel.get('triggerEvent')) {
             textEl.eventData = makeAxisEventDataBase(axisModel);
             textEl.eventData.targetType = 'axisName';
             textEl.eventData.name = name;
         }
-
         // FIXME
         this._dumbGroup.add(textEl);
         textEl.updateTransform();
-
         this.group.add(textEl);
-
         textEl.decomposeTransform();
     }
-
 };
-
 /**
  * @public
  * @static
@@ -38830,7 +33707,6 @@ var innerTextLayout = AxisBuilder.innerTextLayout = function (axisRotation, text
     var rotationDiff = remRadian(textRotation - axisRotation);
     var textAlign;
     var textVerticalAlign;
-
     if (isRadianAroundZero(rotationDiff)) { // Label is parallel with axis line.
         textVerticalAlign = direction > 0 ? 'top' : 'bottom';
         textAlign = 'center';
@@ -38841,7 +33717,6 @@ var innerTextLayout = AxisBuilder.innerTextLayout = function (axisRotation, text
     }
     else {
         textVerticalAlign = 'middle';
-
         if (rotationDiff > 0 && rotationDiff < PI$2) {
             textAlign = direction > 0 ? 'right' : 'left';
         }
@@ -38849,14 +33724,12 @@ var innerTextLayout = AxisBuilder.innerTextLayout = function (axisRotation, text
             textAlign = direction > 0 ? 'left' : 'right';
         }
     }
-
     return {
         rotation: rotationDiff,
         textAlign: textAlign,
         textVerticalAlign: textVerticalAlign
     };
 };
-
 function endTextLayout(opt, textPosition, textRotate, extent) {
     var rotationDiff = remRadian(textRotate - opt.rotation);
     var textAlign;
@@ -38864,7 +33737,6 @@ function endTextLayout(opt, textPosition, textRotate, extent) {
     var inverse = extent[0] > extent[1];
     var onLeft = (textPosition === 'start' && !inverse)
         || (textPosition !== 'start' && inverse);
-
     if (isRadianAroundZero(rotationDiff - PI$2 / 2)) {
         textVerticalAlign = onLeft ? 'bottom' : 'top';
         textAlign = 'center';
@@ -38882,14 +33754,12 @@ function endTextLayout(opt, textPosition, textRotate, extent) {
             textAlign = onLeft ? 'right' : 'left';
         }
     }
-
     return {
         rotation: rotationDiff,
         textAlign: textAlign,
         textVerticalAlign: textVerticalAlign
     };
 }
-
 function isSilent(axisModel) {
     var tooltipOpt = axisModel.get('tooltip');
     return axisModel.get('silent')
@@ -38898,34 +33768,27 @@ function isSilent(axisModel) {
             axisModel.get('triggerEvent') || (tooltipOpt && tooltipOpt.show)
         );
 }
-
 function fixMinMaxLabelShow(axisModel, labelEls, tickEls) {
     if (shouldShowAllLabels(axisModel.axis)) {
         return;
     }
-
     // If min or max are user set, we need to check
     // If the tick on min(max) are overlap on their neighbour tick
     // If they are overlapped, we need to hide the min(max) tick label
     var showMinLabel = axisModel.get('axisLabel.showMinLabel');
     var showMaxLabel = axisModel.get('axisLabel.showMaxLabel');
-
     // FIXME
     // Have not consider onBand yet, where tick els is more than label els.
-
     labelEls = labelEls || [];
     tickEls = tickEls || [];
-
     var firstLabel = labelEls[0];
     var nextLabel = labelEls[1];
     var lastLabel = labelEls[labelEls.length - 1];
     var prevLabel = labelEls[labelEls.length - 2];
-
     var firstTick = tickEls[0];
     var nextTick = tickEls[1];
     var lastTick = tickEls[tickEls.length - 1];
     var prevTick = tickEls[tickEls.length - 2];
-
     if (showMinLabel === false) {
         ignoreEl(firstLabel);
         ignoreEl(firstTick);
@@ -38940,7 +33803,6 @@ function fixMinMaxLabelShow(axisModel, labelEls, tickEls) {
             ignoreEl(firstTick);
         }
     }
-
     if (showMaxLabel === false) {
         ignoreEl(lastLabel);
         ignoreEl(lastTick);
@@ -38956,63 +33818,46 @@ function fixMinMaxLabelShow(axisModel, labelEls, tickEls) {
         }
     }
 }
-
 function ignoreEl(el) {
     el && (el.ignore = true);
 }
-
 function isTwoLabelOverlapped(current, next, labelLayout) {
     // current and next has the same rotation.
     var firstRect = current && current.getBoundingRect().clone();
     var nextRect = next && next.getBoundingRect().clone();
-
     if (!firstRect || !nextRect) {
         return;
     }
-
     // When checking intersect of two rotated labels, we use mRotationBack
     // to avoid that boundingRect is enlarge when using `boundingRect.applyTransform`.
     var mRotationBack = identity([]);
     rotate(mRotationBack, mRotationBack, -current.rotation);
-
     firstRect.applyTransform(mul$1([], mRotationBack, current.getLocalTransform()));
     nextRect.applyTransform(mul$1([], mRotationBack, next.getLocalTransform()));
-
     return firstRect.intersect(nextRect);
 }
-
 function isNameLocationCenter(nameLocation) {
     return nameLocation === 'middle' || nameLocation === 'center';
 }
-
 function buildAxisTick(axisBuilder, axisModel, opt) {
     var axis = axisModel.axis;
-
     if (!axisModel.get('axisTick.show') || axis.scale.isBlank()) {
         return;
     }
-
     var tickModel = axisModel.getModel('axisTick');
-
     var lineStyleModel = tickModel.getModel('lineStyle');
     var tickLen = tickModel.get('length');
-
     var ticksCoords = axis.getTicksCoords();
-
     var pt1 = [];
     var pt2 = [];
     var matrix = axisBuilder._transform;
-
     var tickEls = [];
-
     for (var i = 0; i < ticksCoords.length; i++) {
         var tickCoord = ticksCoords[i].coord;
-
         pt1[0] = tickCoord;
         pt1[1] = 0;
         pt2[0] = tickCoord;
         pt2[1] = opt.tickDirection * tickLen;
-
         if (matrix) {
             applyTransform(pt1, pt1, matrix);
             applyTransform(pt2, pt2, matrix);
@@ -39021,7 +33866,6 @@ function buildAxisTick(axisBuilder, axisModel, opt) {
         var tickEl = new Line(subPixelOptimizeLine({
             // Id for animation
             anid: 'tick_' + ticksCoords[i].tickValue,
-
             shape: {
                 x1: pt1[0],
                 y1: pt1[1],
@@ -39040,55 +33884,43 @@ function buildAxisTick(axisBuilder, axisModel, opt) {
         axisBuilder.group.add(tickEl);
         tickEls.push(tickEl);
     }
-
     return tickEls;
 }
-
 function buildAxisLabel(axisBuilder, axisModel, opt) {
     var axis = axisModel.axis;
     var show = retrieve(opt.axisLabelShow, axisModel.get('axisLabel.show'));
-
     if (!show || axis.scale.isBlank()) {
         return;
     }
-
     var labelModel = axisModel.getModel('axisLabel');
     var labelMargin = labelModel.get('margin');
     var labels = axis.getViewLabels();
-
     // Special label rotate.
     var labelRotation = (
         retrieve(opt.labelRotate, labelModel.get('rotate')) || 0
     ) * PI$2 / 180;
-
     var labelLayout = innerTextLayout(opt.rotation, labelRotation, opt.labelDirection);
     var rawCategoryData = axisModel.getCategories(true);
-
     var labelEls = [];
     var silent = isSilent(axisModel);
     var triggerEvent = axisModel.get('triggerEvent');
-
     each$1(labels, function (labelItem, index) {
         var tickValue = labelItem.tickValue;
         var formattedLabel = labelItem.formattedLabel;
         var rawLabel = labelItem.rawLabel;
-
         var itemLabelModel = labelModel;
         if (rawCategoryData && rawCategoryData[tickValue] && rawCategoryData[tickValue].textStyle) {
             itemLabelModel = new Model(
                 rawCategoryData[tickValue].textStyle, labelModel, axisModel.ecModel
             );
         }
-
         var textColor = itemLabelModel.getTextColor()
             || axisModel.get('axisLine.lineStyle.color');
-
         var tickCoord = axis.dataToCoord(tickValue);
         var pos = [
             tickCoord,
             opt.labelOffset + opt.labelDirection * labelMargin
         ];
-
         var textEl = new Text({
             // Id for animation
             anid: 'label_' + tickValue,
@@ -39097,7 +33929,6 @@ function buildAxisLabel(axisBuilder, axisModel, opt) {
             silent: silent,
             z2: 10
         });
-
         setTextStyle(textEl.style, itemLabelModel, {
             text: formattedLabel,
             textAlign: itemLabelModel.getShallow('align', true)
@@ -39123,28 +33954,21 @@ function buildAxisLabel(axisBuilder, axisModel, opt) {
                 )
                 : textColor
         });
-
         // Pack data for mouse event
         if (triggerEvent) {
             textEl.eventData = makeAxisEventDataBase(axisModel);
             textEl.eventData.targetType = 'axisLabel';
             textEl.eventData.value = rawLabel;
         }
-
         // FIXME
         axisBuilder._dumbGroup.add(textEl);
         textEl.updateTransform();
-
         labelEls.push(textEl);
         axisBuilder.group.add(textEl);
-
         textEl.decomposeTransform();
-
     });
-
     return labelEls;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39163,38 +33987,30 @@ function buildAxisLabel(axisBuilder, axisModel, opt) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // Build axisPointerModel, mergin tooltip.axisPointer model for each axis.
 // allAxesInfo should be updated when setOption performed.
-
-
 function fixValue(axisModel) {
     var axisInfo = getAxisInfo(axisModel);
     if (!axisInfo) {
         return;
     }
-
     var axisPointerModel = axisInfo.axisPointerModel;
     var scale = axisInfo.axis.scale;
     var option = axisPointerModel.option;
     var status = axisPointerModel.get('status');
     var value = axisPointerModel.get('value');
-
     // Parse init value for category and time axis.
     if (value != null) {
         value = scale.parse(value);
     }
-
     var useHandle = isHandleTrigger(axisPointerModel);
     // If `handle` used, `axisPointer` will always be displayed, so value
     // and status should be initialized.
     if (status == null) {
         option.status = useHandle ? 'show' : 'hide';
     }
-
     var extent = scale.getExtent().slice();
     extent[0] > extent[1] && extent.reverse();
-
     if (// Pick a value on axis when initializing.
         value == null
         // If both `handle` and `dataZoom` are used, value may be out of axis extent,
@@ -39207,28 +34023,22 @@ function fixValue(axisModel) {
     if (value < extent[0]) {
         value = extent[0];
     }
-
     option.value = value;
-
     if (useHandle) {
         option.status = axisInfo.axis.scale.isBlank() ? 'hide' : 'show';
     }
 }
-
 function getAxisInfo(axisModel) {
     var coordSysAxesInfo = (axisModel.ecModel.getComponent('axisPointer') || {}).coordSysAxesInfo;
     return coordSysAxesInfo && coordSysAxesInfo.axesInfo[makeKey(axisModel)];
 }
-
 function getAxisPointerModel(axisModel) {
     var axisInfo = getAxisInfo(axisModel);
     return axisInfo && axisInfo.axisPointerModel;
 }
-
 function isHandleTrigger(axisPointerModel) {
     return !!axisPointerModel.get('handle.show');
 }
-
 /**
  * @param {module:echarts/model/Model} model
  * @return {string} unique key
@@ -39236,7 +34046,6 @@ function isHandleTrigger(axisPointerModel) {
 function makeKey(model) {
     return model.type + '||' + model.id;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39255,25 +34064,20 @@ function makeKey(model) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Base class of AxisView.
  */
 var AxisView = extendComponentView({
-
     type: 'axis',
-
     /**
      * @private
      */
     _axisPointer: null,
-
     /**
      * @protected
      * @type {string}
      */
     axisPointerClass: null,
-
     /**
      * @override
      */
@@ -39284,12 +34088,9 @@ var AxisView = extendComponentView({
         // So put it here temporarily, although it is not appropriate to
         // put a model-writing procedure in `view`.
         this.axisPointerClass && fixValue(axisModel);
-
         AxisView.superApply(this, 'render', arguments);
-
         updateAxisPointer(this, axisModel, ecModel, api, payload, true);
     },
-
     /**
      * Action handler.
      * @public
@@ -39301,7 +34102,6 @@ var AxisView = extendComponentView({
     updateAxisPointer: function (axisModel, ecModel, api, payload, force) {
         updateAxisPointer(this, axisModel, ecModel, api, payload, false);
     },
-
     /**
      * @override
      */
@@ -39310,7 +34110,6 @@ var AxisView = extendComponentView({
         axisPointer && axisPointer.remove(api);
         AxisView.superApply(this, 'remove', arguments);
     },
-
     /**
      * @override
      */
@@ -39318,9 +34117,7 @@ var AxisView = extendComponentView({
         disposeAxisPointer(this, api);
         AxisView.superApply(this, 'dispose', arguments);
     }
-
 });
-
 function updateAxisPointer(axisView, axisModel, ecModel, api, payload, forceRender) {
     var Clazz = AxisView.getAxisPointerClass(axisView.axisPointerClass);
     if (!Clazz) {
@@ -39332,15 +34129,12 @@ function updateAxisPointer(axisView, axisModel, ecModel, api, payload, forceRend
             .render(axisModel, axisPointerModel, api, forceRender)
         : disposeAxisPointer(axisView, api);
 }
-
 function disposeAxisPointer(axisView, ecModel, api) {
     var axisPointer = axisView._axisPointer;
     axisPointer && axisPointer.dispose(ecModel, api);
     axisView._axisPointer = null;
 }
-
 var axisPointerClazz = [];
-
 AxisView.registerAxisPointerClass = function (type, clazz) {
     if (__DEV__) {
         if (axisPointerClazz[type]) {
@@ -39349,11 +34143,9 @@ AxisView.registerAxisPointerClass = function (type, clazz) {
     }
     axisPointerClazz[type] = clazz;
 };
-
 AxisView.getAxisPointerClass = function (type) {
     return type && axisPointerClazz[type];
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39372,7 +34164,6 @@ AxisView.getAxisPointerClass = function (type) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Can only be called after coordinate system creation stage.
  * (Can be called before coordinate system update stage).
@@ -39389,57 +34180,44 @@ function layout$1(gridModel, axisModel, opt) {
     var axis = axisModel.axis;
     var layout = {};
     var otherAxisOnZeroOf = axis.getAxesOnZeroOf()[0];
-
     var rawAxisPosition = axis.position;
     var axisPosition = otherAxisOnZeroOf ? 'onZero' : rawAxisPosition;
     var axisDim = axis.dim;
-
     var rect = grid.getRect();
     var rectBound = [rect.x, rect.x + rect.width, rect.y, rect.y + rect.height];
     var idx = {left: 0, right: 1, top: 0, bottom: 1, onZero: 2};
     var axisOffset = axisModel.get('offset') || 0;
-
     var posBound = axisDim === 'x'
         ? [rectBound[2] - axisOffset, rectBound[3] + axisOffset]
         : [rectBound[0] - axisOffset, rectBound[1] + axisOffset];
-
     if (otherAxisOnZeroOf) {
         var onZeroCoord = otherAxisOnZeroOf.toGlobalCoord(otherAxisOnZeroOf.dataToCoord(0));
         posBound[idx.onZero] = Math.max(Math.min(onZeroCoord, posBound[1]), posBound[0]);
     }
-
     // Axis position
     layout.position = [
         axisDim === 'y' ? posBound[idx[axisPosition]] : rectBound[0],
         axisDim === 'x' ? posBound[idx[axisPosition]] : rectBound[3]
     ];
-
     // Axis rotation
     layout.rotation = Math.PI / 2 * (axisDim === 'x' ? 0 : 1);
-
     // Tick and label direction, x y is axisDim
     var dirMap = {top: -1, bottom: 1, left: -1, right: 1};
-
     layout.labelDirection = layout.tickDirection = layout.nameDirection = dirMap[rawAxisPosition];
     layout.labelOffset = otherAxisOnZeroOf ? posBound[idx[rawAxisPosition]] - posBound[idx.onZero] : 0;
-
     if (axisModel.get('axisTick.inside')) {
         layout.tickDirection = -layout.tickDirection;
     }
     if (retrieve(opt.labelInside, axisModel.get('axisLabel.inside'))) {
         layout.labelDirection = -layout.labelDirection;
     }
-
     // Special label rotation
     var labelRotate = axisModel.get('axisLabel.rotate');
     layout.labelRotate = axisPosition === 'top' ? -labelRotate : labelRotate;
-
     // Over splitLine and splitArea
     layout.z2 = 1;
-
     return layout;
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39458,14 +34236,12 @@ function layout$1(gridModel, axisModel, opt) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var axisBuilderAttrs = [
     'axisLine', 'axisTickLabel', 'axisName'
 ];
 var selfBuilderAttrs = [
     'splitArea', 'splitLine'
 ];
-
 // function getAlignWithLabel(model, axisModel) {
 //     var alignWithLabel = model.get('alignWithLabel');
 //     if (alignWithLabel === 'auto') {
@@ -39473,54 +34249,36 @@ var selfBuilderAttrs = [
 //     }
 //     return alignWithLabel;
 // }
-
 var CartesianAxisView = AxisView.extend({
-
     type: 'cartesianAxis',
-
     axisPointerClass: 'CartesianAxisPointer',
-
     /**
      * @override
      */
     render: function (axisModel, ecModel, api, payload) {
-
         this.group.removeAll();
-
         var oldAxisGroup = this._axisGroup;
         this._axisGroup = new Group();
-
         this.group.add(this._axisGroup);
-
         if (!axisModel.get('show')) {
             return;
         }
-
         var gridModel = axisModel.getCoordSysModel();
-
         var layout = layout$1(gridModel, axisModel);
-
         var axisBuilder = new AxisBuilder(axisModel, layout);
-
         each$1(axisBuilderAttrs, axisBuilder.add, axisBuilder);
-
         this._axisGroup.add(axisBuilder.getGroup());
-
         each$1(selfBuilderAttrs, function (name) {
             if (axisModel.get(name + '.show')) {
                 this['_' + name](axisModel, gridModel);
             }
         }, this);
-
         groupTransition(oldAxisGroup, this._axisGroup, axisModel);
-
         CartesianAxisView.superCall(this, 'render', axisModel, ecModel, api, payload);
     },
-
     remove: function () {
         this._splitAreaColors = null;
     },
-
     /**
      * @param {module:echarts/coord/cartesian/AxisModel} axisModel
      * @param {module:echarts/coord/cartesian/GridModel} gridModel
@@ -39528,35 +34286,26 @@ var CartesianAxisView = AxisView.extend({
      */
     _splitLine: function (axisModel, gridModel) {
         var axis = axisModel.axis;
-
         if (axis.scale.isBlank()) {
             return;
         }
-
         var splitLineModel = axisModel.getModel('splitLine');
         var lineStyleModel = splitLineModel.getModel('lineStyle');
         var lineColors = lineStyleModel.get('color');
-
         lineColors = isArray(lineColors) ? lineColors : [lineColors];
-
         var gridRect = gridModel.coordinateSystem.getRect();
         var isHorizontal = axis.isHorizontal();
-
         var lineCount = 0;
-
         var ticksCoords = axis.getTicksCoords({
             tickModel: splitLineModel
         });
-
         var p1 = [];
         var p2 = [];
-
         // Simple optimization
         // Batching the lines if color are the same
         var lineStyle = lineStyleModel.getLineStyle();
         for (var i = 0; i < ticksCoords.length; i++) {
             var tickCoord = axis.toGlobalCoord(ticksCoords[i].coord);
-
             if (isHorizontal) {
                 p1[0] = tickCoord;
                 p1[1] = gridRect.y;
@@ -39569,7 +34318,6 @@ var CartesianAxisView = AxisView.extend({
                 p2[0] = gridRect.x + gridRect.width;
                 p2[1] = tickCoord;
             }
-
             var colorIndex = (lineCount++) % lineColors.length;
             var tickValue = ticksCoords[i].tickValue;
             this._axisGroup.add(new Line(subPixelOptimizeLine({
@@ -39587,7 +34335,6 @@ var CartesianAxisView = AxisView.extend({
             })));
         }
     },
-
     /**
      * @param {module:echarts/coord/cartesian/AxisModel} axisModel
      * @param {module:echarts/coord/cartesian/GridModel} gridModel
@@ -39595,26 +34342,20 @@ var CartesianAxisView = AxisView.extend({
      */
     _splitArea: function (axisModel, gridModel) {
         var axis = axisModel.axis;
-
         if (axis.scale.isBlank()) {
             return;
         }
-
         var splitAreaModel = axisModel.getModel('splitArea');
         var areaStyleModel = splitAreaModel.getModel('areaStyle');
         var areaColors = areaStyleModel.get('color');
-
         var gridRect = gridModel.coordinateSystem.getRect();
-
         var ticksCoords = axis.getTicksCoords({
             tickModel: splitAreaModel,
             clamp: true
         });
-
         if (!ticksCoords.length) {
             return;
         }
-
         // For Making appropriate splitArea animation, the color and anid
         // should be corresponding to previous one if possible.
         var areaColorsLen = areaColors.length;
@@ -39630,15 +34371,11 @@ var CartesianAxisView = AxisView.extend({
                 }
             }
         }
-
         var prev = axis.toGlobalCoord(ticksCoords[0].coord);
-
         var areaStyle = areaStyleModel.getAreaStyle();
         areaColors = isArray(areaColors) ? areaColors : [areaColors];
-
         for (var i = 1; i < ticksCoords.length; i++) {
             var tickCoord = axis.toGlobalCoord(ticksCoords[i].coord);
-
             var x;
             var y;
             var width;
@@ -39657,10 +34394,8 @@ var CartesianAxisView = AxisView.extend({
                 height = tickCoord - y;
                 prev = y + height;
             }
-
             var tickValue = ticksCoords[i - 1].tickValue;
             tickValue != null && newSplitAreaColors.set(tickValue, colorIndex);
-
             this._axisGroup.add(new Rect({
                 anid: tickValue != null ? 'area_' + tickValue : null,
                 shape: {
@@ -39674,21 +34409,17 @@ var CartesianAxisView = AxisView.extend({
                 }, areaStyle),
                 silent: true
             }));
-
             colorIndex = (colorIndex + 1) % areaColorsLen;
         }
-
         this._splitAreaColors = newSplitAreaColors;
     }
 });
-
 CartesianAxisView.extend({
     type: 'xAxis'
 });
 CartesianAxisView.extend({
     type: 'yAxis'
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39707,7 +34438,6 @@ CartesianAxisView.extend({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39726,12 +34456,9 @@ CartesianAxisView.extend({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // Grid view
 extendComponentView({
-
     type: 'grid',
-
     render: function (gridModel, ecModel) {
         this.group.removeAll();
         if (gridModel.get('show')) {
@@ -39745,16 +34472,13 @@ extendComponentView({
             }));
         }
     }
-
 });
-
 registerPreprocessor(function (option) {
     // Only create grid when need
     if (option.xAxis && option.yAxis && !option.grid) {
         option.grid = {};
     }
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39773,17 +34497,14 @@ registerPreprocessor(function (option) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // In case developer forget to include grid component
 registerVisual(visualSymbol('line', 'circle', 'line'));
 registerLayout(layoutPoints('line'));
-
 // Down sample after filter
 registerProcessor(
     PRIORITY.PROCESSOR.STATISTIC,
     dataSample('line')
 );
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39802,15 +34523,11 @@ registerProcessor(
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var BaseBarSeries = SeriesModel.extend({
-
     type: 'series.__base_bar__',
-
     getInitialData: function (option, ecModel) {
         return createListFromArray(this.getSource(), this);
     },
-
     getMarkerPosition: function (value) {
         var coordSys = this.coordinateSystem;
         if (coordSys) {
@@ -39825,29 +34542,24 @@ var BaseBarSeries = SeriesModel.extend({
         }
         return [NaN, NaN];
     },
-
     defaultOption: {
         zlevel: 0,                  // 一级层叠
         z: 2,                       // 二级层叠
         coordinateSystem: 'cartesian2d',
         legendHoverLink: true,
         // stack: null
-
         // Cartesian coordinate system
         // xAxisIndex: 0,
         // yAxisIndex: 0,
-
         // 最小高度改为0
         barMinHeight: 0,
         // 最小角度为0，仅对极坐标系下的柱状图有效
         barMinAngle: 0,
         // cursor: null,
-
         large: false,
         largeThreshold: 400,
         progressive: 3e3,
         progressiveChunkMode: 'mod',
-
         // barMaxWidth: null,
         // 默认自适应
         // barWidth: null,
@@ -39862,7 +34574,6 @@ var BaseBarSeries = SeriesModel.extend({
         emphasis: {}
     }
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39881,15 +34592,10 @@ var BaseBarSeries = SeriesModel.extend({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 BaseBarSeries.extend({
-
     type: 'series.bar',
-
     dependencies: ['grid', 'polar'],
-
     brushSelector: 'rect',
-
     /**
      * @override
      */
@@ -39899,7 +34605,6 @@ BaseBarSeries.extend({
             ? this.get('progressive')
             : false;
     },
-
     /**
      * @override
      */
@@ -39912,9 +34617,7 @@ BaseBarSeries.extend({
         }
         return progressiveThreshold;
     }
-
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39933,13 +34636,11 @@ BaseBarSeries.extend({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 function setLabel(
     normalStyle, hoverStyle, itemModel, color, seriesModel, dataIndex, labelPositionOutside
 ) {
     var labelModel = itemModel.getModel('label');
     var hoverLabelModel = itemModel.getModel('emphasis.label');
-
     setLabelStyle(
         normalStyle, hoverStyle, labelModel, hoverLabelModel,
         {
@@ -39950,17 +34651,14 @@ function setLabel(
             autoColor: color
         }
     );
-
     fixPosition(normalStyle);
     fixPosition(hoverStyle);
 }
-
 function fixPosition(style, labelPositionOutside) {
     if (style.textPosition === 'outside') {
         style.textPosition = labelPositionOutside;
     }
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -39979,7 +34677,6 @@ function fixPosition(style, labelPositionOutside) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var getBarItemStyle = makeStyleMapper(
     [
         ['fill', 'color'],
@@ -39995,7 +34692,6 @@ var getBarItemStyle = makeStyleMapper(
         ['shadowColor']
     ]
 );
-
 var barItemStyle = {
     getBarItemStyle: function (excludes) {
         var style = getBarItemStyle(this, excludes);
@@ -40006,7 +34702,6 @@ var barItemStyle = {
         return style;
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -40025,22 +34720,15 @@ var barItemStyle = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var BAR_BORDER_WIDTH_QUERY = ['itemStyle', 'barBorderWidth'];
-
 // FIXME
 // Just for compatible with ec2.
 extend(Model.prototype, barItemStyle);
-
 extendChartView({
-
     type: 'bar',
-
     render: function (seriesModel, ecModel, api) {
         this._updateDrawMode(seriesModel);
-
         var coordinateSystemType = seriesModel.get('coordinateSystem');
-
         if (coordinateSystemType === 'cartesian2d'
             || coordinateSystemType === 'polar'
         ) {
@@ -40051,20 +34739,16 @@ extendChartView({
         else if (__DEV__) {
             console.warn('Only cartesian2d and polar supported for bar.');
         }
-
         return this.group;
     },
-
     incrementalPrepareRender: function (seriesModel, ecModel, api) {
         this._clear();
         this._updateDrawMode(seriesModel);
     },
-
     incrementalRender: function (params, seriesModel, ecModel, api) {
         // Do not support progressive in normal mode.
         this._incrementalRenderLarge(params, seriesModel);
     },
-
     _updateDrawMode: function (seriesModel) {
         var isLargeDraw = seriesModel.pipelineContext.large;
         if (this._isLargeDraw == null || isLargeDraw ^ this._isLargeDraw) {
@@ -40072,31 +34756,25 @@ extendChartView({
             this._clear();
         }
     },
-
     _renderNormal: function (seriesModel, ecModel, api) {
         var group = this.group;
         var data = seriesModel.getData();
         var oldData = this._data;
-
         var coord = seriesModel.coordinateSystem;
         var baseAxis = coord.getBaseAxis();
         var isHorizontalOrRadial;
-
         if (coord.type === 'cartesian2d') {
             isHorizontalOrRadial = baseAxis.isHorizontal();
         }
         else if (coord.type === 'polar') {
             isHorizontalOrRadial = baseAxis.dim === 'angle';
         }
-
         var animationModel = seriesModel.isAnimationEnabled() ? seriesModel : null;
-
         data.diff(oldData)
             .add(function (dataIndex) {
                 if (!data.hasValue(dataIndex)) {
                     return;
                 }
-
                 var itemModel = data.getItemModel(dataIndex);
                 var layout = getLayout[coord.type](data, dataIndex, itemModel);
                 var el = elementCreator[coord.type](
@@ -40104,7 +34782,6 @@ extendChartView({
                 );
                 data.setItemGraphicEl(dataIndex, el);
                 group.add(el);
-
                 updateStyle(
                     el, data, dataIndex, itemModel, layout,
                     seriesModel, isHorizontalOrRadial, coord.type === 'polar'
@@ -40112,15 +34789,12 @@ extendChartView({
             })
             .update(function (newIndex, oldIndex) {
                 var el = oldData.getItemGraphicEl(oldIndex);
-
                 if (!data.hasValue(newIndex)) {
                     group.remove(el);
                     return;
                 }
-
                 var itemModel = data.getItemModel(newIndex);
                 var layout = getLayout[coord.type](data, newIndex, itemModel);
-
                 if (el) {
                     updateProps(el, {shape: layout}, animationModel, newIndex);
                 }
@@ -40129,11 +34803,9 @@ extendChartView({
                         data, newIndex, itemModel, layout, isHorizontalOrRadial, animationModel, true
                     );
                 }
-
                 data.setItemGraphicEl(newIndex, el);
                 // Add back
                 group.add(el);
-
                 updateStyle(
                     el, data, newIndex, itemModel, layout,
                     seriesModel, isHorizontalOrRadial, coord.type === 'polar'
@@ -40149,25 +34821,19 @@ extendChartView({
                 }
             })
             .execute();
-
         this._data = data;
     },
-
     _renderLarge: function (seriesModel, ecModel, api) {
         this._clear();
         createLarge(seriesModel, this.group);
     },
-
     _incrementalRenderLarge: function (params, seriesModel) {
         createLarge(seriesModel, this.group, true);
     },
-
     dispose: noop,
-
     remove: function (ecModel) {
         this._clear(ecModel);
     },
-
     _clear: function (ecModel) {
         var group = this.group;
         var data = this._data;
@@ -40186,17 +34852,13 @@ extendChartView({
         }
         this._data = null;
     }
-
 });
-
 var elementCreator = {
-
     cartesian2d: function (
         data, dataIndex, itemModel, layout, isHorizontal,
         animationModel, isUpdate
     ) {
         var rect = new Rect({shape: extend({}, layout)});
-
         // Animation
         if (animationModel) {
             var rectShape = rect.shape;
@@ -40208,10 +34870,8 @@ var elementCreator = {
                 shape: animateTarget
             }, animationModel, dataIndex);
         }
-
         return rect;
     },
-
     polar: function (
         data, dataIndex, itemModel, layout, isRadial,
         animationModel, isUpdate
@@ -40224,7 +34884,6 @@ var elementCreator = {
         var sector = new Sector({
             shape: defaults({clockwise: clockwise}, layout)
         });
-
         // Animation
         if (animationModel) {
             var sectorShape = sector.shape;
@@ -40236,11 +34895,9 @@ var elementCreator = {
                 shape: animateTarget
             }, animationModel, dataIndex);
         }
-
         return sector;
     }
 };
-
 function removeRect(dataIndex, animationModel, el) {
     // Not show text when animating
     el.style.text = null;
@@ -40252,7 +34909,6 @@ function removeRect(dataIndex, animationModel, el) {
         el.parent && el.parent.remove(el);
     });
 }
-
 function removeSector(dataIndex, animationModel, el) {
     // Not show text when animating
     el.style.text = null;
@@ -40264,12 +34920,10 @@ function removeSector(dataIndex, animationModel, el) {
         el.parent && el.parent.remove(el);
     });
 }
-
 var getLayout = {
     cartesian2d: function (data, dataIndex, itemModel) {
         var layout = data.getItemLayout(dataIndex);
         var fixedLineWidth = getLineWidth(itemModel, layout);
-
         // fix layout with lineWidth
         var signX = layout.width > 0 ? 1 : -1;
         var signY = layout.height > 0 ? 1 : -1;
@@ -40280,7 +34934,6 @@ var getLayout = {
             height: layout.height - signY * fixedLineWidth
         };
     },
-
     polar: function (data, dataIndex, itemModel) {
         var layout = data.getItemLayout(dataIndex);
         return {
@@ -40293,7 +34946,6 @@ var getLayout = {
         };
     }
 };
-
 function updateStyle(
     el, data, dataIndex, itemModel, layout, seriesModel, isHorizontal, isPolar
 ) {
@@ -40301,11 +34953,9 @@ function updateStyle(
     var opacity = data.getItemVisual(dataIndex, 'opacity');
     var itemStyleModel = itemModel.getModel('itemStyle');
     var hoverStyle = itemModel.getModel('emphasis.itemStyle').getBarItemStyle();
-
     if (!isPolar) {
         el.setShape('r', itemStyleModel.get('barBorderRadius') || 0);
     }
-
     el.useStyle(defaults(
         {
             fill: color,
@@ -40313,44 +34963,33 @@ function updateStyle(
         },
         itemStyleModel.getBarItemStyle()
     ));
-
     var cursorStyle = itemModel.getShallow('cursor');
     cursorStyle && el.attr('cursor', cursorStyle);
-
     var labelPositionOutside = isHorizontal
         ? (layout.height > 0 ? 'bottom' : 'top')
         : (layout.width > 0 ? 'left' : 'right');
-
     if (!isPolar) {
         setLabel(
             el.style, hoverStyle, itemModel, color,
             seriesModel, dataIndex, labelPositionOutside
         );
     }
-
     setHoverStyle(el, hoverStyle);
 }
-
 // In case width or height are too small.
 function getLineWidth(itemModel, rawLayout) {
     var lineWidth = itemModel.get(BAR_BORDER_WIDTH_QUERY) || 0;
     return Math.min(lineWidth, Math.abs(rawLayout.width), Math.abs(rawLayout.height));
 }
-
-
 var LargePath = Path.extend({
-
     type: 'largeBar',
-
     shape: {points: []},
-
     buildPath: function (ctx, shape) {
         // Drawing lines is more efficient than drawing
         // a whole line or drawing rects.
         var points = shape.points;
         var startPoint = this.__startPoint;
         var valueIdx = this.__valueIdx;
-
         for (var i = 0; i < points.length; i += 2) {
             startPoint[this.__valueIdx] = points[i + valueIdx];
             ctx.moveTo(startPoint[0], startPoint[1]);
@@ -40358,14 +34997,12 @@ var LargePath = Path.extend({
         }
     }
 });
-
 function createLarge(seriesModel, group, incremental) {
     // TODO support polar
     var data = seriesModel.getData();
     var startPoint = [];
     var valueIdx = data.getLayout('valueAxisHorizontal') ? 1 : 0;
     startPoint[1 - valueIdx] = data.getLayout('valueAxisStart');
-
     var el = new LargePath({
         shape: {points: data.getLayout('largePoints')},
         incremental: !!incremental,
@@ -40375,17 +35012,14 @@ function createLarge(seriesModel, group, incremental) {
     group.add(el);
     setLargeStyle(el, seriesModel, data);
 }
-
 function setLargeStyle(el, seriesModel, data) {
     var borderColor = data.getVisual('borderColor') || data.getVisual('color');
     var itemStyle = seriesModel.getModel('itemStyle').getItemStyle(['color', 'borderColor']);
-
     el.useStyle(itemStyle);
     el.style.fill = null;
     el.style.stroke = borderColor;
     el.style.lineWidth = data.getLayout('barWidth');
 }
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -40404,12 +35038,10 @@ function setLargeStyle(el, seriesModel, data) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // In case developer forget to include grid component
 registerLayout(curry(layout, 'bar'));
 // Should after normal bar layout, otherwise it is blocked by normal bar layout.
 registerLayout(largeLayout);
-
 registerVisual({
     seriesType: 'bar',
     reset: function (seriesModel) {
@@ -40417,7 +35049,6 @@ registerVisual({
         seriesModel.getData().setVisual('legendSymbol', 'roundRect');
     }
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -40436,8 +35067,6 @@ registerVisual({
 * specific language governing permissions and limitations
 * under the License.
 */
-
-
 /**
  * [Usage]:
  * (1)
@@ -40456,17 +35085,12 @@ registerVisual({
  */
 var createListSimply = function (seriesModel, opt, nameList) {
     opt = isArray(opt) && {coordDimensions: opt} || extend({}, opt);
-
     var source = seriesModel.getSource();
-
     var dimensionsInfo = createDimensions(source, opt);
-
     var list = new List(dimensionsInfo, seriesModel);
     list.initData(source, nameList);
-
     return list;
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -40485,15 +35109,12 @@ var createListSimply = function (seriesModel, opt, nameList) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * Data selectable mixin for chart series.
  * To eanble data select, option of series must have `selectedMode`.
  * And each data item will use `selected` to toggle itself selected status
  */
-
 var dataSelectableMixin = {
-
     /**
      * @param {Array.<Object>} targetList [{name, value, selected}, ...]
      *        If targetList is an array, it should like [{name: ..., value: ...}, ...].
@@ -40501,13 +35122,11 @@ var dataSelectableMixin = {
      */
     updateSelectedMap: function (targetList) {
         this._targetList = isArray(targetList) ? targetList.slice() : [];
-
         this._selectTargetMap = reduce(targetList || [], function (targetMap, target) {
             targetMap.set(target.name, target);
             return targetMap;
         }, createHashMap());
     },
-
     /**
      * Either name or id should be passed as input here.
      * If both of them are defined, id is used.
@@ -40528,7 +35147,6 @@ var dataSelectableMixin = {
         }
         target && (target.selected = true);
     },
-
     /**
      * Either name or id should be passed as input here.
      * If both of them are defined, id is used.
@@ -40544,7 +35162,6 @@ var dataSelectableMixin = {
         // selectedMode !== 'single' && target && (target.selected = false);
         target && (target.selected = false);
     },
-
     /**
      * Either name or id should be passed as input here.
      * If both of them are defined, id is used.
@@ -40561,7 +35178,6 @@ var dataSelectableMixin = {
             return target.selected;
         }
     },
-
     /**
      * Either name or id should be passed as input here.
      * If both of them are defined, id is used.
@@ -40576,7 +35192,6 @@ var dataSelectableMixin = {
         return target && target.selected;
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -40595,37 +35210,27 @@ var dataSelectableMixin = {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var PieSeries = extendSeriesModel({
-
     type: 'series.pie',
-
     // Overwrite
     init: function (option) {
         PieSeries.superApply(this, 'init', arguments);
-
         // Enable legend selection for each data item
         // Use a function instead of direct access because data reference may changed
         this.legendDataProvider = function () {
             return this.getRawData();
         };
-
         this.updateSelectedMap(this._createSelectableList());
-
         this._defaultLabelLine(option);
     },
-
     // Overwrite
     mergeOption: function (newOption) {
         PieSeries.superCall(this, 'mergeOption', newOption);
-
         this.updateSelectedMap(this._createSelectableList());
     },
-
     getInitialData: function (option, ecModel) {
         return createListSimply(this, ['value']);
     },
-
     _createSelectableList: function () {
         var data = this.getRawData();
         var valueDim = data.mapDimension('value');
@@ -40639,32 +35244,26 @@ var PieSeries = extendSeriesModel({
         }
         return targetList;
     },
-
     // Overwrite
     getDataParams: function (dataIndex) {
         var data = this.getData();
         var params = PieSeries.superCall(this, 'getDataParams', dataIndex);
         // FIXME toFixed?
-
         var valueList = [];
         data.each(data.mapDimension('value'), function (value) {
             valueList.push(value);
         });
-
         params.percent = getPercentWithPrecision(
             valueList,
             dataIndex,
             data.hostModel.get('percentPrecision')
         );
-
         params.$vars.push('percent');
         return params;
     },
-
     _defaultLabelLine: function (option) {
         // Extend labelLine emphasis
         defaultEmphasis(option, 'labelLine', ['show']);
-
         var labelLineNormalOpt = option.labelLine;
         var labelLineEmphasisOpt = option.emphasis.labelLine;
         // Not show label line if `label.normal.show = false`
@@ -40673,12 +35272,10 @@ var PieSeries = extendSeriesModel({
         labelLineEmphasisOpt.show = labelLineEmphasisOpt.show
             && option.emphasis.label.show;
     },
-
     defaultOption: {
         zlevel: 0,
         z: 2,
         legendHoverLink: true,
-
         hoverAnimation: true,
         // 默认全局居中
         center: ['50%', '50%'],
@@ -40692,21 +35289,16 @@ var PieSeries = extendSeriesModel({
         selectedOffset: 10,
         // 高亮扇区偏移量
         hoverOffset: 10,
-
         // If use strategy to avoid label overlapping
         avoidLabelOverlap: true,
         // 选择模式，默认关闭，可选single，multiple
         // selectedMode: false,
         // 南丁格尔玫瑰图模式，'radius'（半径） | 'area'（面积）
         // roseType: null,
-
         percentPrecision: 2,
-
         // If still show when all data zero.
         stillShowZeroSum: true,
-
         // cursor: null,
-
         label: {
             // If rotate around circle
             rotate: false,
@@ -40734,16 +35326,12 @@ var PieSeries = extendSeriesModel({
         itemStyle: {
             borderWidth: 1
         },
-
         // Animation type canbe expansion, scale
         animationType: 'expansion',
-
         animationEasing: 'cubicOut'
     }
 });
-
 mixin(PieSeries, dataSelectableMixin);
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -40762,7 +35350,6 @@ mixin(PieSeries, dataSelectableMixin);
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * @param {module:echarts/model/Series} seriesModel
  * @param {boolean} hasAnimation
@@ -40773,14 +35360,12 @@ function updateDataSelected(uid, seriesModel, hasAnimation, api) {
     var dataIndex = this.dataIndex;
     var name = data.getName(dataIndex);
     var selectedOffset = seriesModel.get('selectedOffset');
-
     api.dispatchAction({
         type: 'pieToggleSelect',
         from: uid,
         name: name,
         seriesId: seriesModel.id
     });
-
     data.each(function (idx) {
         toggleItemSelected(
             data.getItemGraphicEl(idx),
@@ -40791,7 +35376,6 @@ function updateDataSelected(uid, seriesModel, hasAnimation, api) {
         );
     });
 }
-
 /**
  * @param {module:zrender/graphic/Sector} el
  * @param {Object} layout
@@ -40802,13 +35386,10 @@ function updateDataSelected(uid, seriesModel, hasAnimation, api) {
  */
 function toggleItemSelected(el, layout, isSelected, selectedOffset, hasAnimation) {
     var midAngle = (layout.startAngle + layout.endAngle) / 2;
-
     var dx = Math.cos(midAngle);
     var dy = Math.sin(midAngle);
-
     var offset = isSelected ? selectedOffset : 0;
     var position = [dx * offset, dy * offset];
-
     hasAnimation
         // animateTo will stop revious animation like update transition
         ? el.animate()
@@ -40818,16 +35399,13 @@ function toggleItemSelected(el, layout, isSelected, selectedOffset, hasAnimation
             .start('bounceOut')
         : el.attr('position', position);
 }
-
 /**
  * Piece of pie including Sector, Label, LabelLine
  * @constructor
  * @extends {module:zrender/graphic/Group}
  */
 function PiePiece(data, idx) {
-
     Group.call(this);
-
     var sector = new Sector({
         z2: 2
     });
@@ -40836,9 +35414,7 @@ function PiePiece(data, idx) {
     this.add(sector);
     this.add(polyline);
     this.add(text);
-
     this.updateData(data, idx, true);
-
     // Hover to change label and labelLine
     function onEmphasis() {
         polyline.ignore = polyline.hoverIgnore;
@@ -40853,22 +35429,16 @@ function PiePiece(data, idx) {
         .on('mouseover', onEmphasis)
         .on('mouseout', onNormal);
 }
-
 var piePieceProto = PiePiece.prototype;
-
 piePieceProto.updateData = function (data, idx, firstCreate) {
-
     var sector = this.childAt(0);
-
     var seriesModel = data.hostModel;
     var itemModel = data.getItemModel(idx);
     var layout = data.getItemLayout(idx);
     var sectorShape = extend({}, layout);
     sectorShape.label = null;
-
     if (firstCreate) {
         sector.setShape(sectorShape);
-
         var animationType = seriesModel.getShallow('animationType');
         if (animationType === 'scale') {
             sector.shape.r = layout.r0;
@@ -40887,17 +35457,14 @@ piePieceProto.updateData = function (data, idx, firstCreate) {
                 }
             }, seriesModel, idx);
         }
-
     }
     else {
         updateProps(sector, {
             shape: sectorShape
         }, seriesModel, idx);
     }
-
     // Update common style
     var visualColor = data.getItemVisual(idx, 'color');
-
     sector.useStyle(
         defaults(
             {
@@ -40908,10 +35475,8 @@ piePieceProto.updateData = function (data, idx, firstCreate) {
         )
     );
     sector.hoverStyle = itemModel.getModel('emphasis.itemStyle').getItemStyle();
-
     var cursorStyle = itemModel.getShallow('cursor');
     cursorStyle && sector.attr('cursor', cursorStyle);
-
     // Toggle selected
     toggleItemSelected(
         this,
@@ -40920,7 +35485,6 @@ piePieceProto.updateData = function (data, idx, firstCreate) {
         seriesModel.get('selectedOffset'),
         seriesModel.get('animation')
     );
-
     function onEmphasis() {
         // Sector may has animation of updating data. Force to move to the last frame
         // Or it may stopped on the wrong shape
@@ -40947,23 +35511,17 @@ piePieceProto.updateData = function (data, idx, firstCreate) {
             .on('emphasis', onEmphasis)
             .on('normal', onNormal);
     }
-
     this._updateLabel(data, idx);
-
     setHoverStyle(this);
 };
-
 piePieceProto._updateLabel = function (data, idx) {
-
     var labelLine = this.childAt(1);
     var labelText = this.childAt(2);
-
     var seriesModel = data.hostModel;
     var itemModel = data.getItemModel(idx);
     var layout = data.getItemLayout(idx);
     var labelLayout = layout.label;
     var visualColor = data.getItemVisual(idx, 'color');
-
     updateProps(labelLine, {
         shape: {
             points: labelLayout.linePoints || [
@@ -40971,7 +35529,6 @@ piePieceProto._updateLabel = function (data, idx) {
             ]
         }
     }, seriesModel, idx);
-
     updateProps(labelText, {
         style: {
             x: labelLayout.x,
@@ -40983,13 +35540,11 @@ piePieceProto._updateLabel = function (data, idx) {
         origin: [labelLayout.x, labelLayout.y],
         z2: 10
     });
-
     var labelModel = itemModel.getModel('label');
     var labelHoverModel = itemModel.getModel('emphasis.label');
     var labelLineModel = itemModel.getModel('labelLine');
     var labelLineHoverModel = itemModel.getModel('emphasis.labelLine');
     var visualColor = data.getItemVisual(idx, 'color');
-
     setLabelStyle(
         labelText.style, labelText.hoverStyle = {}, labelModel, labelHoverModel,
         {
@@ -41005,22 +35560,17 @@ piePieceProto._updateLabel = function (data, idx) {
             opacity: data.getItemVisual(idx, 'opacity')
         }
     );
-
     labelText.ignore = labelText.normalIgnore = !labelModel.get('show');
     labelText.hoverIgnore = !labelHoverModel.get('show');
-
     labelLine.ignore = labelLine.normalIgnore = !labelLineModel.get('show');
     labelLine.hoverIgnore = !labelLineHoverModel.get('show');
-
     // Default use item visual color
     labelLine.setStyle({
         stroke: visualColor,
         opacity: data.getItemVisual(idx, 'opacity')
     });
     labelLine.setStyle(labelLineModel.getModel('lineStyle').getLineStyle());
-
     labelLine.hoverStyle = labelLineHoverModel.getModel('lineStyle').getLineStyle();
-
     var smooth = labelLineModel.get('smooth');
     if (smooth && smooth === true) {
         smooth = 0.4;
@@ -41029,39 +35579,28 @@ piePieceProto._updateLabel = function (data, idx) {
         smooth: smooth
     });
 };
-
 inherits(PiePiece, Group);
-
-
 // Pie view
 var PieView = Chart.extend({
-
     type: 'pie',
-
     init: function () {
         var sectorGroup = new Group();
         this._sectorGroup = sectorGroup;
     },
-
     render: function (seriesModel, ecModel, api, payload) {
         if (payload && (payload.from === this.uid)) {
             return;
         }
-
         var data = seriesModel.getData();
         var oldData = this._data;
         var group = this.group;
-
         var hasAnimation = ecModel.get('animation');
         var isFirstRender = !oldData;
         var animationType = seriesModel.get('animationType');
-
         var onSectorClick = curry(
             updateDataSelected, this.uid, seriesModel, hasAnimation, api
         );
-
         var selectedMode = seriesModel.get('selectedMode');
-
         data.diff(oldData)
             .add(function (idx) {
                 var piePiece = new PiePiece(data, idx);
@@ -41071,18 +35610,13 @@ var PieView = Chart.extend({
                         child.stopAnimation(true);
                     });
                 }
-
                 selectedMode && piePiece.on('click', onSectorClick);
-
                 data.setItemGraphicEl(idx, piePiece);
-
                 group.add(piePiece);
             })
             .update(function (newIdx, oldIdx) {
                 var piePiece = oldData.getItemGraphicEl(oldIdx);
-
                 piePiece.updateData(data, newIdx);
-
                 piePiece.off('click');
                 selectedMode && piePiece.on('click', onSectorClick);
                 group.add(piePiece);
@@ -41093,7 +35627,6 @@ var PieView = Chart.extend({
                 group.remove(piePiece);
             })
             .execute();
-
         if (
             hasAnimation && isFirstRender && data.count() > 0
             // Default expansion animation
@@ -41101,7 +35634,6 @@ var PieView = Chart.extend({
         ) {
             var shape = data.getItemLayout(0);
             var r = Math.max(api.getWidth(), api.getHeight()) / 2;
-
             var removeClipPath = bind(group.removeClipPath, group);
             group.setClipPath(this._createClipPath(
                 shape.cx, shape.cy, r, shape.startAngle, shape.clockwise, removeClipPath, seriesModel
@@ -41111,12 +35643,9 @@ var PieView = Chart.extend({
             // clipPath is used in first-time animation, so remove it when otherwise. See: #8994
             group.removeClipPath();
         }
-
         this._data = data;
     },
-
     dispose: function () {},
-
     _createClipPath: function (
         cx, cy, r, startAngle, clockwise, cb, seriesModel
     ) {
@@ -41131,16 +35660,13 @@ var PieView = Chart.extend({
                 clockwise: clockwise
             }
         });
-
         initProps(clipPath, {
             shape: {
                 endAngle: startAngle + (clockwise ? 1 : -1) * Math.PI * 2
             }
         }, seriesModel, cb);
-
         return clipPath;
     },
-
     /**
      * @implement
      */
@@ -41154,9 +35680,7 @@ var PieView = Chart.extend({
             return radius <= itemLayout.r && radius >= itemLayout.r0;
         }
     }
-
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -41175,7 +35699,6 @@ var PieView = Chart.extend({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var createDataSelectAction = function (seriesType, actionInfos) {
     each$1(actionInfos, function (actionInfo) {
         actionInfo.update = 'updateView';
@@ -41211,7 +35734,6 @@ var createDataSelectAction = function (seriesType, actionInfos) {
         });
     });
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -41230,7 +35752,6 @@ var createDataSelectAction = function (seriesType, actionInfos) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // Pick color from palette for each data item.
 // Applicable for charts that require applying color palette
 // in data level (like pie, funnel, chord).
@@ -41240,35 +35761,28 @@ var dataColor = function (seriesType) {
             // Pie and funnel may use diferrent scope
             var paletteScope = {};
             var seiresModelMap = createHashMap();
-
             ecModel.eachSeriesByType(seriesType, function (seriesModel) {
                 seriesModel.__paletteScope = paletteScope;
                 seiresModelMap.set(seriesModel.uid, seriesModel);
             });
-
             return seiresModelMap;
         },
         reset: function (seriesModel, ecModel) {
             var dataAll = seriesModel.getRawData();
             var idxMap = {};
             var data = seriesModel.getData();
-
             data.each(function (idx) {
                 var rawIdx = data.getRawIndex(idx);
                 idxMap[rawIdx] = idx;
             });
-
             dataAll.each(function (rawIdx) {
                 var filteredIdx = idxMap[rawIdx];
-
                 // If series.itemStyle.normal.color is a function. itemVisual may be encoded
                 var singleDataColor = filteredIdx != null
                     && data.getItemVisual(filteredIdx, 'color', true);
-
                 if (!singleDataColor) {
                     // FIXME Performance
                     var itemModel = dataAll.getItemModel(rawIdx);
-
                     var color = itemModel.get('itemStyle.color')
                         || seriesModel.getColorFromPalette(
                             dataAll.getName(rawIdx) || (rawIdx + ''), seriesModel.__paletteScope,
@@ -41276,7 +35790,6 @@ var dataColor = function (seriesType) {
                         );
                     // Legend may use the visual info in data before processed
                     dataAll.setItemVisual(rawIdx, 'color', color);
-
                     // Data is not filtered
                     if (filteredIdx != null) {
                         data.setItemVisual(filteredIdx, 'color', color);
@@ -41290,7 +35803,6 @@ var dataColor = function (seriesType) {
         }
     };
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -41309,14 +35821,11 @@ var dataColor = function (seriesType) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // FIXME emphasis label position is not same with normal label position
-
 function adjustSingleSide(list, cx, cy, r, dir, viewWidth, viewHeight) {
     list.sort(function (a, b) {
         return a.y - b.y;
     });
-
     function shiftDown(start, end, delta, dir) {
         for (var j = start; j < end; j++) {
             list[j].y += delta;
@@ -41328,10 +35837,8 @@ function adjustSingleSide(list, cx, cy, r, dir, viewWidth, viewHeight) {
                 return;
             }
         }
-
         shiftUp(end - 1, delta / 2);
     }
-
     function shiftUp(end, delta) {
         for (var j = end; j >= 0; j--) {
             list[j].y -= delta;
@@ -41342,7 +35849,6 @@ function adjustSingleSide(list, cx, cy, r, dir, viewWidth, viewHeight) {
             }
         }
     }
-
     function changeX(list, isDownList, cx, cy, r, dir) {
         var lastDeltaX = dir > 0
             ? isDownList                // right-side
@@ -41351,7 +35857,6 @@ function adjustSingleSide(list, cx, cy, r, dir, viewWidth, viewHeight) {
             : isDownList                // left-side
                 ? Number.MAX_VALUE      // down
                 : 0;                    // up
-
         for (var i = 0, l = list.length; i < l; i++) {
             var deltaY = Math.abs(list[i].y - cy);
             var length = list[i].len;
@@ -41370,12 +35875,10 @@ function adjustSingleSide(list, cx, cy, r, dir, viewWidth, viewHeight) {
                 // right-up, left-up
                 deltaX = lastDeltaX + 10;
             }
-
             list[i].x = cx + deltaX * dir;
             lastDeltaX = deltaX;
         }
     }
-
     var lastY = 0;
     var delta;
     var len = list.length;
@@ -41402,7 +35905,6 @@ function adjustSingleSide(list, cx, cy, r, dir, viewWidth, viewHeight) {
     changeX(upList, false, cx, cy, r, dir);
     changeX(downList, true, cx, cy, r, dir);
 }
-
 function avoidOverlap(labelLayoutList, cx, cy, r, viewWidth, viewHeight) {
     var leftList = [];
     var rightList = [];
@@ -41417,10 +35919,8 @@ function avoidOverlap(labelLayoutList, cx, cy, r, viewWidth, viewHeight) {
             rightList.push(labelLayoutList[i]);
         }
     }
-
     adjustSingleSide(rightList, cx, cy, r, 1, viewWidth, viewHeight);
     adjustSingleSide(leftList, cx, cy, r, -1, viewWidth, viewHeight);
-
     for (var i = 0; i < labelLayoutList.length; i++) {
         if (isPositionCenter(labelLayoutList[i])) {
             continue;
@@ -41439,43 +35939,34 @@ function avoidOverlap(labelLayoutList, cx, cy, r, viewWidth, viewHeight) {
         }
     }
 }
-
 function isPositionCenter(layout) {
     // Not change x for center label
     return layout.position === 'center';
 }
-
 var labelLayout = function (seriesModel, r, viewWidth, viewHeight) {
     var data = seriesModel.getData();
     var labelLayoutList = [];
     var cx;
     var cy;
     var hasLabelRotate = false;
-
     data.each(function (idx) {
         var layout = data.getItemLayout(idx);
-
         var itemModel = data.getItemModel(idx);
         var labelModel = itemModel.getModel('label');
         // Use position in normal or emphasis
         var labelPosition = labelModel.get('position') || itemModel.get('emphasis.label.position');
-
         var labelLineModel = itemModel.getModel('labelLine');
         var labelLineLen = labelLineModel.get('length');
         var labelLineLen2 = labelLineModel.get('length2');
-
         var midAngle = (layout.startAngle + layout.endAngle) / 2;
         var dx = Math.cos(midAngle);
         var dy = Math.sin(midAngle);
-
         var textX;
         var textY;
         var linePoints;
         var textAlign;
-
         cx = layout.cx;
         cy = layout.cy;
-
         var isLabelInside = labelPosition === 'inside' || labelPosition === 'inner';
         if (labelPosition === 'center') {
             textX = layout.cx;
@@ -41485,26 +35976,21 @@ var labelLayout = function (seriesModel, r, viewWidth, viewHeight) {
         else {
             var x1 = (isLabelInside ? (layout.r + layout.r0) / 2 * dx : layout.r * dx) + cx;
             var y1 = (isLabelInside ? (layout.r + layout.r0) / 2 * dy : layout.r * dy) + cy;
-
             textX = x1 + dx * 3;
             textY = y1 + dy * 3;
-
             if (!isLabelInside) {
                 // For roseType
                 var x2 = x1 + dx * (labelLineLen + r - layout.r);
                 var y2 = y1 + dy * (labelLineLen + r - layout.r);
                 var x3 = x2 + ((dx < 0 ? -1 : 1) * labelLineLen2);
                 var y3 = y2;
-
                 textX = x3 + (dx < 0 ? -5 : 5);
                 textY = y3;
                 linePoints = [[x1, y1], [x2, y2], [x3, y3]];
             }
-
             textAlign = isLabelInside ? 'center' : (dx > 0 ? 'left' : 'right');
         }
         var font = labelModel.getFont();
-
         var labelRotate = labelModel.get('rotate')
             ? (dx < 0 ? -midAngle + Math.PI : -midAngle) : 0;
         var text = seriesModel.getFormattedLabel(idx, 'normal')
@@ -41526,7 +36012,6 @@ var labelLayout = function (seriesModel, r, viewWidth, viewHeight) {
             rotation: labelRotate,
             inside: isLabelInside
         };
-
         // Not layout the inside label
         if (!isLabelInside) {
             labelLayoutList.push(layout.label);
@@ -41536,7 +36021,6 @@ var labelLayout = function (seriesModel, r, viewWidth, viewHeight) {
         avoidOverlap(labelLayoutList, cx, cy, r, viewWidth, viewHeight);
     }
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -41555,26 +36039,20 @@ var labelLayout = function (seriesModel, r, viewWidth, viewHeight) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
-
 var PI2$4 = Math.PI * 2;
 var RADIAN = Math.PI / 180;
-
 var pieLayout = function (seriesType, ecModel, api, payload) {
     ecModel.eachSeriesByType(seriesType, function (seriesModel) {
         var data = seriesModel.getData();
         var valueDim = data.mapDimension('value');
-
         var center = seriesModel.get('center');
         var radius = seriesModel.get('radius');
-
         if (!isArray(radius)) {
             radius = [0, radius];
         }
         if (!isArray(center)) {
             center = [center, center];
         }
-
         var width = api.getWidth();
         var height = api.getHeight();
         var size = Math.min(width, height);
@@ -41582,36 +36060,26 @@ var pieLayout = function (seriesType, ecModel, api, payload) {
         var cy = parsePercent$1(center[1], height);
         var r0 = parsePercent$1(radius[0], size / 2);
         var r = parsePercent$1(radius[1], size / 2);
-
         var startAngle = -seriesModel.get('startAngle') * RADIAN;
-
         var minAngle = seriesModel.get('minAngle') * RADIAN;
-
         var validDataCount = 0;
         data.each(valueDim, function (value) {
             !isNaN(value) && validDataCount++;
         });
-
         var sum = data.getSum(valueDim);
         // Sum may be 0
         var unitRadian = Math.PI / (sum || validDataCount) * 2;
-
         var clockwise = seriesModel.get('clockwise');
-
         var roseType = seriesModel.get('roseType');
         var stillShowZeroSum = seriesModel.get('stillShowZeroSum');
-
         // [0...max]
         var extent = data.getDataExtent(valueDim);
         extent[0] = 0;
-
         // In the case some sector angle is smaller than minAngle
         var restAngle = PI2$4;
         var valueSumLargerThanMinAngle = 0;
-
         var currentAngle = startAngle;
         var dir = clockwise ? 1 : -1;
-
         data.each(valueDim, function (value, idx) {
             var angle;
             if (isNaN(value)) {
@@ -41629,7 +36097,6 @@ var pieLayout = function (seriesType, ecModel, api, payload) {
                 });
                 return;
             }
-
             // FIXME 兼容 2.0 但是 roseType 是 area 的时候才是这样？
             if (roseType !== 'area') {
                 angle = (sum === 0 && stillShowZeroSum)
@@ -41638,7 +36105,6 @@ var pieLayout = function (seriesType, ecModel, api, payload) {
             else {
                 angle = PI2$4 / validDataCount;
             }
-
             if (angle < minAngle) {
                 angle = minAngle;
                 restAngle -= minAngle;
@@ -41646,7 +36112,6 @@ var pieLayout = function (seriesType, ecModel, api, payload) {
             else {
                 valueSumLargerThanMinAngle += value;
             }
-
             var endAngle = currentAngle + dir * angle;
             data.setItemLayout(idx, {
                 angle: angle,
@@ -41660,10 +36125,8 @@ var pieLayout = function (seriesType, ecModel, api, payload) {
                     ? linearMap(value, extent, [r0, r])
                     : r
             });
-
             currentAngle = endAngle;
         });
-
         // Some sector is constrained by minAngle
         // Rest sectors needs recalculate angle
         if (restAngle < PI2$4 && validDataCount) {
@@ -41695,11 +36158,9 @@ var pieLayout = function (seriesType, ecModel, api, payload) {
                 });
             }
         }
-
         labelLayout(seriesModel, r, width, height);
     });
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -41718,7 +36179,6 @@ var pieLayout = function (seriesType, ecModel, api, payload) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var dataFilter = function (seriesType) {
     return {
         seriesType: seriesType,
@@ -41743,7 +36203,6 @@ var dataFilter = function (seriesType) {
         }
     };
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -41762,7 +36221,6 @@ var dataFilter = function (seriesType) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 createDataSelectAction('pie', [{
     type: 'pieToggleSelect',
     event: 'pieselectchanged',
@@ -41776,11 +36234,9 @@ createDataSelectAction('pie', [{
     event: 'pieunselected',
     method: 'unSelect'
 }]);
-
 registerVisual(dataColor('pie'));
 registerLayout(curry(pieLayout, 'pie'));
 registerProcessor(dataFilter('pie'));
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -41799,7 +36255,6 @@ registerProcessor(dataFilter('pie'));
 * specific language governing permissions and limitations
 * under the License.
 */
-
 exports.version = version;
 exports.dependencies = dependencies;
 exports.PRIORITY = PRIORITY;
@@ -41828,5 +36283,4 @@ exports.setCanvasCreator = setCanvasCreator;
 exports.registerMap = registerMap;
 exports.getMap = getMap;
 exports.dataTool = dataTool;
-
 })));

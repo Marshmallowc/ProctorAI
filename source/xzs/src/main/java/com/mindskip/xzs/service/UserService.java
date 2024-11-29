@@ -1,22 +1,16 @@
 package com.mindskip.xzs.service;
-
 import com.mindskip.xzs.domain.other.KeyValue;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.viewmodel.admin.user.UserPageRequestVM;
 import com.github.pagehelper.PageInfo;
-
 import java.util.List;
-
-
 public interface UserService extends BaseService<User> {
-
     /**
      * getUsers
      *
      * @return List<User>
      */
     List<User> getUsers();
-
     /**
      * getUserById
      *
@@ -24,7 +18,6 @@ public interface UserService extends BaseService<User> {
      * @return User
      */
     User getUserById(Integer id);
-
     /**
      * getUserByUserName
      *
@@ -32,7 +25,6 @@ public interface UserService extends BaseService<User> {
      * @return User
      */
     User getUserByUserName(String username);
-
     /**
      * getUserByUserName
      *
@@ -41,7 +33,6 @@ public interface UserService extends BaseService<User> {
      * @return User
      */
     User getUserByUserNamePwd(String username, String pwd);
-
     /**
      * getUserByUuid
      *
@@ -49,7 +40,6 @@ public interface UserService extends BaseService<User> {
      * @return User
      */
     User getUserByUuid(String uuid);
-
     /**
      * userPageList
      *
@@ -59,8 +49,6 @@ public interface UserService extends BaseService<User> {
      * @return List<User>
      */
     List<User> userPageList(String name, Integer pageIndex, Integer pageSize);
-
-
     /**
      * userPageCount
      *
@@ -68,36 +56,29 @@ public interface UserService extends BaseService<User> {
      * @return Integer
      */
     Integer userPageCount(String name);
-
-
     /**
      * @param requestVM requestVM
      * @return PageInfo<User>
      */
     PageInfo<User> userPage(UserPageRequestVM requestVM);
-
-
     /**
      * insertUser
      *
      * @param user user
      */
     void insertUser(User user);
-
     /**
      * insertUsers
      *
      * @param users users
      */
     void insertUsers(List<User> users);
-
     /**
      * updateUser
      *
      * @param user user
      */
     void updateUser(User user);
-
     /**
      * updateUsersAge
      *
@@ -105,24 +86,15 @@ public interface UserService extends BaseService<User> {
      * @param ids
      */
     void updateUsersAge(Integer age, List<Integer> ids);
-
     /**
      * deleteUserByIds
      *
      * @param ids
      */
     void deleteUserByIds(List<Integer> ids);
-
-
     Integer selectAllCount();
-
-
     List<KeyValue> selectByUserName(String userName);
-
-
     List<User> selectByIds(List<Integer> ids);
-
     User selectByWxOpenId(String wxOpenId);
-
     void changePicture(User user, String imagePath);
 }

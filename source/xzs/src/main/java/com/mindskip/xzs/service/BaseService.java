@@ -1,5 +1,4 @@
 package com.mindskip.xzs.service;
-
 /**
  * service接口，和mybatis generator 配套使用
  *
@@ -13,7 +12,6 @@ public interface BaseService<T> {
      * @return int
      */
     int deleteById(Integer id);
-
     /**
      * 插入数据,完整数据插入
      *
@@ -21,7 +19,6 @@ public interface BaseService<T> {
      * @return int
      */
     int insert(T record);
-
     /**
      * 插入不为null的数据
      *
@@ -29,7 +26,6 @@ public interface BaseService<T> {
      * @return int
      */
     int insertByFilter(T record);
-
     /**
      * 根据id查询数据
      *
@@ -37,7 +33,6 @@ public interface BaseService<T> {
      * @return
      */
     T selectById(Integer id);
-
     /**
      * 更新不为null的数据
      *
@@ -45,7 +40,6 @@ public interface BaseService<T> {
      * @return int
      */
     int updateByIdFilter(T record);
-
     /**
      * 更新完整的数据
      *

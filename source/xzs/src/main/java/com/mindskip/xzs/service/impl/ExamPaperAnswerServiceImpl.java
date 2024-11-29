@@ -1,5 +1,4 @@
 package com.mindskip.xzs.service.impl;
-
 import com.mindskip.xzs.domain.*;
 import com.mindskip.xzs.domain.enums.ExamPaperAnswerStatusEnum;
 import com.mindskip.xzs.domain.enums.ExamPaperTypeEnum;
@@ -28,22 +27,18 @@ import com.mindskip.xzs.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer> implements ExamPaperAnswerService {
-
     private final ExamPaperAnswerMapper examPaperAnswerMapper;
     private final ExamPaperMapper examPaperMapper;
     private final TextContentService textContentService;
     private final QuestionMapper questionMapper;
     private final ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
     private final TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper;
-
     @Autowired
     public ExamPaperAnswerServiceImpl(ExamPaperAnswerMapper examPaperAnswerMapper, ExamPaperMapper examPaperMapper, TextContentService textContentService, QuestionMapper questionMapper, ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper) {
         super(examPaperAnswerMapper);
@@ -54,14 +49,11 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         this.examPaperQuestionCustomerAnswerService = examPaperQuestionCustomerAnswerService;
         this.taskExamCustomerAnswerMapper = taskExamCustomerAnswerMapper;
     }
-
     @Override
     public PageInfo<ExamPaperAnswer> studentPage(ExamPaperAnswerPageVM requestVM) {
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 examPaperAnswerMapper.studentPage(requestVM));
     }
-
-
     @Override
     public ExamPaperAnswerInfo calculateExamPaperAnswer(ExamPaperSubmitVM examPaperSubmitVM, User user) {
         ExamPaperAnswerInfo examPaperAnswerInfo = new ExamPaperAnswerInfo();
@@ -90,18 +82,15 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
                             return ExamPaperQuestionCustomerAnswerFromVM(question, customerQuestionAnswer, examPaper, q.getItemOrder(), user, now);
                         })
                 ).collect(Collectors.toList());
-
 //        for(ExamPaperQuestionCustomerAnswer i : examPaperQuestionCustomerAnswers){
 //            System.out.println(i.);
 //        }
-
         ExamPaperAnswer examPaperAnswer = ExamPaperAnswerFromVM(examPaperSubmitVM, examPaper, examPaperQuestionCustomerAnswers, user, now);
         examPaperAnswerInfo.setExamPaper(examPaper);
         examPaperAnswerInfo.setExamPaperAnswer(examPaperAnswer);
         examPaperAnswerInfo.setExamPaperQuestionCustomerAnswers(examPaperQuestionCustomerAnswers);
         return examPaperAnswerInfo;
     }
-
     @Override
     @Transactional
     public String judge(ExamPaperSubmitVM examPaperSubmitVM) {
@@ -127,7 +116,6 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         examPaperAnswer.setStatus(ExamPaperAnswerStatusEnum.Complete.getCode());
         examPaperAnswerMapper.updateByPrimaryKeySelective(examPaperAnswer);
         examPaperQuestionCustomerAnswerService.updateScore(examPaperAnswerUpdates);
-
         ExamPaperTypeEnum examPaperTypeEnum = ExamPaperTypeEnum.fromCode(examPaperAnswer.getPaperType());
         switch (examPaperTypeEnum) {
             case Task:
@@ -149,7 +137,6 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         }
         return ExamUtil.scoreToVM(customerScore);
     }
-
     @Override
     public ExamPaperSubmitVM examPaperAnswerToVM(Integer id) {
         ExamPaperSubmitVM examPaperSubmitVM = new ExamPaperSubmitVM();
@@ -164,12 +151,10 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         examPaperSubmitVM.setAnswerItems(examPaperSubmitItemVMS);
         return examPaperSubmitVM;
     }
-
     @Override
     public Integer selectAllCount() {
         return examPaperAnswerMapper.selectAllCount();
     }
-
     @Override
     public List<Integer> selectMothCount() {
         Date startTime = DateTimeUtil.getMonthStartDay();
@@ -181,8 +166,6 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
             return null == keyValue ? 0 : keyValue.getValue();
         }).collect(Collectors.toList());
     }
-
-
     /**
      * 用户提交答案的转化存储对象
      *
@@ -212,7 +195,6 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         }
         return examPaperQuestionCustomerAnswer;
     }
-
     /**
      * 判断提交答案是否正确，保留用户提交的答案
      *
@@ -246,7 +228,6 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
                 break;
         }
     }
-
     private ExamPaperAnswer ExamPaperAnswerFromVM(ExamPaperSubmitVM examPaperSubmitVM, ExamPaper examPaper, List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers, User user, Date now) {
         Integer systemScore = examPaperQuestionCustomerAnswers.stream().mapToInt(a -> a.getCustomerScore()).sum();
         long questionCorrect = examPaperQuestionCustomerAnswers.stream().filter(a -> a.getCustomerScore().equals(a.getQuestionScore())).count();
@@ -272,8 +253,6 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         }
         return examPaperAnswer;
     }
-
-
     @Override
     public PageInfo<ExamPaperAnswer> adminPage(com.mindskip.xzs.viewmodel.admin.paper.ExamPaperAnswerPageRequestVM requestVM) {
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->

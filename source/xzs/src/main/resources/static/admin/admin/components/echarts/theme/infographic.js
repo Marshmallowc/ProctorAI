@@ -16,7 +16,6 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 (function (root, factory) {if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['exports', 'echarts'], factory);
@@ -37,28 +36,22 @@
         log('ECharts is not Loaded');
         return;
     }
-
     var colorPalette = [
         '#C1232B','#27727B','#FCCE10','#E87C25','#B5C334',
         '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
         '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
     ];
-
     var theme = {
-
         color: colorPalette,
-
         title: {
             textStyle: {
                 fontWeight: 'normal',
                 color: '#27727B'
             }
         },
-
         visualMap: {
             color:['#C1232B','#FCCE10']
         },
-
         toolbox: {
             iconStyle: {
                 normal: {
@@ -66,7 +59,6 @@
                 }
             }
         },
-
         tooltip: {
             backgroundColor: 'rgba(50,50,50,0.5)',
             axisPointer : {
@@ -83,13 +75,11 @@
                 }
             }
         },
-
         dataZoom: {
             dataBackgroundColor: 'rgba(181,195,52,0.3)',
             fillerColor: 'rgba(181,195,52,0.2)',
             handleColor: '#27727B'
         },
-
         categoryAxis: {
             axisLine: {
                 lineStyle: {
@@ -100,7 +90,6 @@
                 show: false
             }
         },
-
         valueAxis: {
             axisLine: {
                 show: false
@@ -115,7 +104,6 @@
                 }
             }
         },
-
         timeline: {
             lineStyle: {
                 color: '#27727B'
@@ -129,7 +117,6 @@
             symbol: 'emptyCircle',
             symbolSize: 3
         },
-
         line: {
             itemStyle: {
                 normal: {
@@ -146,7 +133,6 @@
             symbol: 'circle',
             symbolSize: 3.5
         },
-
         candlestick: {
             itemStyle: {
                 normal: {
@@ -160,11 +146,9 @@
                 }
             }
         },
-
         graph: {
             color: colorPalette
         },
-
         map: {
             label: {
                 normal: {
@@ -188,7 +172,6 @@
                 }
             }
         },
-
         gauge: {
             axisLine: {
                 lineStyle: {
@@ -218,6 +201,5 @@
             }
         }
     };
-
     echarts.registerTheme('infographic', theme);
 }));

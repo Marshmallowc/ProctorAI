@@ -1,9 +1,6 @@
 package com.mindskip.xzs.utility;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-
 /**
  * @version 3.5.0
  * @description: The type Html util.

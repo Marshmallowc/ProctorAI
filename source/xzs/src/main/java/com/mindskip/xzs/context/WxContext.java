@@ -1,11 +1,9 @@
 package com.mindskip.xzs.context;
-
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.domain.UserToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-
 /**
  * @version 3.3.0
  * @description: The enum System code.
@@ -14,11 +12,8 @@ import org.springframework.web.context.request.RequestContextHolder;
  */
 @Component
 public class WxContext {
-
     private static final String USER_ATTRIBUTES = "USER_ATTRIBUTES";
     private static final String USER_TOKEN_ATTRIBUTES = "USER_TOKEN_ATTRIBUTES";
-
-
     /**
      * Sets context.
      *
@@ -29,7 +24,6 @@ public class WxContext {
         RequestContextHolder.currentRequestAttributes().setAttribute(USER_ATTRIBUTES, user, RequestAttributes.SCOPE_REQUEST);
         RequestContextHolder.currentRequestAttributes().setAttribute(USER_TOKEN_ATTRIBUTES, userToken, RequestAttributes.SCOPE_REQUEST);
     }
-
     /**
      * Gets current user.
      *
@@ -38,7 +32,6 @@ public class WxContext {
     public User getCurrentUser() {
         return (User) RequestContextHolder.currentRequestAttributes().getAttribute(USER_ATTRIBUTES, RequestAttributes.SCOPE_REQUEST);
     }
-
     /**
      * Gets current user token.
      *

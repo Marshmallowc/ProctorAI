@@ -1,5 +1,4 @@
 package com.mindskip.xzs.service.impl;
-
 import com.mindskip.xzs.configuration.property.SystemConfig;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.domain.UserToken;
@@ -10,17 +9,13 @@ import com.mindskip.xzs.utility.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.UUID;
-
 @Service
 public class UserTokenServiceImpl extends BaseServiceImpl<UserToken> implements UserTokenService {
-
     private final UserTokenMapper userTokenMapper;
     private final UserService userService;
     private final SystemConfig systemConfig;
-
     @Autowired
     public UserTokenServiceImpl(UserTokenMapper userTokenMapper, UserService userService, SystemConfig systemConfig) {
         super(userTokenMapper);
@@ -28,8 +23,6 @@ public class UserTokenServiceImpl extends BaseServiceImpl<UserToken> implements 
         this.userService = userService;
         this.systemConfig = systemConfig;
     }
-
-
     @Override
     @Transactional
     public UserToken bind(User user) {
@@ -37,8 +30,6 @@ public class UserTokenServiceImpl extends BaseServiceImpl<UserToken> implements 
         userService.updateByIdFilter(user);
         return insertUserToken(user);
     }
-
-
     @Override
     public UserToken checkBind(String openId) {
         User user = userService.selectByWxOpenId(openId);
@@ -47,12 +38,10 @@ public class UserTokenServiceImpl extends BaseServiceImpl<UserToken> implements 
         }
         return null;
     }
-
     @Override
     public UserToken getToken(String token) {
         return userTokenMapper.getToken(token);
     }
-
     @Override
     public UserToken insertUserToken(User user) {
         Date startTime = new Date();
@@ -68,7 +57,6 @@ public class UserTokenServiceImpl extends BaseServiceImpl<UserToken> implements 
         userTokenMapper.insertSelective(userToken);
         return userToken;
     }
-
     @Override
     public void unBind(UserToken userToken) {
         User user = userService.selectById(userToken.getUserId());
@@ -77,5 +65,4 @@ public class UserTokenServiceImpl extends BaseServiceImpl<UserToken> implements 
         userService.updateById(user);
         userTokenMapper.deleteByPrimaryKey(userToken.getId());
     }
-
 }

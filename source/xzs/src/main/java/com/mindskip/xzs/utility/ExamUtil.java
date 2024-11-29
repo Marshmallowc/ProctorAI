@@ -1,10 +1,7 @@
 package com.mindskip.xzs.utility;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 /**
  * @version 3.5.0
  * @description: The type Exam util.
@@ -12,7 +9,6 @@ import java.util.stream.Collectors;
  * @date 2021/12/25 9:45
  */
 public class ExamUtil {
-
     /**
      * Score to vm string.
      *
@@ -26,7 +22,6 @@ public class ExamUtil {
             return String.format("%.1f", score / 10.0);
         }
     }
-
     /**
      * Score from vm integer.
      *
@@ -40,7 +35,6 @@ public class ExamUtil {
             return (int) (Float.parseFloat(score) * 10);
         }
     }
-
     /**
      * Second to vm string.
      *
@@ -64,9 +58,7 @@ public class ExamUtil {
         }
         return dateTimes;
     }
-
     private static final String ANSWER_SPLIT = ",";
-
     /**
      * Content to string string.
      *
@@ -76,8 +68,6 @@ public class ExamUtil {
     public static String contentToString(List<String> contentArray) {
         return contentArray.stream().sorted().collect(Collectors.joining(ANSWER_SPLIT));
     }
-
-
     /**
      * Content to array list.
      *
@@ -87,9 +77,7 @@ public class ExamUtil {
     public static List<String> contentToArray(String contentArray) {
         return Arrays.asList(contentArray.split(ANSWER_SPLIT));
     }
-
     private static final String FORM_ANSWER_SPLIT = "_";
-
     /**
      * Last num integer.
      *

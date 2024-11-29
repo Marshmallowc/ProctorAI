@@ -1,14 +1,11 @@
 package com.mindskip.xzs.utility;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
-
 /**
  * @version 3.5.0
  * @description: The type Date time util.
@@ -16,7 +13,6 @@ import java.util.*;
  * @date 2021/12/25 9:45
  */
 public class DateTimeUtil {
-
     private static final Logger logger = LoggerFactory.getLogger(DateTimeUtil.class);
     /**
      * The constant STANDER_FORMAT.
@@ -26,7 +22,6 @@ public class DateTimeUtil {
      * The constant STANDER_SHORT_FORMAT.
      */
     public static final String STANDER_SHORT_FORMAT = "yyyy-MM-dd";
-
     /**
      * Add duration date.
      *
@@ -40,7 +35,6 @@ public class DateTimeUtil {
         ca.add(Calendar.SECOND, (int) duration.getSeconds());
         return ca.getTime();
     }
-
     /**
      * Date format string.
      *
@@ -54,7 +48,6 @@ public class DateTimeUtil {
         DateFormat dateFormat = new SimpleDateFormat(STANDER_FORMAT);
         return dateFormat.format(date);
     }
-
     /**
      * Date short format string.
      *
@@ -68,7 +61,6 @@ public class DateTimeUtil {
         DateFormat dateFormat = new SimpleDateFormat(STANDER_SHORT_FORMAT);
         return dateFormat.format(date);
     }
-
     /**
      * Parse date.
      *
@@ -84,7 +76,6 @@ public class DateTimeUtil {
         }
         return null;
     }
-
     /**
      * Gets month start day.
      *
@@ -98,7 +89,6 @@ public class DateTimeUtil {
         String dateStr = formatter.format(cale.getTime());
         return parse(dateStr, "yyyy-MM-dd HH:mm:ss");
     }
-
     /**
      * Gets month end day.
      *
@@ -112,8 +102,6 @@ public class DateTimeUtil {
         String dateStr = formatter.format(cale.getTime());
         return parse(dateStr, STANDER_FORMAT);
     }
-
-
     /**
      * Moth start to now format list.
      *
@@ -136,8 +124,6 @@ public class DateTimeUtil {
         }
         return mothDays;
     }
-
-
     /**
      * Moth day list.
      *

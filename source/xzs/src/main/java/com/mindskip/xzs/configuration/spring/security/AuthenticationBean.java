@@ -1,5 +1,4 @@
 package com.mindskip.xzs.configuration.spring.security;
-
 /**
  * @version 3.5.0
  * @description: The type Authentication bean.
@@ -10,7 +9,6 @@ public class AuthenticationBean {
     private String userName;
     private String password;
     private boolean remember;
-
     /**
      * Gets user name.
      *
@@ -19,7 +17,6 @@ public class AuthenticationBean {
     public String getUserName() {
         return userName;
     }
-
     /**
      * Sets user name.
      *
@@ -28,7 +25,6 @@ public class AuthenticationBean {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
     /**
      * Gets password.
      *
@@ -37,7 +33,6 @@ public class AuthenticationBean {
     public String getPassword() {
         return password;
     }
-
     /**
      * Sets password.
      *
@@ -46,7 +41,6 @@ public class AuthenticationBean {
     public void setPassword(String password) {
         this.password = password;
     }
-
     /**
      * Is remember boolean.
      *
@@ -55,7 +49,6 @@ public class AuthenticationBean {
     public boolean isRemember() {
         return remember;
     }
-
     /**
      * Sets remember.
      *
@@ -64,5 +57,4 @@ public class AuthenticationBean {
     public void setRemember(boolean remember) {
         this.remember = remember;
     }
-
 }

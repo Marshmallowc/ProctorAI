@@ -1,5 +1,4 @@
 package com.mindskip.xzs.exception;
-
 /**
  * @version 3.5.0
  * @description: The type Business exception.
@@ -7,21 +6,17 @@ package com.mindskip.xzs.exception;
  * @date 2021/12/25 9:45
  */
 public class BusinessException extends RuntimeException {
-
     /**
      * The constant UNKNOWN_EXCEPTION.
      */
     public static final int UNKNOWN_EXCEPTION = 0;
-
     private int code;
-
     /**
      * Instantiates a new Business exception.
      */
     public BusinessException() {
         super();
     }
-
     /**
      * Instantiates a new Business exception.
      *
@@ -31,7 +26,6 @@ public class BusinessException extends RuntimeException {
     public BusinessException(String message, Throwable cause) {
         super(message, cause);
     }
-
     /**
      * Instantiates a new Business exception.
      *
@@ -40,7 +34,6 @@ public class BusinessException extends RuntimeException {
     public BusinessException(String message) {
         super(message);
     }
-
     /**
      * Instantiates a new Business exception.
      *
@@ -49,7 +42,6 @@ public class BusinessException extends RuntimeException {
     public BusinessException(Throwable cause) {
         super(cause);
     }
-
     /**
      * Instantiates a new Business exception.
      *
@@ -59,7 +51,6 @@ public class BusinessException extends RuntimeException {
         super();
         this.code = code;
     }
-
     /**
      * Instantiates a new Business exception.
      *
@@ -71,7 +62,6 @@ public class BusinessException extends RuntimeException {
         super(message, cause);
         this.code = code;
     }
-
     /**
      * Instantiates a new Business exception.
      *
@@ -82,7 +72,6 @@ public class BusinessException extends RuntimeException {
         super(message);
         this.code = code;
     }
-
     /**
      * Instantiates a new Business exception.
      *
@@ -93,7 +82,6 @@ public class BusinessException extends RuntimeException {
         super(cause);
         this.code = code;
     }
-
     /**
      * Gets code.
      *
@@ -102,7 +90,6 @@ public class BusinessException extends RuntimeException {
     public int getCode() {
         return code;
     }
-
     /**
      * Sets code.
      *
@@ -111,7 +98,6 @@ public class BusinessException extends RuntimeException {
     public void setCode(int code) {
         this.code = code;
     }
-
     /**
      * Is unknown boolean.
      *
@@ -120,6 +106,4 @@ public class BusinessException extends RuntimeException {
     public boolean isUnknown() {
         return code == UNKNOWN_EXCEPTION;
     }
-
-
 }

@@ -25,8 +25,6 @@
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
-
-
     <springProfile name="dev">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
@@ -37,8 +35,6 @@
             <appender-ref ref="FILE"/>
         </logger>
     </springProfile>
-
-
     <springProfile name="test">
         <root level="INFO">
             <appender-ref ref="FILE"/>
@@ -47,7 +43,6 @@
             <appender-ref ref="FILE"/>
         </logger>
     </springProfile>
-
     <springProfile name="pre">
         <root level="INFO">
             <appender-ref ref="FILE"/>
@@ -56,12 +51,9 @@
             <appender-ref ref="FILE"/>
         </logger>
     </springProfile>
-
-
     <springProfile name="prod">
         <root level="INFO">
             <appender-ref ref="FILE"/>
         </root>
     </springProfile>
-
 </configuration>

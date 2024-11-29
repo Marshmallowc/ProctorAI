@@ -1,5 +1,4 @@
 package com.mindskip.xzs.controller.wx.student;
-
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.controller.wx.BaseWXApiController;
 import com.mindskip.xzs.domain.Message;
@@ -22,25 +21,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-
 @Controller("WXStudentUserController")
 @RequestMapping(value = "/api/wx/student/user")
 @ResponseBody
 public class UserController extends BaseWXApiController {
-
     private final UserService userService;
     private final UserEventLogService userEventLogService;
     private final MessageService messageService;
     private final AuthenticationService authenticationService;
     private final ApplicationEventPublisher eventPublisher;
-
     @Autowired
     public UserController(UserService userService, UserEventLogService userEventLogService, MessageService messageService, AuthenticationService authenticationService, ApplicationEventPublisher eventPublisher) {
         this.userService = userService;
@@ -49,7 +43,6 @@ public class UserController extends BaseWXApiController {
         this.authenticationService = authenticationService;
         this.eventPublisher = eventPublisher;
     }
-
     @RequestMapping(value = "/current", method = RequestMethod.POST)
     public RestResponse<UserResponseVM> current() {
         User user = getCurrentUser();
@@ -57,7 +50,6 @@ public class UserController extends BaseWXApiController {
         userVm.setBirthDay(DateTimeUtil.dateShortFormat(user.getBirthDay()));
         return RestResponse.ok(userVm);
     }
-
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public RestResponse register(@Valid UserRegisterVM model) {
         User existUser = userService.getUserByUserName(model.getUserName());
@@ -79,7 +71,6 @@ public class UserController extends BaseWXApiController {
         eventPublisher.publishEvent(new UserEvent(userEventLog));
         return RestResponse.ok();
     }
-
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public RestResponse<UserResponseVM> update(@Valid UserUpdateVM model) {
         if (StringUtils.isBlank(model.getBirthDay())) {
@@ -95,7 +86,6 @@ public class UserController extends BaseWXApiController {
         UserResponseVM userVm = UserResponseVM.from(user);
         return RestResponse.ok(userVm);
     }
-
     @RequestMapping(value = "/log", method = RequestMethod.POST)
     public RestResponse<List<UserEventLogVM>> log() {
         User user = getCurrentUser();
@@ -107,7 +97,6 @@ public class UserController extends BaseWXApiController {
         }).collect(Collectors.toList());
         return RestResponse.ok(userEventLogVMS);
     }
-
     @RequestMapping(value = "/message/page", method = RequestMethod.POST)
     public RestResponse<PageInfo<MessageResponseVM>> messagePageList(MessageRequestVM messageRequestVM) {
         messageRequestVM.setReceiveUserId(getCurrentUser().getId());
@@ -126,24 +115,19 @@ public class UserController extends BaseWXApiController {
         });
         return RestResponse.ok(page);
     }
-
     @RequestMapping(value = "/message/detail/{id}", method = RequestMethod.POST)
     public RestResponse messageDetail(@PathVariable Integer id) {
         Message message = messageService.messageDetail(id);
         return RestResponse.ok(message);
     }
-
-
     @RequestMapping(value = "/message/unreadCount", method = RequestMethod.POST)
     public RestResponse unReadCount() {
         Integer count = messageService.unReadCount(getCurrentUser().getId());
         return RestResponse.ok(count);
     }
-
     @RequestMapping(value = "/message/read/{id}", method = RequestMethod.POST)
     public RestResponse read(@PathVariable Integer id) {
         messageService.read(id);
         return RestResponse.ok();
     }
-
 }

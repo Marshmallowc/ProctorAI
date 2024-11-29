@@ -1,4 +1,3 @@
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -17,22 +16,17 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('echarts')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'echarts'], factory) :
 	(factory((global.dataTool = {}),global.echarts));
 }(this, (function (exports,echarts) { 'use strict';
-
 /**
  * @module zrender/core/util
  */
-
 // 用于处理merge时无法遍历Date等对象的问题
 var arrayProto = Array.prototype;
 var nativeMap = arrayProto.map;
-
-
 /**
  * Those data types can be cloned:
  *     Plain object, Array, TypedArray, number, string, null, undefined.
@@ -49,48 +43,32 @@ var nativeMap = arrayProto.map;
  * @param {*} source
  * @return {*} new
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} target
  * @param {*} source
  * @param {boolean} [overwrite=false]
  */
-
-
 /**
  * @param {Array} targetAndSources The first item is target, and the rests are source.
  * @param {boolean} [overwrite=false]
  * @return {*} target
  */
-
-
 /**
  * @param {*} target
  * @param {*} source
  * @memberOf module:zrender/core/util
  */
-
-
 /**
  * @param {*} target
  * @param {*} source
  * @param {boolean} [overlay=false]
  * @memberOf module:zrender/core/util
  */
-
-
-
-
-
-
 /**
  * 查询数组中元素的index
  * @memberOf module:zrender/core/util
  */
-
-
 /**
  * 构造类继承关系
  *
@@ -98,22 +76,16 @@ var nativeMap = arrayProto.map;
  * @param {Function} clazz 源类
  * @param {Function} baseClazz 基类
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {Object|Function} target
  * @param {Object|Function} sorce
  * @param {boolean} overlay
  */
-
-
 /**
  * Consider typed array.
  * @param {Array|TypedArray} data
  */
-
-
 /**
  * 数组或对象遍历
  * @memberOf module:zrender/core/util
@@ -121,8 +93,6 @@ var nativeMap = arrayProto.map;
  * @param {Function} cb
  * @param {*} [context]
  */
-
-
 /**
  * 数组映射
  * @memberOf module:zrender/core/util
@@ -146,7 +116,6 @@ function map(obj, cb, context) {
         return result;
     }
 }
-
 /**
  * @memberOf module:zrender/core/util
  * @param {Array} obj
@@ -155,8 +124,6 @@ function map(obj, cb, context) {
  * @param {*} [context]
  * @return {Array}
  */
-
-
 /**
  * 数组过滤
  * @memberOf module:zrender/core/util
@@ -165,8 +132,6 @@ function map(obj, cb, context) {
  * @param {*} [context]
  * @return {Array}
  */
-
-
 /**
  * 数组项查找
  * @memberOf module:zrender/core/util
@@ -175,91 +140,63 @@ function map(obj, cb, context) {
  * @param {*} [context]
  * @return {*}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {Function} func
  * @param {*} context
  * @return {Function}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {Function} func
  * @return {Function}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
  * @return {boolean}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
  * @return {boolean}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
  * @return {boolean}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
  * @return {boolean}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
  * @return {boolean}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
  * @return {boolean}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {*} value
  * @return {boolean}
  */
-
-
 /**
  * Whether is exactly NaN. Notice isNaN('a') returns true.
  * @param {*} value
  * @return {boolean}
  */
-
-
 /**
  * If value1 is not null, then return value1, otherwise judget rest of values.
  * Low performance.
  * @memberOf module:zrender/core/util
  * @return {*} Final value
  */
-
-
-
-
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {Array} arr
@@ -267,8 +204,6 @@ function map(obj, cb, context) {
  * @param {number} endIndex
  * @return {Array}
  */
-
-
 /**
  * Normalize css liked array configuration
  * e.g.
@@ -278,26 +213,19 @@ function map(obj, cb, context) {
  * @param {number|Array.<number>} val
  * @return {Array.<number>}
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {boolean} condition
  * @param {string} message
  */
-
-
 /**
  * @memberOf module:zrender/core/util
  * @param {string} str string to be trimed
  * @return {string} trimed string
  */
-
-
 /**
  * Set an object as primitive to be ignored traversing children in clone or merge
  */
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -316,10 +244,8 @@ function map(obj, cb, context) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 // GEXF File Parser
 // http://gexf.net/1.2draft/gexf-12draft-primer.pdf
-
 function parse(xml) {
     var doc;
     if (typeof xml === 'string') {
@@ -332,27 +258,21 @@ function parse(xml) {
     if (!doc || doc.getElementsByTagName('parsererror').length) {
         return null;
     }
-
     var gexfRoot = getChildByTagName(doc, 'gexf');
-
     if (!gexfRoot) {
         return null;
     }
-
     var graphRoot = getChildByTagName(gexfRoot, 'graph');
-
     var attributes = parseAttributes(getChildByTagName(graphRoot, 'attributes'));
     var attributesMap = {};
     for (var i = 0; i < attributes.length; i++) {
         attributesMap[attributes[i].id] = attributes[i];
     }
-
     return {
         nodes: parseNodes(getChildByTagName(graphRoot, 'nodes'), attributesMap),
         links: parseEdges(getChildByTagName(graphRoot, 'edges'))
     };
 }
-
 function parseAttributes(parent) {
     return parent ? map(getChildrenByTagName(parent, 'attribute'), function (attribDom) {
         return {
@@ -362,13 +282,10 @@ function parseAttributes(parent) {
         };
     }) : [];
 }
-
 function parseNodes(parent, attributesMap) {
     return parent ? map(getChildrenByTagName(parent, 'node'), function (nodeDom) {
-
         var id = getAttr(nodeDom, 'id');
         var label = getAttr(nodeDom, 'label');
-
         var node = {
             id: id,
             name: label,
@@ -376,14 +293,11 @@ function parseNodes(parent, attributesMap) {
                 normal: {}
             }
         };
-
         var vizSizeDom = getChildByTagName(nodeDom, 'viz:size');
         var vizPosDom = getChildByTagName(nodeDom, 'viz:position');
         var vizColorDom = getChildByTagName(nodeDom, 'viz:color');
         // var vizShapeDom = getChildByTagName(nodeDom, 'viz:shape');
-
         var attvaluesDom = getChildByTagName(nodeDom, 'attvalues');
-
         if (vizSizeDom) {
             node.symbolSize = parseFloat(getAttr(vizSizeDom, 'value'));
         }
@@ -404,15 +318,12 @@ function parseNodes(parent, attributesMap) {
         // }
         if (attvaluesDom) {
             var attvalueDomList = getChildrenByTagName(attvaluesDom, 'attvalue');
-
             node.attributes = {};
-
             for (var j = 0; j < attvalueDomList.length; j++) {
                 var attvalueDom = attvalueDomList[j];
                 var attId = getAttr(attvalueDom, 'for');
                 var attValue = getAttr(attvalueDom, 'value');
                 var attribute = attributesMap[attId];
-
                 if (attribute) {
                     switch (attribute.type) {
                         case 'integer':
@@ -432,19 +343,15 @@ function parseNodes(parent, attributesMap) {
                 }
             }
         }
-
         return node;
     }) : [];
 }
-
 function parseEdges(parent) {
     return parent ? map(getChildrenByTagName(parent, 'edge'), function (edgeDom) {
         var id = getAttr(edgeDom, 'id');
         var label = getAttr(edgeDom, 'label');
-
         var sourceId = getAttr(edgeDom, 'source');
         var targetId = getAttr(edgeDom, 'target');
-
         var edge = {
             id: id,
             name: label,
@@ -454,13 +361,10 @@ function parseEdges(parent) {
                 normal: {}
             }
         };
-
         var lineStyle = edge.lineStyle.normal;
-
         var vizThicknessDom = getChildByTagName(edgeDom, 'viz:thickness');
         var vizColorDom = getChildByTagName(edgeDom, 'viz:color');
         // var vizShapeDom = getChildByTagName(edgeDom, 'viz:shape');
-
         if (vizThicknessDom) {
             lineStyle.width = parseFloat(vizThicknessDom.getAttribute('value'));
         }
@@ -474,18 +378,14 @@ function parseEdges(parent) {
         // if (vizShapeDom) {
         //     edge.shape = vizShapeDom.getAttribute('shape');
         // }
-
         return edge;
     }) : [];
 }
-
 function getAttr(el, attrName) {
     return el.getAttribute(attrName);
 }
-
 function getChildByTagName (parent, tagName) {
     var node = parent.firstChild;
-
     while (node) {
         if (
             node.nodeType != 1 ||
@@ -496,10 +396,8 @@ function getChildByTagName (parent, tagName) {
             return node;
         }
     }
-
     return null;
 }
-
 function getChildrenByTagName (parent, tagName) {
     var node = parent.firstChild;
     var children = [];
@@ -509,15 +407,11 @@ function getChildrenByTagName (parent, tagName) {
         }
         node = node.nextSibling;
     }
-
     return children;
 }
-
-
 var gexf = (Object.freeze || Object)({
 	parse: parse
 });
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -536,7 +430,6 @@ var gexf = (Object.freeze || Object)({
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /*
 * A third-party license is embeded for some of the code in this file:
 * The method "quantile" was copied from "d3.js".
@@ -545,7 +438,6 @@ var gexf = (Object.freeze || Object)({
 * and consitions of the license of "d3.js" (BSD-3Clause, see
 * </licenses/LICENSE-d3>).
 */
-
 /**
  * Linear mapping a value from domain to range
  * @memberOf module:echarts/util/number
@@ -555,8 +447,6 @@ var gexf = (Object.freeze || Object)({
  * @param  {boolean} clamp
  * @return {(number|Array.<number>}
  */
-
-
 /**
  * Convert a percent string to absolute number.
  * Returns NaN if percent is not a valid string or number
@@ -565,8 +455,6 @@ var gexf = (Object.freeze || Object)({
  * @param {number} all
  * @return {number}
  */
-
-
 /**
  * (1) Fix rounding error of float numbers.
  * (2) Support return string to avoid scientific notation like '3.5e-7'.
@@ -576,27 +464,20 @@ var gexf = (Object.freeze || Object)({
  * @param {boolean} [returnStr]
  * @return {number|string}
  */
-
-
 function asc(arr) {
     arr.sort(function (a, b) {
         return a - b;
     });
     return arr;
 }
-
 /**
  * Get precision
  * @param {number} val
  */
-
-
 /**
  * @param {string|number} val
  * @return {number}
  */
-
-
 /**
  * Minimal dicernible data precisioin according to a single pixel.
  *
@@ -604,8 +485,6 @@ function asc(arr) {
  * @param {Array.<number>} pixelExtent
  * @return {number} precision
  */
-
-
 /**
  * Get a data of given precision, assuring the sum of percentages
  * in valueList is 1.
@@ -617,26 +496,17 @@ function asc(arr) {
  * @param {number} precision integer number showing digits of precision
  * @return {number} percent ranging from 0 to 100
  */
-
-
 // Number.MAX_SAFE_INTEGER, ie do not support.
-
-
 /**
  * To 0 - 2 * PI, considering negative radian.
  * @param {number} radian
  * @return {number}
  */
-
-
 /**
  * @param {type} radian
  * @return {boolean}
  */
-
-
 /* eslint-enable */
-
 /**
  * @param {string|Date|number} value These values can be accepted:
  *   + An instance of Date, represent a time in its own time zone.
@@ -652,16 +522,12 @@ function asc(arr) {
  *   + a timestamp, which represent a time in UTC.
  * @return {Date} date
  */
-
-
 /**
  * Quantity of a number. e.g. 0.1, 1, 10, 100
  *
  * @param  {number} val
  * @return {number}
  */
-
-
 /**
  * find a “nice” number approximately equal to x. Round the number if round = true,
  * take ceiling if round = false. The primary observation is that the “nicest”
@@ -673,8 +539,6 @@ function asc(arr) {
  * @param  {boolean} round
  * @return {number}
  */
-
-
 /**
  * This code was copied from "d3.js"
  * <https://github.com/d3/d3/blob/9cc9a875e636a1dcf36cc1e07bdf77e1ad6e2c74/src/arrays/quantile.js>.
@@ -688,7 +552,6 @@ function quantile(ascArr, p) {
     var e = H - h;
     return e ? v + e * (ascArr[h] - v) : v;
 }
-
 /**
  * Order intervals asc, and split them when overlap.
  * expect(numberUtil.reformIntervals([
@@ -711,8 +574,6 @@ function quantile(ascArr, p) {
  *        of the interval, and Infinity can be used.
  * @return {Array.<Object>} The origin list, which has been reformed.
  */
-
-
 /**
  * parseFloat NaNs numeric-cast false positives (null|true|false|"")
  * ...but misinterprets leading-number strings, particularly hex literals ("0x...")
@@ -721,7 +582,6 @@ function quantile(ascArr, p) {
  * @param {*} v
  * @return {boolean}
  */
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -740,7 +600,6 @@ function quantile(ascArr, p) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 /**
  * See:
  *  <https://en.wikipedia.org/wiki/Box_plot#cite_note-frigge_hoaglin_iglewicz-2>
@@ -774,28 +633,22 @@ var prepareBoxplotData = function (rawData, opt) {
     var axisData = [];
     var boundIQR = opt.boundIQR;
     var useExtreme = boundIQR === 'none' || boundIQR === 0;
-
     for (var i = 0; i < rawData.length; i++) {
         axisData.push(i + '');
         var ascList = asc(rawData[i].slice());
-
         var Q1 = quantile(ascList, 0.25);
         var Q2 = quantile(ascList, 0.5);
         var Q3 = quantile(ascList, 0.75);
         var min = ascList[0];
         var max = ascList[ascList.length - 1];
-
         var bound = (boundIQR == null ? 1.5 : boundIQR) * (Q3 - Q1);
-
         var low = useExtreme
             ? min
             : Math.max(min, Q1 - bound);
         var high = useExtreme
             ? max
             : Math.min(max, Q3 + bound);
-
         boxData.push([low, Q1, Q2, Q3, high]);
-
         for (var j = 0; j < ascList.length; j++) {
             var dataItem = ascList[j];
             if (dataItem < low || dataItem > high) {
@@ -811,7 +664,6 @@ var prepareBoxplotData = function (rawData, opt) {
         axisData: axisData
     };
 };
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -830,9 +682,7 @@ var prepareBoxplotData = function (rawData, opt) {
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var version = '1.0.0';
-
 // For backward compatibility, where the namespace `dataTool` will
 // be mounted on `echarts` is the extension `dataTool` is imported.
 // But the old version of echarts do not have `dataTool` namespace,
@@ -842,10 +692,8 @@ if (echarts.dataTool) {
     echarts.dataTool.gexf = gexf;
     echarts.dataTool.prepareBoxplotData = prepareBoxplotData;
 }
-
 exports.version = version;
 exports.gexf = gexf;
 exports.prepareBoxplotData = prepareBoxplotData;
-
 })));
 //# sourceMappingURL=dataTool.js.map

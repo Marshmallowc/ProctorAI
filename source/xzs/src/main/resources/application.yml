@@ -8,19 +8,15 @@ server:
   compression:
     enabled: true
     min-response-size: 1
-
 #logging logback
 logging:
   config: classpath:logback-spring.xml
   file: xzs
-
 #mybatis
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
   configuration:
     log-prefix: repository.
-
-
 system:
   security-ignore-urls:
     - /api/wx/**
@@ -43,23 +39,17 @@ system:
     bucket: mindskip
     access-key: KabOBTPGVll2sSV8d1OIlW8G4_n_cReE7RSsLafA
     secret-key: mSltk9_9KtCdFetCmxvvCAgsBg8JZHiXMuQeqSJA
-
-
 #mybatis page helper
 pagehelper:
   autoDialect: true
   closeConn: true
   reasonable: true
-
-
 #mybatis datasource default HikariPool
 spring:
   datasource:
     hikari:
       idle-timeout: 600000  #10 min
       max-lifetime: 1800000 #30 min
-
-
   #runningtime environment
   profiles:
     active:  dev

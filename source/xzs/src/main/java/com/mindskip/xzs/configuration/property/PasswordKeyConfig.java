@@ -1,5 +1,4 @@
 package com.mindskip.xzs.configuration.property;
-
 /**
  * @version 3.5.0
  * @description: The type Password key config.
@@ -8,9 +7,7 @@ package com.mindskip.xzs.configuration.property;
  */
 public class PasswordKeyConfig {
     private String publicKey;
-
     private String privateKey;
-
     /**
      * Gets public key.
      *
@@ -19,7 +16,6 @@ public class PasswordKeyConfig {
     public String getPublicKey() {
         return publicKey;
     }
-
     /**
      * Sets public key.
      *
@@ -28,7 +24,6 @@ public class PasswordKeyConfig {
     public void setPublicKey(String publicKey) {
         this.publicKey = publicKey;
     }
-
     /**
      * Gets private key.
      *
@@ -37,7 +32,6 @@ public class PasswordKeyConfig {
     public String getPrivateKey() {
         return privateKey;
     }
-
     /**
      * Sets private key.
      *
@@ -46,5 +40,4 @@ public class PasswordKeyConfig {
     public void setPrivateKey(String privateKey) {
         this.privateKey = privateKey;
     }
-
 }

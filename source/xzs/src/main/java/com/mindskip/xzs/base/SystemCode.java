@@ -1,5 +1,4 @@
 package com.mindskip.xzs.base;
-
 /**
  * @version 3.3.0
  * @description: The enum System code.
@@ -31,12 +30,10 @@ public enum SystemCode {
      * ParameterValidError
      */
     ParameterValidError(501, "参数验证错误"),
-
     /**
      * AccessDenied
      */
     AccessDenied(502, "用户没有权限访问");
-
     /**
      * The Code.
      */
@@ -45,12 +42,10 @@ public enum SystemCode {
      * The Message.
      */
     String message;
-
     SystemCode(int code, String message) {
         this.code = code;
         this.message = message;
     }
-
     /**
      * Gets code.
      *
@@ -59,7 +54,6 @@ public enum SystemCode {
     public int getCode() {
         return code;
     }
-
     /**
      * Gets message.
      *

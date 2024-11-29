@@ -1,10 +1,6 @@
 package com.mindskip.xzs.service;
-
 import com.mindskip.xzs.domain.User;
-
-
 public interface AuthenticationService {
-
     /**
      * authUser
      *
@@ -13,9 +9,6 @@ public interface AuthenticationService {
      * @return boolean
      */
     boolean authUser(String username, String password);
-
-
-
     /**
      * authUser
      *
@@ -25,7 +18,6 @@ public interface AuthenticationService {
      * @return boolean
      */
     boolean authUser(User user, String username, String password);
-
     /**
      * pwdEncode
      *
@@ -33,7 +25,6 @@ public interface AuthenticationService {
      * @return String
      */
     String pwdEncode(String password);
-
     /**
      * pwdDecode
      *

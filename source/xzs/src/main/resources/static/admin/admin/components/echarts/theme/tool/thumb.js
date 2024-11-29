@@ -16,15 +16,12 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 var glob = require('glob');
 var Canvas = require('canvas');
 var echarts = require('echarts');
 var fs = require('fs');
 var path = require('path');
-
 require('echarts/map/js/china');
-
 var options = {
     bar: require('./option/bar'),
     area: require('./option/area'),
@@ -38,10 +35,8 @@ var HEIGHT = 400;
 echarts.setCanvasCreator(function () {
     return createCanvas();
 });
-
 var font = new Canvas.Font('Helvetica', '/System/Library/Fonts/Helvetica.dfont');
 font.addFace('/System/Library/Fonts/Helvetica.dfont', 'bolder');
-
 glob('../*.js', function (err, themePathList) {
     themePathList.forEach(function (themePath) {
         var themeName = path.basename(themePath, '.js');
@@ -63,14 +58,12 @@ glob('../*.js', function (err, themePathList) {
             chart.setOption(option);
             chart.dispose();
         });
-
         var columnCount = 2;
         var outputCanvas = new Canvas(WIDTH * columnCount, HEIGHT * canvasList.length / columnCount);
         var outputCtx = outputCanvas.getContext('2d');
         canvasList.forEach(function (canvas, idx) {
             outputCtx.drawImage(canvas, idx % columnCount * WIDTH, Math.floor(idx / columnCount) * HEIGHT, WIDTH, HEIGHT);
         });
-
         fs.writeFileSync('../thumb/' + themeName + '.png', outputCanvas.toBuffer());
     });
 });

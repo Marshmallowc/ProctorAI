@@ -1,8 +1,6 @@
 package com.mindskip.xzs.event;
-
 import com.mindskip.xzs.domain.ExamPaperAnswerInfo;
 import org.springframework.context.ApplicationEvent;
-
 /**
  * @version 3.3.0
  * @description: The type Calculate exam paper answer complete event.
@@ -10,11 +8,7 @@ import org.springframework.context.ApplicationEvent;
  * @date 2021/5/25 10:45
  */
 public class CalculateExamPaperAnswerCompleteEvent extends ApplicationEvent {
-
-
     private final ExamPaperAnswerInfo examPaperAnswerInfo;
-
-
     /**
      * Instantiates a new Calculate exam paper answer complete event.
      *
@@ -24,7 +18,6 @@ public class CalculateExamPaperAnswerCompleteEvent extends ApplicationEvent {
         super(examPaperAnswerInfo);
         this.examPaperAnswerInfo = examPaperAnswerInfo;
     }
-
     /**
      * Gets exam paper answer info.
      *
@@ -33,5 +26,4 @@ public class CalculateExamPaperAnswerCompleteEvent extends ApplicationEvent {
     public ExamPaperAnswerInfo getExamPaperAnswerInfo() {
         return examPaperAnswerInfo;
     }
-
 }

@@ -1,12 +1,9 @@
 package com.mindskip.xzs.base;
-
-
 import com.mindskip.xzs.context.WebContext;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.utility.ModelMapperSingle;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  * @version 3.3.0
  * @description: The type Base api controller.
@@ -27,7 +24,6 @@ public class BaseApiController {
      */
     @Autowired
     protected WebContext webContext;
-
     /**
      * Gets current user.
      *

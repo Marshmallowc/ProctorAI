@@ -1,5 +1,4 @@
 package com.mindskip.xzs.service.impl;
-
 import com.mindskip.xzs.configuration.property.QnConfig;
 import com.mindskip.xzs.configuration.property.SystemConfig;
 import com.mindskip.xzs.service.FileUpload;
@@ -15,20 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.InputStream;
-
 @Service
 public class FileUploadImpl implements FileUpload {
     private final Logger logger = LoggerFactory.getLogger(FileUpload.class);
     private final SystemConfig systemConfig;
-
-
     @Autowired
     public FileUploadImpl(SystemConfig systemConfig) {
         this.systemConfig = systemConfig;
     }
-
     @Override
     public String uploadFile(InputStream inputStream, long size, String extName) {
         QnConfig qnConfig = systemConfig.getQn();

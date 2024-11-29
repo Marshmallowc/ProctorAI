@@ -126,14 +126,6 @@
       create_user_name = #{createUserName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-
-
-
-
-
-
   <select id="page" resultMap="BaseResultMap" parameterType="com.mindskip.xzs.viewmodel.admin.task.TaskPageRequestVM">
     select
     <include refid="Base_Column_List" />
@@ -145,8 +137,6 @@
       </if>
     </where>
   </select>
-
-
   <select id="getByGradeLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select
     <include refid="Base_Column_List" />
@@ -154,5 +144,4 @@
     where deleted=0
     and grade_level = #{gradeLevel,jdbcType=INTEGER}
   </select>
-
 </mapper>

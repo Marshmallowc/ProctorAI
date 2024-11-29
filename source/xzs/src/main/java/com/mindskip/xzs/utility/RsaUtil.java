@@ -1,8 +1,6 @@
 package com.mindskip.xzs.utility;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.crypto.Cipher;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -10,8 +8,6 @@ import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-
-
 /**
  * @version 3.5.0
  * @description: The type Rsa util.
@@ -23,11 +19,8 @@ public class RsaUtil {
      * String to hold name of the encryption algorithm.
      */
     private static final String ALGORITHM = "RSA";
-
     private static final String CHAR_SET = "utf-8";
-
     private static final Logger logger = LoggerFactory.getLogger(RsaUtil.class);
-
     /**
      * Rsa encode string.
      *
@@ -52,8 +45,6 @@ public class RsaUtil {
         }
         return null;
     }
-
-
     /**
      * Rsa decode string.
      *
@@ -80,8 +71,6 @@ public class RsaUtil {
         }
         return null;
     }
-
-
     /**
      * @param str str
      * @return byte[]
@@ -89,8 +78,6 @@ public class RsaUtil {
     private static byte[] baseStrToByte(String str) {
         return Base64.getDecoder().decode(str);
     }
-
-
     /**
      * @param bytes bytes
      * @return String

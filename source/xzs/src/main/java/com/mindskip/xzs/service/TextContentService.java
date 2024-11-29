@@ -1,13 +1,9 @@
 package com.mindskip.xzs.service;
-
 import com.mindskip.xzs.domain.TextContent;
-
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
-
 public interface TextContentService extends BaseService<TextContent> {
-
     /**
      * 创建一个TextContent，将内容转化为json，回写到content中，不入库
      *
@@ -19,7 +15,6 @@ public interface TextContentService extends BaseService<TextContent> {
      * @return
      */
     <T, R> TextContent jsonConvertInsert(List<T> list, Date now, Function<? super T, ? extends R> mapper);
-
     /**
      * 修改一个TextContent，将内容转化为json，回写到content中，不入库
      *
@@ -31,5 +26,4 @@ public interface TextContentService extends BaseService<TextContent> {
      * @return
      */
     <T, R> TextContent jsonConvertUpdate(TextContent textContent, List<T> list, Function<? super T, ? extends R> mapper);
-
 }

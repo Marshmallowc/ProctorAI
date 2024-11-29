@@ -1,8 +1,6 @@
 package com.mindskip.xzs.viewmodel;
-
 import com.mindskip.xzs.utility.ModelMapperSingle;
 import org.modelmapper.ModelMapper;
-
 /**
  * @version 3.5.0
  * @description: The type Base vm.
@@ -14,8 +12,6 @@ public class BaseVM {
      * The constant modelMapper.
      */
     protected static ModelMapper modelMapper = ModelMapperSingle.Instance();
-
-
     /**
      * Gets model mapper.
      *
@@ -24,7 +20,6 @@ public class BaseVM {
     public static ModelMapper getModelMapper() {
         return modelMapper;
     }
-
     /**
      * Sets model mapper.
      *

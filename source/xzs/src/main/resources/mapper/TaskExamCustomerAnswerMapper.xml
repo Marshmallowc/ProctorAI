@@ -90,10 +90,6 @@
       text_content_id = #{textContentId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-
-
   <select id="getByTUid"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -101,8 +97,6 @@
     where task_exam_id = #{tid} and create_user=#{uid}
     limit 1
   </select>
-
-
   <select id="selectByTUid"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -113,5 +107,4 @@
       #{id}
     </foreach>
   </select>
-
 </mapper>

@@ -1,5 +1,4 @@
 package com.mindskip.xzs.configuration.spring.security;
-
 import com.mindskip.xzs.configuration.property.CookieConfig;
 import com.mindskip.xzs.configuration.property.SystemConfig;
 import com.mindskip.xzs.domain.enums.RoleEnum;
@@ -13,11 +12,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import java.util.Collections;
 import java.util.List;
-
-
 /**
  * @version 3.5.0
  * @description: The type Security configurer.
@@ -27,13 +23,11 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurer {
-
     /**
      * The type Form login web security configurer adapter.
      */
     @Configuration
     public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
         private final SystemConfig systemConfig;
         private final LoginAuthenticationEntryPoint restAuthenticationEntryPoint;
         private final RestAuthenticationProvider restAuthenticationProvider;
@@ -42,7 +36,6 @@ public class SecurityConfigurer {
         private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
         private final RestLogoutSuccessHandler restLogoutSuccessHandler;
         private final RestAccessDeniedHandler restAccessDeniedHandler;
-
         /**
          * Instantiates a new Form login web security configurer adapter.
          *
@@ -66,7 +59,6 @@ public class SecurityConfigurer {
             this.restLogoutSuccessHandler = restLogoutSuccessHandler;
             this.restAccessDeniedHandler = restAccessDeniedHandler;
         }
-
         /**
          * @param http http
          * @throws Exception exception
@@ -75,7 +67,6 @@ public class SecurityConfigurer {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.headers().frameOptions().disable();
-
             List<String> securityIgnoreUrls = systemConfig.getSecurityIgnoreUrls();
             String[] ignores = new String[securityIgnoreUrls.size()];
             http
@@ -94,8 +85,6 @@ public class SecurityConfigurer {
                     .and().csrf().disable()
                     .cors();
         }
-
-
         /**
          * Cors configuration source cors configuration source.
          *
@@ -113,8 +102,6 @@ public class SecurityConfigurer {
             source.registerCorsConfiguration("/api/**", configuration);
             return source;
         }
-
-
         /**
          * Authentication filter rest login authentication filter.
          *
@@ -130,7 +117,5 @@ public class SecurityConfigurer {
             authenticationFilter.setUserDetailsService(formDetailsService);
             return authenticationFilter;
         }
-
-
     }
 }

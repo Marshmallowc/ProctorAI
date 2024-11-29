@@ -103,22 +103,17 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
   <select id="getSubjectByLevel" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from t_subject where level= #{level}
     order by item_order
   </select>
-
-
   <select id="allSubject" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from t_subject
   </select>
-
   <select id="page" resultMap="BaseResultMap" parameterType="com.mindskip.xzs.viewmodel.admin.education.SubjectPageRequestVM">
     SELECT
     <include refid="Base_Column_List"/>
@@ -133,5 +128,4 @@
       </if>
     </where>
   </select>
-
 </mapper>

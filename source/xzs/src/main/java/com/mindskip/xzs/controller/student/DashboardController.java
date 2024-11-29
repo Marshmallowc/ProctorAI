@@ -1,5 +1,4 @@
 package com.mindskip.xzs.controller.student;
-
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.TaskExam;
@@ -17,23 +16,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @RestController("StudentDashboardController")
 @RequestMapping(value = "/api/student/dashboard")
 public class DashboardController extends BaseApiController {
-
     private final UserService userService;
     private final ExamPaperService examPaperService;
     private final QuestionService questionService;
     private final TaskExamService taskExamService;
     private final TaskExamCustomerAnswerService taskExamCustomerAnswerService;
     private final TextContentService textContentService;
-
     @Autowired
     public DashboardController(UserService userService, ExamPaperService examPaperService, QuestionService questionService, TaskExamService taskExamService, TaskExamCustomerAnswerService taskExamCustomerAnswerService, TextContentService textContentService) {
         this.userService = userService;
@@ -43,22 +38,18 @@ public class DashboardController extends BaseApiController {
         this.taskExamCustomerAnswerService = taskExamCustomerAnswerService;
         this.textContentService = textContentService;
     }
-
     @RequestMapping(value = "/index", method = RequestMethod.POST)
     public RestResponse<IndexVM> index() {
         IndexVM indexVM = new IndexVM();
         User user = getCurrentUser();
-
         PaperFilter fixedPaperFilter = new PaperFilter();
         fixedPaperFilter.setGradeLevel(user.getUserLevel());
         fixedPaperFilter.setExamPaperType(ExamPaperTypeEnum.Fixed.getCode());
         indexVM.setFixedPaper(examPaperService.indexPaper(fixedPaperFilter));
-
         PaperFilter timeLimitPaperFilter = new PaperFilter();
         timeLimitPaperFilter.setDateTime(new Date());
         timeLimitPaperFilter.setGradeLevel(user.getUserLevel());
         timeLimitPaperFilter.setExamPaperType(ExamPaperTypeEnum.TimeLimit.getCode());
-
         List<PaperInfo> limitPaper = examPaperService.indexPaper(timeLimitPaperFilter);
         List<PaperInfoVM> paperInfoVMS = limitPaper.stream().map(d -> {
             PaperInfoVM vm = modelMapper.map(d, PaperInfoVM.class);
@@ -69,8 +60,6 @@ public class DashboardController extends BaseApiController {
         indexVM.setTimeLimitPaper(paperInfoVMS);
         return RestResponse.ok(indexVM);
     }
-
-
     @RequestMapping(value = "/task", method = RequestMethod.POST)
     public RestResponse<List<TaskItemVm>> task() {
         User user = getCurrentUser();
@@ -92,19 +81,14 @@ public class DashboardController extends BaseApiController {
         }).collect(Collectors.toList());
         return RestResponse.ok(vm);
     }
-
-
     private List<TaskItemPaperVm> getTaskItemPaperVm(Integer tFrameId, TaskExamCustomerAnswer taskExamCustomerAnswers) {
         TextContent textContent = textContentService.selectById(tFrameId);
         List<TaskItemObject> paperItems = JsonUtil.toJsonListObject(textContent.getContent(), TaskItemObject.class);
-
         List<TaskItemAnswerObject> answerPaperItems = null;
         if (null != taskExamCustomerAnswers) {
             TextContent answerTextContent = textContentService.selectById(taskExamCustomerAnswers.getTextContentId());
             answerPaperItems = JsonUtil.toJsonListObject(answerTextContent.getContent(), TaskItemAnswerObject.class);
         }
-
-
         List<TaskItemAnswerObject> finalAnswerPaperItems = answerPaperItems;
         return paperItems.stream().map(p -> {
                     TaskItemPaperVm ivm = new TaskItemPaperVm();

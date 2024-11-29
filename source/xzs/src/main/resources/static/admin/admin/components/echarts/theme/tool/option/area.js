@@ -16,7 +16,6 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 module.exports = {
     title: {
         text: 'Area Chart',
@@ -42,7 +41,6 @@ module.exports = {
         splitNumber: 3
     },
     dataZoom: {
-
     },
     series: [
         {

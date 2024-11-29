@@ -1,7 +1,5 @@
 package com.mindskip.xzs.configuration.spring.security;
-
 import com.mindskip.xzs.configuration.property.CookieConfig;
-
 import com.mindskip.xzs.utility.JsonUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,13 +9,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-
-
 /**
  * @version 3.5.0
  * @description: 登录参数序列化
@@ -26,14 +21,12 @@ import java.io.InputStream;
  */
 public class RestLoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(RestLoginAuthenticationFilter.class);
-
     /**
      * Instantiates a new Rest login authentication filter.
      */
     public RestLoginAuthenticationFilter() {
         super(new AntPathRequestMatcher("/api/user/login", "POST"));
     }
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authRequest;
@@ -47,9 +40,7 @@ public class RestLoginAuthenticationFilter extends AbstractAuthenticationProcess
         }
         setDetails(request, authRequest);
         return this.getAuthenticationManager().authenticate(authRequest);
-
     }
-
     /**
      * Sets user details service.
      *
@@ -60,7 +51,6 @@ public class RestLoginAuthenticationFilter extends AbstractAuthenticationProcess
         tokenBasedRememberMeServices.setTokenValiditySeconds(CookieConfig.getInterval());
         setRememberMeServices(tokenBasedRememberMeServices);
     }
-
     private void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
         authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
     }

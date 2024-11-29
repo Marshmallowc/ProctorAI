@@ -1,5 +1,4 @@
 package com.mindskip.xzs.configuration.property;
-
 /**
  * @version 3.5.0
  * @description: The type Cookie config.
@@ -7,7 +6,6 @@ package com.mindskip.xzs.configuration.property;
  * @date 2021/12/25 9:45
  */
 public class CookieConfig {
-
     /**
      * Gets name.
      *
@@ -16,7 +14,6 @@ public class CookieConfig {
     public static String getName() {
         return "xzs";
     }
-
     /**
      * Gets interval.
      *

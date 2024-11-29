@@ -1,9 +1,6 @@
 package com.mindskip.xzs.configuration.property;
-
-
 import java.time.Duration;
 import java.util.List;
-
 /**
  * @version 3.5.0
  * @description: The type Qn config.
@@ -11,12 +8,10 @@ import java.util.List;
  * @date 2021/12/25 9:45
  */
 public class QnConfig {
-
     private String url;
     private String bucket;
     private String accessKey;
     private String secretKey;
-
     /**
      * Gets url.
      *
@@ -25,7 +20,6 @@ public class QnConfig {
     public String getUrl() {
         return url;
     }
-
     /**
      * Sets url.
      *
@@ -34,7 +28,6 @@ public class QnConfig {
     public void setUrl(String url) {
         this.url = url;
     }
-
     /**
      * Gets bucket.
      *
@@ -43,7 +36,6 @@ public class QnConfig {
     public String getBucket() {
         return bucket;
     }
-
     /**
      * Sets bucket.
      *
@@ -52,7 +44,6 @@ public class QnConfig {
     public void setBucket(String bucket) {
         this.bucket = bucket;
     }
-
     /**
      * Gets access key.
      *
@@ -61,7 +52,6 @@ public class QnConfig {
     public String getAccessKey() {
         return accessKey;
     }
-
     /**
      * Sets access key.
      *
@@ -70,7 +60,6 @@ public class QnConfig {
     public void setAccessKey(String accessKey) {
         this.accessKey = accessKey;
     }
-
     /**
      * Gets secret key.
      *
@@ -79,7 +68,6 @@ public class QnConfig {
     public String getSecretKey() {
         return secretKey;
     }
-
     /**
      * Sets secret key.
      *
@@ -88,5 +76,4 @@ public class QnConfig {
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }
-
 }

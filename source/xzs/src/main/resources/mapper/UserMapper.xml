@@ -265,44 +265,35 @@
       wx_open_id = #{stuNo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-
   <select id="getAllUser" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from t_user where deleted=0
   </select>
-
   <select id="getUserById" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from t_user
     where id=#{value}
   </select>
-
   <select id="getUserByUserName" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from t_user
     where deleted=0  and user_name=#{value} limit 1
   </select>
-
   <select id="getUserByUserNamePwd" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from t_user
     where deleted=0  and user_name=#{username} and password=#{pwd} limit 1
   </select>
-
   <select id="getUserByUuid" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from t_user
     where deleted=0  and user_uuid=#{value,jdbcType=VARCHAR}
   </select>
-
-
   <select id="userPageList" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
@@ -319,8 +310,6 @@
       limit #{limit} OFFSET #{offset}
     </if>
   </select>
-
-
   <select id="userPageCount" resultType="java.lang.Integer">
     select count(*) from t_user
     <where>
@@ -330,8 +319,6 @@
       </if>
     </where>
   </select>
-
-
   <select id="userPage" resultMap="BaseResultMap" parameterType="com.mindskip.xzs.viewmodel.admin.user.UserPageRequestVM">
     SELECT
     <include refid="Base_Column_List"/>
@@ -346,9 +333,6 @@
       </if>
     </where>
   </select>
-
-
-
   <insert id="insertUser" parameterType="com.mindskip.xzs.domain.User"
           useGeneratedKeys="true" keyProperty="id">
 		insert into t_user
@@ -356,7 +340,6 @@
 		values
 		(#{userUuid,jdbcType=VARCHAR},#{userName},#{password},#{realName},#{age},#{lastActiveTime})
 	</insert>
-
   <insert id="insertUsers" parameterType="java.util.List"
           useGeneratedKeys="true" keyProperty="id">
     insert into t_user
@@ -368,8 +351,6 @@
       #{item.lastActiveTime})
     </foreach>
   </insert>
-
-
   <update id="updateUser" parameterType="com.mindskip.xzs.domain.User">
     update t_user
     <set>
@@ -379,8 +360,6 @@
     </set>
     where id = #{id}
   </update>
-
-
   <update id="updateUsersAge">
     update t_user set age = #{age} where id in
     <foreach item="id" collection="idslist" open="(" separator=","
@@ -388,8 +367,6 @@
       #{id}
     </foreach>
   </update>
-
-
   <delete id="deleteUsersByIds">
     delete from t_user where id in
     <foreach item="id" collection="list" open="(" separator=","
@@ -397,20 +374,15 @@
       #{id}
     </foreach>
   </delete>
-
   <select id="selectAllCount"  resultType="java.lang.Integer">
 		SELECT count(*) from t_user where deleted=0
   </select>
-
-
   <select id="selectByUserName"  resultType="com.mindskip.xzs.domain.other.KeyValue">
 		SELECT  id as value,user_name as name
 		from t_user
 		where deleted=0  and user_name like concat('%',#{value},'%')
 		limit 5
   </select>
-
-
   <select id="selectByIds" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -421,8 +393,6 @@
       #{id}
     </foreach>
   </select>
-
-
   <select id="selectByWxOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -430,6 +400,4 @@
     where deleted=0  and  wx_open_id = #{wxOpenId}
     limit 1
   </select>
-
-
 </mapper>

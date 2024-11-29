@@ -16,7 +16,6 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 (function (root, factory) {if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['exports', 'echarts'], factory);
@@ -37,26 +36,20 @@
         log('ECharts is not Loaded');
         return;
     }
-
     var colorPalette = [
         '#c12e34','#e6b600','#0098d9','#2b821d',
         '#005eaa','#339ca8','#cda819','#32a487'
     ];
-
     var theme = {
-
         color: colorPalette,
-
         title: {
             textStyle: {
                 fontWeight: 'normal'
             }
         },
-
         visualMap: {
             color:['#1790cf','#a2d4e6']
         },
-
         toolbox: {
             iconStyle: {
                 normal: {
@@ -64,17 +57,14 @@
                 }
             }
         },
-
         tooltip: {
             backgroundColor: 'rgba(0,0,0,0.6)'
         },
-
         dataZoom: {
             dataBackgroundColor: '#dedede',
             fillerColor: 'rgba(154,217,247,0.2)',
             handleColor: '#005eaa'
         },
-
         timeline: {
             lineStyle: {
                 color: '#005eaa'
@@ -86,7 +76,6 @@
                 }
             }
         },
-
         candlestick: {
             itemStyle: {
                 normal: {
@@ -100,11 +89,9 @@
                 }
             }
         },
-
         graph: {
             color: colorPalette
         },
-
         map: {
             label: {
                 normal: {
@@ -128,7 +115,6 @@
                 }
             }
         },
-
         gauge: {
             axisLine: {
                 show: true,

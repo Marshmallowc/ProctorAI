@@ -1,15 +1,12 @@
 package com.mindskip.xzs.test;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 public class SchooltoMysql {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/xzs";
     private static final String USER = "root";
     private static final String PASSWORD = "123456";
-
     public static void main(String[] args) {
         // 500 所中国大学的名称
         String[] universities = {
@@ -36,25 +33,20 @@ public class SchooltoMysql {
         // 插入到数据库中
         insertUniversities(universities);
     }
-
     private static void insertUniversities(String[] universities) {
         Connection conn = null;
         PreparedStatement pstmt = null;
-
         try {
             // 1. 获取数据库连接
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-
             // 2. 插入 SQL 语句
             String sql = "INSERT INTO school (school_name) VALUES (?)";
             pstmt = conn.prepareStatement(sql);
-
             // 3. 遍历大学列表并插入
             for (String university : universities) {
                 pstmt.setString(1, university);
                 pstmt.executeUpdate(); // 执行插入
             }
-
             System.out.println("成功导入" + universities.length + "中国所大学数据！");
         } catch (SQLException e) {
             e.printStackTrace();

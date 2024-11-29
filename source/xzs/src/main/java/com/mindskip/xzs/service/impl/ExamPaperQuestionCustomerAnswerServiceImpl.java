@@ -1,5 +1,4 @@
 package com.mindskip.xzs.service.impl;
-
 import com.mindskip.xzs.domain.ExamPaperQuestionCustomerAnswer;
 import com.mindskip.xzs.domain.other.ExamPaperAnswerUpdate;
 import com.mindskip.xzs.domain.other.KeyValue;
@@ -17,43 +16,33 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class ExamPaperQuestionCustomerAnswerServiceImpl extends BaseServiceImpl<ExamPaperQuestionCustomerAnswer> implements ExamPaperQuestionCustomerAnswerService {
-
     private final ExamPaperQuestionCustomerAnswerMapper examPaperQuestionCustomerAnswerMapper;
     private final TextContentService textContentService;
-
     @Autowired
     public ExamPaperQuestionCustomerAnswerServiceImpl(ExamPaperQuestionCustomerAnswerMapper examPaperQuestionCustomerAnswerMapper, TextContentService textContentService) {
         super(examPaperQuestionCustomerAnswerMapper);
         this.examPaperQuestionCustomerAnswerMapper = examPaperQuestionCustomerAnswerMapper;
         this.textContentService = textContentService;
     }
-
-
     @Override
     public PageInfo<ExamPaperQuestionCustomerAnswer> studentPage(QuestionPageStudentRequestVM requestVM) {
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 examPaperQuestionCustomerAnswerMapper.studentPage(requestVM)
         );
     }
-
     @Override
     public List<ExamPaperQuestionCustomerAnswer> selectListByPaperAnswerId(Integer id) {
         return examPaperQuestionCustomerAnswerMapper.selectListByPaperAnswerId(id);
     }
-
-
     @Override
     public void insertList(List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers) {
         examPaperQuestionCustomerAnswerMapper.insertList(examPaperQuestionCustomerAnswers);
     }
-
     @Override
     public ExamPaperSubmitItemVM examPaperQuestionCustomerAnswerToVM(ExamPaperQuestionCustomerAnswer qa) {
         ExamPaperSubmitItemVM examPaperSubmitItemVM = new ExamPaperSubmitItemVM();
@@ -66,12 +55,10 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl extends BaseServiceImpl<
         setSpecialToVM(examPaperSubmitItemVM, qa);
         return examPaperSubmitItemVM;
     }
-
     @Override
     public Integer selectAllCount() {
         return examPaperQuestionCustomerAnswerMapper.selectAllCount();
     }
-
     @Override
     public List<Integer> selectMothCount() {
         Date startTime = DateTimeUtil.getMonthStartDay();
@@ -83,12 +70,10 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl extends BaseServiceImpl<
             return null == keyValue ? 0 : keyValue.getValue();
         }).collect(Collectors.toList());
     }
-
     @Override
     public int updateScore(List<ExamPaperAnswerUpdate> examPaperAnswerUpdates) {
         return examPaperQuestionCustomerAnswerMapper.updateScore(examPaperAnswerUpdates);
     }
-
     private void setSpecialToVM(ExamPaperSubmitItemVM examPaperSubmitItemVM, ExamPaperQuestionCustomerAnswer examPaperQuestionCustomerAnswer) {
         QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.fromCode(examPaperQuestionCustomerAnswer.getQuestionType());
         switch (questionTypeEnum) {

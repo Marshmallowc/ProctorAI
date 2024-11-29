@@ -1,6 +1,4 @@
 package com.mindskip.xzs.utility;
-
-
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -8,9 +6,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
-
 /**
  * @version 3.5.0
  * @description: The type Wx util.
@@ -20,7 +16,6 @@ import java.io.IOException;
 public class WxUtil {
     private static final Logger logger = LoggerFactory.getLogger(WxUtil.class);
     private static final String openIdUrl = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
-
     /**
      * Gets open id.
      *

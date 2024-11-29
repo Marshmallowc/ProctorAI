@@ -1,5 +1,4 @@
 package com.mindskip.xzs.service.impl;
-
 import com.mindskip.xzs.domain.*;
 import com.mindskip.xzs.domain.TextContent;
 import com.mindskip.xzs.domain.enums.ExamPaperTypeEnum;
@@ -33,23 +32,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
 @Service
 public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements ExamPaperService {
-
     protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
     private final ExamPaperMapper examPaperMapper;
     private final QuestionMapper questionMapper;
     private final TextContentService textContentService;
     private final QuestionService questionService;
     private final SubjectService subjectService;
-
     @Autowired
     public ExamPaperServiceImpl(ExamPaperMapper examPaperMapper, QuestionMapper questionMapper, TextContentService textContentService, QuestionService questionService, SubjectService subjectService) {
         super(examPaperMapper);
@@ -59,27 +54,21 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         this.questionService = questionService;
         this.subjectService = subjectService;
     }
-
-
     @Override
     public PageInfo<ExamPaper> page(ExamPaperPageRequestVM requestVM) {
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 examPaperMapper.page(requestVM));
     }
-
     @Override
     public PageInfo<ExamPaper> taskExamPage(ExamPaperPageRequestVM requestVM) {
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 examPaperMapper.taskExamPage(requestVM));
     }
-
     @Override
     public PageInfo<ExamPaper> studentPage(ExamPaperPageVM requestVM) {
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 examPaperMapper.studentPage(requestVM));
     }
-
-
     @Override
     @Transactional
     public ExamPaper savePaperFromVM(ExamPaperEditRequestVM examPaperEditRequestVM, User user) {
@@ -88,7 +77,6 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         List<ExamPaperTitleItemVM> titleItemsVM = examPaperEditRequestVM.getTitleItems();
         List<ExamPaperTitleItemObject> frameTextContentList = frameTextContentFromVM(titleItemsVM);
         String frameTextContentStr = JsonUtil.toJsonStr(frameTextContentList);
-
         ExamPaper examPaper;
         if (actionEnum == ActionEnum.ADD) {
             examPaper = modelMapper.map(examPaperEditRequestVM, ExamPaper.class);
@@ -111,7 +99,6 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         }
         return examPaper;
     }
-
     @Override
     public ExamPaperEditRequestVM examPaperToVM(Integer id) {
         ExamPaper examPaper = examPaperMapper.selectByPrimaryKey(id);
@@ -143,18 +130,14 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         }
         return vm;
     }
-
     @Override
     public List<PaperInfo> indexPaper(PaperFilter paperFilter) {
         return examPaperMapper.indexPaper(paperFilter);
     }
-
-
     @Override
     public Integer selectAllCount() {
         return examPaperMapper.selectAllCount();
     }
-
     @Override
     public List<Integer> selectMothCount() {
         Date startTime = DateTimeUtil.getMonthStartDay();
@@ -166,7 +149,6 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             return null == keyValue ? 0 : keyValue.getValue();
         }).collect(Collectors.toList());
     }
-
     private void examPaperFromVM(ExamPaperEditRequestVM examPaperEditRequestVM, ExamPaper examPaper, List<ExamPaperTitleItemVM> titleItemsVM) {
         Integer gradeLevel = subjectService.levelBySubjectId(examPaperEditRequestVM.getSubjectId());
         Integer questionCount = titleItemsVM.stream()
@@ -184,7 +166,6 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             examPaper.setLimitEndTime(DateTimeUtil.parse(dateTimes.get(1), DateTimeUtil.STANDER_FORMAT));
         }
     }
-
     private List<ExamPaperTitleItemObject> frameTextContentFromVM(List<ExamPaperTitleItemVM> titleItems) {
         AtomicInteger index = new AtomicInteger(1);
         return titleItems.stream().map(t -> {

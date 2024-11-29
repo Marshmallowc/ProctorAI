@@ -139,10 +139,6 @@
       read_count = #{readCount,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-
-
   <select id="page" resultMap="BaseResultMap" parameterType="com.mindskip.xzs.viewmodel.admin.message.MessagePageRequestVM">
     select
     <include refid="Base_Column_List" />
@@ -153,7 +149,6 @@
          </if>
     </where>
   </select>
-
   <select id="selectByIds" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -163,10 +158,8 @@
       #{id}
     </foreach>
   </select>
-
   <update id="readAdd" parameterType="java.lang.Integer">
       UPDATE t_message SET read_count = read_count + 1
       WHERE id= #{id} and read_count = (SELECT m.read_count from ( SELECT read_count FROM t_message WHERE id = #{id} ) m)
   </update>
-
 </mapper>

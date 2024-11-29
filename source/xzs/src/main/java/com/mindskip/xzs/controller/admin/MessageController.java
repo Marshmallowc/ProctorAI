@@ -1,6 +1,4 @@
 package com.mindskip.xzs.controller.admin;
-
-
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.Message;
@@ -19,25 +17,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @RestController("AdminMessageController")
 @RequestMapping(value = "/api/admin/message")
 public class MessageController extends BaseApiController {
-
     private final MessageService messageService;
     private final UserService userService;
-
     @Autowired
     public MessageController(MessageService messageService, UserService userService) {
         this.messageService = messageService;
         this.userService = userService;
     }
-
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public RestResponse<PageInfo<MessageResponseVM>> pageList(@RequestBody MessagePageRequestVM model) {
         PageInfo<Message> pageInfo = messageService.page(model);
@@ -53,8 +46,6 @@ public class MessageController extends BaseApiController {
         });
         return RestResponse.ok(page);
     }
-
-
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public RestResponse send(@RequestBody @Valid MessageSendVM model) {
         User user = getCurrentUser();
@@ -81,5 +72,4 @@ public class MessageController extends BaseApiController {
         messageService.sendMessage(message, messageUsers);
         return RestResponse.ok();
     }
-
 }

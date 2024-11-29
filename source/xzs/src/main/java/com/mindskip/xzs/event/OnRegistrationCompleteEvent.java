@@ -1,8 +1,6 @@
 package com.mindskip.xzs.event;
-
 import com.mindskip.xzs.domain.User;
 import org.springframework.context.ApplicationEvent;
-
 /**
  * @version 3.5.0
  * @description: The type On registration complete event.
@@ -10,11 +8,7 @@ import org.springframework.context.ApplicationEvent;
  * @date 2021/12/25 9:45
  */
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
-
-
     private final User user;
-
-
     /**
      * Instantiates a new On registration complete event.
      *
@@ -24,7 +18,6 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent {
         super(user);
         this.user = user;
     }
-
     /**
      * Gets user.
      *
@@ -33,5 +26,4 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent {
     public User getUser() {
         return user;
     }
-
 }

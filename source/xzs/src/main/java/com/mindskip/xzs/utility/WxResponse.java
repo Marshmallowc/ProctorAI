@@ -1,9 +1,5 @@
 package com.mindskip.xzs.utility;
-
-
 import java.io.Serializable;
-
-
 /**
  * @version 3.5.0
  * @description: The type Wx response.
@@ -14,7 +10,6 @@ public class WxResponse implements Serializable {
     private static final long serialVersionUID = -8496869159673561976L;
     private String session_key;
     private String openid;
-
     /**
      * Gets serial version uid.
      *
@@ -23,7 +18,6 @@ public class WxResponse implements Serializable {
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
-
     /**
      * Gets session key.
      *
@@ -32,7 +26,6 @@ public class WxResponse implements Serializable {
     public String getSession_key() {
         return session_key;
     }
-
     /**
      * Sets session key.
      *
@@ -41,7 +34,6 @@ public class WxResponse implements Serializable {
     public void setSession_key(String session_key) {
         this.session_key = session_key;
     }
-
     /**
      * Gets openid.
      *
@@ -50,7 +42,6 @@ public class WxResponse implements Serializable {
     public String getOpenid() {
         return openid;
     }
-
     /**
      * Sets openid.
      *

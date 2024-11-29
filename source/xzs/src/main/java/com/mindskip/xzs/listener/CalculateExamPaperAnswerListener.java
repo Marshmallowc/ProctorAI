@@ -1,5 +1,4 @@
 package com.mindskip.xzs.listener;
-
 import com.mindskip.xzs.domain.*;
 import com.mindskip.xzs.domain.enums.ExamPaperTypeEnum;
 import com.mindskip.xzs.domain.enums.QuestionTypeEnum;
@@ -12,11 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.List;
-
-
 /**
  * @version 3.5.0
  * @description: The type Calculate exam paper answer listener.
@@ -25,12 +21,10 @@ import java.util.List;
  */
 @Component
 public class CalculateExamPaperAnswerListener implements ApplicationListener<CalculateExamPaperAnswerCompleteEvent> {
-
     private final ExamPaperAnswerService examPaperAnswerService;
     private final ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
     private final TextContentService textContentService;
     private final TaskExamCustomerAnswerService examCustomerAnswerService;
-
     /**
      * Instantiates a new Calculate exam paper answer listener.
      *
@@ -46,17 +40,14 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
         this.textContentService = textContentService;
         this.examCustomerAnswerService = examCustomerAnswerService;
     }
-
     @Override
     @Transactional
     public void onApplicationEvent(CalculateExamPaperAnswerCompleteEvent calculateExamPaperAnswerCompleteEvent) {
         Date now = new Date();
-
         ExamPaperAnswerInfo examPaperAnswerInfo = (ExamPaperAnswerInfo) calculateExamPaperAnswerCompleteEvent.getSource();
         ExamPaper examPaper = examPaperAnswerInfo.getExamPaper();
         ExamPaperAnswer examPaperAnswer = examPaperAnswerInfo.getExamPaperAnswer();
         List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers = examPaperAnswerInfo.getExamPaperQuestionCustomerAnswers();
-
         examPaperAnswerService.insertByFilter(examPaperAnswer);
         examPaperQuestionCustomerAnswers.stream().filter(a -> QuestionTypeEnum.needSaveTextContent(a.getQuestionType())).forEach(d -> {
             TextContent textContent = new TextContent(d.getAnswer(), now);
@@ -68,7 +59,6 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
             d.setExamPaperAnswerId(examPaperAnswer.getId());
         });
         examPaperQuestionCustomerAnswerService.insertList(examPaperQuestionCustomerAnswers);
-
         switch (ExamPaperTypeEnum.fromCode(examPaper.getPaperType())) {
             case Task: {
                 examCustomerAnswerService.insertOrUpdate(examPaper, examPaperAnswer, now);

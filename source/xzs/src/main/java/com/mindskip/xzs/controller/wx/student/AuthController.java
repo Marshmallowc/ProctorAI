@@ -1,5 +1,4 @@
 package com.mindskip.xzs.controller.wx.student;
-
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.configuration.property.SystemConfig;
 import com.mindskip.xzs.controller.wx.BaseWXApiController;
@@ -14,21 +13,16 @@ import com.mindskip.xzs.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-
-
 @Controller("WXStudentAuthController")
 @RequestMapping(value = "/api/wx/student/auth")
 @ResponseBody
 public class AuthController extends BaseWXApiController {
-
     private final SystemConfig systemConfig;
     private final AuthenticationService authenticationService;
     private final UserService userService;
     private final UserTokenService userTokenService;
-
     @Autowired
     public AuthController(SystemConfig systemConfig, AuthenticationService authenticationService, UserService userService, UserTokenService userTokenService) {
         this.systemConfig = systemConfig;
@@ -36,7 +30,6 @@ public class AuthController extends BaseWXApiController {
         this.userService = userService;
         this.userTokenService = userTokenService;
     }
-
     @RequestMapping(value = "/bind", method = RequestMethod.POST)
     public RestResponse bind(@Valid BindInfo model) {
         User user = userService.getUserByUserName(model.getUserName());
@@ -61,8 +54,6 @@ public class AuthController extends BaseWXApiController {
         UserToken userToken = userTokenService.bind(user);
         return RestResponse.ok(userToken.getToken());
     }
-
-
     @RequestMapping(value = "/checkBind", method = RequestMethod.POST)
     public RestResponse checkBind(@Valid @NotBlank String code) {
         String openid = WxUtil.getOpenId(systemConfig.getWx().getAppid(), systemConfig.getWx().getSecret(), code);
@@ -75,8 +66,6 @@ public class AuthController extends BaseWXApiController {
         }
         return RestResponse.fail(2, "用户未绑定");
     }
-
-
     @RequestMapping(value = "/unBind", method = RequestMethod.POST)
     public RestResponse unBind() {
         UserToken userToken = getUserToken();

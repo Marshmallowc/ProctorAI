@@ -1,5 +1,4 @@
 package com.mindskip.xzs.service.impl;
-
 import com.mindskip.xzs.domain.ExamPaper;
 import com.mindskip.xzs.domain.TaskExam;
 import com.mindskip.xzs.domain.TextContent;
@@ -22,19 +21,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements TaskExamService {
-
     protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
     private final TaskExamMapper taskExamMapper;
     private final TextContentService textContentService;
     private final ExamPaperMapper examPaperMapper;
-
     @Autowired
     public TaskExamServiceImpl(TaskExamMapper taskExamMapper, TextContentService textContentService, ExamPaperMapper examPaperMapper) {
         super(taskExamMapper);
@@ -42,14 +37,12 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
         this.textContentService = textContentService;
         this.examPaperMapper = examPaperMapper;
     }
-
     @Override
     public PageInfo<TaskExam> page(TaskPageRequestVM requestVM) {
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 taskExamMapper.page(requestVM)
         );
     }
-
     @Override
     @Transactional
     public void edit(TaskRequestVM model, User user) {
@@ -62,7 +55,6 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
             taskExam.setCreateUserName(user.getUserName());
             taskExam.setCreateTime(now);
             taskExam.setDeleted(false);
-
             //保存任务结构
             TextContent textContent = textContentService.jsonConvertInsert(model.getPaperItems(), now, p -> {
                 TaskItemObject taskItemObject = new TaskItemObject();
@@ -73,11 +65,9 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
             textContentService.insertByFilter(textContent);
             taskExam.setFrameTextContentId(textContent.getId());
             taskExamMapper.insertSelective(taskExam);
-
         } else {
             taskExam = taskExamMapper.selectByPrimaryKey(model.getId());
             modelMapper.map(model, taskExam);
-
             TextContent textContent = textContentService.selectById(taskExam.getFrameTextContentId());
             //清空试卷任务的试卷Id，后面会统一设置
             List<Integer> paperIds = JsonUtil.toJsonListObject(textContent.getContent(), TaskItemObject.class)
@@ -85,7 +75,6 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
                     .map(d -> d.getExamPaperId())
                     .collect(Collectors.toList());
             examPaperMapper.clearTaskPaper(paperIds);
-
             //更新任务结构
             textContentService.jsonConvertUpdate(textContent, model.getPaperItems(), p -> {
                 TaskItemObject taskItemObject = new TaskItemObject();
@@ -96,13 +85,11 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
             textContentService.updateByIdFilter(textContent);
             taskExamMapper.updateByPrimaryKeySelective(taskExam);
         }
-
         //更新试卷的taskId
         List<Integer> paperIds = model.getPaperItems().stream().map(d -> d.getId()).collect(Collectors.toList());
         examPaperMapper.updateTaskPaper(taskExam.getId(), paperIds);
         model.setId(taskExam.getId());
     }
-
     @Override
     public TaskRequestVM taskExamToVM(Integer id) {
         TaskExam taskExam = taskExamMapper.selectByPrimaryKey(id);
@@ -117,7 +104,6 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
         vm.setPaperItems(examResponseVMS);
         return vm;
     }
-
     @Override
     public List<TaskExam> getByGradeLevel(Integer gradeLevel) {
         return taskExamMapper.getByGradeLevel(gradeLevel);

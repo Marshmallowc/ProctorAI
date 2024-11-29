@@ -1,5 +1,4 @@
 package com.mindskip.xzs.service.impl;
-
 import com.mindskip.xzs.domain.other.KeyValue;
 import com.mindskip.xzs.exception.BusinessException;
 import com.mindskip.xzs.domain.User;
@@ -15,68 +14,53 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
-
     private final UserMapper userMapper;
     private final ApplicationEventPublisher eventPublisher;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
     @Autowired
     public UserServiceImpl(UserMapper userMapper, ApplicationEventPublisher eventPublisher) {
         super(userMapper);
         this.userMapper = userMapper;
         this.eventPublisher = eventPublisher;
     }
-
-
     @Override
     public List<User> getUsers() {
         return userMapper.getAllUser();
     }
-
     @Override
     public User getUserById(Integer id) {
         return userMapper.getUserById(id);
     }
-
     @Override
     public User getUserByUserName(String username) {
         logger.info("getUserByUserName called with username: {}", username);
         return userMapper.getUserByUserName(username);
     }
-
     @Override
     public int insertByFilter(User record) {
         return super.insertByFilter(record);
     }
-
     @Override
     public int updateByIdFilter(User record) {
         return super.updateByIdFilter(record);
     }
-
     @Override
     public int updateById(User record) {
         return super.updateById(record);
     }
-
     @Override
     public User getUserByUserNamePwd(String username, String pwd) {
         return userMapper.getUserByUserNamePwd(username, pwd);
     }
-
     @Override
     public User getUserByUuid(String uuid) {
         return userMapper.getUserByUuid(uuid);
     }
-
     @Override
     public List<User> userPageList(String name, Integer pageIndex, Integer pageSize) {
         Map<String, Object> map = new HashMap<>(3);
@@ -85,41 +69,33 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         map.put("limit", pageSize);
         return userMapper.userPageList(map);
     }
-
     @Override
     public Integer userPageCount(String name) {
         Map<String, Object> map = new HashMap<>(1);
         map.put("name", name);
         return userMapper.userPageCount(map);
     }
-
-
     @Override
     public PageInfo<User> userPage(UserPageRequestVM requestVM) {
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 userMapper.userPage(requestVM)
         );
     }
-
-
     @Override
     public void insertUser(User user) {
         userMapper.insertSelective(user);
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user));
     }
-
     @Override
     @Transactional(rollbackFor = BusinessException.class)
     public void insertUsers(List<User> users) {
         userMapper.insertUsers(users);
         throw new BusinessException("test BusinessException roll back");
     }
-
     @Override
     public void updateUser(User user) {
         userMapper.updateUser(user);
     }
-
     @Override
     public void updateUsersAge(Integer age, List<Integer> ids) {
         Map<String, Object> map = new HashMap<>(2);
@@ -127,32 +103,26 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         map.put("age", age);
         userMapper.updateUsersAge(map);
     }
-
     @Override
     public void deleteUserByIds(List<Integer> ids) {
         userMapper.deleteUsersByIds(ids);
     }
-
     @Override
     public Integer selectAllCount() {
         return userMapper.selectAllCount();
     }
-
     @Override
     public List<KeyValue> selectByUserName(String userName) {
         return userMapper.selectByUserName(userName);
     }
-
     @Override
     public List<User> selectByIds(List<Integer> ids) {
         return userMapper.selectByIds(ids);
     }
-
     @Override
     public User selectByWxOpenId(String wxOpenId) {
         return userMapper.selectByWxOpenId(wxOpenId);
     }
-
     @Override
     @Transactional
     public void changePicture(User user, String imagePath) {

@@ -1,10 +1,6 @@
 package com.mindskip.xzs.configuration.property;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import java.util.List;
-
-
 /**
  * @version 3.5.0
  * @description: The type System config.
@@ -13,12 +9,10 @@ import java.util.List;
  */
 @ConfigurationProperties(prefix = "system")
 public class SystemConfig {
-
     private PasswordKeyConfig pwdKey;
     private List<String> securityIgnoreUrls;
     private WxConfig wx;
     private QnConfig qn;
-
     /**
      * Gets pwd key.
      *
@@ -27,7 +21,6 @@ public class SystemConfig {
     public PasswordKeyConfig getPwdKey() {
         return pwdKey;
     }
-
     /**
      * Sets pwd key.
      *
@@ -36,7 +29,6 @@ public class SystemConfig {
     public void setPwdKey(PasswordKeyConfig pwdKey) {
         this.pwdKey = pwdKey;
     }
-
     /**
      * Gets security ignore urls.
      *
@@ -45,7 +37,6 @@ public class SystemConfig {
     public List<String> getSecurityIgnoreUrls() {
         return securityIgnoreUrls;
     }
-
     /**
      * Sets security ignore urls.
      *
@@ -54,7 +45,6 @@ public class SystemConfig {
     public void setSecurityIgnoreUrls(List<String> securityIgnoreUrls) {
         this.securityIgnoreUrls = securityIgnoreUrls;
     }
-
     /**
      * Gets wx.
      *
@@ -63,7 +53,6 @@ public class SystemConfig {
     public WxConfig getWx() {
         return wx;
     }
-
     /**
      * Sets wx.
      *
@@ -72,7 +61,6 @@ public class SystemConfig {
     public void setWx(WxConfig wx) {
         this.wx = wx;
     }
-
     /**
      * Gets qn.
      *
@@ -81,7 +69,6 @@ public class SystemConfig {
     public QnConfig getQn() {
         return qn;
     }
-
     /**
      * Sets qn.
      *
@@ -90,5 +77,4 @@ public class SystemConfig {
     public void setQn(QnConfig qn) {
         this.qn = qn;
     }
-
 }

@@ -1,5 +1,4 @@
 package com.mindskip.xzs.controller.wx.student;
-
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.controller.wx.BaseWXApiController;
 import com.mindskip.xzs.domain.*;
@@ -23,23 +22,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
-
-
 @Controller("WXStudentExamPaperAnswerController")
 @RequestMapping(value = "/api/wx/student/exampaper/answer")
 @ResponseBody
 public class ExamPaperAnswerController extends BaseWXApiController {
-
     private final ExamPaperAnswerService examPaperAnswerService;
     private final SubjectService subjectService;
     private final ApplicationEventPublisher eventPublisher;
     private final ExamPaperService examPaperService;
-
     @Autowired
     public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, SubjectService subjectService, ApplicationEventPublisher eventPublisher, ExamPaperService examPaperService) {
         this.examPaperAnswerService = examPaperAnswerService;
@@ -47,7 +41,6 @@ public class ExamPaperAnswerController extends BaseWXApiController {
         this.eventPublisher = eventPublisher;
         this.examPaperService = examPaperService;
     }
-
     @RequestMapping(value = "/pageList", method = RequestMethod.POST)
     public RestResponse<PageInfo<ExamPaperAnswerPageResponseVM>> pageList(@Valid ExamPaperAnswerPageVM model) {
         model.setCreateUser(getCurrentUser().getId());
@@ -65,8 +58,6 @@ public class ExamPaperAnswerController extends BaseWXApiController {
         });
         return RestResponse.ok(page);
     }
-
-
     @RequestMapping(value = "/answerSubmit", method = RequestMethod.POST)
     public RestResponse answerSubmit(HttpServletRequest request) {
         ExamPaperSubmitVM examPaperSubmitVM = requestToExamPaperSubmitVM(request);
@@ -87,7 +78,6 @@ public class ExamPaperAnswerController extends BaseWXApiController {
         eventPublisher.publishEvent(new UserEvent(userEventLog));
         return RestResponse.ok(scoreVm);
     }
-
     private ExamPaperSubmitVM requestToExamPaperSubmitVM(HttpServletRequest request) {
         ExamPaperSubmitVM examPaperSubmitVM = new ExamPaperSubmitVM();
         examPaperSubmitVM.setId(Integer.parseInt(request.getParameter("id")));
@@ -120,8 +110,6 @@ public class ExamPaperAnswerController extends BaseWXApiController {
         examPaperSubmitVM.setAnswerItems(answerItems);
         return examPaperSubmitVM;
     }
-
-
     @PostMapping(value = "/read/{id}")
     public RestResponse<ExamPaperReadVM> read(@PathVariable Integer id) {
         ExamPaperReadVM vm = new ExamPaperReadVM();

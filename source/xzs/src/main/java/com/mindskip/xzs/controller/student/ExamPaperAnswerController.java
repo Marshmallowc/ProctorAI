@@ -1,4 +1,5 @@
 package com.mindskip.xzs.controller.student;
+import com.google.gson.Gson;
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.*;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -283,7 +285,39 @@ public class ExamPaperAnswerController extends BaseApiController {
             System.out.println("correctAnswer: " + i);
         }
         System.out.println("进入AI评分模块");
-        return 1.0;
+        String line = "0.0";
+
+        // 调用 Python 脚本，并传递两个列表
+        try {
+            // 运行 Python 脚本
+            ProcessBuilder pb = new ProcessBuilder("python", "testString.py");
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+            // 传递列表到 Python 脚本
+            OutputStream os = process.getOutputStream();
+            PrintWriter writer = new PrintWriter(os);
+            // 使用 Gson 库将 Java 列表转换为 JSON 字符串
+            Gson gson = new Gson();
+            writer.println(gson.toJson(studentAnswer)); // 将列表1转换为 JSON 字符串并传递给 Python
+            writer.println(gson.toJson(correctAnswer)); // 将列表2转换为 JSON 字符串并传递给 Python
+            writer.flush();
+            // 获取 Python 脚本的输出
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                System.out.println("Python Output: " + line);
+            }
+            // 获取 Python 脚本的返回值
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Python script executed successfully.");
+            } else {
+                System.out.println("Python script failed with exit code " + exitCode);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return Double.parseDouble(line);
     }
     public static List<String> convertStringToList(String input) {
         if (input == null || input.isEmpty()) {

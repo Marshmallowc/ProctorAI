@@ -1,0 +1,173 @@
+Date : 2024-12-19 18:58:49
+Directory : d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student
+Total : 106 files,  18984 codes, 248 comments, 392 blanks, all 19624 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          2 |     14,651 |          0 |          2 |     14,653 |
+| Vue        |         23 |      3,068 |         53 |        190 |      3,311 |
+| JavaScript |         24 |        854 |        172 |        112 |      1,138 |
+| SCSS       |          1 |        285 |          0 |         77 |        362 |
+| XML        |         52 |         78 |          0 |          0 |         78 |
+| HTML       |          1 |         41 |         10 |          5 |         56 |
+| YAML       |          1 |          5 |         13 |          5 |         23 |
+| Properties |          1 |          1 |          0 |          1 |          2 |
+| CSS        |          1 |          1 |          0 |          0 |          1 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                                  | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                     |        106 |     18,984 |        248 |        392 |     19,624 |
+| . (Files)                                                                                                                             |          7 |     14,728 |          1 |          9 |     14,738 |
+| public                                                                                                                                |          1 |         41 |         10 |          5 |         56 |
+| src                                                                                                                                   |         98 |      4,215 |        237 |        378 |      4,830 |
+| src (Files)                                                                                                                           |          3 |        158 |          3 |         19 |        180 |
+| src\api                                                                                                                               |          9 |         49 |          0 |         18 |         67 |
+| src\assets                                                                                                                            |          1 |          1 |          0 |          0 |          1 |
+| src\assets\custom-theme                                                                                                               |          1 |          1 |          0 |          0 |          1 |
+| src\components                                                                                                                        |          5 |        459 |          9 |         33 |        501 |
+| src\components\BackToTop                                                                                                              |          1 |        119 |          4 |          7 |        130 |
+| src\components\Pagination                                                                                                             |          1 |         97 |          0 |          4 |        101 |
+| src\components\PanThumb                                                                                                               |          1 |        128 |          0 |         13 |        141 |
+| src\components\SvgIcon                                                                                                                |          1 |         57 |          1 |          5 |         63 |
+| src\components\Ueditor                                                                                                                |          1 |         58 |          4 |          4 |         66 |
+| src\icons                                                                                                                             |         54 |         89 |         14 |          8 |        111 |
+| src\icons (Files)                                                                                                                     |          2 |         11 |         14 |          8 |         33 |
+| src\icons\svg                                                                                                                         |         52 |         78 |          0 |          0 |         78 |
+| src\layout                                                                                                                            |          1 |        120 |          0 |          4 |        124 |
+| src\store                                                                                                                             |          4 |        150 |         13 |         22 |        185 |
+| src\store (Files)                                                                                                                     |          1 |         14 |          4 |          6 |         24 |
+| src\store\modules                                                                                                                     |          3 |        136 |          9 |         16 |        161 |
+| src\styles                                                                                                                            |          1 |        285 |          0 |         77 |        362 |
+| src\utils                                                                                                                             |          4 |        430 |        154 |         49 |        633 |
+| src\views                                                                                                                             |         16 |      2,474 |         44 |        148 |      2,666 |
+| src\views\dashboard                                                                                                                   |          1 |        162 |         25 |         12 |        199 |
+| src\views\error-page                                                                                                                  |          2 |        318 |          0 |          8 |        326 |
+| src\views\exam                                                                                                                        |          5 |        658 |          4 |         23 |        685 |
+| src\views\exam\components                                                                                                             |          2 |        206 |          0 |          6 |        212 |
+| src\views\exam\paper                                                                                                                  |          3 |        452 |          4 |         17 |        473 |
+| src\views\face-recognition                                                                                                            |          1 |         69 |          8 |          8 |         85 |
+| src\views\login                                                                                                                       |          1 |        377 |          5 |         37 |        419 |
+| src\views\paper                                                                                                                       |          1 |         87 |          0 |          4 |         91 |
+| src\views\question-error                                                                                                              |          1 |         95 |          0 |          5 |        100 |
+| src\views\record                                                                                                                      |          1 |        122 |          0 |          4 |        126 |
+| src\views\register                                                                                                                    |          1 |        324 |          2 |         36 |        362 |
+| src\views\user-info                                                                                                                   |          2 |        262 |          0 |         11 |        273 |
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                                              | language   | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\.env                                             | Properties |          1 |          0 |          1 |          2 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\.eslintrc.js                                     | JavaScript |         17 |          0 |          1 |         18 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\babel.config.js                                  | JavaScript |          5 |          0 |          1 |          6 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\package-lock.json                                | JSON       |     14,586 |          0 |          1 |     14,587 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\package.json                                     | JSON       |         65 |          0 |          1 |         66 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\postcss.config.js                                | JavaScript |          5 |          0 |          1 |          6 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\public\index.html                                | HTML       |         41 |         10 |          5 |         56 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\App.vue                                      | Vue        |         15 |          0 |          5 |         20 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\api\dashboard.js                             | JavaScript |          5 |          0 |          2 |          7 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\api\examPaper.js                             | JavaScript |          5 |          0 |          2 |          7 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\api\examPaperAnswer.js                       | JavaScript |          7 |          0 |          2 |          9 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\api\login.js                                 | JavaScript |          5 |          0 |          2 |          7 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\api\question.js                              | JavaScript |          3 |          0 |          2 |          5 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\api\questionAnswer.js                        | JavaScript |          5 |          0 |          2 |          7 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\api\register.js                              | JavaScript |          4 |          0 |          2 |          6 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\api\subject.js                               | JavaScript |          5 |          0 |          2 |          7 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\api\user.js                                  | JavaScript |         10 |          0 |          2 |         12 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\assets\custom-theme\index.css                | CSS        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\components\BackToTop\index.vue               | Vue        |        119 |          4 |          7 |        130 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\components\Pagination\index.vue              | Vue        |         97 |          0 |          4 |        101 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\components\PanThumb\index.vue                | Vue        |        128 |          0 |         13 |        141 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\components\SvgIcon\index.vue                 | Vue        |         57 |          1 |          5 |         63 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\components\Ueditor\index.vue                 | Vue        |         58 |          4 |          4 |         66 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\index.js                               | JavaScript |          6 |          1 |          3 |         10 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\404.svg                            | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\bug.svg                            | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\chart.svg                          | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\clipboard.svg                      | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\component.svg                      | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\dashboard.svg                      | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\documentation.svg                  | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\drag.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\edit.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\education.svg                      | XML        |          5 |          0 |          0 |          5 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\email.svg                          | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\exam.svg                           | XML        |          7 |          0 |          0 |          7 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\example.svg                        | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\excel.svg                          | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\exit-fullscreen.svg                | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\eye-open.svg                       | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\eye.svg                            | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\form.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\fullscreen.svg                     | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\gitee.svg                          | XML        |          4 |          0 |          0 |          4 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\guide.svg                          | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\home.svg                           | XML        |          5 |          0 |          0 |          5 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\icon.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\international.svg                  | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\language.svg                       | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\link.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\list.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\lock.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\message.svg                        | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\money.svg                          | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\nested.svg                         | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\password.svg                       | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\pdf.svg                            | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\people.svg                         | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\peoples.svg                        | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\qq.svg                             | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\question.svg                       | XML        |          5 |          0 |          0 |          5 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\search.svg                         | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\shopping.svg                       | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\size.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\skill.svg                          | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\social-github.svg                  | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\star.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\tab.svg                            | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\table.svg                          | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\theme.svg                          | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\tree-table.svg                     | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\tree.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\user.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\users.svg                          | XML        |          6 |          0 |          0 |          6 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\wechat.svg                         | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svg\zip.svg                            | XML        |          1 |          0 |          0 |          1 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\icons\svgo.yml                               | YAML       |          5 |         13 |          5 |         23 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\layout\index.vue                             | Vue        |        120 |          0 |          4 |        124 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\main.js                                      | JavaScript |         42 |          3 |         11 |         56 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\router.js                                    | JavaScript |        101 |          0 |          3 |        104 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\store\index.js                               | JavaScript |         14 |          4 |          6 |         24 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\store\modules\enumItem.js                    | JavaScript |         52 |          4 |          6 |         62 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\store\modules\exam.js                        | JavaScript |         33 |          2 |          6 |         41 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\store\modules\user.js                        | JavaScript |         51 |          3 |          4 |         58 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\styles\index.scss                            | SCSS       |        285 |          0 |         77 |        362 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\utils\index.js                               | JavaScript |        251 |         98 |         26 |        375 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\utils\request.js                             | JavaScript |        101 |          0 |          8 |        109 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\utils\scroll-to.js                           | JavaScript |         39 |         15 |          5 |         59 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\utils\validate.js                            | JavaScript |         39 |         41 |         10 |         90 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\dashboard\index.vue                    | Vue        |        162 |         25 |         12 |        199 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\error-page\401.vue                     | Vue        |         96 |          0 |          4 |        100 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\error-page\404.vue                     | Vue        |        222 |          0 |          4 |        226 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\exam\components\QuestionAnswerShow.vue | Vue        |        125 |          0 |          3 |        128 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\exam\components\QuestionEdit.vue       | Vue        |         81 |          0 |          3 |         84 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\exam\paper\do.vue                      | Vue        |        195 |          4 |          7 |        206 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\exam\paper\edit.vue                    | Vue        |        150 |          0 |          5 |        155 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\exam\paper\read.vue                    | Vue        |        107 |          0 |          5 |        112 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\face-recognition\index.vue             | Vue        |         69 |          8 |          8 |         85 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\login\index.vue                        | Vue        |        377 |          5 |         37 |        419 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\paper\index.vue                        | Vue        |         87 |          0 |          4 |         91 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\question-error\index.vue               | Vue        |         95 |          0 |          5 |        100 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\record\index.vue                       | Vue        |        122 |          0 |          4 |        126 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\register\index.vue                     | Vue        |        324 |          2 |         36 |        362 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\user-info\index.vue                    | Vue        |        170 |          0 |          5 |        175 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\src\views\user-info\message.vue                  | Vue        |         92 |          0 |          6 |         98 |
+| d:\college\contest\xzs(org)\xzs-mysql-master\xzs-mysql-master\source\vue\xzs-student\vue.config.js                                    | JavaScript |         49 |          1 |          3 |         53 |
+| Total                                                                                                                                 |            |     18,984 |        248 |        392 |     19,624 |
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

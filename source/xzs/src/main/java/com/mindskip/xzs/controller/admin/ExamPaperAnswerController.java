@@ -388,6 +388,13 @@ public class ExamPaperAnswerController extends BaseApiController {
         String barChartUrl = generateBarChart(scoreDistribution, query.getPapersname());
         // 生成报表
         String headerCellUrl = generateHeadCell(query.getClassofParam(), query.getPapersname());
+        /*
+        *
+        *
+        * 数据可视化待完成
+        *
+        *
+        * */
         String encodedReportUrl = URLEncoder.encode(headerCellUrl, "UTF-8");
 // 同样处理其他URL
         String encodedPieChartUrl = URLEncoder.encode(pieChartUrl, "UTF-8");

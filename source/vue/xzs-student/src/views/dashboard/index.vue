@@ -84,8 +84,6 @@
                   <el-button type="text" class="button">开始做题</el-button>
                 </router-link>
               </div>
-
-              
             </div>
           </el-card>
         </el-col>

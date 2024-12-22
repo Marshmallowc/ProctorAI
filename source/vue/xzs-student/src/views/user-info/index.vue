@@ -118,7 +118,6 @@ export default {
       _this.event = re.response
     })
     userApi.getCurrentUser().then(re => {
-      console.log(re.response)
       _this.form = re.response
     })
   },
@@ -131,14 +130,11 @@ export default {
       }
     },
     submitForm () {
-      console.log(this.form.school)
       let _this = this
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.formLoading = true
           userApi.update(this.form).then(data => {
-            console.log(data)
-            console.log(this.form)
             if (data.code === 1) {
               _this.$message.success(data.message)
             } else {

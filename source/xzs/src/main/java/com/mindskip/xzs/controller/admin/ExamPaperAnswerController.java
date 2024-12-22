@@ -64,7 +64,7 @@ public class ExamPaperAnswerController extends BaseApiController {
     private final ApplicationEventPublisher eventPublisher;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    private static final String URL = "jdbc:mysql://127.0.0.1:3307/xzs?useSSL=false&allowPublicKeyRetrieval=true";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/xzs?useSSL=false&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
     private static final String PASSWORD = "123456";
     @Autowired
@@ -538,7 +538,7 @@ public class ExamPaperAnswerController extends BaseApiController {
             // 1. 加载驱动程序
             Class.forName("com.mysql.cj.jdbc.Driver");
             // 2. 获得数据库的连接
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/xzs", "root", "123456");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/xzs", "root", "123456");
             // 3. 查询 t_user 表获取该班级学生的 id
             String userQuery = "SELECT id FROM t_user WHERE class_name = ?";
             PreparedStatement pstmtUser = conn.prepareStatement(userQuery);

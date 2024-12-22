@@ -32,7 +32,6 @@ export default {
 
       try {
         const response = await axios.post('/api/face-recognition', { image: imageData })
-        console.log(response.data.result)
         if (response.data.result.includes('success') && response.data.result.includes(this.userName)) {
           // 假设你希望在识别成功后使用一个特定的 examId 进行跳转
           alert('识别成功！' + this.userName)
@@ -43,8 +42,6 @@ export default {
           alert('未识别到人脸，请重试！')
         }
       } catch (error) {
-        console.error('Error during face recognition:', error)
-        // this.recognitionResult = 'Recognition failed'
       }
     }
   },
@@ -52,8 +49,6 @@ export default {
     // 获取当前用户信息
     userApi.getCurrentUser().then(re => {
       this.userName = re.response.realName
-    }).catch(error => {
-      console.error('Failed to load user info:', error)
     })
     // 设置页面标题
     document.title = this.$route.meta.title || 'Face Recognition'
@@ -65,9 +60,6 @@ export default {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
         this.$refs.video.srcObject = stream
-      })
-      .catch(error => {
-        console.error('Error accessing camera:', error)
       })
   },
   beforeDestroy () {

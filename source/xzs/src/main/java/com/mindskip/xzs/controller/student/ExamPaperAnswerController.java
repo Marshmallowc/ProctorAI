@@ -38,7 +38,7 @@ public class ExamPaperAnswerController extends BaseApiController {
     private final ExamPaperService examPaperService;
     private final SubjectService subjectService;
     private final ApplicationEventPublisher eventPublisher;
-    private static final String URL = "jdbc:mysql://127.0.0.1:3307/xzs?useSSL=false&allowPublicKeyRetrieval=true";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/xzs?useSSL=false&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
     private static final String PASSWORD = "123456";
     @Autowired

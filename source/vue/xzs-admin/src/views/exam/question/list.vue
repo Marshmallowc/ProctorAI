@@ -32,6 +32,8 @@
           </el-button>
           <el-button slot="reference" type="primary" class="link-left">添加</el-button>
         </el-popover>
+        <el-button type="success" @click="triggerFileInput" style="margin-left: 5px;">导入题库</el-button>
+        <input type="file" ref="fileInput" style="display: none;" @change="handleFileChange" />
       </el-form-item>
     </el-form>
     <el-table v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%">
@@ -93,6 +95,27 @@ export default {
     this.search()
   },
   methods: {
+    triggerFileInput () {
+      this.$refs.fileInput.click()
+    },
+    handleFileChange (event) {
+      const file = event.target.files[0]
+      if (file) {
+        this.importQuestionBank(file)
+      }
+    },
+    importQuestionBank (file) {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      // 发起文件上传请求
+      questionApi.uploadQuestionBank(formData).then(data => {
+        console.log('准备向后端发送题库数据')
+      })
+        .catch(error => {
+          console.error('上传失败', error)
+        })
+    },
     submitForm () {
       this.queryParam.pageIndex = 1
       this.search()
